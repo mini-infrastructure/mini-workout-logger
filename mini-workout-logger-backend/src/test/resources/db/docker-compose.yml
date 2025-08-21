@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:17.5-bookworm
+    container_name: mini-workout-logger-db
+    env_file:
+      - path: ../../../../../.env
+        required: true
+    ports:
+        - "15432:5432"
+    volumes:
+      - ../../assets/postgres-data:/var/lib/postgresql/data
+    networks:
+      - mini-workout-logger-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: mini-workout-logger-pgadmin
+    env_file:
+      - path: ../../../../../.env
+        required: true
+    ports:
+      - "180:80"
+    volumes:
+        - ../../assets/pgadmin-data:/var/lib/pgadmin
+        - ./servers.json:/pgadmin4/servers.json:ro
+    networks:
+      - mini-workout-logger-network
+    depends_on:
+      - db
+
+networks:
+    mini-workout-logger-network:
+        driver: bridge

@@ -1,0 +1,5 @@
+.idea/
+*/pgadmin-data
+*/postgres-data
+mini-workout-logger-backend/src/test/assets/
+.env
