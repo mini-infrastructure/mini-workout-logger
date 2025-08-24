@@ -1,7 +1,7 @@
 package com.mini.workout_logger_backend.controller;
 
+import com.mini.java_core.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,11 +11,11 @@ import java.util.Locale;
 public class GreetingController {
 
     @Autowired
-    private MessageSource messageSource;
+    private MessageService messageService;
 
     @GetMapping("/greeting")
     public String getGreeting(Locale locale) {
-        return messageSource.getMessage("greeting", null, locale);
+        return messageService.getLocalizedMessage("greeting", locale);
     }
 
 }

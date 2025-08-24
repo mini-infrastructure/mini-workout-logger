@@ -6,14 +6,16 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 import java.util.Locale;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+        "com.mini.workout_logger_backend",
+        "com.mini.java_core",
+        "com.mini.java_core.service"})
 public class MiniWorkoutLoggerBackendApplication {
 
 	public static void main(String[] args) {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("i18n/messages");
         messageSource.setDefaultEncoding("UTF-8");
-        System.out.println(messageSource.getMessage("exercise.type.machine", null, Locale.ENGLISH));
 		SpringApplication.run(MiniWorkoutLoggerBackendApplication.class, args);
 	}
 
