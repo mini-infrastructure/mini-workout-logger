@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,19 +22,31 @@ public class Exercise extends AbstractEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "category", nullable = false)
+    @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;
 
     @ManyToMany
-    @JoinTable(name = "exercise_muscle_groups",
+    @JoinTable(name = "exercises_muscle_groups",
                joinColumns = @JoinColumn(name = "exercise_id"),
                inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
-    Set<MuscleGroup> muscleGroups;
+    Set<MuscleGroup> muscleGroups = new HashSet<>();
 
-    @OneToMany(mappedBy = "exercise",
-               cascade = {CascadeType.MERGE},
-               fetch = FetchType.LAZY)
-    Set<ExerciseExecution> executions;
+    public void addMuscleGroup(MuscleGroup muscleGroup) {
+        this.muscleGroups.add(muscleGroup);
+        muscleGroup.getExercises().add(this);
+    }
+
+    public void removeMuscleGroup(MuscleGroup muscleGroup) {
+        this.muscleGroups.remove(muscleGroup);
+        muscleGroup.getExercises().remove(this);
+    }
+
+    public void setMuscleGroups(Set<MuscleGroup> muscleGroups) {
+        this.muscleGroups.clear();
+        if (muscleGroups != null) {
+            muscleGroups.forEach(this::addMuscleGroup);
+        }
+    }
 
 }

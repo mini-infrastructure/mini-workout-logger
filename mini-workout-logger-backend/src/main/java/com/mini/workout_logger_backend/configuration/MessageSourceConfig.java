@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
-public class MessageSourceConfiguration {
+public class MessageSourceConfig {
 
     /**
      * Accesses property files containing the localized messages.
