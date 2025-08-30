@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import jakarta.persistence.*;
@@ -8,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +35,12 @@ public class Exercise extends AbstractEntity {
                inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
     Set<MuscleGroup> muscleGroups = new HashSet<>();
 
+    @OneToMany(mappedBy = "exercise",
+               cascade = {CascadeType.MERGE},
+               fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ExerciseExecution> executions = new ArrayList<>();
+
     public void addMuscleGroup(MuscleGroup muscleGroup) {
         this.muscleGroups.add(muscleGroup);
         muscleGroup.getExercises().add(this);
@@ -46,6 +55,23 @@ public class Exercise extends AbstractEntity {
         this.muscleGroups.clear();
         if (muscleGroups != null) {
             muscleGroups.forEach(this::addMuscleGroup);
+        }
+    }
+
+    public void addExecution(ExerciseExecution execution) {
+        this.executions.add(execution);
+        execution.setExercise(this);
+    }
+
+    public void removeExecution(ExerciseExecution execution) {
+        this.executions.remove(execution);
+        execution.setExercise(null);
+    }
+
+    public void setExecutions(List<ExerciseExecution> executions) {
+        this.executions.clear();
+        if (executions != null) {
+            executions.forEach(this::addExecution);
         }
     }
 
