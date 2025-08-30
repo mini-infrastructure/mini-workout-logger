@@ -36,4 +36,8 @@ public class ExerciseDTO extends AbstractDTO {
         this.muscleGroupIds.add(muscleGroupId);
     }
 
+    public void addMuscleGroup(MuscleGroupDTO muscleGroup) {
+        this.muscleGroups.add(muscleGroup);
+    }
+
 }

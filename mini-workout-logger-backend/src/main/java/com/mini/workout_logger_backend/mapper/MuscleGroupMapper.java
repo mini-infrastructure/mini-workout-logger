@@ -8,10 +8,4 @@ import org.springframework.stereotype.Component;
 @Component
 public class MuscleGroupMapper extends AbstractMapper<MuscleGroup, MuscleGroupDTO> {
 
-    @Override
-    protected Class<MuscleGroupDTO> getDtoClass() { return MuscleGroupDTO.class; }
-
-    @Override
-    protected Class<MuscleGroup> getEntityClass() { return MuscleGroup.class; }
-
 }
