@@ -11,9 +11,10 @@
         http://www.liquibase.org/xml/ns/pro
         http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-    <!--
     <changeSet id="1" author="carolina">
+        <sqlFile path="db/changelog/migrations/001_create_exercises_table.sql"/>
+        <sqlFile path="db/changelog/migrations/002_create_muscle_groups_table.sql"/>
+        <sqlFile path="db/changelog/migrations/003_create_exercises_muscle_groups_table.sql"/>
     </changeSet>
-    -->
 
 </databaseChangeLog>

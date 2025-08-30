@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.java_core.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,10 +22,25 @@ public class MuscleGroup extends AbstractEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "exercise_muscle_groups",
-               joinColumns = @JoinColumn(name = "muscle_group_id"),
-               inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    private Set<Exercise> exercises;
+    @ManyToMany(mappedBy = "muscleGroups")
+    @JsonIgnore
+    private Set<Exercise> exercises = new HashSet<>();
+
+    public void addExercise(Exercise exercise) {
+        this.exercises.add(exercise);
+        exercise.getMuscleGroups().add(this);
+    }
+
+    public void removeExercise(Exercise exercise) {
+        this.exercises.remove(exercise);
+        exercise.getMuscleGroups().remove(this);
+    }
+
+    public void setExercises(Set<Exercise> exercises) {
+        this.exercises.clear();
+        if (exercises != null) {
+            exercises.forEach(this::addExercise);
+        }
+    }
 
 }
