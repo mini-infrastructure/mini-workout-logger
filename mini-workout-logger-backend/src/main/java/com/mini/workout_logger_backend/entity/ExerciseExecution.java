@@ -27,7 +27,4 @@ public class ExerciseExecution extends AbstractEntity {
     @Column(name = "weight")
     private Double weight;
 
-    @Column(name = "duration")
-    private Duration duration;
-
 }
