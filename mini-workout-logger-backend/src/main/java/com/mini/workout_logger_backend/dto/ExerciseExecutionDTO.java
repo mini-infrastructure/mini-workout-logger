@@ -7,15 +7,12 @@ import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ExerciseExecutionDTO extends AbstractDTO {
 
     @NotNull(groups = RestMethod.OnCreate.class)
