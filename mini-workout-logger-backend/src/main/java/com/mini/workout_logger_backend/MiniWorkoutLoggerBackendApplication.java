@@ -7,7 +7,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @SpringBootApplication(scanBasePackages = {
         "com.mini.workout_logger_backend",
         "com.mini.java_core",
-        "com.mini.java_core.service"})
+        "com.mini.java_core.service",
+        "com.mini.workout_logger_backend.integration"})
 public class MiniWorkoutLoggerBackendApplication {
 
 	public static void main(String[] args) {
