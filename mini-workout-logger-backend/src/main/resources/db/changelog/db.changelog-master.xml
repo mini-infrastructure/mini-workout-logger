@@ -15,6 +15,7 @@
         <sqlFile path="db/changelog/migrations/001_create_exercises_table.sql"/>
         <sqlFile path="db/changelog/migrations/002_create_muscle_groups_table.sql"/>
         <sqlFile path="db/changelog/migrations/003_create_exercises_muscle_groups_table.sql"/>
+        <sqlFile path="db/changelog/migrations/004_create_exercise_executions_table.sql"/>
     </changeSet>
 
 </databaseChangeLog>

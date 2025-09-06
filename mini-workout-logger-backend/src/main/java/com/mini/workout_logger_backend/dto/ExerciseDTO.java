@@ -5,18 +5,15 @@ import com.mini.java_core.dto.AbstractDTO;
 import com.mini.java_core.validation.group.RestMethod;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class ExerciseDTO extends AbstractDTO {
 
     @NotNull(groups = RestMethod.OnCreate.class)
@@ -34,10 +31,6 @@ public class ExerciseDTO extends AbstractDTO {
 
     public void addMuscleGroupId(Long muscleGroupId) {
         this.muscleGroupIds.add(muscleGroupId);
-    }
-
-    public void addMuscleGroup(MuscleGroupDTO muscleGroup) {
-        this.muscleGroups.add(muscleGroup);
     }
 
 }
