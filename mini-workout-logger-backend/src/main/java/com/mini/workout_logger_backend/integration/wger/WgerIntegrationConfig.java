@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @ConfigurationProperties("com.mini.workout-logger.integration.wger")
 @Getter
 @Setter
-public class WgerConfig {
+public class WgerIntegrationConfig {
 
     private String endpoint;
 

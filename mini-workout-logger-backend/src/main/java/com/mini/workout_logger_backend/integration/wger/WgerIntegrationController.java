@@ -17,14 +17,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/wger")
 @Tag(name = "Wger API", description = "Wger API Integration")
-public class WgerApiController {
+public class WgerIntegrationController {
 
     @Autowired
-    private WgerApiService wgerApiService;
+    private WgerIntegrationService integrationService;
 
     @PostMapping("/token")
     public ResponseEntity<ResponseDTO<WgerTokenResponseDTO>> getToken() {
-        WgerTokenResponseDTO token = wgerApiService.authenticate().block();
+        WgerTokenResponseDTO token = integrationService.authenticate().block();
         assert token != null;
         return ResponseHelper.success(
                 HttpStatus.OK,

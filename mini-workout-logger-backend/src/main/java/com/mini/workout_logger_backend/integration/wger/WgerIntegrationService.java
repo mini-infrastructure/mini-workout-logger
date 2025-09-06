@@ -1,24 +1,14 @@
 package com.mini.workout_logger_backend.integration.wger;
 
-import com.mini.java_core.dto.ResponseDTO;
-import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.integration.wger.dto.WgerTokenRequestDTO;
 import com.mini.workout_logger_backend.integration.wger.dto.WgerTokenResponseDTO;
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 /**
  * Service for interacting with the Wger API to fetch exercise data.
@@ -26,15 +16,14 @@ import java.util.List;
  */
 @Service
 @Getter
-@Setter
-public class WgerApiService {
+public class WgerIntegrationService {
 
     @Autowired
     @Qualifier("WgerWebClient")
     private WebClient webClient;
 
     @Autowired
-    private WgerConfig wgerConfig;
+    private WgerIntegrationConfig integrationConfig;
 
     /**
      * Authenticate with the Wger API to obtain an access token.
@@ -43,9 +32,11 @@ public class WgerApiService {
      * @return the access and refresh tokens response
      */
     public Mono<WgerTokenResponseDTO> authenticate() {
-        return webClient.post()
-                .uri(wgerConfig.getTokenUrl())
-                .bodyValue(new WgerTokenRequestDTO(wgerConfig.getUsername(), wgerConfig.getPassword()))
+        return this.webClient.post()
+                .uri(this.integrationConfig.getTokenUrl())
+                .bodyValue(new WgerTokenRequestDTO(
+                        this.integrationConfig.getUsername(),
+                        this.integrationConfig.getPassword()))
                 .retrieve()
                 .onStatus(
                         status -> status.is4xxClientError() || status.is5xxServerError(),
