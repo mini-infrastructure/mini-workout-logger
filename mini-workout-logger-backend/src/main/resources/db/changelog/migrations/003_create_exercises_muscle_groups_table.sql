@@ -1,9 +1,9 @@
-CREATE TABLE exercises_muscle_groups(
+CREATE TABLE exercises_muscles(
 
     exercise_id BIGINT NOT NULL,
-    muscle_group_id BIGINT NOT NULL,
-    PRIMARY KEY (exercise_id, muscle_group_id),
+    muscle_id BIGINT NOT NULL,
+    PRIMARY KEY (exercise_id, muscle_id),
     FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,
-    FOREIGN KEY (muscle_group_id) REFERENCES muscle_groups(id) ON DELETE CASCADE
+    FOREIGN KEY (muscle_id) REFERENCES muscles(id) ON DELETE CASCADE
 
 );

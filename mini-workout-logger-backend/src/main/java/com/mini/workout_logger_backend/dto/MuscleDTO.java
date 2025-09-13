@@ -11,7 +11,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class MuscleGroupDTO extends AbstractDTO {
+public class MuscleDTO extends AbstractDTO {
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
