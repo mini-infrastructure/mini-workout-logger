@@ -1,6 +1,7 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import jakarta.persistence.*;
@@ -29,11 +30,12 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;
 
+    @JsonManagedReference
     @ManyToMany
     @JoinTable(name = "exercises_muscles",
                joinColumns = @JoinColumn(name = "exercise_id"),
                inverseJoinColumns = @JoinColumn(name = "muscle_id"))
-    Set<Muscle> muscles = new HashSet<>();
+    private Set<Muscle> muscles = new HashSet<>();
 
     @OneToMany(mappedBy = "exercise",
                cascade = {CascadeType.MERGE},

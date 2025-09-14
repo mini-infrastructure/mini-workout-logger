@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,27 +25,45 @@ public class Muscle extends AbstractEntity {
     private String name;
 
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "muscle_group_id")
-    private Muscle muscleGroup;
+    @ManyToMany
+    @JoinTable(name = "muscle_groups",
+               joinColumns = @JoinColumn(name = "muscle_id"),
+               inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
+    private Set<Muscle> muscleGroups = new HashSet<>();
 
-    @OneToMany(mappedBy = "muscleGroup",
-               cascade = {CascadeType.MERGE},
-               fetch = FetchType.LAZY)
-    Set<Muscle> muscles = new HashSet<>();
+    @JsonManagedReference
+    @ManyToMany(mappedBy = "muscleGroups")
+    private Set<Muscle> muscles = new HashSet<>();
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "muscles")
-    @JsonIgnore
     private Set<Exercise> exercises = new HashSet<>();
+
+    public void addMuscleGroup(Muscle muscle) {
+        this.muscleGroups.add(muscle);
+        muscle.getMuscles().add(this);
+    }
+
+    public void removeMuscleGroup(Muscle muscle) {
+        this.muscleGroups.remove(muscle);
+        muscle.getMuscles().remove(this);
+    }
+
+    public void setMuscleGroups(Set<Muscle> muscleGroups) {
+        this.muscleGroups.clear();
+        if (muscleGroups != null) {
+            muscleGroups.forEach(this::addMuscleGroup);
+        }
+    }
 
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
-        muscle.setMuscleGroup(this);
+        muscle.getMuscleGroups().add(this);
     }
 
     public void removeMuscle(Muscle muscle) {
         this.muscles.remove(muscle);
-        muscle.setMuscleGroup(null);
+        muscle.getMuscleGroups().remove(this);
     }
 
     public void setMuscles(Set<Muscle> muscles) {

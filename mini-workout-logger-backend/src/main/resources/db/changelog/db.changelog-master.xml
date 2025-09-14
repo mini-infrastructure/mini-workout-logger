@@ -14,7 +14,8 @@
     <changeSet id="1" author="carolina">
         <sqlFile path="db/changelog/migrations/001_create_exercises_table.sql"/>
         <sqlFile path="db/changelog/migrations/002_create_muscles_table.sql"/>
-        <sqlFile path="db/changelog/migrations/003_create_exercises_muscles_table.sql"/>
+        <sqlFile path="db/changelog/migrations/003_create_muscle_groups_table.sql"/>
+        <sqlFile path="db/changelog/migrations/004_create_exercises_muscles_table.sql"/>
     </changeSet>
 
     <changeSet id="2" author="carolina">

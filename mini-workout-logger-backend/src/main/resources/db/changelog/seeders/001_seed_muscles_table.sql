@@ -1,15 +1,34 @@
 -- Adds a new muscle.
-CREATE OR REPLACE FUNCTION add_muscle(p_name VARCHAR, p_muscle_group_name VARCHAR)
+CREATE OR REPLACE FUNCTION add_muscle(muscle_name VARCHAR, muscle_group_name VARCHAR)
 RETURNS VOID AS $_$
+DECLARE
+    p_muscle_id BIGINT;
+    p_muscle_group_id BIGINT;
 BEGIN
-    INSERT INTO muscles (name, muscle_group_id, created_at, updated_at)
-    VALUES (
-        p_name,
-        (SELECT id FROM muscles WHERE name = p_muscle_group_name),
-        NOW(),
-        NOW()
-    );
+    -- Insert new muscle.
+    INSERT INTO muscles (name, created_at, updated_at)
+    VALUES (muscle_name, NOW(), NOW())
+    ON CONFLICT (name) DO NOTHING;
 
+    IF muscle_group_name IS NOT NULL THEN
+        -- Insert new muscle group, if it doesn't exists.
+        INSERT INTO muscles (name, created_at, updated_at)
+        VALUES (muscle_group_name, NOW(), NOW())
+        ON CONFLICT (name) DO NOTHING;
+
+        -- Recover the muscle group id.
+        SELECT id INTO p_muscle_group_id FROM muscles WHERE name = muscle_group_name;
+
+        -- Recover the muscle id.
+        SELECT id INTO p_muscle_id FROM muscles WHERE name = muscle_name;
+
+        -- Create the relationship.
+        INSERT INTO muscle_groups (muscle_id, muscle_group_id)
+        VALUES (p_muscle_id, p_muscle_group_id)
+        ON CONFLICT (muscle_id, muscle_group_id) DO NOTHING;
+    END IF;
+
+    -- Reset the sequence.
     PERFORM setval(
         pg_get_serial_sequence('muscles', 'id'),
         (SELECT MAX(id) FROM muscles)
@@ -25,6 +44,17 @@ SELECT add_muscle('Pectoralis Minor', 'Pectorals');
 
 -- Back.
 SELECT add_muscle('Back', NULL);
+SELECT add_muscle('Upper Back', 'Back');
+SELECT add_muscle('Lower Back', 'Back');
+SELECT add_muscle('Rhomboids', 'Upper Back');
+SELECT add_muscle('Rhomboids Major', 'Rhomboids');
+SELECT add_muscle('Rhomboids Minor', 'Rhomboids');
+SELECT add_muscle('Latissimus', 'Upper Back');
+SELECT add_muscle('Latissimus', 'Lower Back');
+SELECT add_muscle('Trapezius', 'Upper Back');
+SELECT add_muscle('Erector Spinae', 'Lower Back');
+SELECT add_muscle('Quadratus Lumborum', 'Lower Back');
+SELECT add_muscle('Multifidus', 'Lower Back');
 
 -- Shoulders.
 SELECT add_muscle('Shoulders', NULL);
@@ -39,12 +69,22 @@ SELECT add_muscle('Forearms', 'Arms');
 
 -- Legs.
 SELECT add_muscle('Legs', NULL);
-SELECT add_muscle('Quadriceps', 'Legs');
-SELECT add_muscle('Hamstrings', 'Legs');
-SELECT add_muscle('Glutes', 'Legs');
-SELECT add_muscle('Calves', 'Legs');
+SELECT add_muscle('Upper Legs', 'Legs');
+SELECT add_muscle('Lower Legs', 'Legs');
+SELECT add_muscle('Quadriceps', 'Upper Legs');
+SELECT add_muscle('Hamstrings', 'Upper Legs');
+SELECT add_muscle('Hips', 'Upper Legs');
+SELECT add_muscle('Calves', 'Lower Legs');
+SELECT add_muscle('Gluteals', 'Hips');
+SELECT add_muscle('Gluteus Maximus', 'Gluteals');
+SELECT add_muscle('Gluteus Medius', 'Gluteals');
+SELECT add_muscle('Gluteus Minimus', 'Gluteals');
+SELECT add_muscle('Adductors', 'Hips');
+SELECT add_muscle('Abductors', 'Hips');
 
 -- Core/Abs.
-SELECT add_muscle('Core/Abs', NULL);
-SELECT add_muscle('Abdominals', 'Core/Abs');
-SELECT add_muscle('Erector Spinae', 'Core/Abs');
+SELECT add_muscle('Core', NULL);
+SELECT add_muscle('Lower Back', 'Core');
+SELECT add_muscle('Abdominals', 'Core');
+SELECT add_muscle('Obliques', 'Core');
+SELECT add_muscle('Rectus Abdominis', 'Abdominals');

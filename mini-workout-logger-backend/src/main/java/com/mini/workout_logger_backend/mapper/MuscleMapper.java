@@ -20,13 +20,15 @@ public class MuscleMapper extends AbstractMapper<Muscle, MuscleDTO> {
         // Entity -> DTO (GET)
         mapper.createTypeMap(Muscle.class, MuscleDTO.class)
                 .addMappings(m -> {
-                    m.skip(MuscleDTO::setMuscleGroupId);
+                    m.skip(MuscleDTO::setMuscleGroupIds);
                 })
                 .setPostConverter(ctx -> {
                     Muscle entity = ctx.getSource();
                     MuscleDTO dto = ctx.getDestination();
-                    if (entity.getMuscleGroup() != null) {
-                        dto.setMuscleGroupId(entity.getMuscleGroup().getId());
+                    if (entity.getMuscleGroups() != null) {
+                        entity.getMuscleGroups().forEach(muscleGroup -> {
+                            dto.addMuscleGroupId(muscleGroup.getId());
+                        });
                     }
                     return dto;
                 });
@@ -36,8 +38,8 @@ public class MuscleMapper extends AbstractMapper<Muscle, MuscleDTO> {
                 .setPostConverter(ctx -> {
                     MuscleDTO dto = ctx.getSource();
                     Muscle entity = ctx.getDestination();
-                    if (dto.getMuscleGroupId() != null) {
-                        entity.setMuscleGroup(muscleRepository.safeFindById(dto.getMuscleGroupId()));
+                    if (dto.getMuscleGroupIds() != null) {
+                        entity.setMuscleGroups(muscleRepository.safeFindByIds(dto.getMuscleGroupIds()));
                     }
                     return entity;
                 });
