@@ -17,4 +17,10 @@
         <sqlFile path="db/changelog/migrations/003_create_exercises_muscles_table.sql"/>
     </changeSet>
 
+    <changeSet id="2" author="carolina">
+        <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
+    </changeSet>
+
 </databaseChangeLog>
