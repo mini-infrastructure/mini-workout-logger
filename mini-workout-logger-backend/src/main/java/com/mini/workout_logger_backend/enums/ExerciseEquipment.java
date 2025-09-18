@@ -13,7 +13,10 @@ public enum ExerciseEquipment implements TranslatableEnum<ExerciseEquipment> {
     DUMBBELL,
     CABLE,
     RESISTANCE_BAND,
-    KETTLEBELL
+    KETTLEBELL,
+    MACHINE,
+    MEDICINE_BALL,
+    EXERCISE_BALL
     ;
 
 }

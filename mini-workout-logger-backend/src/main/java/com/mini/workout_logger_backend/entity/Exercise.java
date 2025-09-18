@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
+import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class Exercise extends AbstractEntity {
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;
+
+    @Column(name = "difficulty")
+    @Enumerated(EnumType.STRING)
+    private ExerciseDifficulty difficulty;
 
     @JsonManagedReference
     @ManyToMany
