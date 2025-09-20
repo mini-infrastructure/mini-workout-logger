@@ -67,3 +67,55 @@ SELECT add_exercise('Pull-Up', 'STRENGTH', 'INTERMEDIATE');
 SELECT add_exercise_muscle('Pull-Up', 'Latissimus Dorsi');
 SELECT add_exercise_muscle('Pull-Up', 'Trapezius');
 SELECT add_exercise_muscle('Pull-Up', 'Biceps Brachii');
+
+-- Shoulders.
+SELECT add_exercise('Overhead Press', 'STRENGTH', 'INTERMEDIATE');
+SELECT add_exercise_muscle('Overhead Press', 'Deltoids');
+SELECT add_exercise_muscle('Overhead Press', 'Triceps Brachii');
+
+SELECT add_exercise('Reverse Fly', 'STRENGTH', 'NOVICE');
+SELECT add_exercise_muscle('Reverse Fly', 'Posterior Deltoid');
+SELECT add_exercise_muscle('Reverse Fly', 'Rhomboids');
+SELECT add_exercise_muscle('Reverse Fly', 'Trapezius');
+
+-- Arms.
+SELECT add_exercise('Bicep Curl', 'STRENGTH', 'BEGINNER');
+SELECT add_exercise_muscle('Bicep Curl', 'Biceps Brachii');
+SELECT add_exercise_muscle('Bicep Curl', 'Brachialis');
+SELECT add_exercise_muscle('Bicep Curl', 'Brachioradialis');
+
+SELECT add_exercise('Seated Row', 'STRENGTH', 'NOVICE');
+SELECT add_exercise_muscle('Seated Row', 'Latissimus Dorsi');
+SELECT add_exercise_muscle('Seated Row', 'Rhomboids');
+SELECT add_exercise_muscle('Seated Row', 'Trapezius');
+SELECT add_exercise_muscle('Seated Row', 'Posterior Deltoid');
+
+-- Legs.
+SELECT add_exercise('Squat', 'STRENGTH', 'BEGINNER');
+SELECT add_exercise_muscle('Squat', 'Quadriceps');
+SELECT add_exercise_muscle('Squat', 'Gluteus Maximus');
+SELECT add_exercise_muscle('Squat', 'Hamstrings');
+SELECT add_exercise_muscle('Squat', 'Adductors');
+
+SELECT add_exercise('Leg Extension', 'STRENGTH', 'NOVICE');
+SELECT add_exercise_muscle('Leg Extension', 'Quadriceps');
+
+SELECT add_exercise('Leg Press', 'STRENGTH', 'NOVICE');
+SELECT add_exercise_muscle('Leg Press', 'Quadriceps');
+SELECT add_exercise_muscle('Leg Press', 'Gluteus Maximus');
+SELECT add_exercise_muscle('Leg Press', 'Hamstrings');
+
+-- Core/Abs.
+SELECT add_exercise('Plank', 'STRENGTH', 'BEGINNER');
+SELECT add_exercise_muscle('Plank', 'Rectus Abdominis');
+SELECT add_exercise_muscle('Plank', 'Obliques');
+SELECT add_exercise_muscle('Plank', 'Transverse Abdominis');
+SELECT add_exercise_muscle('Plank', 'Erector Spinae');
+
+SELECT add_exercise('Russian Twist', 'STRENGTH', 'BEGINNER');
+SELECT add_exercise_muscle('Russian Twist', 'Obliques');
+SELECT add_exercise_muscle('Russian Twist', 'Rectus Abdominis');
+SELECT add_exercise_muscle('Russian Twist', 'Transverse Abdominis');
+SELECT add_exercise_muscle('Russian Twist', 'Erector Spinae');
+SELECT add_exercise_muscle('Russian Twist', 'Shoulders');
+SELECT add_exercise_muscle('Russian Twist', 'Hip Flexors');

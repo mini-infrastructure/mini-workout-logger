@@ -63,18 +63,25 @@ SELECT add_muscle('Anterior Deltoid', 'Deltoids');
 SELECT add_muscle('Posterior Deltoid', 'Deltoids');
 SELECT add_muscle('Medial Deltoid', 'Deltoids');
 SELECT add_muscle('Rotator Cuff', 'Shoulders');
+SELECT add_muscle('Teres Minor', 'Rotator Cuff');
 
 -- Arms.
 SELECT add_muscle('Arms', NULL);
 SELECT add_muscle('Biceps Brachii', 'Arms');
 SELECT add_muscle('Triceps Brachii', 'Arms');
 SELECT add_muscle('Forearms', 'Arms');
+SELECT add_muscle('Brachioradialis', 'Forearms');
+SELECT add_muscle('Brachialis', 'Arms');
 
 -- Legs.
 SELECT add_muscle('Legs', NULL);
 SELECT add_muscle('Upper Legs', 'Legs');
 SELECT add_muscle('Lower Legs', 'Legs');
 SELECT add_muscle('Quadriceps', 'Upper Legs');
+SELECT add_muscle('Rectus Femoris', 'Quadriceps');
+SELECT add_muscle('Vastus Lateralis', 'Quadriceps');
+SELECT add_muscle('Vastus Medialis', 'Quadriceps');
+SELECT add_muscle('Vastus Intermedius', 'Quadriceps');
 SELECT add_muscle('Hamstrings', 'Upper Legs');
 SELECT add_muscle('Hips', 'Upper Legs');
 SELECT add_muscle('Calves', 'Lower Legs');
@@ -84,10 +91,13 @@ SELECT add_muscle('Gluteus Medius', 'Gluteals');
 SELECT add_muscle('Gluteus Minimus', 'Gluteals');
 SELECT add_muscle('Adductors', 'Hips');
 SELECT add_muscle('Abductors', 'Hips');
+SELECT add_muscle('Hip Flexors', 'Hips');
 
 -- Core/Abs.
 SELECT add_muscle('Core', NULL);
 SELECT add_muscle('Lower Back', 'Core');
 SELECT add_muscle('Abdominals', 'Core');
 SELECT add_muscle('Obliques', 'Core');
+SELECT add_muscle('Erector Spinae', 'Core');
 SELECT add_muscle('Rectus Abdominis', 'Abdominals');
+SELECT add_muscle('Transverse Abdominis', 'Abdominals');
