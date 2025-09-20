@@ -23,9 +23,9 @@ public class MuscleDTO extends AbstractDTO {
     @JsonProperty(value = "muscle_group_ids", access = JsonProperty.Access.WRITE_ONLY)
     private Set<Long> muscleGroupIds = new HashSet<>();
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    @JsonProperty(value = "muscle_groups", access = JsonProperty.Access.READ_ONLY)
-    private Set<MuscleDTO> muscleGroups = new HashSet<>();
+    // @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    // @JsonProperty(value = "muscle_groups", access = JsonProperty.Access.READ_ONLY)
+    // private Set<MuscleDTO> muscleGroups = new HashSet<>();
 
     public void addMuscleGroupId(Long muscleGroupId) {
         this.muscleGroupIds.add(muscleGroupId);

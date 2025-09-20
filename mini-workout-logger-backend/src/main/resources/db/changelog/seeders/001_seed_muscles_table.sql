@@ -49,8 +49,8 @@ SELECT add_muscle('Lower Back', 'Back');
 SELECT add_muscle('Rhomboids', 'Upper Back');
 SELECT add_muscle('Rhomboids Major', 'Rhomboids');
 SELECT add_muscle('Rhomboids Minor', 'Rhomboids');
-SELECT add_muscle('Latissimus', 'Upper Back');
-SELECT add_muscle('Latissimus', 'Lower Back');
+SELECT add_muscle('Latissimus Dorsi', 'Upper Back');
+SELECT add_muscle('Latissimus Dorsi', 'Lower Back');
 SELECT add_muscle('Trapezius', 'Upper Back');
 SELECT add_muscle('Erector Spinae', 'Lower Back');
 SELECT add_muscle('Quadratus Lumborum', 'Lower Back');
@@ -59,12 +59,15 @@ SELECT add_muscle('Multifidus', 'Lower Back');
 -- Shoulders.
 SELECT add_muscle('Shoulders', NULL);
 SELECT add_muscle('Deltoids', 'Shoulders');
-SELECT add_muscle('Trapezius', 'Shoulders');
+SELECT add_muscle('Anterior Deltoid', 'Deltoids');
+SELECT add_muscle('Posterior Deltoid', 'Deltoids');
+SELECT add_muscle('Medial Deltoid', 'Deltoids');
+SELECT add_muscle('Rotator Cuff', 'Shoulders');
 
 -- Arms.
 SELECT add_muscle('Arms', NULL);
-SELECT add_muscle('Biceps', 'Arms');
-SELECT add_muscle('Triceps', 'Arms');
+SELECT add_muscle('Biceps Brachii', 'Arms');
+SELECT add_muscle('Triceps Brachii', 'Arms');
 SELECT add_muscle('Forearms', 'Arms');
 
 -- Legs.

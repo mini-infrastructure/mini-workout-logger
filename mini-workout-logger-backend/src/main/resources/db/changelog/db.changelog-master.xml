@@ -22,6 +22,9 @@
         <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"
                  endDelimiter="$_$"
                  splitStatements="false"/>
+        <sqlFile path="db/changelog/seeders/002_seed_exercises_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
     </changeSet>
 
 </databaseChangeLog>
