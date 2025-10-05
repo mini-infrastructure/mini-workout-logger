@@ -172,7 +172,15 @@
 				</configuration>
 			</plugin>
 
-			<!-- Liquibase Maven Plugin -->
+            <!-- Surefire -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.4</version>
+                <!-- <configuration>
+                </configuration> -->
+            </plugin>
+
+            <!-- Liquibase Maven Plugin -->
 			<plugin>
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-maven-plugin</artifactId>
@@ -187,6 +195,7 @@
 					<clearCheckSums>true</clearCheckSums>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 

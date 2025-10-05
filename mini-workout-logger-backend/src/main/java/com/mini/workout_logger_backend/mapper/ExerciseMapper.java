@@ -3,7 +3,7 @@ package com.mini.workout_logger_backend.mapper;
 import com.mini.java_core.mapper.AbstractMapper;
 import com.mini.workout_logger_backend.dto.ExerciseDTO;
 import com.mini.workout_logger_backend.entity.Exercise;
-import com.mini.workout_logger_backend.repository.MuscleGroupRepository;
+import com.mini.workout_logger_backend.repository.MuscleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ExerciseMapper extends AbstractMapper<Exercise, ExerciseDTO> {
 
     @Autowired
-    MuscleGroupRepository muscleGroupRepository;
+    MuscleRepository muscleRepository;
 
     @Override
     protected void configure(ModelMapper mapper) {
@@ -20,14 +20,14 @@ public class ExerciseMapper extends AbstractMapper<Exercise, ExerciseDTO> {
         // Entity -> DTO (GET)
         mapper.createTypeMap(Exercise.class, ExerciseDTO.class)
                 .addMappings(m -> {
-                    m.skip(ExerciseDTO::setMuscleGroupIds);
+                    m.skip(ExerciseDTO::setMuscleIds);
                 })
                 .setPostConverter(ctx -> {
                     Exercise entity = ctx.getSource();
                     ExerciseDTO dto = ctx.getDestination();
-                    if (entity.getMuscleGroups() != null) {
-                        entity.getMuscleGroups().forEach(muscleGroup -> {
-                            dto.addMuscleGroupId(muscleGroup.getId());
+                    if (entity.getMuscles() != null) {
+                        entity.getMuscles().forEach(muscle -> {
+                            dto.addMuscleId(muscle.getId());
                         });
                     }
                     return dto;
@@ -38,8 +38,8 @@ public class ExerciseMapper extends AbstractMapper<Exercise, ExerciseDTO> {
                 .setPostConverter(ctx -> {
                     ExerciseDTO dto = ctx.getSource();
                     Exercise entity = ctx.getDestination();
-                    if (dto.getMuscleGroupIds() != null) {
-                        entity.setMuscleGroups(muscleGroupRepository.safeFindByIds(dto.getMuscleGroupIds()));
+                    if (dto.getMuscleIds() != null) {
+                        entity.setMuscles(muscleRepository.safeFindByIds(dto.getMuscleIds()));
                     }
                     return entity;
                 });
