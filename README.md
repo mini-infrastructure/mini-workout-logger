@@ -31,7 +31,7 @@ bash run-dev.sh up
 - `WorkoutExecution`: A workout being performed;
     - Sets, Date, Duration, Notes, Media, etc.
 
-- `MuscleGroup`: A group of muscles targeted by exercises (e.g., Chest, Back, Legs);
+- `Muscle`: A group of muscles targeted by exercises (e.g., Chest, Back, Legs);
 - `Media`: Represents media content related to exercises, such as images or videos;
 
 - `SetExecution`: 
