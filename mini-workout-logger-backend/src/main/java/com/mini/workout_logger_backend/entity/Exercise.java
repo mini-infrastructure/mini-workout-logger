@@ -1,8 +1,10 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
+import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,11 +31,16 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;
 
+    @Column(name = "difficulty")
+    @Enumerated(EnumType.STRING)
+    private ExerciseDifficulty difficulty;
+
+    @JsonManagedReference
     @ManyToMany
-    @JoinTable(name = "exercises_muscle_groups",
+    @JoinTable(name = "exercises_muscles",
                joinColumns = @JoinColumn(name = "exercise_id"),
-               inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
-    Set<MuscleGroup> muscleGroups = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name = "muscle_id"))
+    private Set<Muscle> muscles = new HashSet<>();
 
     @OneToMany(mappedBy = "exercise",
                cascade = {CascadeType.MERGE},
@@ -41,20 +48,20 @@ public class Exercise extends AbstractEntity {
     @JsonIgnore
     private List<ExerciseExecution> executions = new ArrayList<>();
 
-    public void addMuscleGroup(MuscleGroup muscleGroup) {
-        this.muscleGroups.add(muscleGroup);
-        muscleGroup.getExercises().add(this);
+    public void addMuscle(Muscle muscle) {
+        this.muscles.add(muscle);
+        muscle.getExercises().add(this);
     }
 
-    public void removeMuscleGroup(MuscleGroup muscleGroup) {
-        this.muscleGroups.remove(muscleGroup);
-        muscleGroup.getExercises().remove(this);
+    public void removeMuscle(Muscle muscle) {
+        this.muscles.remove(muscle);
+        muscle.getExercises().remove(this);
     }
 
-    public void setMuscleGroups(Set<MuscleGroup> muscleGroups) {
-        this.muscleGroups.clear();
-        if (muscleGroups != null) {
-            muscleGroups.forEach(this::addMuscleGroup);
+    public void setMuscles(Set<Muscle> muscles) {
+        this.muscles.clear();
+        if (muscles != null) {
+            muscles.forEach(this::addMuscle);
         }
     }
 

@@ -13,9 +13,18 @@
 
     <changeSet id="1" author="carolina">
         <sqlFile path="db/changelog/migrations/001_create_exercises_table.sql"/>
-        <sqlFile path="db/changelog/migrations/002_create_muscle_groups_table.sql"/>
-        <sqlFile path="db/changelog/migrations/003_create_exercises_muscle_groups_table.sql"/>
-        <sqlFile path="db/changelog/migrations/004_create_exercise_executions_table.sql"/>
+        <sqlFile path="db/changelog/migrations/002_create_muscles_table.sql"/>
+        <sqlFile path="db/changelog/migrations/003_create_muscle_groups_table.sql"/>
+        <sqlFile path="db/changelog/migrations/004_create_exercises_muscles_table.sql"/>
+    </changeSet>
+
+    <changeSet id="2" author="carolina">
+        <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
+        <sqlFile path="db/changelog/seeders/002_seed_exercises_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
     </changeSet>
 
 </databaseChangeLog>

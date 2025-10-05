@@ -1,26 +1,21 @@
 package com.mini.workout_logger_backend.enums;
 
+import com.mini.java_core.enums.TranslatableEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.mini.java_core.service.MessageService;
 
 @AllArgsConstructor
 @Getter
-public enum ExerciseCategory {
+public enum ExerciseCategory implements TranslatableEnum<ExerciseCategory> {
 
-    ASSISTED_BODYWEIGHT,
-    NUMBER_OF_REPS,
-    DURATION,
-    BARBELL,
-    DUMBBELL,
-    CABLE,
-    MACHINE,
-    RESISTANCE_BAND,
-    KETTLEBELL
+    STRENGTH,
+    CARDIO,
+    STRETCHING,
+    POWERLIFTING,
+    OLYMPIC_WEIGHTLIFTING,
+    STRONGMAN,
+    CALISTHENICS,
+    PLYOMETRICS
     ;
-
-    public String getCode() {
-        return MessageService.getCode(this);
-    }
 
 }
