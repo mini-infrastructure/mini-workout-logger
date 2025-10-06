@@ -8,15 +8,19 @@ import lombok.Getter;
 @Getter
 public enum ExerciseEquipment implements TranslatableEnum<ExerciseEquipment> {
 
-    ASSISTED_BODYWEIGHT,
     BARBELL,
     DUMBBELL,
+    BODYWEIGHT,
+    BOSU_BALL,
     CABLE,
-    RESISTANCE_BAND,
-    KETTLEBELL,
+    EXERCISE_BALL,
     MACHINE,
+    SMITH_MACHINE,
     MEDICINE_BALL,
-    EXERCISE_BALL
+    PLATE,
+    RESISTANCE_BAND,
+    TRX,
+    KETTLEBELL
     ;
 
 }
