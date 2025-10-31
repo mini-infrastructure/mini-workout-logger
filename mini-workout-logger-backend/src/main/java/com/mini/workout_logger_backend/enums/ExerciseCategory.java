@@ -15,7 +15,13 @@ public enum ExerciseCategory implements TranslatableEnum<ExerciseCategory> {
     OLYMPIC_WEIGHTLIFTING,
     STRONGMAN,
     CALISTHENICS,
-    PLYOMETRICS
+    PLYOMETRICS,
+    RECOVERY,
+    HIT,
+    MOBILITY,
+    PILATES,
+    YOGA,
+    WARM_UP
     ;
 
 }

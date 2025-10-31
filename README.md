@@ -5,33 +5,58 @@
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ## Run dev
-Compile and serve
+### Compile and serve
 ```bash
 mvn clean -U install
+```
+```bash
 mvn spring-boot:run
 ```
-Bootstrap dev
+
+### Bootstrap dev
 ```bash
 cd  mini-workout-logger-backend/src/test/resources/db/
+```
+```bash
 bash run-dev.sh up
 ```
+
+Sobe os containers de teste:
+```bash
+✔ Container mini-workout-logger-db        Started
+✔ Container mini-workout-logger-pgadmin   Started
+```
+Que podem ser acessados aqui:
 - [Swagger UI](http://localhost:9090/swagger-ui/index.html)
 - [pgAdmin](http://localhost:180/)
 
-## Entities
+[//]: # (## Entities)
 
-- `Exercise`: One instance of an activity requiring physical effort;
-  - Name, ExerciseType, Muscle Groups, Equipment, Media, etc.
-- `ExerciseExecution`: An exercise being performed;
-    - Reps, Weight, Duration, Quality, Media, etc.
-- `Set`: A collection of exercise executions;
-  - ExerciseExecution, Rest between Sets, etc.
-- `Workout`: A collection of sets;
-  - Sets, Workout Type, Tags, etc.
-- `WorkoutExecution`: A workout being performed;
-    - Sets, Date, Duration, Notes, Media, etc.
+[//]: # ()
+[//]: # (- `Exercise`: One instance of an activity requiring physical effort;)
 
-- `Muscle`: A group of muscles targeted by exercises (e.g., Chest, Back, Legs);
-- `Media`: Represents media content related to exercises, such as images or videos;
+[//]: # (  - Name, ExerciseType, Muscle Groups, Equipment, Media, etc.)
 
-- `SetExecution`: 
+[//]: # (- `ExerciseExecution`: An exercise being performed;)
+
+[//]: # (    - Reps, Weight, Duration, Quality, Media, etc.)
+
+[//]: # (- `Set`: A collection of exercise executions;)
+
+[//]: # (  - ExerciseExecution, Rest between Sets, etc.)
+
+[//]: # (- `Workout`: A collection of sets;)
+
+[//]: # (  - Sets, Workout Type, Tags, etc.)
+
+[//]: # (- `WorkoutExecution`: A workout being performed;)
+
+[//]: # (    - Sets, Date, Duration, Notes, Media, etc.)
+
+[//]: # ()
+[//]: # (- `Muscle`: A group of muscles targeted by exercises &#40;e.g., Chest, Back, Legs&#41;;)
+
+[//]: # (- `Media`: Represents media content related to exercises, such as images or videos;)
+
+[//]: # ()
+[//]: # (- `SetExecution`: )
