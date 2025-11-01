@@ -14,8 +14,8 @@ public class GreetingController {
     private MessageService messageService;
 
     @GetMapping("/greeting")
-    public String getGreeting(Locale locale) {
-        return messageService.getLocalizedMessage("ExerciseCategory.STRETCHING", locale);
+    public String getGreeting() {
+        return messageService.getLocalizedMessage("ExerciseCategory.STRETCHING");
     }
 
 }

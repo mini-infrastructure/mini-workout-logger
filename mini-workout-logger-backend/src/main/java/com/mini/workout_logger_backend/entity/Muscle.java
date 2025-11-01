@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
+import com.mini.java_core.entity.Text;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class Muscle extends AbstractEntity {
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Embedded
+    @AttributeOverride(name = "code", column = @Column(name = "name", nullable = false, unique = true))
+    private Text name;
 
     @JsonBackReference
     @ManyToMany

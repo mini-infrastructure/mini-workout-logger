@@ -37,67 +37,67 @@ END;
 $_$ LANGUAGE plpgsql;
 
 -- Chest.
-SELECT add_muscle('Chest', NULL);
-SELECT add_muscle('Pectorals', 'Chest');
-SELECT add_muscle('Pectoralis Major', 'Pectorals');
-SELECT add_muscle('Pectoralis Minor', 'Pectorals');
+SELECT add_muscle('Muscle.Chest', NULL);
+SELECT add_muscle('Muscle.Pectoralis', 'Muscle.Chest');
+SELECT add_muscle('Muscle.Pectoralis_Major', 'Muscle.Pectoralis');
+SELECT add_muscle('Muscle.Pectoralis_Minor', 'Muscle.Pectoralis');
 
 -- Back.
-SELECT add_muscle('Back', NULL);
-SELECT add_muscle('Upper Back', 'Back');
-SELECT add_muscle('Lower Back', 'Back');
-SELECT add_muscle('Rhomboids', 'Upper Back');
-SELECT add_muscle('Rhomboids Major', 'Rhomboids');
-SELECT add_muscle('Rhomboids Minor', 'Rhomboids');
-SELECT add_muscle('Latissimus Dorsi', 'Upper Back');
-SELECT add_muscle('Latissimus Dorsi', 'Lower Back');
-SELECT add_muscle('Trapezius', 'Upper Back');
-SELECT add_muscle('Erector Spinae', 'Lower Back');
-SELECT add_muscle('Quadratus Lumborum', 'Lower Back');
-SELECT add_muscle('Multifidus', 'Lower Back');
+SELECT add_muscle('Muscle.Back', NULL);
+SELECT add_muscle('Muscle.Upper_Back', 'Muscle.Back');
+SELECT add_muscle('Muscle.Lower_Back', 'Muscle.Back');
+SELECT add_muscle('Muscle.Rhomboids', 'Muscle.Upper_Back');
+SELECT add_muscle('Muscle.Rhomboids_Major', 'Muscle.Rhomboids');
+SELECT add_muscle('Muscle.Rhomboids_Minor', 'Muscle.Rhomboids');
+SELECT add_muscle('Muscle.Latissimus_Dorsi', 'Muscle.Upper_Back');
+SELECT add_muscle('Muscle.Latissimus_Dorsi', 'Muscle.Lower_Back');
+SELECT add_muscle('Muscle.Trapezius', 'Muscle.Upper_Back');
+SELECT add_muscle('Muscle.Erector_Spinae', 'Muscle.Lower_Back');
+SELECT add_muscle('Muscle.Quadratus_Lumborum', 'Muscle.Lower_Back');
+SELECT add_muscle('Muscle.Multifidus', 'Muscle.Lower_Back');
 
 -- Shoulders.
-SELECT add_muscle('Shoulders', NULL);
-SELECT add_muscle('Deltoids', 'Shoulders');
-SELECT add_muscle('Anterior Deltoid', 'Deltoids');
-SELECT add_muscle('Posterior Deltoid', 'Deltoids');
-SELECT add_muscle('Medial Deltoid', 'Deltoids');
-SELECT add_muscle('Rotator Cuff', 'Shoulders');
-SELECT add_muscle('Teres Minor', 'Rotator Cuff');
+SELECT add_muscle('Muscle.Shoulders', NULL);
+SELECT add_muscle('Muscle.Deltoids', 'Muscle.Shoulders');
+SELECT add_muscle('Muscle.Anterior_Deltoid', 'Muscle.Deltoids');
+SELECT add_muscle('Muscle.Posterior_Deltoid', 'Muscle.Deltoids');
+SELECT add_muscle('Muscle.Medial_Deltoid', 'Muscle.Deltoids');
+SELECT add_muscle('Muscle.Rotator_Cuff', 'Muscle.Shoulders');
+SELECT add_muscle('Muscle.Teres_Minor', 'Muscle.Rotator_Cuff');
 
 -- Arms.
-SELECT add_muscle('Arms', NULL);
-SELECT add_muscle('Biceps Brachii', 'Arms');
-SELECT add_muscle('Triceps Brachii', 'Arms');
-SELECT add_muscle('Forearms', 'Arms');
-SELECT add_muscle('Brachioradialis', 'Forearms');
-SELECT add_muscle('Brachialis', 'Arms');
+SELECT add_muscle('Muscle.Arms', NULL);
+SELECT add_muscle('Muscle.Biceps_Brachii', 'Muscle.Arms');
+SELECT add_muscle('Muscle.Triceps_Brachii', 'Muscle.Arms');
+SELECT add_muscle('Muscle.Forearms', 'Muscle.Arms');
+SELECT add_muscle('Muscle.Brachioradialis', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Brachialis', 'Muscle.Arms');
 
 -- Legs.
-SELECT add_muscle('Legs', NULL);
-SELECT add_muscle('Upper Legs', 'Legs');
-SELECT add_muscle('Lower Legs', 'Legs');
-SELECT add_muscle('Quadriceps', 'Upper Legs');
-SELECT add_muscle('Rectus Femoris', 'Quadriceps');
-SELECT add_muscle('Vastus Lateralis', 'Quadriceps');
-SELECT add_muscle('Vastus Medialis', 'Quadriceps');
-SELECT add_muscle('Vastus Intermedius', 'Quadriceps');
-SELECT add_muscle('Hamstrings', 'Upper Legs');
-SELECT add_muscle('Hips', 'Upper Legs');
-SELECT add_muscle('Calves', 'Lower Legs');
-SELECT add_muscle('Gluteals', 'Hips');
-SELECT add_muscle('Gluteus Maximus', 'Gluteals');
-SELECT add_muscle('Gluteus Medius', 'Gluteals');
-SELECT add_muscle('Gluteus Minimus', 'Gluteals');
-SELECT add_muscle('Adductors', 'Hips');
-SELECT add_muscle('Abductors', 'Hips');
-SELECT add_muscle('Hip Flexors', 'Hips');
+SELECT add_muscle('Muscle.Legs', NULL);
+SELECT add_muscle('Muscle.Upper_Legs', 'Muscle.Legs');
+SELECT add_muscle('Muscle.Lower_Legs', 'Muscle.Legs');
+SELECT add_muscle('Muscle.Quadriceps', 'Muscle.Upper_Legs');
+SELECT add_muscle('Muscle.Rectus_Femoris', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Vastus_Lateralis', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Vastus_Medialis', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Vastus_Intermedius', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Hamstrings', 'Muscle.Upper_Legs');
+SELECT add_muscle('Muscle.Hips', 'Muscle.Upper_Legs');
+SELECT add_muscle('Muscle.Calves', 'Muscle.Lower_Legs');
+SELECT add_muscle('Muscle.Gluteals', 'Muscle.Hips');
+SELECT add_muscle('Muscle.Gluteus_Maximus', 'Muscle.Gluteals');
+SELECT add_muscle('Muscle.Gluteus_Medius', 'Muscle.Gluteals');
+SELECT add_muscle('Muscle.Gluteus_Minimus', 'Muscle.Gluteals');
+SELECT add_muscle('Muscle.Adductors', 'Muscle.Hips');
+SELECT add_muscle('Muscle.Abductors', 'Muscle.Hips');
+SELECT add_muscle('Muscle.Hip_Flexors', 'Muscle.Hips');
 
 -- Core/Abs.
-SELECT add_muscle('Core', NULL);
-SELECT add_muscle('Lower Back', 'Core');
-SELECT add_muscle('Abdominals', 'Core');
-SELECT add_muscle('Obliques', 'Core');
-SELECT add_muscle('Erector Spinae', 'Core');
-SELECT add_muscle('Rectus Abdominis', 'Abdominals');
-SELECT add_muscle('Transverse Abdominis', 'Abdominals');
+SELECT add_muscle('Muscle.Core', NULL);
+SELECT add_muscle('Muscle.Lower_Back', 'Muscle.Core');
+SELECT add_muscle('Muscle.Abdominals', 'Muscle.Core');
+SELECT add_muscle('Muscle.Obliques', 'Muscle.Core');
+SELECT add_muscle('Muscle.Erector_Spinae', 'Muscle.Core');
+SELECT add_muscle('Muscle.Rectus_Abdominis', 'Muscle.Abdominals');
+SELECT add_muscle('Muscle.Transverse_Abdominis', 'Muscle.Abdominals');
