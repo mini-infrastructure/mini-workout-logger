@@ -5,16 +5,22 @@ import com.mini.workout_logger_backend.dto.ExerciseExecutionDTO;
 import com.mini.workout_logger_backend.entity.Exercise;
 import com.mini.workout_logger_backend.entity.ExerciseExecution;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
+import com.mini.workout_logger_backend.repository.SetRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, ExerciseExecutionDTO> {
 
     @Autowired
     ExerciseRepository exerciseRepository;
+
+    @Autowired
+    SetRepository setRepository;
 
     @Override
     protected void configure(ModelMapper mapper) {
@@ -29,6 +35,11 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
                     if (entity.getExercise() != null) {
                         dto.setExerciseId(entity.getExercise().getId());
                     }
+                    if (entity.getSets() != null) {
+                        dto.getSets().forEach(set -> {
+                            dto.addSetId(set.getId());
+                        });
+                    }
                     return dto;
                 });
 
@@ -40,6 +51,9 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
                     if (dto.getExerciseId() != null) {
                         Exercise exercise = exerciseRepository.safeFindById(dto.getExerciseId());
                         entity.setExercise(exercise);
+                    }
+                    if (dto.getSetIds() != null) {
+                        entity.setSets(setRepository.safeFindByIds(dto.getSetIds(), ArrayList::new));
                     }
                     return entity;
                 });

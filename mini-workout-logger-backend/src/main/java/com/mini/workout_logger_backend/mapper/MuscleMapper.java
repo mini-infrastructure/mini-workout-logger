@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Component
 public class MuscleMapper extends AbstractMapper<Muscle, MuscleDTO> {
 
@@ -39,7 +41,7 @@ public class MuscleMapper extends AbstractMapper<Muscle, MuscleDTO> {
                     MuscleDTO dto = ctx.getSource();
                     Muscle entity = ctx.getDestination();
                     if (dto.getMuscleGroupIds() != null) {
-                        entity.setMuscleGroups(muscleRepository.safeFindByIds(dto.getMuscleGroupIds()));
+                        entity.setMuscleGroups(muscleRepository.safeFindByIds(dto.getMuscleGroupIds(), HashSet::new));
                     }
                     return entity;
                 });

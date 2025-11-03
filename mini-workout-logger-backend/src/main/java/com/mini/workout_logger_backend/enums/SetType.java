@@ -6,10 +6,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ExerciseExecutionType implements TranslatableEnum<ExerciseExecutionType> {
+public enum SetType implements TranslatableEnum<SetType> {
 
-    NUMBER_OF_REPS,
-    DURATION
+    REPS_X_WEIGHT,
+    TIME_X_WEIGHT,
+    TIME
     ;
 
 }

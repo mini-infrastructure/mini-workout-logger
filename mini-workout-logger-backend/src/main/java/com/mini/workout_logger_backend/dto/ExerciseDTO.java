@@ -30,7 +30,7 @@ public class ExerciseDTO extends AbstractDTO {
     private Set<Long> muscleIds = new HashSet<>();
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    @JsonProperty(value = "muscles", access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<MuscleDTO> muscles = new HashSet<>();
 
     public void addMuscleId(Long muscleId) {

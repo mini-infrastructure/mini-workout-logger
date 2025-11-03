@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
@@ -44,6 +45,7 @@ public class Exercise extends AbstractEntity {
                inverseJoinColumns = @JoinColumn(name = "muscle_id"))
     private Set<Muscle> muscles = new HashSet<>();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "exercise",
                cascade = {CascadeType.MERGE},
                fetch = FetchType.LAZY)

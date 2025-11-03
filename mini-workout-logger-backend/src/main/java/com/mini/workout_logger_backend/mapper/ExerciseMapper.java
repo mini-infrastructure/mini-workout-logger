@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Component
 public class ExerciseMapper extends AbstractMapper<Exercise, ExerciseDTO> {
 
@@ -39,7 +41,7 @@ public class ExerciseMapper extends AbstractMapper<Exercise, ExerciseDTO> {
                     ExerciseDTO dto = ctx.getSource();
                     Exercise entity = ctx.getDestination();
                     if (dto.getMuscleIds() != null) {
-                        entity.setMuscles(muscleRepository.safeFindByIds(dto.getMuscleIds()));
+                        entity.setMuscles(muscleRepository.safeFindByIds(dto.getMuscleIds(), HashSet::new));
                     }
                     return entity;
                 });
