@@ -4,6 +4,13 @@
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
+## Project architecture
+
+- `Muscle`: A group of muscles targeted by exercises (e.g., Chest, Back, Legs);
+- `Exercise`: Static description of an exercise (e.g. Chest Fly);
+- `Set`: A series in which an exercise is performed (e.g. 3 repetitions of 23kg);
+- `Workout`: A collection of exercise executions;
+
 ## Run dev
 ### Compile and serve
 ```bash
@@ -21,42 +28,11 @@ cd  mini-workout-logger-backend/src/test/resources/db/
 bash run-dev.sh up
 ```
 
-Sobe os containers de teste:
+Start the test containers:
 ```bash
 ✔ Container mini-workout-logger-db        Started
 ✔ Container mini-workout-logger-pgadmin   Started
 ```
-Que podem ser acessados aqui:
+Which can be accessed here:
 - [Swagger UI](http://localhost:9090/swagger-ui/index.html)
 - [pgAdmin](http://localhost:180/)
-
-[//]: # (## Entities)
-
-[//]: # ()
-[//]: # (- `Exercise`: One instance of an activity requiring physical effort;)
-
-[//]: # (  - Name, ExerciseType, Muscle Groups, Equipment, Media, etc.)
-
-[//]: # (- `ExerciseExecution`: An exercise being performed;)
-
-[//]: # (    - Reps, Weight, Duration, Quality, Media, etc.)
-
-[//]: # (- `Set`: A collection of exercise executions;)
-
-[//]: # (  - ExerciseExecution, Rest between Sets, etc.)
-
-[//]: # (- `Workout`: A collection of sets;)
-
-[//]: # (  - Sets, Workout Type, Tags, etc.)
-
-[//]: # (- `WorkoutExecution`: A workout being performed;)
-
-[//]: # (    - Sets, Date, Duration, Notes, Media, etc.)
-
-[//]: # ()
-[//]: # (- `Muscle`: A group of muscles targeted by exercises &#40;e.g., Chest, Back, Legs&#41;;)
-
-[//]: # (- `Media`: Represents media content related to exercises, such as images or videos;)
-
-[//]: # ()
-[//]: # (- `SetExecution`: )

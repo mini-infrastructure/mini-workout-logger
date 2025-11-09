@@ -3,6 +3,7 @@ package com.mini.workout_logger_backend.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.mini.java_core.converter.TextConverter;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.java_core.entity.Text;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
@@ -26,8 +27,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class Exercise extends AbstractEntity {
 
-    @Embedded
-    @AttributeOverride(name = "code", column = @Column(name = "name", nullable = false, unique = true))
+    @Column(name = "name", nullable = false, unique = true)
+    @Convert(converter = TextConverter.class)
     private Text name;
 
     @Column(name = "category")

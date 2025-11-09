@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.mapper;
 
+import com.mini.java_core.entity.Text;
 import com.mini.java_core.mapper.AbstractMapper;
 import com.mini.workout_logger_backend.dto.MuscleDTO;
 import com.mini.workout_logger_backend.entity.Muscle;
@@ -40,11 +41,15 @@ public class MuscleMapper extends AbstractMapper<Muscle, MuscleDTO> {
                 .setPostConverter(ctx -> {
                     MuscleDTO dto = ctx.getSource();
                     Muscle entity = ctx.getDestination();
+                    if (dto.getName() != null) {
+                        entity.setName(new Text(dto.getName()));
+                    }
                     if (dto.getMuscleGroupIds() != null) {
                         entity.setMuscleGroups(muscleRepository.safeFindByIds(dto.getMuscleGroupIds(), HashSet::new));
                     }
                     return entity;
                 });
+
 
     }
 

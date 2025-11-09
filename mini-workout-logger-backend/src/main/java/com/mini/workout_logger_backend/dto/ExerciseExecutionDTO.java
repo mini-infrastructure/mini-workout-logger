@@ -1,8 +1,8 @@
 package com.mini.workout_logger_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mini.java_core.annotation.ExistsById;
 import com.mini.java_core.dto.AbstractDTO;
-import com.mini.java_core.validation.annotation.ExistsById;
 import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
