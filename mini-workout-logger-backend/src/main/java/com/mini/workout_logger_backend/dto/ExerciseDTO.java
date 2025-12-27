@@ -33,6 +33,14 @@ public class ExerciseDTO extends AbstractDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Set<MuscleDTO> muscles = new HashSet<>();
 
+    public ExerciseDTO(String name) {
+        this.name = name;
+        this.category = null;
+        this.difficulty = null;
+        this.muscleIds = new HashSet<>();
+        this.muscles = new HashSet<>();
+    }
+
     public void addMuscleId(Long muscleId) {
         this.muscleIds.add(muscleId);
     }

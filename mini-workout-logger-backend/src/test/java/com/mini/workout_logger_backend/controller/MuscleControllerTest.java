@@ -109,7 +109,7 @@ class MuscleControllerTest extends AbstractIntegrationTest {
 
         // Verify.
         final Muscle updatedMuscle = muscleRepository.findById(savedMuscle.getId()).orElseThrow();
-        assertThat(updatedMuscle.getName().getValue()).isEqualTo("Triceps");
+        assertThat(updatedMuscle.getName().getValue()).isEqualTo(muscleDto.getName());
     }
 
     @Test
