@@ -1,6 +1,6 @@
 package com.mini.workout_logger_backend.controller;
 
-import com.mini.java_core.entity.Text;
+import com.mini.workout_logger_backend.AbstractIntegrationTest;
 import com.mini.workout_logger_backend.dto.MuscleDTO;
 import com.mini.workout_logger_backend.entity.Muscle;
 import com.mini.workout_logger_backend.mapper.MuscleMapper;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,10 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@SpringBootTest
 @AutoConfigureMockMvc
-public class MuscleControllerTest {
+class MuscleControllerTest extends AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

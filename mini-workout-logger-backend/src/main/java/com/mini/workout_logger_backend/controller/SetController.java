@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/sets")
-@Tag(name = "Set Controller", description = "Workout sets API")
+@Tag(name = "Set", description = "Workout sets API")
 public class SetController extends AbstractController<Set,
                                                       SetDTO,
                                                       SetMapper,
