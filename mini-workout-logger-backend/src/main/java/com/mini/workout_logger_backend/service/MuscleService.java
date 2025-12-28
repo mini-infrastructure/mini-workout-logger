@@ -4,7 +4,8 @@ import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
-import com.mini.workout_logger_backend.dto.MuscleDTO;
+import com.mini.workout_logger_backend.dto.MuscleReadDTO;
+import com.mini.workout_logger_backend.dto.MuscleWriteDTO;
 import com.mini.workout_logger_backend.entity.Muscle;
 import com.mini.workout_logger_backend.mapper.MuscleMapper;
 import com.mini.workout_logger_backend.repository.MuscleRepository;
@@ -17,7 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class MuscleService extends AbstractService<Muscle,
-                                                   MuscleDTO,
+                                                   MuscleReadDTO,
+                                                   MuscleWriteDTO,
                                                    MuscleMapper,
                                                    MuscleRepository> {
 
@@ -32,7 +34,7 @@ public class MuscleService extends AbstractService<Muscle,
         return parents;
     }
 
-    public ResponseEntity<ResponseDTO<MuscleDTO>> getParentMuscles(Long muscleId) {
+    public ResponseEntity<ResponseDTO<MuscleReadDTO>> getParentMuscles(Long muscleId) {
         Muscle muscle = repository.safeFindById(muscleId);
         Set<Muscle> parentMuscles = findParentMusclesRecursive(muscle, new java.util.HashSet<>());
         return ResponseHelper.success(

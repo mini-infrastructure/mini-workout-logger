@@ -28,9 +28,8 @@ public class ExerciseExecution extends AbstractEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "exerciseExecution",
-               cascade = {CascadeType.MERGE},
-               orphanRemoval = true,
-               fetch = FetchType.LAZY)
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true)
     @OrderColumn(name = "position")
     private List<Set> sets = new ArrayList<>();
 
@@ -40,5 +39,22 @@ public class ExerciseExecution extends AbstractEntity {
 
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
+
+    public void addSet(Set set) {
+        this.sets.add(set);
+        set.setExerciseExecution(this);
+    }
+
+    public void removeSet(Set set) {
+        this.sets.remove(set);
+        set.setExerciseExecution(null);
+    }
+
+    public void setSets(List<Set> sets) {
+        this.sets.clear();
+        if (sets != null) {
+            sets.forEach(this::addSet);
+        }
+    }
 
 }

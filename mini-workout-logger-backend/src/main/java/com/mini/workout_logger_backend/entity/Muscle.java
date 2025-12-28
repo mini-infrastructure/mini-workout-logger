@@ -43,52 +43,31 @@ public class Muscle extends AbstractEntity {
 
     public void addMuscleGroup(Muscle muscle) {
         this.muscleGroups.add(muscle);
-        muscle.getMuscles().add(this);
     }
 
     public void removeMuscleGroup(Muscle muscle) {
         this.muscleGroups.remove(muscle);
-        muscle.getMuscles().remove(this);
     }
 
     public void setMuscleGroups(Set<Muscle> muscleGroups) {
         this.muscleGroups.clear();
         if (muscleGroups != null) {
-            muscleGroups.forEach(this::addMuscleGroup);
-        }
-    }
-
-    public void addMuscle(Muscle muscle) {
-        this.muscles.add(muscle);
-        muscle.getMuscleGroups().add(this);
-    }
-
-    public void removeMuscle(Muscle muscle) {
-        this.muscles.remove(muscle);
-        muscle.getMuscleGroups().remove(this);
-    }
-
-    public void setMuscles(Set<Muscle> muscles) {
-        this.muscles.clear();
-        if (muscles != null) {
-            muscles.forEach(this::addMuscle);
+            this.muscleGroups.addAll(muscleGroups);
         }
     }
 
     public void addExercise(Exercise exercise) {
         this.exercises.add(exercise);
-        exercise.getMuscles().add(this);
     }
 
     public void removeExercise(Exercise exercise) {
         this.exercises.remove(exercise);
-        exercise.getMuscles().remove(this);
     }
 
     public void setExercises(Set<Exercise> exercises) {
         this.exercises.clear();
         if (exercises != null) {
-            exercises.forEach(this::addExercise);
+            this.exercises.addAll(exercises);
         }
     }
 

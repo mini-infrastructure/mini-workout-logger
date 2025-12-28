@@ -1,7 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.SetCategory;
 import com.mini.workout_logger_backend.enums.SetType;
@@ -18,6 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Set extends AbstractEntity {
+
+    @Column(name = "position")
+    private Integer position;
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)

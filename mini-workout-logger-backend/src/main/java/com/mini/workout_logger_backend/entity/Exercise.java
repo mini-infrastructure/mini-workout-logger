@@ -55,18 +55,16 @@ public class Exercise extends AbstractEntity {
 
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
-        muscle.getExercises().add(this);
     }
 
     public void removeMuscle(Muscle muscle) {
         this.muscles.remove(muscle);
-        muscle.getExercises().remove(this);
     }
 
     public void setMuscles(Set<Muscle> muscles) {
         this.muscles.clear();
         if (muscles != null) {
-            muscles.forEach(this::addMuscle);
+            this.muscles.addAll(muscles);
         }
     }
 

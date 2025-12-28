@@ -1,20 +1,21 @@
 package com.mini.workout_logger_backend.mapper;
 
 import com.mini.java_core.mapper.AbstractMapper;
-import com.mini.workout_logger_backend.dto.ExerciseExecutionDTO;
-import com.mini.workout_logger_backend.entity.Exercise;
+import com.mini.workout_logger_backend.dto.ExerciseExecutionReadDTO;
+import com.mini.workout_logger_backend.dto.ExerciseExecutionWriteDTO;
 import com.mini.workout_logger_backend.entity.ExerciseExecution;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
 import com.mini.workout_logger_backend.repository.SetRepository;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 @Component
-public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, ExerciseExecutionDTO> {
+public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution,
+                                                            ExerciseExecutionReadDTO,
+                                                            ExerciseExecutionWriteDTO> {
 
     @Autowired
     ExerciseRepository exerciseRepository;
@@ -25,39 +26,22 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
     @Override
     protected void configure(ModelMapper mapper) {
         // Entity -> DTO (GET)
-        mapper.createTypeMap(ExerciseExecution.class, ExerciseExecutionDTO.class)
-                .addMappings(m -> {
-                    m.skip(ExerciseExecutionDTO::setExerciseId);
-                    m.skip(ExerciseExecutionDTO::setSetIds);
-                })
-                .setPostConverter(ctx -> {
-                    ExerciseExecution entity = ctx.getSource();
-                    ExerciseExecutionDTO dto = ctx.getDestination();
-                    if (entity.getExercise() != null) {
-                        dto.setExerciseId(entity.getExercise().getId());
-                    }
-                    if (entity.getSets() != null) {
-                        entity.getSets().forEach(set -> {
-                            dto.addSetId(set.getId());
-                        });
-                    }
-                    return dto;
-                });
+        mapper.createTypeMap(ExerciseExecution.class, ExerciseExecutionReadDTO.class);
 
         // DTO -> Entity (POST/PUT)
-        mapper.createTypeMap(ExerciseExecutionDTO.class, ExerciseExecution.class)
+        mapper.createTypeMap(ExerciseExecutionWriteDTO.class, ExerciseExecution.class)
                 .setPostConverter(ctx -> {
-                    ExerciseExecutionDTO dto = ctx.getSource();
+                    ExerciseExecutionWriteDTO dto = ctx.getSource();
                     ExerciseExecution entity = ctx.getDestination();
-                    if (dto.getExerciseId() != null) {
-                        entity.setExercise(exerciseRepository.safeFindById(dto.getExerciseId()));
-                    }
-                    if (dto.getSetIds() != null) {
-                        entity.setSets(setRepository.safeFindByIds(dto.getSetIds(), ArrayList::new));
-                    }
-                    return entity;
-                });
 
-    }
+                    if (dto.getExerciseId() != null) {
+                        entity.setExercise(
+                                exerciseRepository.safeFindById(dto.getExerciseId())
+                        );
+                    }
+
+                    return entity;
+                    });
+        }
 
 }

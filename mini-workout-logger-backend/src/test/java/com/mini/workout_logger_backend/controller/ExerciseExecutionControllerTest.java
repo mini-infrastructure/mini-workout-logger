@@ -1,8 +1,9 @@
 package com.mini.workout_logger_backend.controller;
 
 import com.mini.java_core.AbstractCrudControllerTest;
-import com.mini.workout_logger_backend.dto.ExerciseDTO;
-import com.mini.workout_logger_backend.dto.ExerciseExecutionDTO;
+import com.mini.workout_logger_backend.dto.ExerciseExecutionReadDTO;
+import com.mini.workout_logger_backend.dto.ExerciseExecutionWriteDTO;
+import com.mini.workout_logger_backend.dto.ExerciseWriteDTO;
 import com.mini.workout_logger_backend.entity.Exercise;
 import com.mini.workout_logger_backend.entity.ExerciseExecution;
 import com.mini.workout_logger_backend.mapper.ExerciseExecutionMapper;
@@ -16,14 +17,15 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class ExerciseExecutionControllerTest extends AbstractCrudControllerTest<ExerciseExecution,
-                                                                         ExerciseExecutionDTO,
+                                                                         ExerciseExecutionReadDTO,
+                                                                         ExerciseExecutionWriteDTO,
                                                                          ExerciseExecutionMapper,
                                                                          ExerciseExecutionRepository> {
 
@@ -41,39 +43,55 @@ class ExerciseExecutionControllerTest extends AbstractCrudControllerTest<Exercis
     }
 
     @Override
-    protected List<ExerciseExecutionDTO> getTestDtos() {
-        return savedExercises.stream().map(ex -> {
-            ExerciseExecutionDTO dto = new ExerciseExecutionDTO();
-            dto.setExerciseId(ex.getId());
-            return dto;
-        }).toList();
+    protected List<ExerciseExecutionWriteDTO> getWriteDtos() {
+        return savedExercises.stream()
+                .map(ex -> {
+                    ExerciseExecutionWriteDTO dto =
+                            new ExerciseExecutionWriteDTO();
+                    dto.setExerciseId(ex.getId());
+                    return dto;
+                })
+                .toList();
     }
 
     @Override
-    protected String createRequestBody(ExerciseExecutionDTO dto) {
-        return """
-        {
-          "exercise_id": %d
-        }
-        """.formatted(dto.getExerciseId());
-    }
-
-    @Override
-    protected void afterCreate(ExerciseExecutionDTO dto) throws Exception {
-        // Asserts that the association with Exercise is correctly established.
+    protected void afterCreate(ExerciseExecutionReadDTO dto) {
         assertThat(dto.getExercise()).isNotNull();
-        assertThat(savedExercises.stream().anyMatch(ex -> ex.getId().equals(dto.getExercise().getId()))).isTrue();
+        boolean exists =
+                savedExercises.stream()
+                        .anyMatch(ex -> ex.getId().equals(dto.getExercise().getId()));
+        assertThat(exists).isTrue();
     }
 
     @BeforeEach
     void setupExercises() {
-        this.exerciseRepository.deleteAll();
+        exerciseRepository.deleteAll();
 
-        this.savedExercises = List.of(
-                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseDTO("Push-Up"))),
-                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseDTO("Squat"))),
-                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseDTO("Plank")))
-        );
+        savedExercises = List.of(
+                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseWriteDTO("Push-Up"))),
+                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseWriteDTO("Squat"))),
+                exerciseRepository.save(exerciseMapper.toEntity(new ExerciseWriteDTO("Plank"))));
+    }
+
+    @Test
+    void associations() throws Exception {
+        ExerciseExecutionWriteDTO writeDTO =
+                new ExerciseExecutionWriteDTO(savedExercises.getFirst().getId());
+
+        ExerciseExecution saved =
+                repository().save(mapper().toEntity(writeDTO));
+
+        mockMvc.perform(get(getBaseUrl() + "/{id}", saved.getId())
+                        .queryParam("lang", "pt_BR")
+                        .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].exercise.id")
+                        .value(savedExercises.getFirst().getId()))
+                .andExpect(jsonPath("$.data[0].exercise.name")
+                        .value(savedExercises.getFirst()
+                                .getName()
+                                .getValue()));
     }
 
 }

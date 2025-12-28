@@ -1,8 +1,10 @@
 package com.mini.workout_logger_backend.controller;
 
 import com.mini.java_core.AbstractCrudControllerTest;
-import com.mini.workout_logger_backend.dto.ExerciseDTO;
-import com.mini.workout_logger_backend.dto.MuscleDTO;
+import com.mini.workout_logger_backend.dto.ExerciseReadDTO;
+import com.mini.workout_logger_backend.dto.ExerciseWriteDTO;
+import com.mini.workout_logger_backend.dto.MuscleReadDTO;
+import com.mini.workout_logger_backend.dto.MuscleWriteDTO;
 import com.mini.workout_logger_backend.entity.Exercise;
 import com.mini.workout_logger_backend.entity.Muscle;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
@@ -27,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
-                                                                ExerciseDTO,
+                                                                ExerciseReadDTO,
+                                                                ExerciseWriteDTO,
                                                                 ExerciseMapper,
                                                                 ExerciseRepository> {
 
@@ -45,107 +48,89 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
     }
 
     @Override
-    protected List<ExerciseDTO> getTestDtos() {
+    protected List<ExerciseWriteDTO> getWriteDtos() {
         return List.of(
-                new ExerciseDTO("Chest Fly",
+                new ExerciseWriteDTO(
+                        "Chest Fly",
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.BEGINNER,
                         savedMuscles.stream()
-                                .map(muscle -> this.muscleMapper.toDTO(muscle))
-                                .collect(Collectors.toSet())),
-                new ExerciseDTO("Push-Up"),
-                new ExerciseDTO("Squat")
-        );
-    }
-
-    /**
-     * {
-     *   "name": "string",
-     *   "category": "STRENGTH",
-     *   "difficulty": "NOVICE",
-     *   "muscle_ids": [
-     *     0
-     *   ]
-     * }
-     */
-    @Override
-    protected String createRequestBody(ExerciseDTO dto) {
-        StringBuilder muscleIdsJsonArray = new StringBuilder("[");
-        if (dto.getMuscles() != null) {
-            String muscleIds = dto.getMuscles().stream()
-                    .map(muscleDto -> muscleDto.getId().toString())
-                    .collect(Collectors.joining(", "));
-            muscleIdsJsonArray.append(muscleIds);
-        }
-        muscleIdsJsonArray.append("]");
-
-        return """
-        {
-          "name": "%s",
-          "category": "%s",
-          "difficulty": "%s",
-          "muscle_ids": %s
-        }
-        """.formatted(
-                dto.getName(),
-                dto.getCategory() != null ? dto.getCategory().name() : "",
-                dto.getDifficulty() != null ? dto.getDifficulty().name() : "",
-                muscleIdsJsonArray.toString()
+                                .map(Muscle::getId)
+                                .collect(Collectors.toSet())
+                ),
+                new ExerciseWriteDTO("Push-Up"),
+                new ExerciseWriteDTO("Squat")
         );
     }
 
     @Override
-    protected void afterCreate(ExerciseDTO dto) {
-        // Asserts that the association with Muscles is correctly established.
+    protected void afterCreate(ExerciseReadDTO dto) {
         if (dto.getName().equals("Chest Fly")) {
             List<String> muscleNames = dto.getMuscles().stream()
-                    .map(MuscleDTO::getName)
+                    .map(MuscleReadDTO::getName)
                     .toList();
+
             List<String> expectedMuscleNames = savedMuscles.stream()
                     .map(muscle -> muscle.getName().getValue())
                     .toList();
-            assertThat(muscleNames).containsExactlyInAnyOrderElementsOf(expectedMuscleNames);
+
+            assertThat(muscleNames)
+                    .containsExactlyInAnyOrderElementsOf(expectedMuscleNames);
         }
     }
 
     @BeforeEach
     void setupMuscles() {
-        this.muscleRepository.deleteAll();
+        muscleRepository.deleteAll();
 
-        this.savedMuscles = List.of(
-                muscleRepository.save(muscleMapper.toEntity(new MuscleDTO("Chest"))),
-                muscleRepository.save(muscleMapper.toEntity(new MuscleDTO("Back"))),
-                muscleRepository.save(muscleMapper.toEntity(new MuscleDTO("Legs")))
+        savedMuscles = List.of(
+                muscleRepository.save(
+                        muscleMapper.toEntity(new MuscleWriteDTO("Chest"))
+                ),
+                muscleRepository.save(
+                        muscleMapper.toEntity(new MuscleWriteDTO("Back"))
+                ),
+                muscleRepository.save(
+                        muscleMapper.toEntity(new MuscleWriteDTO("Legs"))
+                )
         );
     }
-
     @Test
     void associations() throws Exception {
-        // Exercise 1:n Muscle.
-        ExerciseDTO exerciseDto = new ExerciseDTO("Chest Fly",
+
+        ExerciseWriteDTO exerciseWriteDTO = new ExerciseWriteDTO(
+                "Chest Fly",
                 ExerciseCategory.STRENGTH,
                 ExerciseDifficulty.BEGINNER,
                 savedMuscles.stream()
-                        .map(muscle -> this.muscleMapper.toDTO(muscle))
-                        .collect(Collectors.toSet()));
-        Exercise savedExercise = this.repository().save(this.mapper().toEntity(exerciseDto));
+                        .map(Muscle::getId)
+                        .collect(Collectors.toSet())
+        );
+
+        Exercise savedExercise =
+                repository().save(mapper().toEntity(exerciseWriteDTO));
 
         mockMvc.perform(get(getBaseUrl() + "/{id}", savedExercise.getId())
                         .queryParam("lang", "pt_BR")
                         .accept(MediaType.ALL_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].muscles.length()").value(this.savedMuscles.size()))
+                .andExpect(jsonPath("$.data[0].muscles.length()")
+                        .value(savedMuscles.size()))
                 .andExpect(result -> {
                     List<Long> savedMuscleIds = savedMuscles.stream()
                             .map(Muscle::getId)
                             .toList();
+
                     List<String> savedMuscleNames = savedMuscles.stream()
-                            .map(muscle -> muscle.getName().getValue())
+                            .map(m -> m.getName().getValue())
                             .toList();
 
-                    jsonPath("$.data[0].muscles[*].id").value(containsInAnyOrder(savedMuscleIds.toArray()));
-                    jsonPath("$.data[0].muscles[*].name").value(containsInAnyOrder(savedMuscleNames.toArray()));
+                    jsonPath("$.data[0].muscles[*].id")
+                            .value(containsInAnyOrder(savedMuscleIds.toArray()));
+
+                    jsonPath("$.data[0].muscles[*].name")
+                            .value(containsInAnyOrder(savedMuscleNames.toArray()));
                 });
     }
 
