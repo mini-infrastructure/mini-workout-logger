@@ -18,9 +18,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Set extends AbstractEntity {
 
-    @Column(name = "position")
-    private Integer position;
-
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
     private SetCategory category;
@@ -42,5 +39,10 @@ public class Set extends AbstractEntity {
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "exercise_execution_id", nullable = false)
     private ExerciseExecution exerciseExecution;
+
+    public int getPosition() {
+        if (exerciseExecution == null) return -1;
+        return exerciseExecution.getSets().indexOf(this);
+    }
 
 }

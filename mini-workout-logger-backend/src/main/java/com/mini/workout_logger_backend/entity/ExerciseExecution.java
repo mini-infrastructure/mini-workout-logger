@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,6 +56,13 @@ public class ExerciseExecution extends AbstractEntity {
         this.sets.clear();
         if (sets != null) {
             sets.forEach(this::addSet);
+        }
+    }
+
+    public void reorderSet(Set set, Integer newPosition) {
+        if (sets.contains(set)) {
+            sets.remove(set);
+            sets.add(newPosition, set);
         }
     }
 
