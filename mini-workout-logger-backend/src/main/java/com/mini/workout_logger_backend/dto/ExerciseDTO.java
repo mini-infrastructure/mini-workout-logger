@@ -15,7 +15,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class ExerciseDTO extends AbstractDTO {
 
     @NotNull(groups = RestMethod.OnCreate.class)
@@ -39,6 +38,17 @@ public class ExerciseDTO extends AbstractDTO {
         this.difficulty = null;
         this.muscleIds = new HashSet<>();
         this.muscles = new HashSet<>();
+    }
+
+    public ExerciseDTO(String name,
+                       ExerciseCategory category,
+                       ExerciseDifficulty difficulty,
+                       Set<MuscleDTO> muscles) {
+        this.name = name;
+        this.category = category;
+        this.difficulty = difficulty;
+        this.muscles = muscles;
+        this.muscleIds = null;
     }
 
     public void addMuscleId(Long muscleId) {

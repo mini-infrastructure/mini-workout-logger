@@ -13,7 +13,6 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class MuscleDTO extends AbstractDTO {
 
     @NotNull(groups = RestMethod.OnCreate.class)
@@ -23,9 +22,21 @@ public class MuscleDTO extends AbstractDTO {
     @JsonProperty(value = "muscle_group_ids", access = JsonProperty.Access.WRITE_ONLY)
     private Set<Long> muscleGroupIds = new HashSet<>();
 
-    // @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    // @JsonProperty(value = "muscle_groups", access = JsonProperty.Access.READ_ONLY)
-    // private Set<MuscleDTO> muscleGroups = new HashSet<>();
+     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+     @JsonProperty(value = "muscle_groups", access = JsonProperty.Access.READ_ONLY)
+     private Set<MuscleDTO> muscleGroups = new HashSet<>();
+
+     public MuscleDTO(String name) {
+        this.name = name;
+        this.muscleGroupIds = null;
+        this.muscleGroups = null;
+    }
+
+    public MuscleDTO(String name, Set<MuscleDTO> muscleGroups) {
+        this.name = name;
+        this.muscleGroups = muscleGroups;
+        this.muscleGroupIds = null;
+    }
 
     public void addMuscleGroupId(Long muscleGroupId) {
         this.muscleGroupIds.add(muscleGroupId);

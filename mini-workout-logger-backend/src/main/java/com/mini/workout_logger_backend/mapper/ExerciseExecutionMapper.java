@@ -28,6 +28,7 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
         mapper.createTypeMap(ExerciseExecution.class, ExerciseExecutionDTO.class)
                 .addMappings(m -> {
                     m.skip(ExerciseExecutionDTO::setExerciseId);
+                    m.skip(ExerciseExecutionDTO::setSetIds);
                 })
                 .setPostConverter(ctx -> {
                     ExerciseExecution entity = ctx.getSource();
@@ -36,7 +37,7 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
                         dto.setExerciseId(entity.getExercise().getId());
                     }
                     if (entity.getSets() != null) {
-                        dto.getSets().forEach(set -> {
+                        entity.getSets().forEach(set -> {
                             dto.addSetId(set.getId());
                         });
                     }
@@ -49,8 +50,7 @@ public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution, E
                     ExerciseExecutionDTO dto = ctx.getSource();
                     ExerciseExecution entity = ctx.getDestination();
                     if (dto.getExerciseId() != null) {
-                        Exercise exercise = exerciseRepository.safeFindById(dto.getExerciseId());
-                        entity.setExercise(exercise);
+                        entity.setExercise(exerciseRepository.safeFindById(dto.getExerciseId()));
                     }
                     if (dto.getSetIds() != null) {
                         entity.setSets(setRepository.safeFindByIds(dto.getSetIds(), ArrayList::new));

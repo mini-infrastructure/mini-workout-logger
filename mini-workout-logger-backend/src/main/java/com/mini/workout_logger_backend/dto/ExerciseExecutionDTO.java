@@ -16,10 +16,8 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class ExerciseExecutionDTO extends AbstractDTO {
 
-    @NotNull(groups = RestMethod.OnCreate.class)
     @ExistsById(repository = ExerciseRepository.class, groups = RestMethod.All.class)
     @Schema(accessMode = Schema.AccessMode.WRITE_ONLY)
     @JsonProperty(value = "exercise_id", access = JsonProperty.Access.WRITE_ONLY)
@@ -41,6 +39,26 @@ public class ExerciseExecutionDTO extends AbstractDTO {
     private ExerciseEquipment equipment;
 
     private Integer restTimeSeconds;
+
+    public ExerciseExecutionDTO(ExerciseDTO exercise) {
+        this.exercise = exercise;
+        this.exerciseId = exercise.getId();
+        this.setIds = null;
+        this.sets = null;
+        this.equipment = null;
+        this.restTimeSeconds = null;
+    }
+
+    public ExerciseExecutionDTO(ExerciseDTO exercise,
+                                List<SetDTO> sets,
+                                ExerciseEquipment equipment,
+                                Integer restTimeSeconds) {
+        this.exercise = exercise;
+        this.sets = sets;
+        this.equipment = equipment;
+        this.restTimeSeconds = restTimeSeconds;
+        this.setIds = null;
+    }
 
     public void addSetId(Long setId) {
         this.setIds.add(setId);
