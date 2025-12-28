@@ -2,7 +2,6 @@ package com.mini.workout_logger_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
-import com.mini.java_core.validation.group.RestMethod;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

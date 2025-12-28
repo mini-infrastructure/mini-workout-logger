@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-
 @Component
 public class ExerciseExecutionMapper extends AbstractMapper<ExerciseExecution,
                                                             ExerciseExecutionReadDTO,

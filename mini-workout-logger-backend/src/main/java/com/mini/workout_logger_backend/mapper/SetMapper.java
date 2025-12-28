@@ -3,7 +3,6 @@ package com.mini.workout_logger_backend.mapper;
 import com.mini.java_core.mapper.AbstractMapper;
 import com.mini.workout_logger_backend.dto.SetReadDTO;
 import com.mini.workout_logger_backend.dto.SetWriteDTO;
-import com.mini.workout_logger_backend.entity.ExerciseExecution;
 import com.mini.workout_logger_backend.entity.Set;
 import com.mini.workout_logger_backend.repository.ExerciseExecutionRepository;
 import org.modelmapper.ModelMapper;
