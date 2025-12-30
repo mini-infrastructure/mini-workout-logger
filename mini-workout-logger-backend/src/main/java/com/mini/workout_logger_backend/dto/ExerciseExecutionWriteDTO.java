@@ -28,6 +28,7 @@ public class ExerciseExecutionWriteDTO extends WriteDTO {
 
     private ExerciseEquipment equipment;
 
+    @JsonProperty(value = "rest_time_seconds")
     private Integer restTimeSeconds;
 
     public ExerciseExecutionWriteDTO(Long exerciseId) {

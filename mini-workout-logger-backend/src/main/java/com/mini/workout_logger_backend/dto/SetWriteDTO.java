@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.workout_logger_backend.annotation.SetValidated;
 import com.mini.workout_logger_backend.enums.SetCategory;
@@ -24,6 +25,7 @@ public class SetWriteDTO extends WriteDTO {
 
     private Double weight;
 
+    @JsonProperty(value = "duration_seconds")
     private Integer durationSeconds;
 
 }

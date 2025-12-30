@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.ReadDTO;
 import com.mini.workout_logger_backend.enums.SetCategory;
 import com.mini.workout_logger_backend.enums.SetType;
@@ -24,6 +25,7 @@ public class SetReadDTO extends ReadDTO {
 
     private Double weight;
 
+    @JsonProperty(value = "duration_seconds")
     private Integer durationSeconds;
 
 }

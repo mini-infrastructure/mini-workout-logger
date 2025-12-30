@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -9,6 +10,7 @@ public class SetReorderDTO {
 
     @NotNull
     @Min(0)
+    @JsonProperty("new_position")
     private Integer newPosition;
 
 }
