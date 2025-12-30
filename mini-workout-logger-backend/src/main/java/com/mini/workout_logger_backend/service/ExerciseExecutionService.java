@@ -32,6 +32,18 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
     @Autowired
     private SetRepository setRepository;
 
+    /**
+     * Given an executionId, sets updatedAt to now.
+     */
+    public ResponseEntity<ResponseDTO<ExerciseExecutionReadDTO>> completeExecution(Long executionId) {
+        ExerciseExecution execution = repository.safeFindById(executionId);
+        execution.setUpdatedAtToNow();
+        repository.save(execution);
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITY_UPDATED.getMessage(),
+                List.of(mapper.toDTO(execution)));
+    }
+
     public ResponseEntity<ResponseDTO<SetReadDTO>> listSets(Long executionId) {
         ExerciseExecution execution = repository.safeFindById(executionId);
         return ResponseHelper.success(HttpStatus.OK,

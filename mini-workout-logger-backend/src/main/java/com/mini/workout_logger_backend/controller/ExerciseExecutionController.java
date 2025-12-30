@@ -21,6 +21,11 @@ public class ExerciseExecutionController extends AbstractController<ExerciseExec
                                                                     ExerciseExecutionRepository,
                                                                     ExerciseExecutionService> {
 
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<ResponseDTO<ExerciseExecutionReadDTO>> completeExecution(@PathVariable("id") Long id) {
+        return service.completeExecution(id);
+    }
+
     @Tag(name = "Sets", description = "Manage Sets inside an Exercise Execution")
     @GetMapping("/{id}/sets")
     public ResponseEntity<ResponseDTO<SetReadDTO>> listSets(@PathVariable("id") Long id) {

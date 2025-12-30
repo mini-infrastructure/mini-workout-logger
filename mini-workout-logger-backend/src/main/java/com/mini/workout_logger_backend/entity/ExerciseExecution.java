@@ -65,6 +65,14 @@ public class ExerciseExecution extends AbstractEntity {
     }
 
     /**
+     * Sets the updatedAt timestamp to the current date and time, to mark
+     * execution as completed.
+     */
+    public void setUpdatedAtToNow() {
+        this.setUpdatedAt(new Date());
+    }
+
+    /**
      * The start time of the exercise execution, which is the createdAt timestamp.
      * @return Date representing the start time.
      */
