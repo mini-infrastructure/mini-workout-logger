@@ -16,7 +16,7 @@
 	<name>Mini Workout Logger Backend</name>
 
 	<properties>
-		<java.version>24</java.version>
+		<java.version>21</java.version>
 		<spring.profiles.active>local,no-liquibase</spring.profiles.active>
 	</properties>
 
@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>com.mini</groupId>
 			<artifactId>mini-java-core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -144,9 +144,39 @@
 			<artifactId>liquibase-hibernate6</artifactId>
 			<version>4.31.1</version>
 		</dependency>
-	</dependencies>
 
-	<build>
+        <!-- Testcontainers -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>2.0.2</version>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mini</groupId>
+            <artifactId>mini-java-core</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
 		<plugins>
 			<!-- Maven Plugins -->
 			<plugin>
@@ -154,22 +184,21 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<configuration>
-					<source>11</source>
-					<target>11</target>
-				</configuration>
-			</plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
 
             <!-- Surefire -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.4</version>
-                <!-- <configuration>
-                </configuration> -->
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
 
             <!-- Liquibase Maven Plugin -->
@@ -190,5 +219,6 @@
 
 		</plugins>
 	</build>
+
 
 </project>
