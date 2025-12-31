@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Locale;
-
 @RestController
 public class GreetingController {
 
@@ -14,8 +12,8 @@ public class GreetingController {
     private MessageService messageService;
 
     @GetMapping("/greeting")
-    public String getGreeting(Locale locale) {
-        return messageService.getLocalizedMessage("ExerciseCategory.STRETCHING", locale);
+    public String getGreeting() {
+        return messageService.getLocalizedMessage("ExerciseCategory.STRETCHING");
     }
 
 }

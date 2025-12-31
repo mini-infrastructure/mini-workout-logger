@@ -1,8 +1,11 @@
 package com.mini.workout_logger_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.mini.java_core.converter.TextConverter;
 import com.mini.java_core.entity.AbstractEntity;
+import com.mini.java_core.entity.Text;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
 import jakarta.persistence.*;
@@ -25,7 +28,8 @@ import java.util.Set;
 public class Exercise extends AbstractEntity {
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Convert(converter = TextConverter.class)
+    private Text name;
 
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
@@ -42,6 +46,7 @@ public class Exercise extends AbstractEntity {
                inverseJoinColumns = @JoinColumn(name = "muscle_id"))
     private Set<Muscle> muscles = new HashSet<>();
 
+    @JsonBackReference
     @OneToMany(mappedBy = "exercise",
                cascade = {CascadeType.MERGE},
                fetch = FetchType.LAZY)
@@ -50,18 +55,16 @@ public class Exercise extends AbstractEntity {
 
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
-        muscle.getExercises().add(this);
     }
 
     public void removeMuscle(Muscle muscle) {
         this.muscles.remove(muscle);
-        muscle.getExercises().remove(this);
     }
 
     public void setMuscles(Set<Muscle> muscles) {
         this.muscles.clear();
         if (muscles != null) {
-            muscles.forEach(this::addMuscle);
+            this.muscles.addAll(muscles);
         }
     }
 
