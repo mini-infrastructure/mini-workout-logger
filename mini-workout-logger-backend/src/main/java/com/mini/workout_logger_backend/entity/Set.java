@@ -40,6 +40,9 @@ public class Set extends AbstractEntity {
     @JoinColumn(name = "exercise_execution_id", nullable = false)
     private ExerciseExecution exerciseExecution;
 
+    @Column(name = "completed")
+    private Boolean completed;
+
     public int getPosition() {
         if (exerciseExecution == null) return -1;
         return exerciseExecution.getSets().indexOf(this);

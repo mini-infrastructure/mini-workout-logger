@@ -64,40 +64,8 @@ public class ExerciseExecution extends AbstractEntity {
         }
     }
 
-    /**
-     * Sets the updatedAt timestamp to the current date and time, to mark
-     * execution as completed.
-     */
-    public void setUpdatedAtToNow() {
-        this.setUpdatedAt(new Date());
-    }
-
-    /**
-     * The start time of the exercise execution, which is the createdAt timestamp.
-     * @return Date representing the start time.
-     */
-    public Date getStartTime() {
-        return this.getCreatedAt();
-    }
-
-    /**
-     * If the exercise execution has been updated after creation, return the updatedAt
-     * timestamp as the end time.
-     * @return Date representing the end time, or null if not updated.
-     */
-    public Date getEndTime() {
-        if (this.getUpdatedAt() == null || !this.getUpdatedAt().after(this.getCreatedAt())) {
-            return null;
-        }
-        return this.getUpdatedAt();
-    }
-
-    /**
-     * Determine if the exercise execution is completed based on the presence of an end time.
-     * @return true if completed, false otherwise.
-     */
     public boolean getCompleted() {
-        return getEndTime() != null;
+        return sets.stream().allMatch(Set::getCompleted);
     }
 
 }

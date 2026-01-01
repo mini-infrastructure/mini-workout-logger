@@ -4,6 +4,7 @@ import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
+import com.mini.java_core.service.MessageService;
 import com.mini.workout_logger_backend.dto.*;
 import com.mini.workout_logger_backend.entity.ExerciseExecution;
 import com.mini.workout_logger_backend.entity.Set;
@@ -11,7 +12,6 @@ import com.mini.workout_logger_backend.mapper.ExerciseExecutionMapper;
 import com.mini.workout_logger_backend.mapper.SetMapper;
 import com.mini.workout_logger_backend.repository.ExerciseExecutionRepository;
 import com.mini.workout_logger_backend.repository.SetRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +21,10 @@ import java.util.List;
 
 @Service
 public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
-                                                              ExerciseExecutionReadDTO,
-                                                              ExerciseExecutionWriteDTO,
-                                                              ExerciseExecutionMapper,
-                                                              ExerciseExecutionRepository> {
+        ExerciseExecutionReadDTO,
+        ExerciseExecutionWriteDTO,
+        ExerciseExecutionMapper,
+        ExerciseExecutionRepository> {
 
     @Autowired
     private SetMapper setMapper;
@@ -32,17 +32,8 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
     @Autowired
     private SetRepository setRepository;
 
-    /**
-     * Given an executionId, sets updatedAt to now.
-     */
-    public ResponseEntity<ResponseDTO<ExerciseExecutionReadDTO>> completeExecution(Long executionId) {
-        ExerciseExecution execution = repository.safeFindById(executionId);
-        execution.setUpdatedAtToNow();
-        repository.save(execution);
-        return ResponseHelper.success(HttpStatus.OK,
-                ResponseMessage.ENTITY_UPDATED.getMessage(),
-                List.of(mapper.toDTO(execution)));
-    }
+    @Autowired
+    private MessageService messageService;
 
     public ResponseEntity<ResponseDTO<SetReadDTO>> listSets(Long executionId) {
         ExerciseExecution execution = repository.safeFindById(executionId);
@@ -66,7 +57,7 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
     }
 
     public ResponseEntity<ResponseDTO<SetReadDTO>> createSet(Long executionId,
-                                                              @Valid SetWriteDTO dto) {
+                                                             SetWriteDTO dto) {
         ExerciseExecution execution = repository.safeFindById(executionId);
         Set set = setMapper.toEntity(dto);
         execution.addSet(set);
@@ -78,7 +69,7 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
 
     public ResponseEntity<ResponseDTO<SetReadDTO>> updateSet(Long executionId,
                                                              Long setId,
-                                                             @Valid SetWriteDTO dto) {
+                                                             SetWriteDTO dto) {
         ExerciseExecution execution = repository.safeFindById(executionId);
         Set set = setRepository.safeFindById(setId);
         if (!execution.getSets().contains(set)) {
@@ -95,7 +86,7 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
 
     public ResponseEntity<ResponseDTO<SetReadDTO>> reorderSet(Long executionId,
                                                               Long setId,
-                                                              @Valid SetReorderDTO dto) {
+                                                              SetReorderDTO dto) {
         ExerciseExecution execution = repository.safeFindById(executionId);
         Set set = setRepository.safeFindById(setId);
         if (!execution.getSets().contains(set)) {
@@ -115,7 +106,7 @@ public class ExerciseExecutionService extends AbstractService<ExerciseExecution,
 
         if (newIndex < 0 || newIndex >= execution.getSets().size()) {
             return ResponseHelper.error(HttpStatus.BAD_REQUEST,
-                    "New position is out of bounds.",
+                    messageService.getLocalizedMessage("error.position_out_of_bounds"),
                     List.of());
         }
 

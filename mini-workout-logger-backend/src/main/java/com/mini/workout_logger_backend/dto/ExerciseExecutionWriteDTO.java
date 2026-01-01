@@ -6,6 +6,8 @@ import com.mini.java_core.dto.WriteDTO;
 import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,10 +26,12 @@ public class ExerciseExecutionWriteDTO extends WriteDTO {
     @JsonProperty(value = "exercise_id")
     private Long exerciseId;
 
+    @Valid
     private List<SetWriteDTO> sets = new ArrayList<>();
 
     private ExerciseEquipment equipment;
 
+    @Min(0)
     @JsonProperty(value = "rest_time_seconds")
     private Integer restTimeSeconds;
 
