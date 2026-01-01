@@ -51,7 +51,7 @@ public class Exercise extends AbstractEntity {
                cascade = {CascadeType.MERGE},
                fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<ExerciseExecution> executions = new ArrayList<>();
+    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
@@ -68,20 +68,20 @@ public class Exercise extends AbstractEntity {
         }
     }
 
-    public void addExecution(ExerciseExecution execution) {
-        this.executions.add(execution);
-        execution.setExercise(this);
+    public void addWorkoutExercise(WorkoutExercise workoutExercise) {
+        this.workoutExercises.add(workoutExercise);
+        workoutExercise.setExercise(this);
     }
 
-    public void removeExecution(ExerciseExecution execution) {
-        this.executions.remove(execution);
-        execution.setExercise(null);
+    public void removeWorkoutExercise(WorkoutExercise workoutExercise) {
+        this.workoutExercises.remove(workoutExercise);
+        workoutExercise.setExercise(null);
     }
 
-    public void setExecutions(List<ExerciseExecution> executions) {
-        this.executions.clear();
-        if (executions != null) {
-            executions.forEach(this::addExecution);
+    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
+        this.workoutExercises.clear();
+        if (workoutExercises != null) {
+            workoutExercises.forEach(this::addWorkoutExercise);
         }
     }
 
