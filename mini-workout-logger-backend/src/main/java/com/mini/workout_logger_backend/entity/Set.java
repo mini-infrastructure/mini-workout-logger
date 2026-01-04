@@ -2,7 +2,7 @@ package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.mini.java_core.entity.AbstractEntity;
+import com.mini.java_core.entity.SimpleAbstractEntity;
 import com.mini.workout_logger_backend.enums.SetCategory;
 import com.mini.workout_logger_backend.enums.SetType;
 import jakarta.persistence.*;
@@ -15,12 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "sets")
+@Table(name = "sets", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_set_order", columnNames = {"workout_exercise_id", "position"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Set extends AbstractEntity {
+public class Set extends SimpleAbstractEntity {
+
+    @EmbeddedId
+    private SetId id;
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -41,12 +46,7 @@ public class Set extends AbstractEntity {
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "workout_exercise_id", nullable = false)
+    @JoinColumn(name = "workout_exercise_id", insertable = false, updatable = false)
     private WorkoutExercise workoutExercise;
-
-    public int getPosition() {
-        if (workoutExercise == null) return -1;
-        return workoutExercise.getSets().indexOf(this);
-    }
 
 }

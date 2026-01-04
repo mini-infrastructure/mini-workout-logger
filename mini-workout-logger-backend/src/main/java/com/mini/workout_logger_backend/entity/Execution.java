@@ -1,12 +1,12 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.mini.java_core.entity.AbstractEntity;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@NoArgsConstructor
+@MappedSuperclass
 @AllArgsConstructor
 public class Execution extends AbstractEntity {
 

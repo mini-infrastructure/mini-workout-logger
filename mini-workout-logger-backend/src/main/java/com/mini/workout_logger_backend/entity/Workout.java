@@ -30,51 +30,52 @@ public class Workout extends AbstractEntity {
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
     @OrderColumn(name = "position")
-    private List<WorkoutExercise> exercises = new ArrayList<>();
+    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "workout",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
-    private List<WorkoutExecution> executions = new ArrayList<>();
+    private List<WorkoutExecution> workoutExecutions = new ArrayList<>();
 
-    public void addExercise(WorkoutExercise exercise) {
-        this.exercises.add(exercise);
-        exercise.setWorkout(this);
+    public void addWorkoutExercise(WorkoutExercise workoutExercise) {
+        this.workoutExercises.add(workoutExercise);
+        workoutExercise.setWorkout(this);
     }
 
-    public void removeExercise(WorkoutExercise exercise) {
-        this.exercises.remove(exercise);
-        exercise.setWorkout(null);
+    public void removeWorkoutExercise(WorkoutExercise workoutExercise) {
+        this.workoutExercises.remove(workoutExercise);
+        workoutExercise.setWorkout(null);
     }
 
-    public void setExercises(List<WorkoutExercise> exercises) {
-        this.exercises.clear();
-        if (exercises != null) {
-            exercises.forEach(this::addExercise);
+    public void setWorkoutExercises(List<WorkoutExercise> workoutExercises) {
+        this.workoutExercises.clear();
+        if (workoutExercises != null) {
+            workoutExercises.forEach(this::addWorkoutExercise);
         }
     }
 
-    public void reorderExercise(WorkoutExercise exercise, Integer newPosition) {
-        if (this.exercises.remove(exercise)) {
-            this.exercises.add(newPosition, exercise);
+    public void reorderWorkoutExercise(WorkoutExercise workoutExercise,
+                                       Integer newPosition) {
+        if (this.workoutExercises.remove(workoutExercise)) {
+            this.workoutExercises.add(newPosition, workoutExercise);
         }
     }
 
-    public void addExecution(WorkoutExecution execution) {
-        this.executions.add(execution);
-        execution.setWorkout(this);
+    public void addWorkoutExecution(WorkoutExecution workoutExecution) {
+        this.workoutExecutions.add(workoutExecution);
+        workoutExecution.setWorkout(this);
     }
 
-    public void removeExecution(WorkoutExecution execution) {
-        this.executions.remove(execution);
-        execution.setWorkout(null);
+    public void removeWorkoutExecution(WorkoutExecution workoutExecution) {
+        this.workoutExecutions.remove(workoutExecution);
+        workoutExecution.setWorkout(null);
     }
 
-    public void setExecutions(List<WorkoutExecution> executions) {
-        this.executions.clear();
-        if (executions != null) {
-            executions.forEach(this::addExecution);
+    public void setWorkoutExecutions(List<WorkoutExecution> workoutExecutions) {
+        this.workoutExecutions.clear();
+        if (workoutExecutions != null) {
+            workoutExecutions.forEach(this::addWorkoutExecution);
         }
     }
 

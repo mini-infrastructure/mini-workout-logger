@@ -1,6 +1,7 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "workout_exercise_executions")
+@Table(name = "workout_exercise_executions", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_workout_exercise_execution_order", columnNames = {"workout_execution_id", "position"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,15 +31,19 @@ public class WorkoutExerciseExecution extends Execution {
     @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "workoutExerciseExecution",
                cascade = {CascadeType.ALL},
                orphanRemoval = true)
-    private List<SetExecution> sets = new ArrayList<>();
+    private List<SetExecution> setExecutions = new ArrayList<>();
+
+    @Column(name = "position")
+    private Integer position;
 
     @Override
     public boolean getCompleted() {
-        return !sets.isEmpty()
-                && sets.stream().allMatch(SetExecution::getCompleted);
+        return !setExecutions.isEmpty()
+                && setExecutions.stream().allMatch(SetExecution::getCompleted);
     }
 
 }

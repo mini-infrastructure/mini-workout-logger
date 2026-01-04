@@ -27,6 +27,12 @@ public class WorkoutExecution extends Execution {
                cascade = CascadeType.ALL,
                orphanRemoval = true)
     @OrderColumn(name = "position")
-    private List<WorkoutExerciseExecution> exercises = new ArrayList<>();
+    private List<WorkoutExerciseExecution> workoutExerciseExecutions = new ArrayList<>();
+
+    @Override
+    public boolean getCompleted() {
+        return !workoutExerciseExecutions.isEmpty()
+                && workoutExerciseExecutions.stream().allMatch(WorkoutExerciseExecution::getCompleted);
+    }
 
 }

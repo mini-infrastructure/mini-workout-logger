@@ -32,7 +32,7 @@ public class WorkoutExercise extends AbstractEntity {
     private Exercise exercise;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "workoutExecution",
+    @OneToMany(mappedBy = "workoutExercise",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
     @OrderColumn(name = "position")
@@ -45,10 +45,11 @@ public class WorkoutExercise extends AbstractEntity {
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 
-    public int getPosition() {
-        if (workout == null) return -1;
-        return workout.getExercises().indexOf(this);
-    }
+    @OneToMany(mappedBy = "workoutExercise",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @OrderColumn(name = "position")
+    private List<WorkoutExerciseExecution> executions = new ArrayList<>();
 
     public void addSet(Set set) {
         this.sets.add(set);

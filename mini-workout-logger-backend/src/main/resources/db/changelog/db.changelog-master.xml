@@ -16,8 +16,12 @@
         <sqlFile path="db/changelog/migrations/002_create_muscles_table.sql"/>
         <sqlFile path="db/changelog/migrations/003_create_muscle_groups_table.sql"/>
         <sqlFile path="db/changelog/migrations/004_create_exercises_muscles_table.sql"/>
-        <sqlFile path="db/changelog/migrations/005_create_exercise_executions_table.sql"/>
-        <sqlFile path="db/changelog/migrations/006_create_sets_table.sql"/>
+        <sqlFile path="db/changelog/migrations/005_create_workouts_table.sql"/>
+        <sqlFile path="db/changelog/migrations/006_create_workout_exercises_table.sql"/>
+        <sqlFile path="db/changelog/migrations/007_create_sets_table.sql"/>
+        <sqlFile path="db/changelog/migrations/008_create_workout_executions_table.sql"/>
+        <sqlFile path="db/changelog/migrations/009_create_workout_exercise_executions_table.sql"/>
+        <sqlFile path="db/changelog/migrations/010_create_set_executions_table.sql"/>
     </changeSet>
 
     <changeSet id="2" author="carolina">
