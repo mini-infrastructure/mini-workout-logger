@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "workout_exercise_executions", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_workout_exercise_execution_order", columnNames = {"workout_execution_id", "position"})
-})
+@Table(name = "workout_exercise_executions")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +20,7 @@ import java.util.List;
 public class WorkoutExerciseExecution extends Execution {
 
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "workout_execution_id", nullable = false)
     private WorkoutExecution workoutExecution;
 
@@ -36,9 +34,6 @@ public class WorkoutExerciseExecution extends Execution {
                cascade = {CascadeType.ALL},
                orphanRemoval = true)
     private List<SetExecution> setExecutions = new ArrayList<>();
-
-    @Column(name = "position")
-    private Integer position;
 
     @Override
     public boolean getCompleted() {

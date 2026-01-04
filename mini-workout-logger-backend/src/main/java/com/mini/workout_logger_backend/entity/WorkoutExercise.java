@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "workout_exercises")
+@Table(name = "workout_exercises",
+        uniqueConstraints = {@UniqueConstraint(name = "uk_workout_exercises_order", columnNames = {"workout_id", "position"})},
+        indexes = {
+            @Index(name = "idx_workout_exercises_workout_id", columnList = "workout_id"),
+            @Index(name = "idx_workout_exercises_exercise_id", columnList = "exercise_id")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,12 +26,15 @@ import java.util.List;
 public class WorkoutExercise extends AbstractEntity {
 
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
+    @Column(name = "position")
+    private Integer position;
+
     @JsonManagedReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
@@ -45,10 +52,10 @@ public class WorkoutExercise extends AbstractEntity {
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "workoutExercise",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @OrderColumn(name = "position")
     private List<WorkoutExerciseExecution> executions = new ArrayList<>();
 
     public void addSet(Set set) {

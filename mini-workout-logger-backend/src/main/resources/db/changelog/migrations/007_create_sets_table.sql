@@ -1,9 +1,7 @@
 CREATE TABLE sets (
 
-    id BIGSERIAL NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     workout_exercise_id BIGINT NOT NULL,
-    PRIMARY KEY (id, workout_exercise_id),
-
     position INTEGER NOT NULL,
     category VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
@@ -19,10 +17,9 @@ CREATE TABLE sets (
         REFERENCES workout_exercises(id)
         ON DELETE CASCADE,
 
-    CONSTRAINT uk_set_order
-        UNIQUE (workout_exercise_id, position),
-
-    CONSTRAINT uk_sets_id_workout_exercise
-        UNIQUE (id, workout_exercise_id)
+    CONSTRAINT uk_sets_order
+        UNIQUE (workout_exercise_id, position)
 
 );
+
+CREATE INDEX idx_sets_workout_exercise ON sets(workout_exercise_id);

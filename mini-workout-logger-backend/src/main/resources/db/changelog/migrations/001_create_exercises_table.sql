@@ -9,3 +9,7 @@ CREATE TABLE exercises (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 
 );
+
+CREATE INDEX idx_exercises_name ON exercises(name);
+CREATE INDEX idx_exercises_category ON exercises(category);
+CREATE INDEX idx_exercises_difficulty ON exercises(difficulty);

@@ -7,3 +7,5 @@ CREATE TABLE workouts (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 );
+
+CREATE INDEX idx_workouts_name ON workouts(name);

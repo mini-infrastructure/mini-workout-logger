@@ -2,10 +2,10 @@ CREATE TABLE workout_exercises (
 
     id BIGSERIAL PRIMARY KEY,
     workout_id BIGINT NOT NULL,
+    position INTEGER NOT NULL,
     exercise_id BIGINT NOT NULL,
     equipment VARCHAR(50),
     rest_time_seconds INTEGER,
-    position INTEGER NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -18,6 +18,12 @@ CREATE TABLE workout_exercises (
     CONSTRAINT fk_workout_exercises_exercise
         FOREIGN KEY (exercise_id)
         REFERENCES exercises(id)
-        ON DELETE RESTRICT
+        ON DELETE RESTRICT,
+
+    CONSTRAINT uk_workout_exercises_order
+        UNIQUE (workout_id, position)
 
 );
+
+CREATE INDEX idx_workout_exercises_workout_id ON workout_exercises(workout_id);
+CREATE INDEX idx_workout_exercises_exercise_id ON workout_exercises(exercise_id);

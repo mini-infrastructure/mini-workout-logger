@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "set_executions", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_set_execution_order",columnNames = {"workout_exercise_execution_id", "position"})
-})
+@Table(name = "set_executions")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,15 +16,13 @@ import lombok.Setter;
 public class SetExecution extends Execution {
 
     @JsonBackReference
-    @ManyToOne(optional = false, cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "workout_exercise_execution_id", nullable = false)
     private WorkoutExerciseExecution workoutExerciseExecution;
 
     @JsonBackReference
     @ManyToOne(optional = false)
-    @JoinColumns({
-            @JoinColumn(name = "set_id", referencedColumnName = "id"),
-            @JoinColumn(name = "workout_exercise_id", referencedColumnName = "workout_exercise_id")})
+    @JoinColumn(name = "set_id", nullable = false)
     private Set set;
 
     @Column(name = "actual_repetitions")

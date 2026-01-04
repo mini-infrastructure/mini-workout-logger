@@ -12,3 +12,5 @@ CREATE TABLE workout_executions (
         ON DELETE RESTRICT
 
 );
+
+CREATE INDEX idx_workout_executions_workout ON workout_executions(workout_id);

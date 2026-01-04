@@ -3,7 +3,6 @@ CREATE TABLE workout_exercise_executions (
     id BIGSERIAL PRIMARY KEY,
     workout_execution_id BIGINT NOT NULL,
     workout_exercise_id BIGINT NOT NULL,
-    position INTEGER NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -16,9 +15,6 @@ CREATE TABLE workout_exercise_executions (
     CONSTRAINT fk_workout_exercise_execution_workout_exercise
         FOREIGN KEY (workout_exercise_id)
         REFERENCES workout_exercises(id)
-        ON DELETE RESTRICT,
-
-    CONSTRAINT uk_workout_exercise_execution_order
-        UNIQUE (workout_execution_id, position)
+        ON DELETE RESTRICT
 
 );

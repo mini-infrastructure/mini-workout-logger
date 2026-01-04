@@ -20,7 +20,11 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "exercises")
+@Table(name = "exercises", indexes = {
+        @Index(name = "idx_exercises_name", columnList = "name"),
+        @Index(name = "idx_exercises_category", columnList = "category"),
+        @Index(name = "idx_exercises_difficulty", columnList = "difficulty")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,25 +44,25 @@ public class Exercise extends AbstractEntity {
     private ExerciseDifficulty difficulty;
 
     @JsonManagedReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "exercises_muscles",
                joinColumns = @JoinColumn(name = "exercise_id"),
                inverseJoinColumns = @JoinColumn(name = "muscle_id"))
     private Set<Muscle> muscles = new HashSet<>();
 
     @JsonBackReference
-    @OneToMany(mappedBy = "exercise",
-               cascade = {CascadeType.MERGE},
-               fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "exercise")
     @JsonIgnore
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
+        muscle.getExercises().add(this);
     }
 
     public void removeMuscle(Muscle muscle) {
         this.muscles.remove(muscle);
+        muscle.getExercises().remove(this);
     }
 
     public void setMuscles(Set<Muscle> muscles) {
