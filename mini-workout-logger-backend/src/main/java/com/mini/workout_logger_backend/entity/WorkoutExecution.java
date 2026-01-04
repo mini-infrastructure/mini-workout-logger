@@ -1,6 +1,7 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class WorkoutExecution extends Execution {
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "workoutExecution",
                cascade = CascadeType.ALL,
                orphanRemoval = true)

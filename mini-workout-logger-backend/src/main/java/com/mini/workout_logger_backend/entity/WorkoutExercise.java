@@ -52,7 +52,7 @@ public class WorkoutExercise extends AbstractEntity {
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "workoutExercise",
             cascade = CascadeType.ALL,
             orphanRemoval = true)

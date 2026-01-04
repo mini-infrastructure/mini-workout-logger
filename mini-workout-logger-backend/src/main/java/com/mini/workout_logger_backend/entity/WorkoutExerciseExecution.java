@@ -24,7 +24,7 @@ public class WorkoutExerciseExecution extends Execution {
     @JoinColumn(name = "workout_execution_id", nullable = false)
     private WorkoutExecution workoutExecution;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
