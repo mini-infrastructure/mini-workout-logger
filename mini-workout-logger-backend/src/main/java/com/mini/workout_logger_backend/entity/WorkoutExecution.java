@@ -21,12 +21,12 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkoutExecution extends Execution {
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "workoutExecution",
                cascade = CascadeType.ALL,
                orphanRemoval = true)

@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkoutExerciseExecution extends Execution {
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "workout_execution_id", nullable = false)
     private WorkoutExecution workoutExecution;

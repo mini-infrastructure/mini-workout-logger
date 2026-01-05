@@ -12,6 +12,7 @@ import lombok.Getter;
 public enum SetCategory implements TranslatableEnum<SetCategory> {
 
     NORMAL,
+    WARMUP,
     COMPOUND
 
 }

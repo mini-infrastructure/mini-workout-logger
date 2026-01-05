@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "workout_exercises",
@@ -57,6 +59,11 @@ public class WorkoutExercise extends AbstractEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     private List<WorkoutExerciseExecution> executions = new ArrayList<>();
+
+    public int getPosition() {
+        if (workout == null) return -1;
+        return workout.getWorkoutExercises().indexOf(this);
+    }
 
     public void addSet(Set set) {
         this.sets.add(set);

@@ -1,6 +1,5 @@
 package com.mini.workout_logger_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.SetCategory;
@@ -52,5 +51,10 @@ public class Set extends AbstractEntity {
 
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
+
+    public int getPosition() {
+        if (workoutExercise == null) return -1;
+        return workoutExercise.getSets().indexOf(this);
+    }
 
 }

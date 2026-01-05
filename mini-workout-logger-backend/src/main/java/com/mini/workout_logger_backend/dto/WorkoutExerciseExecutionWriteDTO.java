@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,6 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkoutExerciseExecutionWriteDTO extends WriteDTO {
+
+    @NotNull
+    private Long workoutExecutionId;
+
+    @NotNull
+    private Long workoutExerciseId;
 
     @JsonProperty(value = "set_executions")
     private List<SetExecutionWriteDTO> setExecutions;

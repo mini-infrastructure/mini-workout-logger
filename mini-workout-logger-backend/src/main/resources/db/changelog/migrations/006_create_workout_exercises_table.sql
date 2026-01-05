@@ -2,7 +2,7 @@ CREATE TABLE workout_exercises (
 
     id BIGSERIAL PRIMARY KEY,
     workout_id BIGINT NOT NULL,
-    position INTEGER NOT NULL,
+    position INTEGER,
     exercise_id BIGINT NOT NULL,
     equipment VARCHAR(50),
     rest_time_seconds INTEGER,

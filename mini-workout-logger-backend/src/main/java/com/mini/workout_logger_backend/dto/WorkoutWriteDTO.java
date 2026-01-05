@@ -23,8 +23,4 @@ public class WorkoutWriteDTO extends WriteDTO {
     @JsonProperty(value = "workout_exercises")
     private List<WorkoutExerciseWriteDTO> workoutExercises;
 
-    @NotNull
-    @JsonProperty(value = "workout_executions")
-    private List<WorkoutExecutionWriteDTO> workoutExecutions;
-
 }

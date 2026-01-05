@@ -2,7 +2,7 @@ CREATE TABLE sets (
 
     id BIGSERIAL PRIMARY KEY,
     workout_exercise_id BIGINT NOT NULL,
-    position INTEGER NOT NULL,
+    position INTEGER,
     category VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
     repetitions INTEGER,
