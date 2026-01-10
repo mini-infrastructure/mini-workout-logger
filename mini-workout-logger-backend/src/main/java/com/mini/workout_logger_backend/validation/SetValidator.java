@@ -1,11 +1,16 @@
 package com.mini.workout_logger_backend.validation;
 
+import com.mini.java_core.service.MessageService;
 import com.mini.workout_logger_backend.annotation.SetValidated;
 import com.mini.workout_logger_backend.dto.SetWriteDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SetValidator implements ConstraintValidator<SetValidated, SetWriteDTO> {
+
+    @Autowired
+    private MessageService messageService;
 
     @Override
     public boolean isValid(SetWriteDTO value,
@@ -18,90 +23,120 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
         boolean hasError = false;
         context.disableDefaultConstraintViolation();
 
-        switch (value.getType()) {
+        if (value.getWeight() != null && value.getWeight() < 0) {
+            addViolation(context,
+                    "weight",
+                    messageService.getLocalizedMessage("error.must_be_bigger_or_equal_to", 0));
+            hasError = true;
+        }
 
-            case REPS_X_WEIGHT -> {
+        if (value.getDurationSeconds() != null && value.getDurationSeconds() <= 0) {
+            addViolation(context,
+                    "durationSeconds",
+                    messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+            hasError = true;
+        }
 
-                if (value.getRepetitions() == null) {
-                    addViolation(context,
-                            "repetitions",
-                            "must be provided for REPS_X_WEIGHT sets.");
-                    hasError = true;
+        if (value.getRepetitions() != null && value.getRepetitions() <= 0) {
+            addViolation(context,
+                    "repetitions",
+                    messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+            hasError = true;
+        }
+
+        if (value.getType() == null) {
+            addViolation(context,
+                    "type",
+                    messageService.getLocalizedMessage("error.must_not_be_null"));
+            return false;
+        } else {
+            switch (value.getType()) {
+
+                case REPS_X_WEIGHT -> {
+
+                    if (value.getRepetitions() == null) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
+                        hasError = true;
+                    }
+
+                    if (value.getWeight() == null) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
+                        hasError = true;
+                    }
+
+                    if (value.getDurationSeconds() != null) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.set.must_be_null_for_reps_x_weight"));
+                        hasError = true;
+                    }
                 }
 
-                if (value.getWeight() == null) {
-                    addViolation(context,
-                            "weight",
-                            "must be provided for REPS_X_WEIGHT sets.");
-                    hasError = true;
+                case TIME_X_WEIGHT -> {
+
+                    if (value.getDurationSeconds() == null) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
+                        hasError = true;
+                    }
+
+                    if (value.getWeight() == null) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
+                        hasError = true;
+                    }
+
+                    if (value.getRepetitions() != null) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.set.must_be_null_for_time_x_weight"));
+                        hasError = true;
+                    }
                 }
 
-                if (value.getDurationSeconds() != null) {
-                    addViolation(context,
-                            "durationSeconds",
-                            "must be null for REPS_X_WEIGHT sets.");
-                    hasError = true;
-                }
-            }
+                case TIME -> {
 
-            case TIME_X_WEIGHT -> {
+                    if (value.getDurationSeconds() == null) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
+                        hasError = true;
+                    }
 
-                if (value.getDurationSeconds() == null) {
-                    addViolation(context,
-                            "durationSeconds",
-                            "must be provided for TIME_X_WEIGHT sets.");
-                    hasError = true;
-                }
+                    if (value.getRepetitions() == null) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
+                        hasError = true;
+                    }
 
-                if (value.getWeight() == null) {
-                    addViolation(context,
-                            "weight",
-                            "must be provided for TIME_X_WEIGHT sets.");
-                    hasError = true;
-                }
-
-                if (value.getRepetitions() != null) {
-                    addViolation(context,
-                            "repetitions",
-                            "must be null for TIME_X_WEIGHT sets.");
-                    hasError = true;
-                }
-            }
-
-            case TIME -> {
-
-                if (value.getDurationSeconds() == null) {
-                    addViolation(context,
-                            "durationSeconds",
-                            "must be provided for TIME sets.");
-                    hasError = true;
+                    if (value.getWeight() != null) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.set.must_be_null_for_time"));
+                        hasError = true;
+                    }
                 }
 
-                if (value.getRepetitions() == null) {
-                    addViolation(context,
-                            "repetitions",
-                            "must be provided for TIME sets.");
-                    hasError = true;
-                }
-
-                if (value.getWeight() != null) {
-                    addViolation(context,
-                            "weight",
-                            "must be null for TIME sets.");
-                    hasError = true;
-                }
             }
         }
+
+
 
         return !hasError;
     }
 
-    private void addViolation(ConstraintValidatorContext context,
-                              String field,
-                              String message) {
+    public void addViolation(ConstraintValidatorContext context,
+                             String field,
+                             String message) {
         context.buildConstraintViolationWithTemplate(message)
                 .addPropertyNode(field)
                 .addConstraintViolation();
     }
 }
-
