@@ -52,8 +52,8 @@ BEGIN
         p_rest_time_seconds,
         NOW(),
         NOW()
-    )
-    ON CONFLICT (workout_id, position) DO NOTHING;
+    );
+    ---ON CONFLICT (workout_id, position) DO NOTHING;
 
     SELECT id INTO v_workout_exercise_id
     FROM workout_exercises
@@ -96,8 +96,8 @@ BEGIN
         p_duration_seconds,
         NOW(),
         NOW()
-    )
-    ON CONFLICT (workout_exercise_id, position) DO NOTHING;
+    );
+    ---ON CONFLICT (workout_exercise_id, position) DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;
 

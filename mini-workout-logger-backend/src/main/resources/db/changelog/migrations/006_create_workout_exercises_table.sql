@@ -18,10 +18,10 @@ CREATE TABLE workout_exercises (
     CONSTRAINT fk_workout_exercises_exercise
         FOREIGN KEY (exercise_id)
         REFERENCES exercises(id)
-        ON DELETE RESTRICT,
+        ON DELETE RESTRICT
 
-    CONSTRAINT uk_workout_exercises_order
-        UNIQUE (workout_id, position)
+--    CONSTRAINT uk_workout_exercises_order
+--        UNIQUE (workout_id, position)
 
 );
 

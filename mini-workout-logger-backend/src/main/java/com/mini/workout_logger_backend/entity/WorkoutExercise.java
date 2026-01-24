@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "workout_exercises",
-        uniqueConstraints = {@UniqueConstraint(name = "uk_workout_exercises_order", columnNames = {"workout_id", "position"})},
+        // uniqueConstraints = {@UniqueConstraint(name = "uk_workout_exercises_order", columnNames = {"workout_id", "position"})},
         indexes = {
             @Index(name = "idx_workout_exercises_workout_id", columnList = "workout_id"),
             @Index(name = "idx_workout_exercises_exercise_id", columnList = "exercise_id")})
@@ -56,8 +56,7 @@ public class WorkoutExercise extends AbstractEntity {
 
     @JsonBackReference
     @OneToMany(mappedBy = "workoutExercise",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            cascade = CascadeType.ALL)
     private List<WorkoutExerciseExecution> executions = new ArrayList<>();
 
     public int getPosition() {

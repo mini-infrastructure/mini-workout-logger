@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "sets",
-        uniqueConstraints = {@UniqueConstraint(name = "uk_sets_order", columnNames = {"workout_exercise_id", "position"})},
+        // uniqueConstraints = {@UniqueConstraint(name = "uk_sets_order", columnNames = {"workout_exercise_id", "position"})},
         indexes = {@Index(name = "idx_sets_workout_exercise", columnList = "workout_exercise_id")})
 @Getter
 @Setter

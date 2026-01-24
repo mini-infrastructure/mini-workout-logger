@@ -34,7 +34,4 @@ public class SetExecution extends Execution {
     @Column(name = "actual_duration_seconds")
     private Integer actualDurationSeconds;
 
-    @Column(name = "position")
-    private Integer position;
-
 }

@@ -23,27 +23,6 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
         boolean hasError = false;
         context.disableDefaultConstraintViolation();
 
-        if (value.getWeight() != null && value.getWeight() < 0) {
-            addViolation(context,
-                    "weight",
-                    messageService.getLocalizedMessage("error.must_be_bigger_or_equal_to", 0));
-            hasError = true;
-        }
-
-        if (value.getDurationSeconds() != null && value.getDurationSeconds() <= 0) {
-            addViolation(context,
-                    "durationSeconds",
-                    messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
-            hasError = true;
-        }
-
-        if (value.getRepetitions() != null && value.getRepetitions() <= 0) {
-            addViolation(context,
-                    "repetitions",
-                    messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
-            hasError = true;
-        }
-
         if (value.getType() == null) {
             addViolation(context,
                     "type",
@@ -59,12 +38,22 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
                                 "repetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
                         hasError = true;
+                    } else if (value.getRepetitions() <= 0) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+                        hasError = true;
                     }
 
                     if (value.getWeight() == null) {
                         addViolation(context,
                                 "weight",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
+                        hasError = true;
+                    } else if (value.getWeight() <= 0) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
@@ -83,12 +72,22 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
                                 "durationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
                         hasError = true;
+                    } else if (value.getDurationSeconds() <= 0) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+                        hasError = true;
                     }
 
                     if (value.getWeight() == null) {
                         addViolation(context,
                                 "weight",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
+                        hasError = true;
+                    } else if (value.getWeight() <= 0) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
@@ -107,12 +106,22 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
                                 "durationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
                         hasError = true;
+                    } else if (value.getDurationSeconds() <= 0) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+                        hasError = true;
                     }
 
                     if (value.getRepetitions() == null) {
                         addViolation(context,
                                 "repetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
+                        hasError = true;
+                    } else if (value.getRepetitions() <= 0) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 

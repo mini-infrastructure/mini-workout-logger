@@ -15,10 +15,10 @@ CREATE TABLE sets (
     CONSTRAINT fk_sets_workout_exercise
         FOREIGN KEY (workout_exercise_id)
         REFERENCES workout_exercises(id)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 
-    CONSTRAINT uk_sets_order
-        UNIQUE (workout_exercise_id, position)
+--    CONSTRAINT uk_sets_order
+--        UNIQUE (workout_exercise_id, position)
 
 );
 

@@ -13,6 +13,7 @@ import com.mini.workout_logger_backend.mapper.ExerciseMapper;
 import com.mini.workout_logger_backend.mapper.MuscleMapper;
 import com.mini.workout_logger_backend.repository.ExerciseRepository;
 import com.mini.workout_logger_backend.repository.MuscleRepository;
+import com.mini.workout_logger_backend.repository.WorkoutExerciseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
     @Autowired
     private MuscleRepository muscleRepository;
 
+    @Autowired
+    private WorkoutExerciseRepository workoutExerciseRepository;
+
     private List<Muscle> savedMuscles;
 
     @Override
@@ -64,6 +68,17 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
     }
 
     @Override
+    @BeforeEach
+    public void clean() {
+        workoutExerciseRepository.deleteAll();
+        super.clean();
+    }
+
+    /**
+     * Assert that muscles are correctly associated after creating an exercise.
+     * @param dto The created ExerciseReadDTO
+     */
+    @Override
     protected void afterCreate(ExerciseReadDTO dto) {
         if (dto.getName().equals("Chest Fly")) {
             List<String> muscleNames = dto.getMuscles().stream()
@@ -79,6 +94,9 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
         }
     }
 
+    /**
+     * Muscles must exist before exercises are created.
+     */
     @BeforeEach
     void setupMuscles() {
         muscleRepository.deleteAll();
@@ -95,6 +113,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                 )
         );
     }
+
     @Test
     void associations() throws Exception {
 
