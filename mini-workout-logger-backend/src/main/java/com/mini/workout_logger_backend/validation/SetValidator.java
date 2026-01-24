@@ -31,6 +31,34 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
         } else {
             switch (value.getType()) {
 
+                case REPS -> {
+                    if (value.getRepetitions() == null) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.set.must_be_provided_for_reps"));
+                        hasError = true;
+                    } else if (value.getRepetitions() <= 0) {
+                        addViolation(context,
+                                "repetitions",
+                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
+                        hasError = true;
+                    }
+
+                    if (value.getWeight() != null) {
+                        addViolation(context,
+                                "weight",
+                                messageService.getLocalizedMessage("error.set.must_be_null_for_reps"));
+                        hasError = true;
+                    }
+
+                    if (value.getDurationSeconds() != null) {
+                        addViolation(context,
+                                "durationSeconds",
+                                messageService.getLocalizedMessage("error.set.must_be_null_for_reps"));
+                        hasError = true;
+                    }
+                }
+
                 case REPS_X_WEIGHT -> {
 
                     if (value.getRepetitions() == null) {
