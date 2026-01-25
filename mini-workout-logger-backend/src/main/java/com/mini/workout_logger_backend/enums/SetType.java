@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public enum SetType implements TranslatableEnum<SetType> {
 
+    REPS,
     REPS_X_WEIGHT,
     TIME_X_WEIGHT,
     TIME

@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
@@ -12,22 +13,35 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "exercise_executions")
+@Table(name = "workout_exercises",
+        // uniqueConstraints = {@UniqueConstraint(name = "uk_workout_exercises_order", columnNames = {"workout_id", "position"})},
+        indexes = {
+                @Index(name = "idx_workout_exercises_workout_id", columnList = "workout_id"),
+                @Index(name = "idx_workout_exercises_exercise_id", columnList = "exercise_id")})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExerciseExecution extends AbstractEntity {
+public class WorkoutExercise extends AbstractEntity {
+
+    @JsonBackReference
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "workout_id", nullable = false)
+    private Workout workout;
+
+    @Column(name = "position")
+    private Integer position;
 
     @JsonManagedReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
+    @ManyToOne(optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "exerciseExecution",
+    @OneToMany(mappedBy = "workoutExercise",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
     @OrderColumn(name = "position")
@@ -40,14 +54,24 @@ public class ExerciseExecution extends AbstractEntity {
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 
+    @JsonBackReference
+    @OneToMany(mappedBy = "workoutExercise",
+            cascade = CascadeType.ALL)
+    private List<WorkoutExerciseExecution> executions = new ArrayList<>();
+
+    public int getPosition() {
+        if (workout == null) return -1;
+        return workout.getWorkoutExercises().indexOf(this);
+    }
+
     public void addSet(Set set) {
         this.sets.add(set);
-        set.setExerciseExecution(this);
+        set.setWorkoutExercise(this);
     }
 
     public void removeSet(Set set) {
         this.sets.remove(set);
-        set.setExerciseExecution(null);
+        set.setWorkoutExercise(null);
     }
 
     public void setSets(List<Set> sets) {
@@ -62,42 +86,6 @@ public class ExerciseExecution extends AbstractEntity {
             sets.remove(set);
             sets.add(newPosition, set);
         }
-    }
-
-    /**
-     * Sets the updatedAt timestamp to the current date and time, to mark
-     * execution as completed.
-     */
-    public void setUpdatedAtToNow() {
-        this.setUpdatedAt(new Date());
-    }
-
-    /**
-     * The start time of the exercise execution, which is the createdAt timestamp.
-     * @return Date representing the start time.
-     */
-    public Date getStartTime() {
-        return this.getCreatedAt();
-    }
-
-    /**
-     * If the exercise execution has been updated after creation, return the updatedAt
-     * timestamp as the end time.
-     * @return Date representing the end time, or null if not updated.
-     */
-    public Date getEndTime() {
-        if (this.getUpdatedAt() == null || !this.getUpdatedAt().after(this.getCreatedAt())) {
-            return null;
-        }
-        return this.getUpdatedAt();
-    }
-
-    /**
-     * Determine if the exercise execution is completed based on the presence of an end time.
-     * @return true if completed, false otherwise.
-     */
-    public boolean getCompleted() {
-        return getEndTime() != null;
     }
 
 }
