@@ -23,8 +23,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -186,12 +184,15 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                             .collect(Collectors.groupingBy(
                                     s -> s.getWorkoutExercise().getId()
                             ));
+            Map<String, WorkoutExercise> exercisesByName = actualWorkoutExercises.stream()
+                    .collect(Collectors.toMap(
+                            we -> we.getExercise().getName().getValue(),
+                            we -> we
+                    ));
 
-            assertThat(actualWorkoutExercises).hasSize(2);
-            assertThat(actualWorkoutExercises.get(0).getExercise().getName().getValue())
-                    .isEqualTo("Push-Up");
-            assertThat(actualWorkoutExercises.get(1).getExercise().getName().getValue())
-                    .isEqualTo("Squat");
+            assertThat(exercisesByName).containsKeys("Push-Up", "Deadlift");
+            assertThat(setsByWorkoutExerciseId.get(exercisesByName.get("Push-Up").getId())).hasSize(3);
+            assertThat(setsByWorkoutExerciseId.get(exercisesByName.get("Deadlift").getId())).hasSize(3);
 
             WorkoutExercise we1 = actualWorkoutExercises.get(0);
             WorkoutExercise we2 = actualWorkoutExercises.get(1);
@@ -200,7 +201,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
             assertThat(setsByWorkoutExerciseId.get(we1.getId())).hasSize(3);
             assertThat(we1.getExercise().getName().getValue()).isEqualTo("Push-Up");
             assertThat(setsByWorkoutExerciseId.get(we2.getId())).hasSize(3);
-            assertThat(we2.getExercise().getName().getValue()).isEqualTo("Squat");
+            assertThat(we2.getExercise().getName().getValue()).isEqualTo("Deadlift");
         }
     }
 
@@ -265,7 +266,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                 60
         );
 
-        MvcResult exercisesResult = mockMvc.perform(MockMvcRequestBuilders.put(getBaseUrl() + "/{id}/exercises", workout.getId())
+        mockMvc.perform(MockMvcRequestBuilders.put(getBaseUrl() + "/{id}/exercises", workout.getId())
                         .queryParam("lang", "pt_BR")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.ALL_VALUE)
@@ -276,6 +277,145 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                 .andExpect(jsonPath("$.data[?(@.exercise.name == 'Chest-Fly')]").exists())
                 .andReturn();
 
+    }
+
+    @Test
+    void _reorderExercise() throws Exception {
+        // Create workout.
+        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+        int oldExerciseCount = workout.getWorkoutExercises().size();
+
+        // Get existing exercise IDs.
+        Long firstExerciseId = workout.getWorkoutExercises().get(0).getId();
+        Long secondExerciseId = workout.getWorkoutExercises().get(1).getId();
+
+        // Perform.
+        mockMvc.perform(
+                MockMvcRequestBuilders.put(
+                    getBaseUrl() + "/{id}/exercises/reorder/{exerciseId}",
+                    workout.getId(),
+                    secondExerciseId   )
+                    .queryParam("newPosition", "0")
+                    .queryParam("lang", "pt_BR")
+                    .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(oldExerciseCount))
+                .andExpect(jsonPath("$.data[0].id").value(secondExerciseId))
+                .andExpect(jsonPath("$.data[1].id").value(firstExerciseId))
+                .andReturn();
+
+    }
+
+    @Test
+    void _removeExercise() throws Exception {
+        // Create workout.
+        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+        int oldExerciseCount = workout.getWorkoutExercises().size();
+
+        // Get an existing exercise ID.
+        Long workoutExerciseIdToRemove = workout.getWorkoutExercises().getFirst().getId();
+
+        // Perform.
+        mockMvc.perform(
+                MockMvcRequestBuilders.put(
+                    getBaseUrl() + "/{id}/exercises/remove/{exerciseId}",
+                    workout.getId(),
+                    workoutExerciseIdToRemove   )
+                    .queryParam("lang", "pt_BR")
+                    .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(oldExerciseCount - 1))
+                .andExpect(jsonPath("$.data[?(@.exercise.id == " + workoutExerciseIdToRemove     + ")]").doesNotExist())
+                .andReturn();
+
+    }
+
+    @Test
+    void _addSet() throws Exception {
+        // Create workout.
+        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+
+        // Get existing workoutExercise ID.
+        Long workoutExerciseId = workout.getWorkoutExercises().getFirst().getId();
+        int oldSetCount = workout.getWorkoutExercises().getFirst().getSets().size();
+
+        // Perform.
+        SetWriteDTO newSet = new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 20, null, null);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put(
+                    getBaseUrl() + "/{id}/exercises/{exerciseId}/sets",
+                    workout.getId(),
+                    workoutExerciseId   )
+                    .queryParam("lang", "pt_BR")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.ALL_VALUE)
+                    .content(setMapper.toString(newSet)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(oldSetCount + 1))
+                .andReturn();
+    }
+
+    @Test
+    void _reorderSet() throws Exception {
+        // Create workout.
+        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+
+        // Get existing workoutExercise ID.
+        Long workoutExerciseId = workout.getWorkoutExercises().getFirst().getId();
+
+        // Get existing set IDs.
+        List<com.mini.workout_logger_backend.entity.Set> sets = workout.getWorkoutExercises().getFirst().getSets();
+        Long firstSetId = sets.get(0).getId();
+        Long secondSetId = sets.get(1).getId();
+
+        // Perform.
+        mockMvc.perform(
+                MockMvcRequestBuilders.put(
+                    getBaseUrl() + "/{id}/exercises/{exerciseId}/sets/reorder/{setId}",
+                    workout.getId(),
+                    workoutExerciseId,
+                    secondSetId   )
+                    .queryParam("newPosition", "0")
+                    .queryParam("lang", "pt_BR")
+                    .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(sets.size()))
+                .andExpect(jsonPath("$.data[0].id").value(secondSetId))
+                .andExpect(jsonPath("$.data[1].id").value(firstSetId))
+                .andReturn();
+    }
+
+    @Test
+    void _removeSet() throws Exception {
+        // Create workout.
+        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+
+        // Get existing workoutExercise ID.
+        Long workoutExerciseId = workout.getWorkoutExercises().getFirst().getId();
+
+        // Get existing set ID to remove.
+        List<com.mini.workout_logger_backend.entity.Set> sets = workout.getWorkoutExercises().getFirst().getSets();
+        Long setIdToRemove = sets.getFirst().getId();
+        int oldSetCount = sets.size();
+
+        // Perform.
+        mockMvc.perform(
+                MockMvcRequestBuilders.put(
+                    getBaseUrl() + "/{id}/exercises/{exerciseId}/sets/remove/{setId}",
+                    workout.getId(),
+                    workoutExerciseId,
+                    setIdToRemove   )
+                    .queryParam("lang", "pt_BR")
+                    .accept(MediaType.ALL_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.length()").value(oldSetCount - 1))
+                .andReturn();
     }
 
 }
