@@ -27,7 +27,7 @@ public class Muscle extends AbstractEntity {
     private Text name;
 
     @JsonBackReference
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "muscle_groups",
                joinColumns = @JoinColumn(name = "muscle_id"),
                inverseJoinColumns = @JoinColumn(name = "muscle_group_id"))
@@ -43,10 +43,12 @@ public class Muscle extends AbstractEntity {
 
     public void addMuscleGroup(Muscle muscle) {
         this.muscleGroups.add(muscle);
+        muscle.getMuscles().add(this);
     }
 
     public void removeMuscleGroup(Muscle muscle) {
         this.muscleGroups.remove(muscle);
+        muscle.getMuscles().remove(this);
     }
 
     public void setMuscleGroups(Set<Muscle> muscleGroups) {
@@ -58,10 +60,12 @@ public class Muscle extends AbstractEntity {
 
     public void addExercise(Exercise exercise) {
         this.exercises.add(exercise);
+        exercise.getMuscles().add(this);
     }
 
     public void removeExercise(Exercise exercise) {
         this.exercises.remove(exercise);
+        exercise.getMuscles().remove(this);
     }
 
     public void setExercises(Set<Exercise> exercises) {

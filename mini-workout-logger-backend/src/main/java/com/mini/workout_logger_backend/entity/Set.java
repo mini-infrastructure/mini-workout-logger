@@ -1,6 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.SetCategory;
 import com.mini.workout_logger_backend.enums.SetType;
@@ -10,13 +10,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "sets")
+@Table(name = "sets",
+        // uniqueConstraints = {@UniqueConstraint(name = "uk_sets_order", columnNames = {"workout_exercise_id", "position"})},
+        indexes = {@Index(name = "idx_sets_workout_exercise", columnList = "workout_exercise_id")})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Set extends AbstractEntity {
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "workout_exercise_id", nullable = false)
+    private WorkoutExercise workoutExercise;
+
+    @Column(name = "position")
+    private Integer position;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "set",
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true)
+    private List<SetExecution> setExecutions;
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -35,17 +52,9 @@ public class Set extends AbstractEntity {
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "exercise_execution_id", nullable = false)
-    private ExerciseExecution exerciseExecution;
-
-    @Column(name = "completed")
-    private Boolean completed;
-
     public int getPosition() {
-        if (exerciseExecution == null) return -1;
-        return exerciseExecution.getSets().indexOf(this);
+        if (workoutExercise == null) return -1;
+        return workoutExercise.getSets().indexOf(this);
     }
 
 }
