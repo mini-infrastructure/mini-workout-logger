@@ -34,7 +34,7 @@ public class Workout extends AbstractEntity {
     @OrderColumn(name = "position")
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "workout",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)

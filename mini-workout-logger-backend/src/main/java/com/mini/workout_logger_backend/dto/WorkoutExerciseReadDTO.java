@@ -25,7 +25,7 @@ public class WorkoutExerciseReadDTO extends ReadDTO {
 
     private ExerciseEquipment equipment;
 
-    @JsonProperty(value = "rest_time_seconds")
+    @JsonProperty("rest_time_seconds")
     private Integer restTimeSeconds;
 
 }

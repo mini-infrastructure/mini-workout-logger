@@ -25,7 +25,7 @@ public class SetWriteDTO extends WriteDTO {
 
     private Double weight;
 
-    @JsonProperty(value = "duration_seconds")
+    @JsonProperty("duration_seconds")
     private Integer durationSeconds;
 
 }

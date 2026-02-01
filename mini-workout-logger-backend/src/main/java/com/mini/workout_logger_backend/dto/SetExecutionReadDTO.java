@@ -1,25 +1,17 @@
 package com.mini.workout_logger_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mini.java_core.annotation.ExistsById;
-import com.mini.java_core.dto.WriteDTO;
-import com.mini.workout_logger_backend.repository.SetRepository;
-import jakarta.validation.constraints.NotNull;
+import com.mini.java_core.dto.ReadDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class SetExecutionWriteDTO extends WriteDTO {
+public class SetExecutionReadDTO extends ReadDTO {
 
-    @NotNull
-    @ExistsById(repository = SetRepository.class)
-    @JsonProperty("set_id")
-    private Long setId;
+    private SetReadDTO set;
 
     @JsonProperty("actual_repetitions")
     private Integer actualRepetitions;
@@ -30,7 +22,6 @@ public class SetExecutionWriteDTO extends WriteDTO {
     @JsonProperty("actual_duration_seconds")
     private Integer actualDurationSeconds;
 
-    @NotNull
     private boolean completed;
 
 }

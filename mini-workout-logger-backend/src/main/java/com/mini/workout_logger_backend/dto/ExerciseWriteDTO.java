@@ -26,7 +26,7 @@ public class ExerciseWriteDTO extends WriteDTO {
 
     private ExerciseDifficulty difficulty;
 
-    @JsonProperty(value = "muscle_ids")
+    @JsonProperty("muscle_ids")
     private Set<Long> muscleIds = new HashSet<>();
 
     public ExerciseWriteDTO(String name) {
