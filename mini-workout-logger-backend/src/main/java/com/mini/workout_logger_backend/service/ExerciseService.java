@@ -21,7 +21,7 @@ public class ExerciseService extends AbstractService<Exercise,
     MuscleService muscleService;
 
     @Override
-    public Exercise transform(Exercise entity) {
+    public Exercise beforeSave(Exercise entity) {
         // Adds the muscle groups associated with the muscle.
         for (Muscle muscle : entity.getMuscles()) {
             for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new java.util.HashSet<>())) {
@@ -29,7 +29,7 @@ public class ExerciseService extends AbstractService<Exercise,
             }
         }
 
-        return super.transform(entity);
+        return super.beforeSave(entity);
     }
 
 }
