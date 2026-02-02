@@ -31,7 +31,7 @@ public class Set extends AbstractEntity {
     @Column(name = "position")
     private Integer position;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "set",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
@@ -14,12 +15,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class WorkoutExecutionReadDTO extends ReadDTO {
 
-    private WorkoutReadDTO workout;
+//    private WorkoutReadDTO workout;
 
-    @JsonProperty("workout_exercises")
-    private List<WorkoutExerciseExecutionReadDTO> workoutExercises;
+    @JsonProperty("workout_exercises_execution")
+    private List<WorkoutExerciseExecutionReadDTO> workoutExerciseExecutions;
 
     private boolean completed;
 

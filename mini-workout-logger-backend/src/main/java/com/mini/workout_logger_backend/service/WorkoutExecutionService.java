@@ -8,8 +8,10 @@ import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionWriteDTO;
+import com.mini.workout_logger_backend.entity.SetExecution;
 import com.mini.workout_logger_backend.entity.Workout;
 import com.mini.workout_logger_backend.entity.WorkoutExecution;
+import com.mini.workout_logger_backend.entity.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.mapper.WorkoutExecutionMapper;
 import com.mini.workout_logger_backend.repository.WorkoutExecutionRepository;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
@@ -48,22 +50,28 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
     }
 
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> create(Long workoutId,
-                                                                       WorkoutExecutionWriteDTO dto) throws JsonProcessingException {
+                                                                       WorkoutExecutionWriteDTO dto) {
+        // Get parent workout.
         Workout workout = workoutRepository.safeFindById(workoutId);
         dto.setWorkoutId(workoutId);
 
+        // Convert execution DTO to entity.
         WorkoutExecution workoutExecution = mapper.toEntity(dto);
         workoutExecution.setWorkout(workout);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writeValueAsString(workoutExecution);
-        System.out.println("Serialized JSON: " + jsonString);
+        // Set bidirectional relationships.
+        for (WorkoutExerciseExecution wee : workoutExecution.getWorkoutExerciseExecutions()) {
+            wee.setWorkoutExecution(workoutExecution);
 
-//        WorkoutExecution savedExecution = repository.save(workoutExecution);
+            for (SetExecution se : wee.getSetExecutions()) {
+                se.setWorkoutExerciseExecution(wee);
+            }
+        }
 
+        WorkoutExecution savedExecution = repository.save(workoutExecution);
         return ResponseHelper.success(HttpStatus.CREATED,
                 ResponseMessage.ENTITY_CREATED.getMessage(),
-                List.of(mapper.toDTO(workoutExecution)));
+                List.of(mapper.toDTO(savedExecution)));
     }
 
     @Override

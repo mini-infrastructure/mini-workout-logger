@@ -41,4 +41,9 @@ public class WorkoutExerciseExecution extends Execution {
                 && setExecutions.stream().allMatch(SetExecution::getCompleted);
     }
 
+    public void addSetExecution(SetExecution setExecution) {
+        setExecutions.add(setExecution);
+        setExecution.setWorkoutExerciseExecution(this);
+    }
+
 }

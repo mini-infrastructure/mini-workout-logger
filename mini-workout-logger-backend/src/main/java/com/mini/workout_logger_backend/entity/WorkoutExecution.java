@@ -38,4 +38,9 @@ public class WorkoutExecution extends Execution {
                 && workoutExerciseExecutions.stream().allMatch(WorkoutExerciseExecution::getCompleted);
     }
 
+    public void addWorkoutExerciseExecution(WorkoutExerciseExecution execution) {
+        workoutExerciseExecutions.add(execution);
+        execution.setWorkoutExecution(this);
+    }
+
 }

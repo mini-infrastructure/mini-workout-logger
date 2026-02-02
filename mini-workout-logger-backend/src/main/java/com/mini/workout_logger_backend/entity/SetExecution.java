@@ -1,6 +1,7 @@
 package com.mini.workout_logger_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ public class SetExecution extends Execution {
     @JoinColumn(name = "workout_exercise_execution_id", nullable = false)
     private WorkoutExerciseExecution workoutExerciseExecution;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "set_id", nullable = false)
     private Set set;

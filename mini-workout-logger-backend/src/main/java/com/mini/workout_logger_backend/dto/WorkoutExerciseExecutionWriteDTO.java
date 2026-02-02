@@ -18,10 +18,6 @@ import java.util.List;
 public class WorkoutExerciseExecutionWriteDTO extends WriteDTO {
 
     @NotNull
-    @JsonProperty("workout_execution_id")
-    private Long workoutExecutionId;
-
-    @NotNull
     @JsonProperty("workout_exercise_id")
     private Long workoutExerciseId;
 

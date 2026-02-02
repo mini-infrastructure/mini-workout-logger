@@ -110,7 +110,7 @@ public class WorkoutController extends AbstractController<Workout,
     @Tag(name = "Workout Execution")
     @PostMapping("/{id}/executions")
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> createExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
-                                                                                @RequestBody @Valid WorkoutExecutionWriteDTO dto) throws JsonProcessingException {
+                                                                                @RequestBody @Valid WorkoutExecutionWriteDTO dto) {
         return executionService.create(workoutId, dto);
     }
 
