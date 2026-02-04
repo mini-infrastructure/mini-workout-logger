@@ -1,17 +1,15 @@
 package com.mini.workout_logger_backend.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
+import com.mini.workout_logger_backend.dto.SetExecutionWriteDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionWriteDTO;
-import com.mini.workout_logger_backend.entity.SetExecution;
-import com.mini.workout_logger_backend.entity.Workout;
-import com.mini.workout_logger_backend.entity.WorkoutExecution;
-import com.mini.workout_logger_backend.entity.WorkoutExerciseExecution;
+import com.mini.workout_logger_backend.dto.WorkoutExerciseExecutionWriteDTO;
+import com.mini.workout_logger_backend.entity.*;
 import com.mini.workout_logger_backend.mapper.WorkoutExecutionMapper;
 import com.mini.workout_logger_backend.repository.WorkoutExecutionRepository;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
@@ -20,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.xml.validation.Validator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
@@ -49,14 +49,95 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
                 mapper.toDTO(executions));
     }
 
+    /**
+     * Applies a partial execution input over a template generated from a static Workout definition.
+     * <p>
+     * The template represents the full execution structure derived from the Workout
+     * (all exercises and sets), with execution-specific fields initially unset.
+     * The patch contains only the fields provided by the client during execution.
+     * <p>
+     * This method updates the template with the execution-related values from the patch.
+     *
+     * @param template a DTO generated from the static Workout definition,
+     *                 containing the complete execution structure with empty execution fields
+     * @param patch a partially populated DTO provided by the client during execution
+     * @return a DTO representing the full execution, combining the static structure
+     *         with the execution data supplied in the patch
+     */
+    public WorkoutExecutionWriteDTO executionFromTemplate(WorkoutExecutionWriteDTO template,
+                                                          WorkoutExecutionWriteDTO patch) {
+        if (patch == null || patch.getWorkoutExerciseExecutions() == null) {
+            return template;
+        }
+
+        Map<Long, WorkoutExerciseExecutionWriteDTO> templateExercises =
+                template.getWorkoutExerciseExecutions().stream()
+                        .collect(Collectors.toMap(
+                                WorkoutExerciseExecutionWriteDTO::getWorkoutExerciseId,
+                                Function.identity()
+                        ));
+
+        for (WorkoutExerciseExecutionWriteDTO patchExercise :
+                patch.getWorkoutExerciseExecutions()) {
+
+            WorkoutExerciseExecutionWriteDTO targetExercise =
+                    templateExercises.get(patchExercise.getWorkoutExerciseId());
+
+            if (targetExercise == null) continue;
+
+            if (patchExercise.getSetExecutions() == null) continue;
+
+            Map<Long, SetExecutionWriteDTO> templateSets =
+                    targetExercise.getSetExecutions().stream()
+                            .collect(Collectors.toMap(
+                                    SetExecutionWriteDTO::getSetId,
+                                    Function.identity()
+                            ));
+
+            for (SetExecutionWriteDTO patchSet :
+                    patchExercise.getSetExecutions()) {
+
+                SetExecutionWriteDTO targetSet =
+                        templateSets.get(patchSet.getSetId());
+
+                if (targetSet == null) continue;
+
+                if (patchSet.isCompleted()) {
+                    targetSet.setCompleted(true);
+                }
+                if (patchSet.getActualRepetitions() != null) {
+                    targetSet.setActualRepetitions(
+                            patchSet.getActualRepetitions()
+                    );
+                }
+                if (patchSet.getActualWeight() != null) {
+                    targetSet.setActualWeight(
+                            patchSet.getActualWeight()
+                    );
+                }
+                if (patchSet.getActualDurationSeconds() != null) {
+                    targetSet.setActualDurationSeconds(
+                            patchSet.getActualDurationSeconds()
+                    );
+                }
+            }
+        }
+
+        return template;
+    }
+
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> create(Long workoutId,
                                                                        WorkoutExecutionWriteDTO dto) {
         // Get parent workout.
         Workout workout = workoutRepository.safeFindById(workoutId);
         dto.setWorkoutId(workoutId);
 
+        // Creates a template from the static definition of the workout.
+        WorkoutExecutionWriteDTO template = mapper.templateFromWorkout(workout);
+        WorkoutExecutionWriteDTO merged = executionFromTemplate(template, dto);
+
         // Convert execution DTO to entity.
-        WorkoutExecution workoutExecution = mapper.toEntity(dto);
+        WorkoutExecution workoutExecution = mapper.toEntity(merged);
         workoutExecution.setWorkout(workout);
 
         // Set bidirectional relationships.

@@ -1,8 +1,11 @@
 package com.mini.workout_logger_backend.mapper;
 
 import com.mini.java_core.mapper.AbstractMapper;
+import com.mini.workout_logger_backend.dto.SetExecutionWriteDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionWriteDTO;
+import com.mini.workout_logger_backend.dto.WorkoutExerciseExecutionWriteDTO;
+import com.mini.workout_logger_backend.entity.Workout;
 import com.mini.workout_logger_backend.entity.WorkoutExecution;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
 import org.modelmapper.ModelMapper;
@@ -36,6 +39,35 @@ public class WorkoutExecutionMapper extends AbstractMapper<WorkoutExecution,
                     return entity;
                 });
 
+    }
+
+    public WorkoutExecutionWriteDTO templateFromWorkout(Workout workout) {
+        WorkoutExecutionWriteDTO template = new WorkoutExecutionWriteDTO();
+
+        template.setWorkoutExerciseExecutions(
+                workout.getWorkoutExercises().stream()
+                        .map(ex -> {
+                            WorkoutExerciseExecutionWriteDTO weee =
+                                    new WorkoutExerciseExecutionWriteDTO();
+                            weee.setWorkoutExerciseId(ex.getId());
+
+                            weee.setSetExecutions(
+                                    ex.getSets().stream()
+                                            .map(set -> {
+                                                SetExecutionWriteDTO see =
+                                                        new SetExecutionWriteDTO();
+                                                see.setSetId(set.getId());
+                                                return see;
+                                            })
+                                            .toList()
+                            );
+
+                            return weee;
+                        })
+                        .toList()
+        );
+
+        return template;
     }
 
 }

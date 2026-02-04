@@ -164,8 +164,6 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
             }
         }
 
-
-
         return !hasError;
     }
 
@@ -176,4 +174,5 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
                 .addPropertyNode(field)
                 .addConstraintViolation();
     }
+
 }
