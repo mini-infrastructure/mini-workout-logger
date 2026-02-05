@@ -5,14 +5,23 @@ import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
+import com.mini.workout_logger_backend.annotation.WorkoutExecutionValidated;
 import com.mini.workout_logger_backend.dto.SetExecutionWriteDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionWriteDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExerciseExecutionWriteDTO;
-import com.mini.workout_logger_backend.entity.*;
+import com.mini.workout_logger_backend.entity.SetExecution;
+import com.mini.workout_logger_backend.entity.Workout;
+import com.mini.workout_logger_backend.entity.WorkoutExecution;
+import com.mini.workout_logger_backend.entity.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.mapper.WorkoutExecutionMapper;
 import com.mini.workout_logger_backend.repository.WorkoutExecutionRepository;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
+import com.mini.workout_logger_backend.validation.WorkoutExecutionValidator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
+import org.aspectj.apache.bcel.generic.ObjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,7 +47,7 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
     public WorkoutExecutionMapper mapper;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private Validator validator;
 
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAll(Long workoutId) {
         Workout workout = workoutRepository.safeFindById(workoutId);
@@ -131,6 +141,12 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         // Get parent workout.
         Workout workout = workoutRepository.safeFindById(workoutId);
         dto.setWorkoutId(workoutId);
+
+        // Validate input.
+        Set<ConstraintViolation<WorkoutExecutionWriteDTO>> violations = validator.validate(dto);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
 
         // Creates a template from the static definition of the workout.
         WorkoutExecutionWriteDTO template = mapper.templateFromWorkout(workout);

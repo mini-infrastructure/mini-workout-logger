@@ -5,7 +5,10 @@ import com.mini.java_core.annotation.ExistsById;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.workout_logger_backend.repository.SetRepository;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

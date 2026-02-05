@@ -1,6 +1,5 @@
 package com.mini.workout_logger_backend.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mini.java_core.controller.AbstractController;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.workout_logger_backend.dto.*;
@@ -110,7 +109,7 @@ public class WorkoutController extends AbstractController<Workout,
     @Tag(name = "Workout Execution")
     @PostMapping("/{id}/executions")
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> createExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
-                                                                                @RequestBody @Valid WorkoutExecutionWriteDTO dto) {
+                                                                                @RequestBody WorkoutExecutionWriteDTO dto) {
         return executionService.create(workoutId, dto);
     }
 
