@@ -55,6 +55,7 @@ npx widdershins openapi.yaml -o Wiki.md
 Access here:
 - 🌐 [Wiki.md](https://github.com/mini-infrastructure/mini-workout-logger/blob/main/Wiki.md)
 
+
 ## Run dev
 
 1. [Compile and serve backend](#compile-and-serve-backend)
@@ -84,8 +85,8 @@ bash run-dev.sh up
 ✔ Container mini-workout-logger-pgadmin   Started
 ```
 Which can be accessed here:
-- 🌐 [Swagger UI](http://localhost:9090/swagger-ui/index.html)
-- 🗂️ [pgAdmin](http://localhost:180/)
+- <a href="http://localhost:9090/swagger-ui/index.html"><img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/swagger-api-icon.png" alt="Swagger UI" width="14" height="14" /> Swagger UI</a>
+- <a href="http://localhost:180/"><img src="https://images.icon-icons.com/2415/PNG/512/postgresql_original_wordmark_logo_icon_146392.png" alt="Swagger UI" width="16" height="16" /> pgAdmin</a>
 
 ## Generate release
 
