@@ -11,6 +11,7 @@
     1. [Compile and serve backend](#compile-and-serve-backend)
     2. [Create database and seed data](#create-database-and-seed-data)
         1. [Start the test containers](#start-the-test-containers)
+3. [Generate release](#generate-release)
 
 ## Project architecture
 
@@ -84,3 +85,34 @@ bash run-dev.sh up
 Which can be accessed here:
 - 🌐 [Swagger UI](http://localhost:9090/swagger-ui/index.html)
 - 🗂️ [pgAdmin](http://localhost:180/)
+
+## Generate release
+
+Run tests
+```bash
+cd mini-workout-logger-backend/
+```
+```bash
+mvn clean verify -DskipTests=false
+```
+Set version at `mini-workout-logger-backend/pom.xml`
+```bash
+ <version>1.0.0</version>
+```
+Commit release
+```bash
+git checkout -b v1.0.0
+```
+```bash
+git add pom.xml
+```
+```bash
+git commit -m "Release version 1.0.0"
+```
+Create tag
+```bash
+git tag -a v1.0.0 -m "Release version 1.0.0"
+```
+```bash
+git push origin v1.0.0
+```
