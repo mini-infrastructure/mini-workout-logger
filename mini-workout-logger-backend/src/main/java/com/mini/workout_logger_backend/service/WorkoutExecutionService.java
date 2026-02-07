@@ -140,6 +140,12 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         return template;
     }
 
+    // Todo: Fazer um merge entre a execução realizada com a definição estática do treino. O merge pode conter
+    // Todo: exercícios a mais, a menos; uma atualização parcial dos sets (exemplo, somente o primeiro set foi
+    // Todo: executado, e, em relação a esse, foi alterado o peso. logo o treino correspondente deve manter os
+    // Todo: demais sets intactos, e editar o primeiro set com o peso atualizado), ou total, onde todos os sets
+    // Todo: sofreram alterações; deve ser possível remover sets também.
+
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> create(Long workoutId,
                                                                        WorkoutExecutionWriteDTO execution) {
         // Get parent workout.
