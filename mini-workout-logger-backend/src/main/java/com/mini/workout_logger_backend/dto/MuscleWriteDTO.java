@@ -20,7 +20,7 @@ public class MuscleWriteDTO extends WriteDTO {
     @NotNull
     private String name;
 
-    @JsonProperty(value = "muscle_group_ids")
+    @JsonProperty("muscle_group_ids")
     private Set<Long> muscleGroupIds = new HashSet<>();
 
     public MuscleWriteDTO(String name) {

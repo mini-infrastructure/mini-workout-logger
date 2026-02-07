@@ -18,7 +18,7 @@ public class MuscleReadDTO extends ReadDTO {
 
     private String name;
 
-    @JsonProperty(value = "muscle_groups")
+    @JsonProperty("muscle_groups")
     private Set<MuscleReadDTO> muscleGroups = new HashSet<>();
 
     public MuscleReadDTO(String name) {

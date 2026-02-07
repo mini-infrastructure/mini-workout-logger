@@ -22,7 +22,7 @@ public class WorkoutWriteDTO extends WriteDTO {
 
     @Valid
     @NotNull
-    @JsonProperty(value = "workout_exercises")
+    @JsonProperty("workout_exercises")
     private List<WorkoutExerciseWriteDTO> workoutExercises;
 
 }

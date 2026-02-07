@@ -1,6 +1,6 @@
 package com.mini.workout_logger_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.SetCategory;
 import com.mini.workout_logger_backend.enums.SetType;
@@ -22,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Set extends AbstractEntity {
 
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
@@ -29,7 +30,7 @@ public class Set extends AbstractEntity {
     @Column(name = "position")
     private Integer position;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "set",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)

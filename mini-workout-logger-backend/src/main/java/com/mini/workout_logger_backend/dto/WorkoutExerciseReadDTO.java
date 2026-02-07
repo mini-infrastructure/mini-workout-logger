@@ -1,6 +1,5 @@
 package com.mini.workout_logger_backend.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.ReadDTO;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
@@ -25,7 +24,7 @@ public class WorkoutExerciseReadDTO extends ReadDTO {
 
     private ExerciseEquipment equipment;
 
-    @JsonProperty(value = "rest_time_seconds")
+    @JsonProperty("rest_time_seconds")
     private Integer restTimeSeconds;
 
 }

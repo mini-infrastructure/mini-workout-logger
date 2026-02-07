@@ -1,6 +1,5 @@
 package com.mini.workout_logger_backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.converter.TextConverter;
 import com.mini.java_core.entity.AbstractEntity;
@@ -34,7 +33,7 @@ public class Workout extends AbstractEntity {
     @OrderColumn(name = "position")
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "workout",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)

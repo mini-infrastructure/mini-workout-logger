@@ -6,11 +6,13 @@ import com.mini.workout_logger_backend.dto.*;
 import com.mini.workout_logger_backend.entity.Workout;
 import com.mini.workout_logger_backend.mapper.WorkoutMapper;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
+import com.mini.workout_logger_backend.service.WorkoutExecutionService;
 import com.mini.workout_logger_backend.service.WorkoutService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,12 @@ public class WorkoutController extends AbstractController<Workout,
                                                           WorkoutMapper,
                                                           WorkoutRepository,
                                                           WorkoutService> {
+    @Autowired
+    private WorkoutExecutionService executionService;
+
+    /*
+     * Workout Exercise API.
+     */
 
     @Tag(name = "Workout Exercise", description = "Workout Exercise API")
     @GetMapping("/{id}/exercises")
@@ -51,6 +59,10 @@ public class WorkoutController extends AbstractController<Workout,
                                                                               @PathVariable("exerciseId") @NotNull @Min(1L) Long exerciseId) {
         return service.removeExercise(workoutId, exerciseId);
     }
+
+    /*
+     * Set API.
+     */
 
     @Tag(name = "Set", description = "Set API")
     @GetMapping("/{id}/exercises/{exerciseId}/sets")
@@ -82,6 +94,30 @@ public class WorkoutController extends AbstractController<Workout,
                                                             @PathVariable("exerciseId") @NotNull @Min(1L) Long exerciseId,
                                                             @PathVariable("setId") @NotNull @Min(1L) Long setId) {
         return service.removeSet(workoutId, exerciseId, setId);
+    }
+
+    /*
+     * Workout Execution API.
+     */
+
+    @Tag(name = "Workout Execution", description = "Workout Execution API")
+    @GetMapping("/{id}/executions")
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAllWorkoutExecutions(@PathVariable("id") @NotNull @Min(1L) Long workoutId) {
+        return executionService.getAll(workoutId);
+    }
+
+    @Tag(name = "Workout Execution")
+    @PostMapping("/{id}/executions")
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> createWorkoutExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
+                                                                                       @RequestBody WorkoutExecutionWriteDTO dto) {
+        return executionService.create(workoutId, dto);
+    }
+
+    @Tag(name = "Workout Execution")
+    @DeleteMapping("/{id}/executions/{workoutExecutionId}")
+    public ResponseEntity<ResponseDTO<Void>> removeWorkoutExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
+                                                                    @PathVariable("workoutExecutionId") @NotNull @Min(1L) Long workoutExecutionId) {
+        return executionService.delete(workoutId, workoutExecutionId);
     }
 
 }
