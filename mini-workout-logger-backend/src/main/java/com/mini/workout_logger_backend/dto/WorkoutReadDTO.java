@@ -17,7 +17,7 @@ public class WorkoutReadDTO extends ReadDTO {
 
     private String name;
 
-    @JsonProperty(value = "workout_exercises")
+    @JsonProperty("workout_exercises")
     private List<WorkoutExerciseReadDTO> workoutExercises;
 
 }

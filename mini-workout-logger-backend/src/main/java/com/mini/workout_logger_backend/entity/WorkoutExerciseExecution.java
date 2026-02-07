@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkoutExerciseExecution extends Execution {
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "workout_execution_id", nullable = false)
     private WorkoutExecution workoutExecution;
@@ -39,6 +39,11 @@ public class WorkoutExerciseExecution extends Execution {
     public boolean getCompleted() {
         return !setExecutions.isEmpty()
                 && setExecutions.stream().allMatch(SetExecution::getCompleted);
+    }
+
+    public void addSetExecution(SetExecution setExecution) {
+        setExecutions.add(setExecution);
+        setExecution.setWorkoutExerciseExecution(this);
     }
 
 }

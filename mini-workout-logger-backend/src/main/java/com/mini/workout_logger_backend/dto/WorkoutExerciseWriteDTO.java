@@ -23,7 +23,7 @@ public class WorkoutExerciseWriteDTO extends WriteDTO {
 
     @NotNull
     @ExistsById(repository = ExerciseRepository.class)
-    @JsonProperty(value = "exercise_id")
+    @JsonProperty("exercise_id")
     private Long exerciseId;
 
     @Valid
@@ -32,7 +32,7 @@ public class WorkoutExerciseWriteDTO extends WriteDTO {
     private ExerciseEquipment equipment;
 
     @Min(0)
-    @JsonProperty(value = "rest_time_seconds")
+    @JsonProperty("rest_time_seconds")
     private Integer restTimeSeconds;
 
 }

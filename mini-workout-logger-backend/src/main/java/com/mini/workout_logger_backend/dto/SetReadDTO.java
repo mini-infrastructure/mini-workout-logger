@@ -25,7 +25,7 @@ public class SetReadDTO extends ReadDTO {
 
     private Double weight;
 
-    @JsonProperty(value = "duration_seconds")
+    @JsonProperty("duration_seconds")
     private Integer durationSeconds;
 
 }

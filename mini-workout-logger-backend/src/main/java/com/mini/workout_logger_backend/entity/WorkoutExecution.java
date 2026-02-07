@@ -21,12 +21,12 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkoutExecution extends Execution {
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "workoutExecution",
                cascade = CascadeType.ALL,
                orphanRemoval = true)
@@ -36,6 +36,11 @@ public class WorkoutExecution extends Execution {
     public boolean getCompleted() {
         return !workoutExerciseExecutions.isEmpty()
                 && workoutExerciseExecutions.stream().allMatch(WorkoutExerciseExecution::getCompleted);
+    }
+
+    public void addWorkoutExerciseExecution(WorkoutExerciseExecution execution) {
+        workoutExerciseExecutions.add(execution);
+        execution.setWorkoutExecution(this);
     }
 
 }
