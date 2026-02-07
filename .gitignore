@@ -4,3 +4,5 @@
 mini-workout-logger-backend/src/test/assets/
 .env
 openapi.yaml
+
+mini-workout-logger-web-app/node_modules/
