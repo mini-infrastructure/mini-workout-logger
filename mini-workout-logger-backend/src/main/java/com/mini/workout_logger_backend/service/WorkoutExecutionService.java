@@ -1,11 +1,10 @@
 package com.mini.workout_logger_backend.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
-import com.mini.workout_logger_backend.annotation.WorkoutExecutionValidated;
+import com.mini.java_core.service.MessageService;
 import com.mini.workout_logger_backend.dto.SetExecutionWriteDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dto.WorkoutExecutionWriteDTO;
@@ -15,13 +14,12 @@ import com.mini.workout_logger_backend.entity.Workout;
 import com.mini.workout_logger_backend.entity.WorkoutExecution;
 import com.mini.workout_logger_backend.entity.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.mapper.WorkoutExecutionMapper;
+import com.mini.workout_logger_backend.mapper.WorkoutExerciseExecutionMapper;
 import com.mini.workout_logger_backend.repository.WorkoutExecutionRepository;
 import com.mini.workout_logger_backend.repository.WorkoutRepository;
-import com.mini.workout_logger_backend.validation.WorkoutExecutionValidator;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
-import org.aspectj.apache.bcel.generic.ObjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +45,13 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
     public WorkoutExecutionMapper mapper;
 
     @Autowired
+    WorkoutExerciseExecutionMapper exerciseExecutionMapper;
+
+    @Autowired
     private Validator validator;
+
+    @Autowired
+    private MessageService messageService;
 
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAll(Long workoutId) {
         Workout workout = workoutRepository.safeFindById(workoutId);
@@ -74,8 +78,8 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
      * @return a DTO representing the full execution, combining the static structure
      *         with the execution data supplied in the patch
      */
-    public WorkoutExecutionWriteDTO executionFromTemplate(WorkoutExecutionWriteDTO template,
-                                                          WorkoutExecutionWriteDTO patch) {
+    public WorkoutExecutionWriteDTO workoutExecutionFromTemplate(WorkoutExecutionWriteDTO template,
+                                                                 WorkoutExecutionWriteDTO patch) {
         if (patch == null || patch.getWorkoutExerciseExecutions() == null) {
             return template;
         }
@@ -137,20 +141,20 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
     }
 
     public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> create(Long workoutId,
-                                                                       WorkoutExecutionWriteDTO dto) {
+                                                                       WorkoutExecutionWriteDTO execution) {
         // Get parent workout.
         Workout workout = workoutRepository.safeFindById(workoutId);
-        dto.setWorkoutId(workoutId);
+        execution.setWorkoutId(workoutId);
 
         // Validate input.
-        Set<ConstraintViolation<WorkoutExecutionWriteDTO>> violations = validator.validate(dto);
+        Set<ConstraintViolation<WorkoutExecutionWriteDTO>> violations = validator.validate(execution);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
         }
 
         // Creates a template from the static definition of the workout.
         WorkoutExecutionWriteDTO template = mapper.templateFromWorkout(workout);
-        WorkoutExecutionWriteDTO merged = executionFromTemplate(template, dto);
+        WorkoutExecutionWriteDTO merged = workoutExecutionFromTemplate(template, execution);
 
         // Convert execution DTO to entity.
         WorkoutExecution workoutExecution = mapper.toEntity(merged);
@@ -169,6 +173,27 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         return ResponseHelper.success(HttpStatus.CREATED,
                 ResponseMessage.ENTITY_CREATED.getMessage(),
                 List.of(mapper.toDTO(savedExecution)));
+    }
+
+    public ResponseEntity<ResponseDTO<Void>> delete(Long workoutId, Long workoutExecutionId) {
+        // Get parent workout.
+        Workout workout = workoutRepository.safeFindById(workoutId);
+
+        // Get execution.
+        WorkoutExecution execution = repository.safeFindById(workoutExecutionId);
+        if (!execution.getWorkout().getId().equals(workoutId)) {
+            return ResponseHelper.error(HttpStatus.BAD_REQUEST,
+                    messageService.getLocalizedMessage(
+                            "error.workout_execution.execution_does_not_belong_to_workout",
+                            workoutExecutionId,
+                            workoutId),
+                    List.of());
+        }
+
+        repository.delete(execution);
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITY_DELETED.getMessage(),
+                List.of());
     }
 
     @Override

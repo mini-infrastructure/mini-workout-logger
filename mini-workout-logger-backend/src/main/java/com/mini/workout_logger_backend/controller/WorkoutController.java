@@ -102,15 +102,22 @@ public class WorkoutController extends AbstractController<Workout,
 
     @Tag(name = "Workout Execution", description = "Workout Execution API")
     @GetMapping("/{id}/executions")
-    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAllExecutions(@PathVariable("id") @NotNull @Min(1L) Long workoutId) {
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAllWorkoutExecutions(@PathVariable("id") @NotNull @Min(1L) Long workoutId) {
         return executionService.getAll(workoutId);
     }
 
     @Tag(name = "Workout Execution")
     @PostMapping("/{id}/executions")
-    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> createExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
-                                                                                @RequestBody WorkoutExecutionWriteDTO dto) {
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> createWorkoutExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
+                                                                                       @RequestBody WorkoutExecutionWriteDTO dto) {
         return executionService.create(workoutId, dto);
+    }
+
+    @Tag(name = "Workout Execution")
+    @DeleteMapping("/{id}/executions/{workoutExecutionId}")
+    public ResponseEntity<ResponseDTO<Void>> removeWorkoutExecution(@PathVariable("id") @NotNull @Min(1L) Long workoutId,
+                                                                    @PathVariable("workoutExecutionId") @NotNull @Min(1L) Long workoutExecutionId) {
+        return executionService.delete(workoutId, workoutExecutionId);
     }
 
 }

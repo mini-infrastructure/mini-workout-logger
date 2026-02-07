@@ -68,8 +68,8 @@ public class WorkoutService extends AbstractService<Workout,
         WorkoutExercise exercise = workoutExerciseRepository.safeFindById(exerciseId);
         if (!workout.getWorkoutExercises().contains(exercise)) {
             return ResponseHelper.error(HttpStatus.CONFLICT,
-                    ResponseMessage.ENTITY_DOES_NOT_BELONG_TO_PARENT.getMessage(),
-                    List.of("Workout exercise with ID " + exerciseId + " does not belong to workout with ID " + workoutId));
+                    messageService.getLocalizedMessage("error.workout.exercise_does_not_belong_to_workout", exerciseId, workoutId),
+                    List.of());
         }
 
         int oldPosition = workout.getWorkoutExercises().indexOf(exercise);
