@@ -20,7 +20,7 @@ public class WorkoutExecutionReadDTO extends ReadDTO {
 
 //    private WorkoutReadDTO workout;
 
-    @JsonProperty("workout_exercises_execution")
+    @JsonProperty("workout_exercise_executions")
     private List<WorkoutExerciseExecutionReadDTO> workoutExerciseExecutions;
 
     private boolean completed;
