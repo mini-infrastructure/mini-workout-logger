@@ -3,7 +3,7 @@ services:
     image: postgres:17.5-bookworm
     container_name: mini-workout-logger-db
     env_file:
-      - path: ../../../../../.env
+      - path: ../../../../.env
         required: true
     ports:
         - "15432:5432"
@@ -16,7 +16,7 @@ services:
     image: dpage/pgadmin4
     container_name: mini-workout-logger-pgadmin
     env_file:
-      - path: ../../../../../.env
+      - path: ../../../../.env
         required: true
     ports:
       - "180:80"
