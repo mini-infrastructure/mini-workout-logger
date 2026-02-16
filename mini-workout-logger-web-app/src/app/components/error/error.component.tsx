@@ -1,5 +1,7 @@
 import { PropsWithChildren } from 'react';
 import styles from "./error.component.style.tsx";
+import BlocksBackground from "../background/blocks/blocks.component.tsx";
+import Button from "../button/button.component.tsx";
 
 export type ErrorProps = {
     status: number;
@@ -9,7 +11,6 @@ export type ErrorProps = {
     imageAlt?: string;
     actionLabel?: string;
     onAction?: () => void;
-    className?: string;
 };
 
 const Error = ({
@@ -20,29 +21,33 @@ const Error = ({
                    imageAlt,
                    actionLabel,
                    onAction,
-                   className,
                    children,
                }: PropsWithChildren<ErrorProps>) => {
     return (
-        <div className={className} css={styles.wrapper}>
-            <div css={styles.content}>
+        <div css={styles.wrapper}>
 
-                {imageSrc && (
-                    <img src={imageSrc} alt={imageAlt || 'Error image'} />
-                )}
+            <BlocksBackground></BlocksBackground>
 
+            {imageSrc && (
+                <img src={imageSrc} alt={imageAlt || 'Error image'} />
+            )}
+
+            <div css={[styles.content, styles.left]}>
                 <h1 css={styles.status}>{status}</h1>
+            </div>
+
+            <div css={[styles.content, styles.right]}>
                 <h2 css={styles.title}>{title}</h2>
                 <p css={styles.message}>{message}</p>
-
                 {actionLabel && onAction && (
-                    <button css={styles.action} onClick={onAction}>
+                    <Button onClick={onAction}>
                         {actionLabel}
-                    </button>
+                    </Button>
                 )}
-
-                {children}
             </div>
+
+            {children}
+
         </div>
     );
 };

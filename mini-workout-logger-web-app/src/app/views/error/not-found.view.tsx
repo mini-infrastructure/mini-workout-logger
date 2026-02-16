@@ -1,17 +1,22 @@
+import { useNavigate } from 'react-router-dom';
 import Error from "../../components/error/error.component.tsx";
-// import notFoundImage from "/not-found.png";
 
 const NotFoundView = () => {
+    const navigate = useNavigate();
+
+    const handleGoHome = () => {
+        navigate('/');
+    };
 
     return (
         <Error
             status={404}
-            title="Page not found"
-            message="The page you are looking for does not exist."
-            // imageSrc={notFoundImage}
+            title="Something went wrong..."
+            message="This page is missing or assembled incorrectly"
+            actionLabel="Go to home"
+            onAction={handleGoHome}
         />
     );
-
 };
 
 export default NotFoundView;
