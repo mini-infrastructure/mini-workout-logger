@@ -1,26 +1,36 @@
 import { PropsWithChildren } from 'react';
-import styles from "./index.style.tsx";
+import styles from "./error.component.style.tsx";
 
 export type ErrorProps = {
     status: number;
     title: string;
     message: string;
+    imageSrc?: string;
+    imageAlt?: string;
     actionLabel?: string;
     onAction?: () => void;
     className?: string;
 };
 
-const Error = ({status,
-                title,
-                message,
-                actionLabel,
-                onAction,
-                className,
-                children,
+const Error = ({
+                   status,
+                   title,
+                   message,
+                   imageSrc,
+                   imageAlt,
+                   actionLabel,
+                   onAction,
+                   className,
+                   children,
                }: PropsWithChildren<ErrorProps>) => {
     return (
         <div className={className} css={styles.wrapper}>
             <div css={styles.content}>
+
+                {imageSrc && (
+                    <img src={imageSrc} alt={imageAlt || 'Error image'} />
+                )}
+
                 <h1 css={styles.status}>{status}</h1>
                 <h2 css={styles.title}>{title}</h2>
                 <p css={styles.message}>{message}</p>

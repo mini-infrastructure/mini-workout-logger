@@ -2,8 +2,11 @@
 */pgadmin-data
 */postgres-data
 mini-workout-logger-backend/src/test/assets/
-mini-workout-logger-backend/.env
-mini-workout-logger-web-app/.env
 openapi.yaml
 
 mini-workout-logger-web-app/node_modules/
+
+**/node_modules
+**/.vite
+**.env
+**/target
