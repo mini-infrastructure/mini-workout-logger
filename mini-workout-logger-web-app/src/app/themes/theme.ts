@@ -22,7 +22,7 @@ const theme = {
     fonts: {
         primary: "'Inter', sans-serif",
         secondary: "'Playfair Display', serif",
-        number: "'Bungee', sans-serif",
+        number: "'Sometype Mono', monospace",
     },
 };
 

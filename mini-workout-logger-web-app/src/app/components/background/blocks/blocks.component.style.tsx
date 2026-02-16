@@ -13,11 +13,6 @@ const styles = {
         margin: '4rem',
     }),
 
-    block: css({
-        backgroundColor: theme.colors.primary.lightGrayTransparency,
-        borderRadius: '1.5rem',
-    }),
-
     /* LEFT SIDE */
     left: css({
         display: 'grid',

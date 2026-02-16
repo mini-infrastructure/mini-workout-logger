@@ -1,29 +1,13 @@
 import styles from "./blocks.component.style.tsx";
+import Container from "../../container/container.component.tsx";
 
-/**
- * WRAPPER (grid 1)
- * ├── LEFT (1/3)
- * │   ├── bloco 1 (1/3 altura)
- * │   └── bloco 2 (2/3 altura)
- * │
- * └── RIGHT (2/3)
- *     ├── TOP (2/3 altura)
- *     │   ├── 1/4
- *     │   ├── 2/4
- *     │   └── 1/4
- *     │
- *     └── BOTTOM (1/3 altura)
- *         ├── 1/4
- *         ├── 1/4
- *         └── 1/2
- */
 const BlocksBackground = () => {
     return (
         <div css={styles.wrapper}>
             {/* LEFT */}
             <div css={styles.left}>
-                <div css={styles.block} />
-                <div css={styles.block} />
+                <Container />
+                <Container />
             </div>
 
             {/* RIGHT */}
@@ -31,16 +15,16 @@ const BlocksBackground = () => {
 
                 {/* TOP */}
                 <div css={styles.rightTop}>
-                    <div css={styles.block} />
-                    <div css={[styles.block, styles.double]} />
-                    <div css={styles.block} />
+                    <Container />
+                    <Container css={styles.double} />
+                    <Container />
                 </div>
 
                 {/* BOTTOM */}
                 <div css={styles.rightBottom}>
-                    <div css={styles.block} />
-                    <div css={styles.block} />
-                    <div css={[styles.block, styles.half]} />
+                    <Container />
+                    <Container />
+                    <Container css={styles.half} />
                 </div>
             </div>
         </div>

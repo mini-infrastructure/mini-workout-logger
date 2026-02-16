@@ -25,7 +25,7 @@ const styles = {
     }),
 
     status: css({
-        fontSize: '12rem',
+        fontSize: '15rem',
         fontFamily: theme.fonts.number,
     }),
 
