@@ -43,9 +43,7 @@ const styles = {
 
     /* Modifiers */
     double: css({}),
-
     half: css({}),
 };
-
 
 export default styles;
