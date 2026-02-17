@@ -3,10 +3,11 @@ const theme = {
         primary: {
             lightGray: 'rgba(241, 239, 236)',
             lightGrayTransparency: 'rgba(241, 239, 236, 0.5)',
-            darkGray: '#5E5E5E',
+            darkGray: 'rgba(94, 94, 94, 1)',
+            darkGrayTransparency: 'rgba(94, 94, 94, 0.2)',
             black: '#111111',
             white: '#ffffff',
-            darkBlue: '#0162B1',
+            darkBlue: '#0064c7',
             darkerBlue: '#014e8e',
             pastelBlue: '#A7D7FF',
         },

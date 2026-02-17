@@ -28,10 +28,10 @@ const styles = {
         },
     }),
 
-    icon: {
-        fontSize: "1.2rem",
-        marginRight: "1rem",
-    },
+    icon: css({
+        fontSize: "1rem",
+        marginRight: "0.6rem",
+    }),
 
     buttonPrimary: css({
         display: 'flex',

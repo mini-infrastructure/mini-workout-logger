@@ -9,6 +9,7 @@ export type ButtonProps = {
     disabled?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     icon?: ReactNode;
+    customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
 const Button = ({
@@ -17,6 +18,7 @@ const Button = ({
                     disabled,
                     customCss,
                     icon,
+                    customIconCss,
                     children
                 }: PropsWithChildren<ButtonProps>) => {
     const navigate = useNavigate();
@@ -39,7 +41,16 @@ const Button = ({
             ]}
             onClick={handleClick}
             disabled={disabled}>
-            {icon && <span css={styles.icon}>{icon}</span>}
+            {icon && <span
+                css={[
+                    ...(customIconCss
+                        ? Array.isArray(customIconCss)
+                            ? customIconCss
+                            : [customIconCss]
+                        : []),
+                ]}>
+                    {icon}
+                </span>}
             {children}
         </button>
     );
