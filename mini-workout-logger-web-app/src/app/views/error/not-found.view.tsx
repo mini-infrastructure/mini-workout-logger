@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import Error from "../../components/error/error.component.tsx";
-import { MdOutlineAttachFile } from "react-icons/md";
+import { MdLocalPostOffice } from "react-icons/md";
 
 const NotFoundView = () => {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ const NotFoundView = () => {
             message="This page is missing or assembled incorrectly"
             actionLabel="Go to home"
             onAction={handleGoHome}
-            buttonIcon={<MdOutlineAttachFile />}
+            buttonIcon={<MdLocalPostOffice />}
         />
     );
 };

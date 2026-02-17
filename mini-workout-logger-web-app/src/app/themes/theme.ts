@@ -1,10 +1,8 @@
 const theme = {
     colors: {
         primary: {
-            lightGray: 'rgba(241, 239, 236)',
-            lightGrayTransparency: 'rgba(241, 239, 236, 0.5)',
-            darkGray: 'rgba(94, 94, 94, 1)',
-            darkGrayTransparency: 'rgba(94, 94, 94, 0.2)',
+            lightGray: '#F1EFEC',
+            darkGray: '#5E5E5E',
             black: '#111111',
             white: '#ffffff',
             darkBlue: '#0064c7',

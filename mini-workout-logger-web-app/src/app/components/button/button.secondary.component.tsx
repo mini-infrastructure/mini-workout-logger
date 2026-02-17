@@ -3,15 +3,15 @@ import type {ButtonProps} from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
 import Button from "./button.component.tsx";
 
-const PrimaryButton = ({
-                    onClick,
-                    path,
-                    disabled,
-                    customCss,
-                    icon,
-                    customIconCss,
-                    children
-                }: PropsWithChildren<ButtonProps>) => {
+const SecondaryButton = ({
+                           onClick,
+                           path,
+                           disabled,
+                           customCss,
+                           icon,
+                           customIconCss,
+                           children
+                       }: PropsWithChildren<ButtonProps>) => {
     return (
         <Button
             onClick={onClick}
@@ -23,7 +23,7 @@ const PrimaryButton = ({
                         ? customCss
                         : [customCss]
                     : []),
-                styles.buttonPrimary
+                styles.buttonSecondary
             ]}
             icon={icon}
             customIconCss={[
@@ -32,11 +32,11 @@ const PrimaryButton = ({
                         ? customCss
                         : [customCss]
                     : []),
-                styles.iconPrimary
+                styles.iconSecondary
             ]}>
             {children}
         </Button>
     );
 };
 
-export default PrimaryButton;
+export default SecondaryButton;

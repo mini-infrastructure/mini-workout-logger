@@ -1,5 +1,6 @@
 import theme from "../../themes/theme.ts";
 import {css} from "@emotion/react";
+import {transparentize} from "polished";
 
 const styles = {
     logoContainer: css({
@@ -49,7 +50,7 @@ const styles = {
         width: "16%",
         padding: "2rem 1rem",
         boxSizing: "border-box",
-        backgroundColor: theme.colors.primary.lightGrayTransparency,
+        backgroundColor: transparentize(0.5, theme.colors.primary.lightGray),
         color: theme.colors.primary.white,
     }),
 
@@ -65,7 +66,7 @@ const styles = {
         color: theme.colors.primary.black,
 
         ':hover': {
-            backgroundColor: theme.colors.primary.lightGrayTransparency,
+            backgroundColor: transparentize(0.5, theme.colors.primary.lightGray),
             color: theme.colors.primary.darkGray,
         },
     }),

@@ -1,25 +1,25 @@
 import {css} from '@emotion/react';
 import theme from '../../themes/theme';
+import {darken, transparentize} from "polished";
 
 const styles = {
     button: css({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
         padding: '1rem 1.5rem',
-        borderRadius: 10,
+        borderRadius: 15,
         border: 'none',
         cursor: 'pointer',
-
-        fontWeight: 700,
+        width: 'auto',
+        color: theme.colors.primary.black,
+        margin: '0.5rem',
         fontSize: '1rem',
 
         transition: 'all 0.2s ease',
 
         ':hover': {
-            opacity: 0.9,
-            transform: 'translateY(-2px)',
+            transform: 'translateY(-0.1rem)',
         },
         ':active': {
             transform: 'translateY(0)',
@@ -31,15 +31,45 @@ const styles = {
     }),
 
     icon: css({
-        fontSize: "1.3rem",
-        margin: "0 0.6rem 0 0",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: "0 0.5rem 0 0",
     }),
 
     buttonPrimary: css({
+        fontWeight: 700,
         backgroundColor: theme.colors.primary.darkBlue,
+        border: `0.1rem solid ${transparentize(0.7, theme.colors.primary.darkerBlue)}`,
         color: theme.colors.primary.white,
-        width: 'auto',
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary.darkerBlue)}, transparent)`,
+
+        ':hover': {
+            opacity: 0.9,
+            backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.primary.pastelBlue)}, transparent)`,
+        },
     }),
+
+    iconPrimary: css({
+        fontSize: "1.3rem",
+    }),
+
+    buttonSecondary: css({
+        padding: '0.7rem 0.9rem',
+        fontSize: '0.95rem',
+        backgroundColor: theme.colors.primary.white,
+        border: `0.05rem solid ${darken(0.1, theme.colors.primary.lightGray)}`,
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.primary.lightGray)}, transparent)`,
+
+        ':hover': {
+            backgroundImage: `linear-gradient(to top, ${theme.colors.primary.white}, transparent)`,
+        },
+    }),
+
+    iconSecondary: css({
+        fontSize: "1rem",
+    }),
+
 };
 
 export default styles;
