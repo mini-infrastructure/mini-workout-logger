@@ -1,6 +1,6 @@
 import {css} from '@emotion/react';
 import theme from "../../themes/theme.ts";
-import {transparentize} from "polished";
+import {darken, transparentize} from "polished";
 
 const styles = {
     divider: css({
@@ -9,7 +9,7 @@ const styles = {
         borderTopStyle: 'solid',
         marginBottom: '1rem',
         marginTop: '1rem',
-        color: transparentize(0.8, theme.colors.primary.darkGray),
+        color: darken(0.01, theme.colors.primary.lightGray),
     }),
 };
 

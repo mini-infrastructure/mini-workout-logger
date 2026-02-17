@@ -3,6 +3,7 @@ import styles from "./sidebar.component.style";
 import {FiDatabase, FiFolder, FiSettings, FiUser} from "react-icons/fi";
 import Button from "../button/button.component.tsx";
 import Divider from "../divider/divider.component.tsx";
+import SidebarButton from "../button/button.sidebar.component.tsx";
 
 type SidebarProps = {};
 
@@ -14,42 +15,18 @@ const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
                 <Divider />
             </div>
 
-            <Button
-                customCss={styles.menuItem}
-                customIconCss={styles.menuItemIcon}
-                icon={<FiUser />}>
-                Profile
-            </Button>
-
-            <Button
-                customCss={styles.menuItem}
-                customIconCss={styles.menuItemIcon}
-                icon={<FiSettings />}>
-                Settings
-            </Button>
-
-            <Button
-                customCss={styles.menuItem}
-                customIconCss={styles.menuItemIcon}
+            <SidebarButton
                 icon={<FiFolder />}>
                 Workouts
-            </Button>
+            </SidebarButton>
 
-            <Button
-                customCss={styles.menuItem}
-                customIconCss={styles.menuItemIcon}
+            <SidebarButton
                 icon={<FiDatabase />}>
                 Exercises
-            </Button>
+            </SidebarButton>
 
             <div css={styles.bottomSection}>
                 <Divider />
-                <Button
-                    customCss={styles.menuItem}
-                    customIconCss={styles.menuItemIcon}
-                    icon={<FiDatabase />}>
-                    Exercises
-                </Button>
             </div>
 
             {children}

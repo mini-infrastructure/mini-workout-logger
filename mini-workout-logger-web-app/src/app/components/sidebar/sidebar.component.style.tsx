@@ -1,22 +1,8 @@
 import theme from "../../themes/theme.ts";
 import {css} from "@emotion/react";
-import {transparentize} from "polished";
+import {darken, transparentize} from "polished";
 
 const styles = {
-    logoContainer: css({
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        marginBottom: '1rem',
-        color: theme.colors.primary.black,
-        fontSize: '1rem',
-        justifyContent: 'space-between',
-    }),
-
-    children: css({
-        flex: 1,
-        marginLeft: '1rem',
-    }),
 
     logo: css({
         backgroundColor: theme.colors.primary.darkBlue,
@@ -48,32 +34,11 @@ const styles = {
         left: 0,
         height: "100vh",
         width: "16%",
-        padding: "2rem 1rem",
+        border: `1px solid ${darken(0.01, theme.colors.primary.lightGray)}`,
+        padding: "2rem 0.8rem",
         boxSizing: "border-box",
         backgroundColor: transparentize(0.5, theme.colors.primary.lightGray),
         color: theme.colors.primary.white,
-    }),
-
-    menuItem: css({
-        display: "flex",
-        justifyContent: "flex-start",
-        marginBottom: "0.5rem",
-        padding: "0.6rem",
-        cursor: "pointer",
-        fontSize: "0.9rem",
-        fontWeight: 200,
-        height: 'auto',
-        color: theme.colors.primary.black,
-
-        ':hover': {
-            backgroundColor: transparentize(0.5, theme.colors.primary.lightGray),
-            color: theme.colors.primary.darkGray,
-        },
-    }),
-
-    menuItemIcon: css({
-        fontSize: "1rem",
-        marginRight: "0.6rem",
     }),
 
     topSection: css({

@@ -17,7 +17,6 @@ const styles = {
         fontSize: '1rem',
 
         transition: 'all 0.2s ease',
-
         ':hover': {
             transform: 'translateY(-0.1rem)',
         },
@@ -40,7 +39,7 @@ const styles = {
     buttonPrimary: css({
         fontWeight: 700,
         backgroundColor: theme.colors.primary.darkBlue,
-        border: `0.1rem solid ${transparentize(0.7, theme.colors.primary.darkerBlue)}`,
+        border: `1px solid ${transparentize(0.7, theme.colors.primary.darkerBlue)}`,
         color: theme.colors.primary.white,
         backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary.darkerBlue)}, transparent)`,
 
@@ -55,10 +54,12 @@ const styles = {
     }),
 
     buttonSecondary: css({
+        display: "flex",
+        justifyContent: "flex-start",
         padding: '0.7rem 0.9rem',
         fontSize: '0.95rem',
         backgroundColor: theme.colors.primary.white,
-        border: `0.05rem solid ${darken(0.1, theme.colors.primary.lightGray)}`,
+        border: `1px solid ${darken(0.1, theme.colors.primary.lightGray)}`,
         backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.primary.lightGray)}, transparent)`,
 
         ':hover': {
@@ -68,6 +69,26 @@ const styles = {
 
     iconSecondary: css({
         fontSize: "1rem",
+    }),
+
+    buttonSidebar: css({
+        display: "flex",
+        justifyContent: "flex-start",
+        margin: "0 0.4rem 0.4rem",
+        padding: "0.4rem",
+        cursor: "pointer",
+        fontSize: "0.9rem",
+        height: 'auto',
+        color: theme.colors.primary.black,
+        backgroundColor: "transparent",
+        borderRadius: 10,
+
+        ':hover': {
+            backgroundColor: theme.colors.primary.lightGray,
+        },
+    }),
+
+    iconSidebar: css({
     }),
 
 };
