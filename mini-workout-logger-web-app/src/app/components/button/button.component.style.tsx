@@ -1,15 +1,15 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 import theme from '../../themes/theme';
 
 const styles = {
     button: css({
+        display: 'flex',
+        width: '100%',
         padding: '1rem 2rem',
         borderRadius: 10,
         border: 'none',
         cursor: 'pointer',
 
-        backgroundColor: theme.colors.primary.darkBlue,
-        color: theme.colors.primary.white,
         fontWeight: 700,
         fontSize: '1rem',
 
@@ -26,6 +26,20 @@ const styles = {
             opacity: 0.5,
             cursor: 'not-allowed',
         },
+    }),
+
+    icon: {
+        fontSize: "1.2rem",
+        marginRight: "1rem",
+    },
+
+    buttonPrimary: css({
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: theme.colors.primary.darkBlue,
+        color: theme.colors.primary.white,
+        width: 'auto',
     }),
 };
 

@@ -1,4 +1,4 @@
-import { Muscle } from './muscle.model';
+import {Muscle} from './muscle.model';
 import type {WorkoutExercise} from "./workout-exercise.model.tsx";
 
 export interface Exercise {

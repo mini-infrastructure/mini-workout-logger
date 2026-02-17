@@ -1,5 +1,5 @@
 import {MusclesView} from "./app/views/MusclesView.tsx";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import NotFoundView from "./app/views/error/not-found.view.tsx";
 import DashboardView from "./app/views/dashboard/dashboard.view.tsx";
 

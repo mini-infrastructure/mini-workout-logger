@@ -16,7 +16,7 @@ const BlocksBackground = () => {
                 {/* TOP */}
                 <div css={styles.rightTop}>
                     <Container />
-                    <Container css={styles.double} />
+                    <Container customCss={styles.double} />
                     <Container />
                 </div>
 
@@ -24,7 +24,7 @@ const BlocksBackground = () => {
                 <div css={styles.rightBottom}>
                     <Container />
                     <Container />
-                    <Container css={styles.half} />
+                    <Container customCss={styles.half} />
                 </div>
             </div>
         </div>

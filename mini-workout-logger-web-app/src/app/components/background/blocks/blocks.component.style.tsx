@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import theme from "../../../themes/theme.ts";
+import {css} from '@emotion/react';
 
 const styles = {
     wrapper: css({

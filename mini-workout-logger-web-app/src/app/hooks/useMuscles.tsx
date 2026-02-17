@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import MuscleService from '../services/muscle.service';
-import type { MuscleReadDTO } from '../dtos/muscle-read.dto';
+import type {MuscleReadDTO} from '../dtos/muscle-read.dto';
 
 export function useMuscles() {
     const [muscles, setMuscles] = useState<MuscleReadDTO[]>([]);

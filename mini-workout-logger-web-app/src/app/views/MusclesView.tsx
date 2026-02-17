@@ -1,4 +1,4 @@
-import { useMuscles } from '../hooks/useMuscles';
+import {useMuscles} from '../hooks/useMuscles';
 
 export function MusclesView() {
     const { muscles, loading, error } = useMuscles();

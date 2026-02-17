@@ -7,6 +7,7 @@ const theme = {
             black: '#111111',
             white: '#ffffff',
             darkBlue: '#0162B1',
+            darkerBlue: '#014e8e',
             pastelBlue: '#A7D7FF',
         },
 
@@ -20,7 +21,7 @@ const theme = {
         },
     },
     fonts: {
-        primary: "'Inter', sans-serif",
+        primary: "'Montserrat', sans-serif",
         secondary: "'Playfair Display', serif",
         number: "'Sometype Mono', monospace",
     },

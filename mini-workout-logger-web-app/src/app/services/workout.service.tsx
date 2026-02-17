@@ -1,6 +1,5 @@
-import axios from 'axios';
-import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import type {WorkoutReadDTO} from "../dtos/workout-read.dto.tsx";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 

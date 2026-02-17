@@ -12,17 +12,25 @@ const styles = {
         backgroundColor: theme.colors.primary.lightGrayTransparency,
         color: theme.colors.primary.white,
     },
+
     menuItem: {
-        borderRadius: 10,
-        marginBottom: "1rem",
+        display: "flex",
+        marginBottom: "0.5rem",
         padding: " 1rem 0.8rem",
         cursor: "pointer",
-        fontSize: "1.2rem",
-        fontWeight: "bold",
+        fontSize: "1rem",
+        fontWeight: 200,
         color: theme.colors.primary.black,
-        "&:hover": {
-            backgroundColor: theme.colors.primary.lightGray,
+        ':hover': {
+            backgroundColor: theme.colors.primary.lightGrayTransparency,
+            color: theme.colors.primary.darkBlue,
         },
+    },
+
+    icon: {
+        display: "flex",
+        alignItems: "center",
+        marginRight: "1rem",
     },
 };
 

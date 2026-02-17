@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Error from "../../components/error/error.component.tsx";
 
 const NotFoundView = () => {
