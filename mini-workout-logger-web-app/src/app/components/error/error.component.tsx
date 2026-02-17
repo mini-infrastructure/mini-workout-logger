@@ -1,7 +1,7 @@
 import {PropsWithChildren, ReactNode} from 'react';
 import styles from "./error.component.style.tsx";
 import BlocksBackground from "../background/blocks/blocks.component.tsx";
-import Button from "../button/button.component.tsx";
+import PrimaryButton from "../button/button.primary.component.tsx";
 
 export type ErrorProps = {
     status: number;
@@ -42,9 +42,9 @@ const Error = ({
                 <h2 css={styles.title}>{title}</h2>
                 <p css={styles.message}>{message}</p>
                 {actionLabel && onAction && (
-                    <Button onClick={onAction} icon={buttonIcon}>
+                    <PrimaryButton onClick={onAction} icon={buttonIcon}>
                         {actionLabel}
-                    </Button>
+                    </PrimaryButton>
                 )}
             </div>
 

@@ -37,12 +37,13 @@ const Button = ({
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
-                    : [styles.buttonPrimary]),
+                    : []),
             ]}
             onClick={handleClick}
             disabled={disabled}>
             {icon && <span
                 css={[
+                    styles.icon,
                     ...(customIconCss
                         ? Array.isArray(customIconCss)
                             ? customIconCss
