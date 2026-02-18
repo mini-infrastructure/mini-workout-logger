@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import Error from "../../components/error/error.component.tsx";
-import { MdLocalPostOffice } from "react-icons/md";
+import {MdLocalPostOffice} from "react-icons/md";
 
 const NotFoundView = () => {
     const navigate = useNavigate();

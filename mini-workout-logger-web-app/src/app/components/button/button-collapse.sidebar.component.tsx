@@ -2,7 +2,7 @@ import {PropsWithChildren, useState} from "react";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
-import { GoPlus } from "react-icons/go";
+import {GoPlus} from "react-icons/go";
 import SidebarButton from "./button.sidebar.component.tsx";
 
 type SidebarCollapseButtonProps = ButtonProps & {

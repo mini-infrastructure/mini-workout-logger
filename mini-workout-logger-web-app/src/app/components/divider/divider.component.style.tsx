@@ -1,6 +1,6 @@
 import {css} from '@emotion/react';
 import theme from "../../themes/theme.ts";
-import {darken, transparentize} from "polished";
+import {darken} from "polished";
 
 const styles = {
     divider: css({

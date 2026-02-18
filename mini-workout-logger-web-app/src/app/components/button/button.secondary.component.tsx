@@ -1,7 +1,7 @@
 import {PropsWithChildren} from "react";
 import type {ButtonProps} from "./button.component.tsx";
-import styles from "./button.component.style.tsx";
 import Button from "./button.component.tsx";
+import styles from "./button.component.style.tsx";
 
 const SecondaryButton = ({
                            onClick,

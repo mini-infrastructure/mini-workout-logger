@@ -1,10 +1,8 @@
 import {PropsWithChildren} from "react";
 import styles from "./sidebar.component.style";
-import {FiDatabase, FiHome, FiSettings, FiUser} from "react-icons/fi";
-import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
-import { GoGraph } from "react-icons/go";
-import { MdAutoGraph } from "react-icons/md";
-import { FaRegCalendarAlt } from "react-icons/fa";
+import {FiDatabase, FiHome, FiSettings} from "react-icons/fi";
+import {FaRegCalendarAlt, FaRegFolder, FaRegFolderOpen} from "react-icons/fa";
+import {GoGraph} from "react-icons/go";
 import Divider from "../divider/divider.component.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";

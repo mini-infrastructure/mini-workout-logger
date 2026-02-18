@@ -1,4 +1,4 @@
-import {PropsWithChildren, ReactNode, useState} from 'react';
+import {PropsWithChildren, ReactNode} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styles from './button.component.style';
 import type {Interpolation, Theme} from "@emotion/react";
