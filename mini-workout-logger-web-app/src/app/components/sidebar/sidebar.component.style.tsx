@@ -35,7 +35,7 @@ const styles = {
         height: "100vh",
         width: "16%",
         border: `1px solid ${darken(0.01, theme.colors.primary.lightGray)}`,
-        padding: "2rem 1.5rem",
+        padding: "2rem 0.8rem",
         boxSizing: "border-box",
         backgroundColor: transparentize(0.5, theme.colors.primary.lightGray),
         color: theme.colors.primary.white,

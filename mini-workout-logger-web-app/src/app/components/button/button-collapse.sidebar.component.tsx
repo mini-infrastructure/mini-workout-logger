@@ -70,14 +70,14 @@ const SidebarCollapseButton = ({
                             </SidebarButton>
                         </div>
                     ))}
-                    <>
+                    <div css={[styles.collapseItem, { margin: 0 }]}>
                         <SidebarButton
                             customCss={styles.collapsableButton}
                             icon={<GoPlus />}
                             path={path}>
                             Ver mais
                         </SidebarButton>
-                    </>
+                    </div>
                 </div>
             )}
         </>

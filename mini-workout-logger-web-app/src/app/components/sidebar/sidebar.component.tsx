@@ -1,8 +1,10 @@
 import {PropsWithChildren} from "react";
 import styles from "./sidebar.component.style";
-import {FiDatabase, FiFolder, FiSettings, FiUser} from "react-icons/fi";
+import {FiDatabase, FiHome, FiSettings, FiUser} from "react-icons/fi";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
-import Button from "../button/button.component.tsx";
+import { GoGraph } from "react-icons/go";
+import { MdAutoGraph } from "react-icons/md";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import Divider from "../divider/divider.component.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
@@ -21,6 +23,20 @@ const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
             </div>
 
             <SidebarButton
+                path={"/"}
+                icon={<FiHome />}>
+                Home
+            </SidebarButton>
+
+            <SidebarButton
+                path={"/settings"}
+                icon={<FiSettings />}>
+                Settings
+            </SidebarButton>
+
+            <Divider />
+
+            <SidebarButton
                 path={"/exercises"}
                 icon={<FiDatabase />}>
                 Exercises
@@ -34,6 +50,18 @@ const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
                 path={"/workouts"}>
                 Workouts
             </SidebarCollapseButton>
+
+            <SidebarButton
+                path={"/calendar"}
+                icon={<FaRegCalendarAlt />}>
+                Calendar
+            </SidebarButton>
+
+            <SidebarButton
+                path={"/statistics"}
+                icon={<GoGraph />}>
+                Statistics
+            </SidebarButton>
 
             <div css={styles.bottomSection}>
                 <Divider />

@@ -80,10 +80,9 @@ const styles = {
         cursor: "pointer",
         fontSize: "0.9rem",
         height: 'auto',
-        color: theme.colors.primary.black,
+        color: darken(0.8, theme.colors.primary.lightGray),
         backgroundColor: "transparent",
         borderRadius: 10,
-        width: '100%',
 
         ':hover': {
             backgroundColor: theme.colors.primary.lightGray,
@@ -105,11 +104,12 @@ const styles = {
 
     collapsableButton: css({
         fontSize: "0.85rem",
+        width: "100%",
     }),
 
     verticalLine: css({
         width: '1px',
-        backgroundColor: theme.colors.primary.darkGray,
+        backgroundColor: transparentize(0.7, theme.colors.primary.darkGray),
     }),
 
     collapseItem: css({
