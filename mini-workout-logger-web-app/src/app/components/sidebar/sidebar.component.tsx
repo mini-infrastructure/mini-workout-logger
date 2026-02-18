@@ -6,10 +6,13 @@ import Button from "../button/button.component.tsx";
 import Divider from "../divider/divider.component.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
+import {useWorkouts} from "../../hooks/useWorkouts.tsx";
 
 type SidebarProps = {};
 
 const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
+    const { workouts } = useWorkouts();
+
     return (
         <aside css={styles.wrapper}>
 
@@ -18,14 +21,16 @@ const Sidebar = ({ children }: PropsWithChildren<SidebarProps>) => {
             </div>
 
             <SidebarButton
+                path={"/exercises"}
                 icon={<FiDatabase />}>
                 Exercises
             </SidebarButton>
 
+            {/* Workouts */}
             <SidebarCollapseButton
                 icon={<FaRegFolder />}
                 clickedIcon={<FaRegFolderOpen />}
-                menuItems={['Banana', 'Pear', 'Mango', 'Avocado', 'Trash']}
+                menuItems={workouts.map((workout) => (workout.name))}
                 path={"/workouts"}>
                 Workouts
             </SidebarCollapseButton>

@@ -4,7 +4,6 @@ import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
 import { GoPlus } from "react-icons/go";
 import SidebarButton from "./button.sidebar.component.tsx";
-import {FaRegFolder} from "react-icons/fa";
 
 type SidebarCollapseButtonProps = ButtonProps & {
     menuItems: string[];
