@@ -1,12 +1,12 @@
 const theme = {
     colors: {
         primary: {
-            lightGray: 'rgba(241, 239, 236)',
-            lightGrayTransparency: 'rgba(241, 239, 236, 0.5)',
+            lightGray: '#F1EFEC',
             darkGray: '#5E5E5E',
             black: '#111111',
             white: '#ffffff',
-            darkBlue: '#0162B1',
+            darkBlue: '#0064c7',
+            darkerBlue: '#014e8e',
             pastelBlue: '#A7D7FF',
         },
 
@@ -20,7 +20,7 @@ const theme = {
         },
     },
     fonts: {
-        primary: "'Inter', sans-serif",
+        primary: "'Montserrat', sans-serif",
         secondary: "'Playfair Display', serif",
         number: "'Sometype Mono', monospace",
     },

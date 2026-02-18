@@ -1,5 +1,4 @@
-import { css } from '@emotion/react';
-import theme from "../../../themes/theme.ts";
+import {css} from '@emotion/react';
 
 const styles = {
     wrapper: css({
@@ -43,9 +42,7 @@ const styles = {
 
     /* Modifiers */
     double: css({}),
-
     half: css({}),
 };
-
 
 export default styles;

@@ -1,14 +1,18 @@
 import type {PropsWithChildren} from "react";
-import type { Interpolation, Theme } from "@emotion/react";
+import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./container.component.style.tsx";
 
 type ContainerProps = {
-    css?: Interpolation<Theme>;
+    customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const Container = ({ children, css }: PropsWithChildren<ContainerProps>) => {
+const Container = ({ children, customCss }: PropsWithChildren<ContainerProps>) => {
     return (
-        <div css={[styles.wrapper, css]}>
+        <div
+            css={[
+                styles.wrapper,
+                ...(Array.isArray(customCss) ? customCss : customCss ? [customCss] : []),
+            ]}>
             {children}
         </div>
     );

@@ -2,6 +2,7 @@ import axios from 'axios';
 import type {MuscleReadDTO} from "../dtos/muscle-read.dto.tsx";
 import type {MuscleWriteDTO} from "../dtos/muscle-write.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 
