@@ -31,7 +31,7 @@ const styles = {
         flexDirection: "column",
         position: "fixed",
         top: 0,
-        left: 0,
+        right: 0,
         height: "100vh",
         width: "16%",
         border: `1px solid ${darken(0.01, theme.colors.primary.lightGray)}`,

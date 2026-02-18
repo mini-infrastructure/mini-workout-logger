@@ -18,21 +18,21 @@ const PrimaryButton = ({
             path={path}
             disabled={disabled}
             customCss={[
+                styles.buttonPrimary,
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.buttonPrimary
             ]}
             icon={icon}
             customIconCss={[
+                styles.iconPrimary,
                 ...(customIconCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.iconPrimary
             ]}>
             {children}
         </Button>

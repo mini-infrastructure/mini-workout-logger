@@ -9,6 +9,7 @@ const SidebarButton = ({
                            disabled,
                            customCss,
                            icon,
+                           clickedIcon,
                            customIconCss,
                            children
                        }: PropsWithChildren<ButtonProps>) => {
@@ -18,21 +19,22 @@ const SidebarButton = ({
             path={path}
             disabled={disabled}
             customCss={[
+                styles.buttonSidebar,
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.buttonSidebar
             ]}
             icon={icon}
+            clickedIcon={clickedIcon}
             customIconCss={[
+                styles.iconSidebar,
                 ...(customIconCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.iconSidebar
             ]}>
             {children}
         </Button>

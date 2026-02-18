@@ -34,6 +34,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         margin: "0 0.5rem 0 0",
+        width: '0.9vw'
     }),
 
     buttonPrimary: css({
@@ -82,6 +83,7 @@ const styles = {
         color: theme.colors.primary.black,
         backgroundColor: "transparent",
         borderRadius: 10,
+        width: '100%',
 
         ':hover': {
             backgroundColor: theme.colors.primary.lightGray,
@@ -89,6 +91,32 @@ const styles = {
     }),
 
     iconSidebar: css({
+    }),
+
+    buttonSidebarCollapse: css({
+    }),
+
+    iconSidebarCollapse: css({
+    }),
+
+    collapseContainer: css({
+        color: theme.colors.primary.darkGray,
+    }),
+
+    collapsableButton: css({
+        fontSize: "0.85rem",
+    }),
+
+    verticalLine: css({
+        width: '1px',
+        backgroundColor: theme.colors.primary.darkGray,
+    }),
+
+    collapseItem: css({
+        margin: "0 1.2rem 0",
+        display: "flex",
+        flexDirection: 'row',
+        alignItems: 'stretch',
     }),
 
 };

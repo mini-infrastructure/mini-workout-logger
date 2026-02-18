@@ -18,21 +18,21 @@ const SecondaryButton = ({
             path={path}
             disabled={disabled}
             customCss={[
+                styles.buttonSecondary,
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.buttonSecondary
             ]}
             icon={icon}
             customIconCss={[
+                styles.iconSecondary,
                 ...(customIconCss
                     ? Array.isArray(customCss)
                         ? customCss
                         : [customCss]
                     : []),
-                styles.iconSecondary
             ]}>
             {children}
         </Button>
