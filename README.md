@@ -3,15 +3,20 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![React](https://img.shields.io/badge/react-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/vite-%236646FF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 
 1. [Project architecture](#project-architecture)
     1. [Entities](#entities)
-    2. [Routes](#routes)
+    2. [Bootstrap routes](#bootstrap-routes)
 2. [Run dev](#run-dev)
-    1. [Compile and serve backend](#compile-and-serve-backend)
-    2. [Create database and seed data](#create-database-and-seed-data)
+    1. [Create database and seed data](#create-database-and-seed-data)
         1. [Start the test containers](#start-the-test-containers)
-3. [Generate release](#generate-release)
+    2. [Compile and serve backend](#compile-and-serve-backend)
+    3. [Install and serve web app frontend](#install-and-serve-web-app-frontend)
+3. [Procedures](#procedures)
+    1. [Generate release](#generate-release)
 
 ## Project architecture
 
@@ -27,9 +32,7 @@
 | `WorkoutExerciseExecution` | The execution of a planned exercise inside a workout execution                                      | The Chest Fly exercise was performed on 2024-06-01, during the "Upper Body Workout" training session, with this set executions.                               |
 | `SetExecution`             | Given the planned sets, describe how they were actually executed                                    | About the above execution: of the four planned sets, only 3 were performed as expected; in the third set, only 5 repetitions of 10kg were performed.          |
 
-### Routes
-
-#### Bootstrap routes
+### Bootstrap routes
 
 Install nvm:
 ```bash
@@ -55,22 +58,7 @@ npx widdershins openapi.yaml -o Wiki.md
 Access here:
 - 🌐 [Wiki.md](https://github.com/mini-infrastructure/mini-workout-logger/blob/main/Wiki.md)
 
-
 ## Run dev
-
-1. [Compile and serve backend](#compile-and-serve-backend)
-2. [Create database and seed data](#create-database-and-seed-data)
-
-### Compile and serve backend
-```bash
-CD mini-workout-logger-backend/
-```
-```bash
-mvn clean -U install
-```
-```bash
-mvn spring-boot:run
-```
 
 ### Create database and seed data
 ```bash
@@ -85,10 +73,36 @@ bash run-dev.sh up
 ✔ Container mini-workout-logger-pgadmin   Started
 ```
 Which can be accessed here:
-- <a href="http://localhost:9090/swagger-ui/index.html"><img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/swagger-api-icon.png" alt="Swagger UI" width="14" height="14" /> Swagger UI</a>
-- <a href="http://localhost:180/"><img src="https://images.icon-icons.com/2415/PNG/512/postgresql_original_wordmark_logo_icon_146392.png" alt="Swagger UI" width="16" height="16" /> pgAdmin</a>
+- 🌐 [Swagger UI](http://localhost:9090/swagger-ui/index.html)
+- 🗂️ [pgAdmin](http://localhost:180/)
 
-## Generate release
+### Compile and serve backend
+```bash
+CD mini-workout-logger-backend/
+```
+```bash
+mvn clean -U install
+```
+```bash
+mvn spring-boot:run
+```
+
+### Install and serve web app frontend
+```bash
+cd mini-workout-logger-frontend/
+```
+```bash
+npm install
+```
+```bash
+npm run dev
+```
+Which can be accessed here:
+- 🖥️ [Web App](http://localhost:5173/)
+
+## Procedures
+
+### Generate release
 
 Run tests
 ```bash

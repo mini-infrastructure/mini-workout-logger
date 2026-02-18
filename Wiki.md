@@ -4760,7 +4760,7 @@ Accept: */*
 
 ```javascript
 const inputBody = '{
-  "executions": [
+  "workout_exercise_executions": [
     {
       "set_executions": [
         {
@@ -4904,7 +4904,7 @@ func main() {
 
 ```json
 {
-  "executions": [
+  "workout_exercise_executions": [
     {
       "set_executions": [
         {
@@ -6086,7 +6086,7 @@ This operation does not require authentication
 
 ```json
 {
-  "executions": [
+  "workout_exercise_executions": [
     {
       "set_executions": [
         {
@@ -6107,7 +6107,7 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|executions|[[WorkoutExerciseExecutionWriteDTO](#schemaworkoutexerciseexecutionwritedto)]|false|none|none|
+|workout_exercise_executions|[[WorkoutExerciseExecutionWriteDTO](#schemaworkoutexerciseexecutionwritedto)]|false|none|none|
 
 <h2 id="tocS_WorkoutExerciseExecutionWriteDTO">WorkoutExerciseExecutionWriteDTO</h2>
 <!-- backwards compatibility -->
@@ -6152,7 +6152,7 @@ This operation does not require authentication
     {
       "id": 0,
       "completed": true,
-      "workout_exercises_execution": [
+      "workout_exercise_executions": [
         {
           "id": 0,
           "completed": true,
@@ -6247,7 +6247,7 @@ This operation does not require authentication
 {
   "id": 0,
   "completed": true,
-  "workout_exercises_execution": [
+  "workout_exercise_executions": [
     {
       "id": 0,
       "completed": true,
@@ -6285,7 +6285,7 @@ This operation does not require authentication
 |---|---|---|---|---|
 |id|integer(int64)|false|none|none|
 |completed|boolean|false|none|none|
-|workout_exercises_execution|[[WorkoutExerciseExecutionReadDTO](#schemaworkoutexerciseexecutionreaddto)]|false|none|none|
+|workout_exercise_executions|[[WorkoutExerciseExecutionReadDTO](#schemaworkoutexerciseexecutionreaddto)]|false|none|none|
 |start_time|string(date-time)|false|none|none|
 |end_time|string(date-time)|false|none|none|
 
