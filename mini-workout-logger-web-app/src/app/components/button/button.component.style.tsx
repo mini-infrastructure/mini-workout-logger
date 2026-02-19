@@ -6,7 +6,8 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '1rem 1.5rem',
+
+        padding: '0.75rem 1.4rem',
         borderRadius: 15,
         border: 'none',
         cursor: 'pointer',
@@ -14,6 +15,7 @@ const styles = {
         color: theme.colors.text,
         margin: '0.5rem',
         fontSize: '1rem',
+        lineHeight: '1rem',
 
         transition: 'all 0.2s ease',
         ':hover': {
@@ -33,7 +35,8 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         margin: "0 0.5rem 0 0",
-        width: '0.9vw'
+        width: '1.25rem',
+        height: '1.25rem',
     }),
 
     buttonPrimary: (theme: Theme) => css({
@@ -56,8 +59,6 @@ const styles = {
     buttonSecondary: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
-        padding: '0.7rem 0.9rem',
-        fontSize: '0.95rem',
         backgroundColor: theme.colors.surface,
         color: theme.colors.surfaceText,
         border: `1px solid ${darken(0.1, theme.colors.surface)}`,
