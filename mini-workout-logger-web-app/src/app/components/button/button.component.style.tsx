@@ -1,9 +1,8 @@
-import {css} from '@emotion/react';
-import theme from '../../themes/theme';
+import { css, Theme } from '@emotion/react';
 import {darken, transparentize} from "polished";
 
 const styles = {
-    button: css({
+    button: (theme: Theme) => css({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -12,7 +11,7 @@ const styles = {
         border: 'none',
         cursor: 'pointer',
         width: 'auto',
-        color: theme.colors.primary.black,
+        color: theme.colors.text,
         margin: '0.5rem',
         fontSize: '1rem',
 
@@ -37,16 +36,16 @@ const styles = {
         width: '0.9vw'
     }),
 
-    buttonPrimary: css({
+    buttonPrimary: (theme: Theme) => css({
         fontWeight: 700,
-        backgroundColor: theme.colors.primary.darkBlue,
-        border: `1px solid ${transparentize(0.7, theme.colors.primary.darkerBlue)}`,
-        color: theme.colors.primary.white,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary.darkerBlue)}, transparent)`,
+        backgroundColor: theme.colors.primary,
+        border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
+        color: theme.colors.lightText,
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary)}, transparent)`,
 
         ':hover': {
             opacity: 0.9,
-            backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.primary.pastelBlue)}, transparent)`,
+            backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.secondary)}, transparent)`,
         },
     }),
 
@@ -54,17 +53,18 @@ const styles = {
         fontSize: "1.3rem",
     }),
 
-    buttonSecondary: css({
+    buttonSecondary: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
         padding: '0.7rem 0.9rem',
         fontSize: '0.95rem',
-        backgroundColor: theme.colors.primary.white,
-        border: `1px solid ${darken(0.1, theme.colors.primary.lightGray)}`,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.primary.lightGray)}, transparent)`,
+        backgroundColor: theme.colors.surface,
+        color: theme.colors.surfaceText,
+        border: `1px solid ${darken(0.1, theme.colors.surface)}`,
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.surface)}, transparent)`,
 
         ':hover': {
-            backgroundImage: `linear-gradient(to top, ${theme.colors.primary.white}, transparent)`,
+            backgroundImage: `linear-gradient(to top, ${theme.colors.surface}, transparent)`,
         },
     }),
 
@@ -72,7 +72,7 @@ const styles = {
         fontSize: "1rem",
     }),
 
-    buttonSidebar: css({
+    buttonSidebar: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
         margin: "0 0.4rem 0.4rem",
@@ -80,12 +80,12 @@ const styles = {
         cursor: "pointer",
         fontSize: "0.9rem",
         height: 'auto',
-        color: darken(0.8, theme.colors.primary.lightGray),
+        color: darken(0.8, theme.colors.surface),
         backgroundColor: "transparent",
         borderRadius: 10,
 
         ':hover': {
-            backgroundColor: theme.colors.primary.lightGray,
+            backgroundColor: theme.colors.surface,
         },
     }),
 
@@ -98,8 +98,8 @@ const styles = {
     iconSidebarCollapse: css({
     }),
 
-    collapseContainer: css({
-        color: theme.colors.primary.darkGray,
+    collapseContainer: (theme: Theme) => css({
+        color: theme.colors.surfaceText,
     }),
 
     collapsableButton: css({
@@ -107,9 +107,9 @@ const styles = {
         width: "100%",
     }),
 
-    verticalLine: css({
+    verticalLine: (theme: Theme) => css({
         width: '1px',
-        backgroundColor: transparentize(0.7, theme.colors.primary.darkGray),
+        backgroundColor: transparentize(0.7, theme.colors.surfaceText),
     }),
 
     collapseItem: css({

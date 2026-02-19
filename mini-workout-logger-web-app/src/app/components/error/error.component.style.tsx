@@ -1,5 +1,4 @@
-import {css} from '@emotion/react';
-import theme from "../../themes/theme.ts";
+import {css, Theme} from '@emotion/react';
 
 const styles = {
     wrapper: css({
@@ -24,12 +23,12 @@ const styles = {
         textAlign: 'left',
     }),
 
-    status: css({
+    status: (theme: Theme) => css({
         fontSize: '15rem',
         fontFamily: theme.fonts.number,
     }),
 
-    title: css({
+    title: (theme: Theme) => css({
         fontSize: '2.5rem',
         marginBottom: '-1rem',
         fontFamily: theme.fonts.secondary,
