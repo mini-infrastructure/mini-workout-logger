@@ -1,15 +1,14 @@
 import {css} from '@emotion/react';
-import theme from "../../themes/theme.ts";
-import {darken} from "polished";
+import {darken} from 'polished';
 
 const styles = {
-    divider: css({
+    divider: (theme: any) => css({
         display: 'flex',
         width: '90%',
         borderTopStyle: 'solid',
         marginBottom: '1rem',
         marginTop: '1rem',
-        color: darken(0.01, theme.colors.primary.lightGray),
+        borderColor: darken(0.01, theme.colors.body),
     }),
 };
 
