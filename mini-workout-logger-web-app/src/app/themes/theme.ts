@@ -1,4 +1,4 @@
-import {darken, invert, lighten} from "polished";
+import {darken, lighten} from "polished";
 
 const base = {
     white: '#FFFFFF',

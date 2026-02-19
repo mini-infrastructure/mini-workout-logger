@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import { darken } from 'polished';
+import {css} from '@emotion/react';
+import {darken} from 'polished';
 
 const styles = {
     divider: (theme: any) => css({

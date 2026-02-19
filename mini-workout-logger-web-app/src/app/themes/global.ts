@@ -1,4 +1,4 @@
-import { css, Theme } from '@emotion/react';
+import {css, Theme} from '@emotion/react';
 
 const globalStyles = (theme: Theme) => css({
     body: {

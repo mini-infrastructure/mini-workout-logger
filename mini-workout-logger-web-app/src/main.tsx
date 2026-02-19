@@ -1,11 +1,11 @@
-import { StrictMode, useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import { Global, ThemeProvider } from '@emotion/react';
+import {StrictMode, useEffect, useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {Global, ThemeProvider} from '@emotion/react';
 
 import App from './App';
 import globalStyles from './app/themes/global';
-import { lightTheme, darkTheme } from './app/themes/theme';
-import { ThemeToggleContext } from './app/themes/theme-context';
+import {darkTheme, lightTheme} from './app/themes/theme';
+import {ThemeToggleContext} from './app/themes/theme-context';
 
 function Root() {
     const [isDark, setIsDark] = useState(false);

@@ -1,5 +1,5 @@
-import { css, Theme } from '@emotion/react';
-import { transparentize } from 'polished';
+import {css, Theme} from '@emotion/react';
+import {transparentize} from 'polished';
 
 const styles = {
     wrapper: (theme: Theme) => css({
