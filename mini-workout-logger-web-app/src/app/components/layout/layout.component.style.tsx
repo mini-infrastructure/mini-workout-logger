@@ -10,6 +10,10 @@ const styles = {
         color: theme.colors.surfaceText,
     }),
 
+    /**
+     * Sidebar.
+     */
+
     sidebar: (theme: Theme) => css({
         width: '13vw',
         display: 'flex',
@@ -21,6 +25,14 @@ const styles = {
     sidebarTopDivider: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,
         borderBottom: `1px solid ${theme.colors.border}`,
+    }),
+
+    sidebarHeader: (theme: Theme) => css({
+        margin: '0.6rem 0.6rem',
+        textTransform: 'uppercase',
+        fontSize: '0.8rem',
+        color: theme.colors.surfaceTextLighter,
+        fontFamily: theme.fonts.number,
     }),
 
     sidebarContent: css({
@@ -35,6 +47,10 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     }),
+
+    /**
+     * Navbar.
+     */
 
     navbar: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,

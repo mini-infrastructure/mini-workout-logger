@@ -2,7 +2,7 @@ import {PropsWithChildren, useState} from "react";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
-import {GoPlus} from "react-icons/go";
+import { LuCirclePlus } from "react-icons/lu";
 import SidebarButton from "./button.sidebar.component.tsx";
 
 type SidebarCollapseButtonProps = ButtonProps & {
@@ -73,7 +73,7 @@ const SidebarCollapseButton = ({
                     <div css={[styles.collapseItem, { margin: 0 }]}>
                         <SidebarButton
                             customCss={styles.collapsableButton}
-                            icon={<GoPlus />}
+                            icon={<LuCirclePlus />}
                             path={path}>
                             Ver mais
                         </SidebarButton>

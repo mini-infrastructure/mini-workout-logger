@@ -4,15 +4,15 @@ const base = {
     white: '#FFFFFF',
     gray100: '#F3F5F7',
     gray200: '#EAEAEC',
-    black: '#111111',
     gray700: '#404040',
+    black: '#111111',
     blue500: '#0064c7',
     blue700: '#014e8e',
     blue200: '#A7D7FF',
 };
 
 const fonts = {
-    primary: "'Montserrat', sans-serif",
+    primary: "'Inter', sans-serif",
     secondary: "'Playfair Display', serif",
     number: "'Sometype Mono', monospace",
 };
@@ -26,6 +26,7 @@ export const lightTheme = {
         surface: base.gray200,
         surfaceBorder: darken(0.1, base.gray200),
         surfaceText: base.gray700,
+        surfaceTextLighter: lighten(0.25, base.gray700),
         text: base.black,
         lightText: base.white,
         primary: base.blue500,
