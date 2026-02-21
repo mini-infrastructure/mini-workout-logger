@@ -81,12 +81,17 @@ const styles = {
         cursor: "pointer",
         fontSize: "0.9rem",
         height: 'auto',
-        color: darken(0.8, theme.colors.surface),
+        color: theme.colors.surfaceText,
         backgroundColor: "transparent",
         borderRadius: 10,
 
+        border: `1px solid transparent`,
+
+        transition: 'color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
+
         ':hover': {
-            backgroundColor: theme.colors.surface,
+            backgroundColor: theme.colors.background,
+            borderColor: theme.colors.surface,
         },
     }),
 

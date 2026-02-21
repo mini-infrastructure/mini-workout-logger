@@ -22,8 +22,9 @@ export const lightTheme = {
     colors: {
         background: base.white,
         body: base.gray100,
-        border: darken(0.01, base.gray100),
+        border: darken(0.05, base.gray100),
         surface: base.gray200,
+        surfaceBorder: darken(0.1, base.gray200),
         surfaceText: base.gray700,
         text: base.black,
         lightText: base.white,
