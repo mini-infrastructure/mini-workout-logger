@@ -10,11 +10,6 @@ import {ThemeToggleContext} from './app/themes/theme-context';
 function Root() {
     const [isDark, setIsDark] = useState(false);
 
-    // useEffect(() => {
-    //     const saved = localStorage.getItem('theme');
-    //     if (saved === 'dark') setIsDark(true);
-    // }, []);
-
     useEffect(() => {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }, [isDark]);

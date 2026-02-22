@@ -62,16 +62,31 @@ const styles = {
         backgroundColor: theme.colors.body,
     }),
 
-    navbarActions: css({
-        display: 'flex',
-        gap: '1.5rem',
-    }),
-
     main: css({
         flex: 1,
         padding: '2rem',
         overflowY: 'auto',
     }),
+
+    breadcrumb: css({
+        display: "flex",
+        alignItems: "center",
+        fontSize: "1rem",
+    }),
+
+    breadcrumbItem: (theme: Theme) => css({
+        color: theme.colors.surfaceText,
+    }),
+
+    breadcrumbInactive: (theme: Theme) => css({
+        color: theme.colors.surfaceTextLighter,
+    }),
+
+    breadcrumbSeparator: (theme: Theme) => css({
+        margin: "0 0.4rem",
+        color: theme.colors.surfaceTextLighter,
+    }),
+
 };
 
 export default styles;
