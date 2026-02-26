@@ -6,7 +6,7 @@ const styles = {
         display: 'flex',
         width: '90%',
         borderTopStyle: 'solid',
-        borderColor: theme.colors.border,
+        borderColor: theme.colors.border1,
     }),
 };
 

@@ -2,58 +2,63 @@ import {darken, lighten} from "polished";
 
 const base = {
     white: '#FFFFFF',
+    black: '#1A1824',
     gray100: '#F3F5F7',
     gray200: '#EAEAEC',
-    gray700: '#404040',
-    black: '#111111',
+    gray500: '#8D8D8D',
+    gray700: '#4B4B53',
     blue500: '#0064c7',
     blue700: '#014e8e',
     blue200: '#A7D7FF',
 };
 
 const fonts = {
-    primary: "'Inter', sans-serif",
-    secondary: "'Playfair Display', serif",
+    primary: "\"Noto Serif\", serif",
+    secondary: "\"EB Garamond\", serif",
     number: "'Sometype Mono', monospace",
+};
+
+const fontSizes = {
+    small:  'clamp(0.65rem, 0.6vw, 0.78rem)',
+    medium: 'clamp(0.6rem, 0.8vw, 0.85rem)',
+    header: 'clamp(0.7rem, 1vw, 0.95rem)',
+    large:  'clamp(0.8rem, 1.2vw, 1.1rem)',
 };
 
 export const lightTheme = {
     mode: 'light',
     colors: {
-        background: base.white,
-        body: base.gray100,
-        border: darken(0.05, base.gray100),
-        surface: base.gray200,
-        surfaceBorder: darken(0.1, base.gray200),
-        surfaceText: base.gray700,
-        surfaceTextLighter: lighten(0.25, base.gray700),
+        white: base.white,
         text: base.black,
-        lightText: base.white,
+        container1: base.gray100,
+        border1: darken(0.05, base.gray100),
+        container2: base.gray200,
+        border2: darken(0.5, base.gray200),
+        text2: base.gray500,
+        text3: base.gray700,
         primary: base.blue500,
         primaryHover: base.blue700,
         secondary: base.blue200,
     },
-
     fonts: fonts,
+    fontSizes: fontSizes,
 };
 
 export const darkTheme = {
     mode: 'dark',
     colors: {
-        background: base.black,
-        body: lighten(0.02, base.black),
-        border: darken(0.01, base.gray100),
-        surface: base.gray200,
-        surfaceText: base.white,
-        surfaceTextLighter: darken(0.2, base.white),
-        text: base.white,
-        lightText: base.black,
+        white: base.white,
+        text: base.black,
+        container1: base.gray100,
+        border1: darken(0.05, base.gray100),
+        container2: base.gray200,
+        text2: base.gray700,
         primary: base.blue500,
         primaryHover: base.blue700,
         secondary: base.blue200,
     },
-
     fonts: fonts,
+    fontSizes: fontSizes,
 };
 
 export type AppTheme = typeof lightTheme;

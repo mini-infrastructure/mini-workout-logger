@@ -12,10 +12,9 @@ const styles = {
         border: 'none',
         cursor: 'pointer',
         width: 'auto',
-        color: theme.colors.text,
-        margin: '0.5rem',
-        fontSize: '1rem',
         lineHeight: '1rem',
+        fontSize: "inherit",
+        fontFamily: "inherit",
 
         transition: 'all 0.2s ease',
         ':hover': {
@@ -35,15 +34,15 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         margin: "0 0.5rem 0 0",
-        width: '1.25rem',
-        height: '1.25rem',
+        width: '0.8rem',
+        height: '0.8rem',
     }),
 
     buttonPrimary: (theme: Theme) => css({
         fontWeight: 700,
         backgroundColor: theme.colors.primary,
         border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
-        color: theme.colors.lightText,
+        color: theme.colors.white,
         backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary)}, transparent)`,
 
         ':hover': {
@@ -53,35 +52,31 @@ const styles = {
     }),
 
     iconPrimary: css({
-        fontSize: "1.3rem",
     }),
 
     buttonSecondary: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
-        backgroundColor: theme.colors.surface,
-        color: theme.colors.surfaceText,
-        border: `1px solid ${darken(0.1, theme.colors.surface)}`,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.surface)}, transparent)`,
+        backgroundColor: theme.colors.container2,
+        border: `1px solid ${theme.colors.border2}`,
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.container2)}, transparent)`,
 
         ':hover': {
-            backgroundImage: `linear-gradient(to top, ${theme.colors.surface}, transparent)`,
+            backgroundImage: `linear-gradient(to top, ${theme.colors.container2}, transparent)`,
         },
     }),
 
     iconSecondary: css({
-        fontSize: "1rem",
     }),
 
     buttonSidebar: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
-        margin: "0 0.4rem 0.4rem",
+        margin: "0",
         padding: "0.4rem",
         cursor: "pointer",
-        fontSize: "0.9rem",
         height: 'auto',
-        color: theme.colors.surfaceText,
+        color: theme.colors.text3,
         backgroundColor: "transparent",
         borderRadius: 10,
 
@@ -90,8 +85,9 @@ const styles = {
         transition: 'color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
 
         ':hover': {
-            backgroundColor: theme.colors.background,
-            borderColor: theme.colors.surface,
+            backgroundColor: theme.colors.white,
+            borderColor: theme.colors.container2,
+            color: theme.colors.text,
         },
     }),
 
@@ -105,17 +101,16 @@ const styles = {
     }),
 
     collapseContainer: (theme: Theme) => css({
-        color: theme.colors.surfaceText,
+        color: theme.colors.text2,
     }),
 
     collapsableButton: css({
-        fontSize: "0.85rem",
         width: "100%",
     }),
 
     verticalLine: (theme: Theme) => css({
         width: '1px',
-        backgroundColor: transparentize(0.7, theme.colors.surfaceText),
+        backgroundColor: transparentize(0.7, theme.colors.text2),
     }),
 
     collapseItem: css({

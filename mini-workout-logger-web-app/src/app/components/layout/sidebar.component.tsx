@@ -19,7 +19,9 @@ const Sidebar = ({}: SidebarProps) => {
 
             <div css={styles.sidebarContent}>
 
-                <p css={styles.sidebarHeader}>Main</p>
+                <div css={styles.sidebarHeader}>
+                    Main
+                </div>
 
                 <SidebarButton
                     path={"/"}
@@ -56,7 +58,9 @@ const Sidebar = ({}: SidebarProps) => {
 
                 <Divider />
 
-                <p css={styles.sidebarHeader}>Support</p>
+                <div css={styles.sidebarHeader}>
+                    Support
+                </div>
 
                 <SidebarButton
                     path={"/settings"}

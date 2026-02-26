@@ -7,7 +7,6 @@ const styles = {
         width: '100%',
         height: '100vh',
         display: 'flex',
-        color: theme.colors.surfaceText,
     }),
 
     /**
@@ -18,28 +17,29 @@ const styles = {
         width: '13vw',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: `1px solid ${theme.colors.border}`,
-        backgroundColor: theme.colors.body,
+        borderRight: `2px solid ${theme.colors.border1}`,
+        backgroundColor: theme.colors.container1,
     }),
 
     sidebarTopDivider: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,
-        borderBottom: `1px solid ${theme.colors.border}`,
+        borderBottom: `2px solid ${theme.colors.border1}`,
+        marginBottom: '0.5rem',
     }),
 
     sidebarHeader: (theme: Theme) => css({
-        margin: '0.6rem 0.6rem',
         textTransform: 'uppercase',
-        fontSize: '0.8rem',
-        color: theme.colors.surfaceTextLighter,
+        fontSize: theme.fontSizes.small,
+        color: theme.colors.text2,
         fontFamily: theme.fonts.number,
     }),
 
     sidebarContent: css({
         flex: 1,
-        padding: '1rem 0.6rem',
+        padding: '0 0.6rem',
         display: 'flex',
         flexDirection: 'column',
+        gap: '0.2rem',
     }),
 
     contentArea: css({
@@ -58,8 +58,8 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 1.5rem',
-        borderBottom: `1px solid ${theme.colors.border}`,
-        backgroundColor: theme.colors.body,
+        borderBottom: `1px solid ${theme.colors.border1}`,
+        backgroundColor: theme.colors.container1,
     }),
 
     main: css({
@@ -68,23 +68,22 @@ const styles = {
         overflowY: 'auto',
     }),
 
-    breadcrumb: css({
+    breadcrumb: (theme: Theme) => css({
         display: "flex",
         alignItems: "center",
-        fontSize: "1rem",
+        fontSize: theme.fontSizes.header,
     }),
 
     breadcrumbItem: (theme: Theme) => css({
-        color: theme.colors.surfaceText,
     }),
 
     breadcrumbInactive: (theme: Theme) => css({
-        color: theme.colors.surfaceTextLighter,
+        color: theme.colors.text2,
     }),
 
     breadcrumbSeparator: (theme: Theme) => css({
         margin: "0 0.4rem",
-        color: theme.colors.surfaceTextLighter,
+        color: theme.colors.text2,
     }),
 
 };
