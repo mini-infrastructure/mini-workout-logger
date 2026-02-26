@@ -13,7 +13,7 @@ const globalStyles = (theme: {
         text3: string,
         primary: string,
         primaryHover: string,
-        secondary: string
+        secondary: string,
     };
     fonts: { primary: string; secondary: string; number: string },
     fontSizes: {
@@ -22,6 +22,7 @@ const globalStyles = (theme: {
         header: string;
         large: string;
         extraLarge: string;
+        mega: string;
     },
 }) => css({
     body: {

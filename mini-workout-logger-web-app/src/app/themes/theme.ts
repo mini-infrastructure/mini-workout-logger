@@ -1,4 +1,4 @@
-import {darken, lighten} from "polished";
+import {darken} from "polished";
 
 const base = {
     white: '#FFFFFF',
@@ -23,6 +23,8 @@ const fontSizes = {
     medium: 'clamp(0.6rem, 0.8vw, 0.85rem)',
     header: 'clamp(0.7rem, 1vw, 0.95rem)',
     large:  'clamp(0.8rem, 1.2vw, 1.1rem)',
+    extraLarge: 'clamp(2rem, 4vw, 2.8rem)',
+    mega: 'clamp(12rem, 18vw, 15rem)',
 };
 
 export const lightTheme = {
@@ -52,7 +54,9 @@ export const darkTheme = {
         container1: base.gray100,
         border1: darken(0.05, base.gray100),
         container2: base.gray200,
-        text2: base.gray700,
+        border2:  darken(0.5, base.gray200),
+        text2: base.gray500,
+        text3: base.gray700,
         primary: base.blue500,
         primaryHover: base.blue700,
         secondary: base.blue200,

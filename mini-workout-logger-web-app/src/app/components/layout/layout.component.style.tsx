@@ -3,7 +3,7 @@ import { css, Theme } from '@emotion/react';
 const NAVBAR_HEIGHT = '8vh';
 
 const styles = {
-    wrapper: (theme: Theme) => css({
+    wrapper: css({
         width: '100%',
         height: '100vh',
         display: 'flex',
