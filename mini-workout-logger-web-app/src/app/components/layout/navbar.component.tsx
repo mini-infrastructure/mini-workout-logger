@@ -1,5 +1,6 @@
 import styles from "./layout.component.style.tsx";
 import { useLocation } from "react-router-dom";
+import ToggleThemeButton from "../button/button.theme.component.tsx";
 
 const Navbar = () => {
     const { pathname } = useLocation();
@@ -54,7 +55,7 @@ const Navbar = () => {
             </>
 
             <>
-                <p>Toggle theme</p>
+                <ToggleThemeButton />
             </>
         </nav>
     );

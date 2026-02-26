@@ -2,6 +2,7 @@ import {PropsWithChildren, ReactNode} from 'react';
 import {useNavigate} from 'react-router-dom';
 import styles from './button.component.style';
 import type {Interpolation, Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 
 export type ButtonProps = {
     onClick?: () => void;
@@ -44,10 +45,19 @@ const Button = ({
                     : []),
             ]}
             onClick={handleClick}
-            disabled={disabled}>
+            disabled={disabled}
+        >
             {(icon || clickedIcon) && (
                 <span
-                    css={[styles.icon, ...(customIconCss ? (Array.isArray(customIconCss) ? customIconCss : [customIconCss]) : [])]}
+                    css={[
+                        styles.icon,
+                        !children && css({ margin: 0 }),
+                        ...(customIconCss ?
+                            (Array.isArray(customIconCss)
+                                ? customIconCss
+                                : [customIconCss])
+                            : []),
+                    ]}
                 >
                     {isClicked && clickedIcon ? clickedIcon : icon}
                 </span>

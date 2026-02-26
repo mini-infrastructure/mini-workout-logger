@@ -15,6 +15,8 @@ const styles = {
         lineHeight: '1rem',
         fontSize: "inherit",
         fontFamily: "inherit",
+        backgroundColor: theme.colors.container2,
+        color: theme.colors.text,
 
         transition: 'all 0.2s ease',
         ':hover': {
@@ -71,6 +73,7 @@ const styles = {
 
     buttonSidebar: (theme: Theme) => css({
         display: "flex",
+        alignItems: "center",
         justifyContent: "flex-start",
         margin: "0",
         padding: "0.4rem",
@@ -79,6 +82,7 @@ const styles = {
         color: theme.colors.text3,
         backgroundColor: "transparent",
         borderRadius: 10,
+        fontWeight: 350,
 
         border: `1px solid transparent`,
 
@@ -88,6 +92,7 @@ const styles = {
             backgroundColor: theme.colors.white,
             borderColor: theme.colors.container2,
             color: theme.colors.text,
+            fontWeight: 500,
         },
     }),
 

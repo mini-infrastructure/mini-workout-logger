@@ -1,12 +1,13 @@
 import { css, Theme } from '@emotion/react';
 
-const NAVBAR_HEIGHT = '8vh';
+const NAVBAR_HEIGHT = '4rem';
 
 const styles = {
     wrapper: css({
         width: '100%',
         height: '100vh',
         display: 'flex',
+        overflow: 'hidden',
     }),
 
     /**
@@ -14,7 +15,8 @@ const styles = {
      */
 
     sidebar: (theme: Theme) => css({
-        width: '13vw',
+        width: 'fit-content',
+        minWidth: '13rem',
         display: 'flex',
         flexDirection: 'column',
         borderRight: `2px solid ${theme.colors.border1}`,
@@ -23,6 +25,7 @@ const styles = {
 
     sidebarTopDivider: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,
+        minHeight: NAVBAR_HEIGHT,
         borderBottom: `2px solid ${theme.colors.border1}`,
         marginBottom: '0.5rem',
     }),

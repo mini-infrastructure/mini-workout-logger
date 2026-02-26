@@ -3,6 +3,7 @@ import {css, Theme} from '@emotion/react';
 const globalStyles = (theme: {
     mode: string;
     colors: {
+        background: string,
         white: string,
         text: string,
         container1: string,
@@ -27,7 +28,7 @@ const globalStyles = (theme: {
 }) => css({
     body: {
         margin: 0,
-        backgroundColor: theme.colors.white,
+        backgroundColor: theme.colors.background,
         color: theme.colors.text,
         fontFamily: theme.fonts.primary,
         fontSize: theme.fontSizes.medium,
