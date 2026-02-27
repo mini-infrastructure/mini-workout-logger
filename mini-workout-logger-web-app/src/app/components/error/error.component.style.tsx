@@ -24,12 +24,12 @@ const styles = {
     }),
 
     status: (theme: Theme) => css({
-        fontSize: theme.fontSizes.mega,
+        fontSize: theme.fontSizes.xxx_large,
         fontFamily: theme.fonts.number,
     }),
 
     title: (theme: Theme) => css({
-        fontSize: theme.fontSizes.extraLarge,
+        fontSize: theme.fontSizes.x_large,
         marginBottom: '-1rem',
         fontFamily: theme.fonts.secondary,
     }),

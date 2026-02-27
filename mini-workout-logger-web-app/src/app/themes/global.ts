@@ -22,10 +22,11 @@ const globalStyles = (theme: {
     fontSizes: {
         small: string;
         medium: string;
-        header: string;
         large: string;
-        extraLarge: string;
-        mega: string;
+        larger: string;
+        x_large: string;
+        xx_large: string;
+        xxx_large: string;
     },
 }) => css({
     body: {

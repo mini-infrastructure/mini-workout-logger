@@ -10,6 +10,10 @@ const Layout = ({ children }: PropsWithChildren) => {
 
             <div css={styles.contentArea}>
                 <Navbar />
+
+                <main css={styles.mainContent}>
+                    {children}
+                </main>
             </div>
         </div>
     );

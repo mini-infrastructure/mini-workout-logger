@@ -54,6 +54,13 @@ const styles = {
         flexDirection: 'column',
     }),
 
+    mainContent: (theme: Theme) => css({
+        flex: 1,
+        padding: '1rem',
+        overflowY: 'auto',
+        backgroundColor: theme.colors.background,
+    }),
+
     /**
      * Navbar.
      */
@@ -77,7 +84,7 @@ const styles = {
     breadcrumb: (theme: Theme) => css({
         display: "flex",
         alignItems: "center",
-        fontSize: theme.fontSizes.header,
+        fontSize: theme.fontSizes.large,
     }),
 
     breadcrumbItem: (theme: Theme) => css({

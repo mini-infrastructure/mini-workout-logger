@@ -1,9 +1,13 @@
 import Layout from "../../components/layout/layout.component.tsx";
+import styles from "./exercises.view.style.tsx";
 
 const ExercisesDatabaseView = () => {
     return (
         <>
-            <Layout></Layout>
+            <Layout>
+                <div css={styles.header}>Exercises</div>
+
+            </Layout>
         </>
     );
 };

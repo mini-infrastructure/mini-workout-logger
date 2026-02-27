@@ -30,10 +30,11 @@ const fonts = {
 const fontSizes = {
     small:  '0.75em',
     medium: '0.9em',
-    header: '1.1em',
-    large:  '1.3em',
-    extraLarge: '3em',
-    mega: '18em',
+    large: '1.1em',
+    larger:  '1.3em',
+    x_large: '2em',
+    xx_large: '3em',
+    xxx_large: '18em',
 };
 
 export const lightTheme = {
