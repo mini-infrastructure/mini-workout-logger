@@ -16,6 +16,7 @@ const globalStyles = (theme: {
         primary: string,
         primaryHover: string,
         secondary: string,
+        yellow: string,
     };
     fonts: { primary: string; secondary: string; number: string },
     fontSizes: {

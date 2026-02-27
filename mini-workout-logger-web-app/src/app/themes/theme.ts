@@ -17,6 +17,8 @@ const base = {
     blue500: '#0064c7',
     blue700: '#014e8e',
     blue200: '#A7D7FF',
+
+    yellow: '#ffe600',
 };
 
 const fonts = {
@@ -50,6 +52,7 @@ export const lightTheme = {
         primary: base.blue500,
         primaryHover: base.blue700,
         secondary: base.blue200,
+        yellow: base.yellow,
     },
     fonts: fonts,
     fontSizes: fontSizes,
@@ -71,6 +74,7 @@ export const darkTheme = {
         primary: base.blue500,
         primaryHover: base.blue700,
         secondary: base.blue200,
+        yellow: base.yellow,
     },
     fonts: fonts,
     fontSizes: fontSizes,
