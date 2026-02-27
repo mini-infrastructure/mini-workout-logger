@@ -1,4 +1,5 @@
 import { css, Theme } from "@emotion/react";
+import {rgba} from "polished";
 
 const styles = {
     switch: (theme: Theme) => css({
@@ -85,15 +86,16 @@ const styles = {
      * Theme toggle.
      */
 
-    iconOnCustom: (theme: Theme) => ({
+    iconOnCustom: (theme: Theme) => css({
         color: theme.colors.secondary,
     }),
 
-    offIconCustomCss: (theme: Theme) => ({
+    offIconCustomCss: (theme: Theme) => css({
         color: theme.colors.yellow,
+        filter: `drop-shadow(0 0 4px ${rgba(theme.colors.black, 0.3)})`
     }),
 
-    sliderOffCustom: (theme: Theme) => ({
+    sliderOffCustom: (theme: Theme) => css({
         backgroundColor: theme.colors.secondary,
     }),
 

@@ -5,8 +5,8 @@ const base = {
 
     gray100: '#F3F5F7',
     gray200: '#EAEAEC',
-    gray300: '#80786B',
-    gray500: '#8D8D8D',
+    gray300: '#8D8D8D',
+    gray500: '#80786B',
     gray700: '#4B4B53',
 
     black700: '#0D1117',
@@ -69,7 +69,7 @@ export const darkTheme = {
         border1: base.gray700,
         container2: lighten(0.05, base.black400),
         border2: base.gray700,
-        text2: base.gray200,
+        text2: base.gray300,
         text3: base.gray100,
         primary: base.blue500,
         primaryHover: base.blue700,
