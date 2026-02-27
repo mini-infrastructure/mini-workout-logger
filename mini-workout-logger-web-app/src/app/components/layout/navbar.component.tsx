@@ -1,6 +1,8 @@
 import styles from "./layout.component.style.tsx";
 import { useLocation } from "react-router-dom";
-import ToggleThemeButton from "../button/button.theme.component.tsx";
+import { RiMoonFill } from "react-icons/ri";
+import ToggleButton from "../button/toggle/toggle.button.component.tsx";
+import ToggleThemeButton from "../button/toggle/toggle-theme.button.component.tsx";
 
 const Navbar = () => {
     const { pathname } = useLocation();

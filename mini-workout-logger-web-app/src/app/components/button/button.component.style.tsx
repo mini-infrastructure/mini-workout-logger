@@ -2,6 +2,11 @@ import {css, Theme} from '@emotion/react';
 import {darken, transparentize} from "polished";
 
 const styles = {
+
+    /**
+     * Default Button.
+     */
+
     button: (theme: Theme) => css({
         display: 'flex',
         justifyContent: 'center',
@@ -40,6 +45,10 @@ const styles = {
         height: '0.8rem',
     }),
 
+    /**
+     * Primary Button.
+     */
+
     buttonPrimary: (theme: Theme) => css({
         fontWeight: 700,
         backgroundColor: theme.colors.primary,
@@ -56,6 +65,10 @@ const styles = {
     iconPrimary: css({
     }),
 
+    /**
+     * Secondary Button.
+     */
+
     buttonSecondary: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
@@ -70,6 +83,10 @@ const styles = {
 
     iconSecondary: css({
     }),
+
+    /**
+     * Sidebar Button.
+     */
 
     buttonSidebar: (theme: Theme) => css({
         display: "flex",
@@ -98,6 +115,10 @@ const styles = {
 
     iconSidebar: css({
     }),
+
+    /**
+     * Sidebar Collapse Button.
+     */
 
     buttonSidebarCollapse: css({
     }),

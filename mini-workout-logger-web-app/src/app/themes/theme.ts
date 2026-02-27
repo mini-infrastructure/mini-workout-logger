@@ -38,6 +38,7 @@ export const lightTheme = {
     mode: 'light',
     colors: {
         white: base.white,
+        black: base.black700,
         background: base.white,
         text: base.black700,
         container1: base.gray100,
@@ -58,6 +59,7 @@ export const darkTheme = {
     mode: 'dark',
     colors: {
         white: base.white,
+        black: base.black700,
         background: base.black700,
         text: base.white,
         container1: base.black500,

@@ -5,6 +5,7 @@ const globalStyles = (theme: {
     colors: {
         background: string,
         white: string,
+        black: string,
         text: string,
         container1: string,
         border1: string,
