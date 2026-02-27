@@ -53,7 +53,7 @@ const styles = {
         fontWeight: 700,
         backgroundColor: theme.colors.primary,
         border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
-        color: theme.colors.text,
+        color: theme.colors.white,
         backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary)}, transparent)`,
 
         ':hover': {

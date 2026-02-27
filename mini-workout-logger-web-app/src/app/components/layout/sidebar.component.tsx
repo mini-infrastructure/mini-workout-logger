@@ -7,6 +7,7 @@ import { GiHelp } from "react-icons/gi";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
 import {useWorkouts} from "../../hooks/useWorkouts.tsx";
 import Divider from "../divider/divider.component.tsx";
+import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
 
 export type SidebarProps = {};
 
@@ -15,7 +16,10 @@ const Sidebar = ({}: SidebarProps) => {
 
     return (
         <aside css={styles.sidebar}>
-            <div css={styles.sidebarTopDivider} />
+            <div css={styles.sidebarTopDivider}>
+                <p>Fitracker</p>
+                <NavigationButtons />
+            </div>
 
             <div css={styles.sidebarContent}>
 

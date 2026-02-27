@@ -21,6 +21,7 @@ const styles = {
         flexDirection: 'column',
         borderRight: `2px solid ${theme.colors.border1}`,
         backgroundColor: theme.colors.container1,
+        padding: '0 0.6rem',
     }),
 
     sidebarTopDivider: (theme: Theme) => css({
@@ -28,6 +29,9 @@ const styles = {
         minHeight: NAVBAR_HEIGHT,
         borderBottom: `2px solid ${theme.colors.border1}`,
         marginBottom: '0.5rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     }),
 
     sidebarHeader: (theme: Theme) => css({
@@ -39,7 +43,6 @@ const styles = {
 
     sidebarContent: css({
         flex: 1,
-        padding: '0 0.6rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '0.2rem',
