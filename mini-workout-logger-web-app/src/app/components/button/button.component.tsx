@@ -38,6 +38,7 @@ const Button = ({
         <button
             css={[
                 styles.button,
+                !children && css(styles.onlyIconButton),
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss
@@ -51,7 +52,7 @@ const Button = ({
                 <span
                     css={[
                         styles.icon,
-                        !children && css({ margin: 0 }),
+                        !children && css(styles.onlyIcon),
                         ...(customIconCss ?
                             (Array.isArray(customIconCss)
                                 ? customIconCss

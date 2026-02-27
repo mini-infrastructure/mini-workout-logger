@@ -3,6 +3,7 @@ import {css, Theme} from '@emotion/react';
 const globalStyles = (theme: {
     mode: string;
     colors: {
+        // Primary colors.
         background: string,
         white: string,
         black: string,
@@ -16,6 +17,10 @@ const globalStyles = (theme: {
         primary: string,
         primaryHover: string,
         secondary: string,
+
+        // Additional colors.
+        red: string,
+        pastelRed: string,
         yellow: string,
     };
     fonts: { primary: string; secondary: string; number: string },

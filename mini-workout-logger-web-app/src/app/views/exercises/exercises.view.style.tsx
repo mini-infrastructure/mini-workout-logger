@@ -17,56 +17,21 @@ const styles = {
         margin: '0',
     }),
 
-    cardsWrapper: (theme: Theme) => css({
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
+    cardsWrapper: css({
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+        gap: '1rem',
         width: '100%',
-        gap: '1rem 0',
+        height: '120vh',
     }),
 
     col: (theme: Theme) => css({
-        width: 'calc(23%)',
         backgroundColor: theme.colors.container1,
         border: `1px solid ${theme.colors.border1}`,
         borderRadius: 15,
-
-
-        '@media(max-width: 1700px)': {
-            width: 'calc(22.5%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 1450px)': {
-            width: 'calc(22%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 1200px)': {
-            width: 'calc(30%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 970px)': {
-            width: 'calc(46%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 850px)': {
-            width: 'calc(45%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 750px)': {
-            width: 'calc(44%)',
-            backgroundColor: theme.colors.container1,
-        },
-
-        '@media(max-width: 650px)': {
-            width: 'calc(100%)',
-            backgroundColor: theme.colors.yellow,
-        },
-    }),
+        padding: '1rem',
+        boxSizing: 'border-box',
+    })
 };
 
 export default styles;

@@ -40,9 +40,19 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: "0 0.5rem 0 0",
+        margin: '0 0.5rem 0 0',
         width: '0.8rem',
         height: '0.8rem',
+    }),
+
+    onlyIconButton: css({
+        padding: '0.6rem',
+        borderRadius: 8,
+    }),
+
+    onlyIcon: css({
+        margin: '0',
+        padding: '0',
     }),
 
     /**

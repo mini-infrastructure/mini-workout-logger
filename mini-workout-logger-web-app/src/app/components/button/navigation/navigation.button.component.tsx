@@ -10,12 +10,10 @@ const NavigationButtons = () => {
         <div css={styles.wrapper}>
             <Button
                 icon={<IoIosArrowBack />}
-                customCss={styles.navigationButtonWrapper}
                 onClick={() => navigate(-1)}
             />
             <Button
                 icon={<IoIosArrowForward />}
-                customCss={styles.navigationButtonWrapper}
                 onClick={() => navigate(1)}
             />
         </div>

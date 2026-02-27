@@ -2,28 +2,21 @@ import Layout from "../../components/layout/layout.component.tsx";
 import styles from "./exercises.view.style.tsx";
 import {useExercises} from "../../hooks/useExercises.tsx";
 import ExerciseCard from "../../components/exercise/exercise.component.tsx";
-import { PiEmptyDuotone } from "react-icons/pi";
 
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
     console.log(exercises);
     return (
         <Layout>
-            {exercises.length === 0 ? (
-                <div css={styles.emptyWrapper}>
-                    <PiEmptyDuotone />
-                </div>
-            ) : (
-                <div css={styles.cardsWrapper}>
-                    {exercises.map((exercise) => (
-                        <ExerciseCard
-                            key={exercise.id}
-                            exercise={exercise}
-                            customCss={styles.col}
-                        />
-                    ))}
-                </div>
-            )}
+            <div css={styles.cardsWrapper}>
+                {exercises.map((exercise) => (
+                    <ExerciseCard
+                        key={exercise.id}
+                        exercise={exercise}
+                        customCss={styles.col}
+                    />
+                ))}
+            </div>
         </Layout>
     );
 };

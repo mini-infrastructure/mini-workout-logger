@@ -7,11 +7,6 @@ const styles = {
         gap: '0.3rem',
     }),
 
-    navigationButtonWrapper: (theme: Theme) => css({
-        padding: '0.6rem',
-        borderRadius: 8,
-    }),
-
 };
 
 export default styles;

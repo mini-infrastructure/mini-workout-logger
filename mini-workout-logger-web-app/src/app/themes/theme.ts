@@ -1,6 +1,6 @@
 import {darken, lighten} from "polished";
 
-const base = {
+const baseColors = {
     white: '#FFFFFF',
 
     gray100: '#F3F5F7',
@@ -14,11 +14,15 @@ const base = {
     black400: '#1A2028',
     black100: '#3D444D',
 
-    blue500: '#0064c7',
+    blue500: '#3b82f6',
     blue700: '#014e8e',
     blue200: '#A7D7FF',
+};
 
-    yellow: '#ffe600',
+const additionalColors = {
+    yellow500: '#ffe600',
+    red100: '#fb9d8e',
+    red500: '#dc2828',
 };
 
 const fonts = {
@@ -40,20 +44,22 @@ const fontSizes = {
 export const lightTheme = {
     mode: 'light',
     colors: {
-        white: base.white,
-        black: base.black700,
-        background: base.white,
-        text: base.black700,
-        container1: base.gray100,
-        border1: darken(0.05, base.gray100),
-        container2: base.gray200,
-        border2: darken(0.5, base.gray200),
-        text2: base.gray500,
-        text3: base.black500,
-        primary: base.blue500,
-        primaryHover: base.blue700,
-        secondary: base.blue200,
-        yellow: base.yellow,
+        white: baseColors.white,
+        black: baseColors.black700,
+        background: baseColors.white,
+        text: baseColors.black700,
+        container1: baseColors.gray100,
+        border1: darken(0.05, baseColors.gray100),
+        container2: baseColors.gray200,
+        border2: darken(0.5, baseColors.gray200),
+        text2: baseColors.gray500,
+        text3: baseColors.black500,
+        primary: baseColors.blue500,
+        primaryHover: baseColors.blue700,
+        secondary: baseColors.blue200,
+        red: additionalColors.red500,
+        pastelRed: additionalColors.red100,
+        yellow: additionalColors.yellow500,
     },
     fonts: fonts,
     fontSizes: fontSizes,
@@ -62,20 +68,22 @@ export const lightTheme = {
 export const darkTheme = {
     mode: 'dark',
     colors: {
-        white: base.white,
-        black: base.black700,
-        background: base.black700,
-        text: base.white,
-        container1: base.black500,
-        border1: base.gray700,
-        container2: lighten(0.05, base.black400),
-        border2: base.gray700,
-        text2: base.gray300,
-        text3: base.gray100,
-        primary: base.blue500,
-        primaryHover: base.blue700,
-        secondary: base.blue200,
-        yellow: base.yellow,
+        white: baseColors.white,
+        black: baseColors.black700,
+        background: baseColors.black700,
+        text: baseColors.white,
+        container1: baseColors.black500,
+        border1: baseColors.gray700,
+        container2: lighten(0.05, baseColors.black400),
+        border2: baseColors.gray700,
+        text2: baseColors.gray300,
+        text3: baseColors.gray100,
+        primary: baseColors.blue500,
+        primaryHover: baseColors.blue700,
+        secondary: baseColors.blue200,
+        red: additionalColors.red500,
+        pastelRed: additionalColors.red100,
+        yellow: additionalColors.yellow500,
     },
     fonts: fonts,
     fontSizes: fontSizes,
