@@ -5,8 +5,8 @@ const styles = {
     switch: (theme: Theme) => css({
         "--toggle-width": "3.5rem",
         "--toggle-height": "1.8rem",
-        "--knob-size": "1.4rem",
-        "--knob-offset": "0.2rem",
+        "--button-size": "1.4rem",
+        "--button-offset": "0.2rem",
         "--icon-size": "0.9rem",
 
         position: "relative",
@@ -31,8 +31,8 @@ const styles = {
                 translateX(
                   calc(
                     var(--toggle-width)
-                    - var(--knob-size)
-                    - (var(--knob-offset) * 2)
+                    - var(--button-size)
+                    - (var(--button-offset) * 2)
                   )
                 )
               `,
@@ -66,14 +66,14 @@ const styles = {
         color: theme.colors.text,
     }),
 
-    knob: (theme: Theme) => css({
+    button: (theme: Theme) => css({
         position: "absolute",
 
-        height: "var(--knob-size)",
-        width: "var(--knob-size)",
+        height: "var(--button-size)",
+        width: "var(--button-size)",
 
-        left: "var(--knob-offset)",
-        bottom: "var(--knob-offset)",
+        left: "var(--button-offset)",
+        bottom: "var(--button-offset)",
 
         borderRadius: "50%",
         backgroundColor: theme.colors.white,
@@ -88,6 +88,7 @@ const styles = {
 
     iconOnCustom: (theme: Theme) => css({
         color: theme.colors.secondary,
+        filter: `drop-shadow(0 0 4px ${rgba(theme.colors.white, 0.3)})`,
     }),
 
     offIconCustomCss: (theme: Theme) => css({

@@ -21,8 +21,8 @@ const sizeMap: Record<
     {
         width: string;
         height: string;
-        knob: string;
-        knobOffset: string;
+        button: string;
+        buttonOffset: string;
         iconOffset: string;
         iconSize: string;
     }
@@ -30,29 +30,30 @@ const sizeMap: Record<
     sm: {
         width: "2.8rem",
         height: "1.4rem",
-        knob: "1rem",
-        knobOffset: "0.15rem",
+        button: "1rem",
+        buttonOffset: "0.15rem",
         iconOffset: "0.4rem",
         iconSize: "0.7rem",
     },
     md: {
         width: "3.5rem",
         height: "1.8rem",
-        knob: "1.4rem",
-        knobOffset: "0.2rem",
+        button: "1.4rem",
+        buttonOffset: "0.2rem",
         iconOffset: "0.5rem",
         iconSize: "0.9rem",
     },
     lg: {
         width: "4.03rem",
         height: "2.07rem",
-        knob: "1.61rem",
-        knobOffset: "0.23rem",
+        button: "1.61rem",
+        buttonOffset: "0.23rem",
         iconOffset: "0.58rem",
         iconSize: "1.1rem",
     },
 };
 
+// Todo: `ToggleButton`: Alert to agnostic component, move to ``
 const ToggleButton = ({
                           onIcon,
                           offIcon,
@@ -69,8 +70,8 @@ const ToggleButton = ({
     const cssVariables: CSSProperties & Record<string, string> = {
         "--toggle-width": selectedSize.width,
         "--toggle-height": selectedSize.height,
-        "--knob-size": selectedSize.knob,
-        "--knob-offset": selectedSize.knobOffset,
+        "--button-size": selectedSize.button,
+        "--button-offset": selectedSize.buttonOffset,
         "--icon-offset": selectedSize.iconOffset,
         "--icon-size": selectedSize.iconSize,
     };
@@ -94,7 +95,7 @@ const ToggleButton = ({
                   {isOn ? onIcon : offIcon}
                 </span>
 
-            <span css={styles.knob} />
+            <span css={styles.button} />
             </span>
         </label>
     );
