@@ -13,6 +13,7 @@ import {
     getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
+import Card from "../card/card.component.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -25,16 +26,7 @@ const ExerciseCard = ({
                           customCss,
                       }: ExerciseCardProps) => {
     return (
-        <div
-            css={[
-                styles.cardWrapper,
-                ...(customCss
-                    ? Array.isArray(customCss)
-                        ? customCss
-                        : [customCss]
-                    : []),
-            ]}
-        >
+        <Card>
 
             {/*  Header  */}
             <div css={styles.headerWrapper}>
@@ -101,7 +93,7 @@ const ExerciseCard = ({
                 </div>
             </div>
 
-        </div>
+        </Card>
     );
 };
 

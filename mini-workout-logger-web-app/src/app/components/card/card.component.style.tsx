@@ -1,48 +1,71 @@
-import { css, Theme } from "@emotion/react";
+import { css, Theme, keyframes } from "@emotion/react";
 import { transparentize } from "polished";
 
-type RandomValues = {
+export type RandomValues = {
     top: number;
     left: number;
-    moveX: number;
-    moveY: number;
+    size1: number;
+    size2: number;
 };
 
+const float = keyframes`
+    0%   { transform: translate(-50%, -50%) translate(0px, 0px); }
+    50%  { transform: translate(-50%, -50%) translate(20px, -15px); }
+    100% { transform: translate(-50%, -50%) translate(0px, 0px); }
+`;
+
 const styles = {
-    cardWrapper: (random: RandomValues) => (theme: Theme) => css({
-        position: "relative",
-        overflow: "hidden",
-        borderRadius: 15,
-        padding: "2rem",
-        display: 'flex',
-        flexDirection: 'column',
+    baseCard: (theme: Theme) =>
+        css({
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 15,
+            padding: "2rem",
+            backdropFilter: "blur(30px)",
+            WebkitBackdropFilter: "blur(30px)",
+            backgroundColor: transparentize(0.6, theme.colors.container1),
+            border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
+        }),
 
-        backdropFilter: "blur(30px)",
-        WebkitBackdropFilter: "blur(30px)",
+    blobTheme: (random: RandomValues) => (theme: Theme) => {
+        const second = {
+            top: 100 - random.top,
+            left: 100 - random.left,
+        };
 
-        backgroundColor: transparentize(0.6, theme.colors.container1),
-        border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
-        cursor: "pointer",
+        return css({
+            "&::before": {
+                content: '""',
+                position: "absolute",
+                width: random.size1,
+                height: random.size1,
+                borderRadius: "50%",
+                background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
+                filter: "blur(70px)",
+                top: `${random.top}%`,
+                left: `${random.left}%`,
+                transform: "translate(-50%, -50%)",
+                animation: `${float} 8s ease-in-out infinite`,
+                zIndex: -1,
+            },
 
-        "&::before": {
-            content: '""',
-            position: "absolute",
-            width: 180,
-            height: 180,
-            borderRadius: "50%",
-            background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
-            filter: "blur(60px)",
-            zIndex: -1,
-            top: `${random.top}%`,
-            left: `${random.left}%`,
-            transform: "translate(-50%, -50%)",
-            transition: "transform 0.6s ease",
-        },
-
-        "&:hover::before": {
-            transform: `translate(${random.moveX}px, ${random.moveY}px)`,
-        },
-    }),
+            "&::after": {
+                content: '""',
+                position: "absolute",
+                width: random.size2,
+                height: random.size2,
+                borderRadius: "50%",
+                background: `linear-gradient(135deg, ${theme.colors.secondary}, ${theme.colors.primary})`,
+                filter: "blur(60px)",
+                top: `${second.top}%`,
+                left: `${second.left}%`,
+                transform: "translate(-50%, -50%)",
+                animation: `${float} 10s ease-in-out infinite`,
+                animationDelay: "2s",
+                zIndex: -1,
+            },
+        });
+    },
 };
 
 export default styles;

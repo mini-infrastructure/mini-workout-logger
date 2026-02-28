@@ -1,29 +1,16 @@
-import type {PropsWithChildren} from "react";
-import type {Interpolation, Theme} from "@emotion/react";
-import styles from "./card.component.style.tsx";
-import {useMemo} from "react";
+import type { PropsWithChildren } from "react";
+import type { Interpolation, Theme } from "@emotion/react";
+import styles from "./card.component.style";
 
 export type CardProps = {
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const Card = ({
-                  customCss,
-                  children
-              }: PropsWithChildren<CardProps>) => {
-    const randomValues = useMemo(() => {
-        return {
-            top: Math.random() * 100,
-            left: Math.random() * 100,
-            moveX: Math.random() * 60 - 30,
-            moveY: Math.random() * 60 - 30,
-        };
-    }, []);
-
+const Card = ({ customCss, children }: PropsWithChildren<CardProps>) => {
     return (
         <div
             css={[
-                styles.cardWrapper(randomValues),
+                styles.baseCard,
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss
@@ -34,6 +21,6 @@ const Card = ({
             {children}
         </div>
     );
-}
+};
 
 export default Card;
