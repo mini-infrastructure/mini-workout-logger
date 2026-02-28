@@ -20,9 +20,12 @@ const baseColors = {
 };
 
 const additionalColors = {
-    yellow500: '#ffe600',
+    yellow100: '#fdfd96',
+    yellow500: '#ffff00',
+    yellow700: '#eab308',
     red100: '#fb9d8e',
     red500: '#dc2828',
+    green500: '#22c55e',
 };
 
 const fonts = {
@@ -58,8 +61,8 @@ export const lightTheme = {
         primaryHover: baseColors.blue700,
         secondary: baseColors.blue200,
         red: additionalColors.red500,
-        pastelRed: additionalColors.red100,
-        yellow: additionalColors.yellow500,
+        yellow: additionalColors.yellow700,
+        green: darken(0.1, additionalColors.green500),
     },
     fonts: fonts,
     fontSizes: fontSizes,
@@ -81,9 +84,12 @@ export const darkTheme = {
         primary: baseColors.blue500,
         primaryHover: baseColors.blue700,
         secondary: baseColors.blue200,
+
         red: additionalColors.red500,
         pastelRed: additionalColors.red100,
-        yellow: additionalColors.yellow500,
+        yellow: additionalColors.yellow700,
+        pastelYellow: additionalColors.yellow100,
+        green: additionalColors.green500,
     },
     fonts: fonts,
     fontSizes: fontSizes,

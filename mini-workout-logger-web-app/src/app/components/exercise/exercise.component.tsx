@@ -1,11 +1,18 @@
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./exercise.component.style.tsx";
-import {MdOutlineDownhillSkiing, MdOutlineEdit} from "react-icons/md";
+import {MdOutlineDescription, MdOutlineDownhillSkiing, MdOutlineEdit} from "react-icons/md";
 import Button from "../button/button.component.tsx";
 import { FaRegTrashCan } from "react-icons/fa6";
-import Badge from "../badge/badge.component.tsx";
-
+import Badge, {getRandomBadgeVariant} from "../badge/badge.component.tsx";
+import { LuBicepsFlexed } from "react-icons/lu";
+import {FaList} from "react-icons/fa";
+import {
+    ExerciseCategoryIcons,
+    ExerciseDifficultyIcons,
+    getExerciseDifficultyVariant,
+    getIconFromMap,
+} from "../../models/exercise.model.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -29,7 +36,7 @@ const ExerciseCard = ({
             ]}
         >
 
-            {/*  Header.   */}
+            {/*  Header  */}
             <div css={styles.headerWrapper}>
                 <div css={styles.nameIconWrapper}>
                     <div css={styles.iconWrapper}>
@@ -50,13 +57,49 @@ const ExerciseCard = ({
                     />
                 </div>
             </div>
-            <p>Exercise detailed description</p>
-            <div css={styles.badgesWrapper}>
-                {exercise.muscles.map((muscle) => (
-                    <Badge key={muscle.id}>{muscle.name}</Badge>
-                ))}
+
+            {/*  Description  */}
+            <div css={styles.session}>
+                <div css={[styles.sessionHeader]}>
+                    <MdOutlineDescription />
+                    <p>This exercise should be performed...</p>
+                </div>
             </div>
-            <div></div>
+
+            {/*  Muscles badges  */}
+            <div css={styles.session}>
+                <div css={[styles.sessionHeader]}>
+                    <LuBicepsFlexed />
+                    <p>Muscles groups</p>
+                </div>
+                <div css={styles.badgesWrapper}>
+                    {exercise.muscles.map((muscle) => (
+                        <Badge key={muscle.id}>{muscle.name}</Badge>
+                    ))}
+                </div>
+            </div>
+
+            {/*  Characteristics  */}
+            <div css={[styles.session]}>
+                <div css={[styles.sessionHeader]}>
+                    <FaList />
+                    <p>Characteristics</p>
+                </div>
+                <div css={styles.badgesWrapper}>
+                    <Badge
+                        icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
+                        variant={getRandomBadgeVariant()}
+                    >
+                        {exercise.category}
+                    </Badge>
+                    <Badge
+                        icon={getIconFromMap(ExerciseDifficultyIcons, exercise.difficulty)}
+                        variant={getExerciseDifficultyVariant(exercise.difficulty)}
+                    >
+                        {exercise.difficulty}
+                    </Badge>
+                </div>
+            </div>
 
         </div>
     );

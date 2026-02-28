@@ -61,8 +61,20 @@ const styles = {
     }),
 
     /**
-     * Muscles badges.
+     * Card body.
      */
+
+    session: css({
+    }),
+
+    sessionHeader: css({
+        display: 'flex',
+        alignItems: 'center',
+        '& svg': {
+            marginRight: '0.5rem',
+            minWidth: '2rem',
+        }
+    }),
 
     badgesWrapper: css({
         display: 'flex',

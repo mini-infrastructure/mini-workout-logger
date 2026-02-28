@@ -11,6 +11,15 @@ const styles = {
         outline: 'none',
         border: 'none',
         backgroundColor: theme.colors.container2,
+        display: 'inline-flex',
+        alignItems: 'center',
+    }),
+
+    icon: css({
+        marginRight: '0.4rem',
+        '& svg': {
+            display: 'block',
+        }
     }),
 
     primaryBadge: (theme: Theme) => css({
@@ -22,6 +31,17 @@ const styles = {
         backgroundColor: transparentize(0.9, theme.colors.red),
         color: theme.colors.red,
     }),
+
+    warningBadge: (theme: Theme) => css({
+        backgroundColor: transparentize(0.9, theme.colors.yellow),
+        color: darken(0.1, theme.colors.yellow),
+    }),
+
+    successBadge: (theme: Theme) => css({
+        backgroundColor: transparentize(0.9, theme.colors.green),
+        color: theme.colors.green,
+    }),
+
 };
 
 export default styles;

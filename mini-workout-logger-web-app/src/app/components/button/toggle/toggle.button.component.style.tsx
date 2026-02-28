@@ -1,5 +1,5 @@
 import { css, Theme } from "@emotion/react";
-import {rgba} from "polished";
+import {darken, rgba} from "polished";
 
 const styles = {
     switch: (theme: Theme) => css({
@@ -93,7 +93,7 @@ const styles = {
 
     offIconCustomCss: (theme: Theme) => css({
         color: theme.colors.yellow,
-        filter: `drop-shadow(0 0 4px ${rgba(theme.colors.black, 0.3)})`
+        filter: `drop-shadow(0 0 4px ${rgba(theme.colors.white, 0.3)})`,
     }),
 
     sliderOffCustom: (theme: Theme) => css({
