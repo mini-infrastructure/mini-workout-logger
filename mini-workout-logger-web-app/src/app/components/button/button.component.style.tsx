@@ -12,27 +12,37 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
 
-        padding: '0.75rem 1.4rem',
+        padding: '0.5rem 1rem',
         borderRadius: 15,
         border: 'none',
         cursor: 'pointer',
         width: 'auto',
         lineHeight: '1rem',
-        fontSize: "inherit",
-        fontFamily: "inherit",
-        backgroundColor: theme.colors.container2,
+        fontSize: theme.fontSizes.medium,
+        fontFamily: 'inherit',
+
+        backgroundColor: theme.colors.background,
         color: theme.colors.text,
 
-        transition: 'all 0.2s ease',
+        transition: 'background-color 0.2s ease, color 0.2s ease',
+
         ':hover': {
-            transform: 'translateY(-0.1rem)',
+            backgroundColor: theme.colors.container1,
         },
-        ':active': {
-            transform: 'translateY(0)',
+
+        ':focus': {
+            backgroundColor: theme.colors.container2,
+            outline: 'none',
         },
+
         ':disabled': {
             opacity: 0.5,
+            pointerEvents: 'none',
             cursor: 'not-allowed',
+        },
+
+        '&[data-active="true"]': {
+            backgroundColor: theme.colors.container1 + '80',
         },
     }),
 
@@ -102,24 +112,33 @@ const styles = {
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-start",
-        margin: "0",
-        padding: "0.4rem",
-        cursor: "pointer",
-        height: 'auto',
-        color: theme.colors.text3,
+        gap: "0.3rem",
+
+        width: "100%",
+        padding: "0.5rem",
+        borderRadius: 15,
+        border: "none",
+
         backgroundColor: "transparent",
-        borderRadius: 10,
-        fontWeight: 350,
+        color: theme.colors.text3,
 
-        border: `1px solid transparent`,
+        fontSize: theme.fontSizes.medium,
+        textAlign: "left",
 
-        transition: 'color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
+        cursor: "pointer",
+        outline: "none",
 
-        ':hover': {
+        transition: "background-color 0.2s ease, color 0.2s ease",
+
+        ":active": {
             backgroundColor: theme.colors.container2,
-            borderColor: theme.colors.container2,
-            color: theme.colors.text,
-            fontWeight: 500,
+            fontWeight: 600,
+        },
+
+        ":disabled": {
+            opacity: 0.5,
+            pointerEvents: "none",
+            cursor: "not-allowed",
         },
     }),
 
@@ -144,13 +163,21 @@ const styles = {
         width: "100%",
     }),
 
+    seeMoreButton: (theme: Theme) => css({
+        color: darken(0.2, theme.colors.primary),
+        ':hover': {
+            backgroundColor: transparentize(0.9, theme.colors.primary),
+        },
+    }),
+
     verticalLine: (theme: Theme) => css({
         width: '1px',
+        marginRight: '0.75rem',
         backgroundColor: transparentize(0.7, theme.colors.text2),
     }),
 
     collapseItem: css({
-        margin: "0 1.2rem 0",
+        margin: "0 0.75rem 0",
         display: "flex",
         flexDirection: 'row',
         alignItems: 'stretch',

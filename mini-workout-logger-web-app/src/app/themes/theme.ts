@@ -35,13 +35,13 @@ const fonts = {
 };
 
 const fontSizes = {
-    small:  '0.75em',
-    medium: '0.9em',
-    large: '1.1em',
-    larger:  '1.3em',
-    x_large: '2em',
-    xx_large: '3em',
-    xxx_large: '18em',
+    small:  '0.75rem',
+    medium: '0.875rem',
+    large: '1.1rem',
+    larger:  '1.3rem',
+    x_large: '2rem',
+    xx_large: '3rem',
+    xxx_large: '18rem',
 };
 
 export const lightTheme = {

@@ -2,8 +2,8 @@ import {PropsWithChildren, useState} from "react";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
-import { LuCirclePlus } from "react-icons/lu";
 import SidebarButton from "./button.sidebar.component.tsx";
+import {IoIosArrowRoundForward} from "react-icons/io";
 
 type SidebarCollapseButtonProps = ButtonProps & {
     menuItems: string[];
@@ -72,10 +72,9 @@ const SidebarCollapseButton = ({
                     ))}
                     <div css={[styles.collapseItem, { margin: 0 }]}>
                         <SidebarButton
-                            customCss={styles.collapsableButton}
-                            icon={<LuCirclePlus />}
+                            customCss={[styles.collapsableButton, styles.seeMoreButton]}
                             path={path}>
-                            Ver mais
+                            Ver mais <IoIosArrowRoundForward />
                         </SidebarButton>
                     </div>
                 </div>
