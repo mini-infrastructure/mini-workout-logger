@@ -19,14 +19,14 @@ const styles = {
         minWidth: '16rem',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: `2px solid ${theme.colors.border1}`,
+        borderRight: `1px solid ${theme.colors.border1}`,
         backgroundColor: theme.colors.background,
     }),
 
     sidebarTopDivider: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,
         minHeight: NAVBAR_HEIGHT,
-        borderBottom: `2px solid ${theme.colors.border1}`,
+        borderBottom: `1px solid ${theme.colors.border1}`,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
