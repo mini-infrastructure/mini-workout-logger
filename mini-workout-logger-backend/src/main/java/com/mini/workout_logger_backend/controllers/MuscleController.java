@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.controllers;
 
 import com.mini.java_core.controller.AbstractController;
 import com.mini.java_core.dto.ResponseDTO;
+import com.mini.java_core.entity.Text;
 import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
 import com.mini.workout_logger_backend.dtos.MuscleWriteDTO;
 import com.mini.workout_logger_backend.entities.Muscle;
@@ -30,6 +31,11 @@ public class MuscleController extends AbstractController<Muscle,
     public ResponseEntity<ResponseDTO<MuscleReadDTO>> getParentMuscles(
             @NotNull @PathVariable("muscleId") Long muscleId) {
         return this.service.getParentMuscles(muscleId);
+    }
+
+    @GetMapping("/roots")
+    public ResponseEntity<ResponseDTO<String>> getRootMuscles() {
+        return this.service.getRootMuscles();
     }
 
 }
