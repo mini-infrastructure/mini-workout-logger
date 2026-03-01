@@ -1,4 +1,4 @@
-import {darken, lighten} from "polished";
+import {darken, lighten, saturate} from "polished";
 
 const baseColors = {
     white: '#FFFFFF',
@@ -83,7 +83,7 @@ export const darkTheme = {
         background: baseColors.black700,
         text: baseColors.white,
         container1: baseColors.black500,
-        border1: baseColors.gray700,
+        border1: darken(0.1, baseColors.gray700),
         container2: lighten(0.05, baseColors.black400),
         border2: baseColors.gray700,
         text2: baseColors.gray300,
@@ -92,7 +92,7 @@ export const darkTheme = {
         primaryHover: baseColors.blue700,
         secondary: baseColors.blue200,
 
-        red: additionalColors.red500,
+        red: lighten(0.2, saturate(0.4, additionalColors.red500)),
         yellow: additionalColors.yellow700,
         green: darken(0.1, additionalColors.green500),
         pink: additionalColors.pink500,

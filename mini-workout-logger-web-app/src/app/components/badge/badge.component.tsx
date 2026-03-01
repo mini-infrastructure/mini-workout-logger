@@ -11,6 +11,7 @@ export type BadgeProps = {
 };
 
 export type BadgeVariant =
+    | "gray"
     | "success"
     | "primary"
     | "danger"
@@ -20,7 +21,8 @@ export type BadgeVariant =
     | "orange"
     ;
 
-    export const badgeVariants: BadgeVariant[] = [
+export const badgeVariants: BadgeVariant[] = [
+    "gray",
     "success",
     "primary",
     "danger",
@@ -39,6 +41,7 @@ export const badgeVariantStyles: Record<
     BadgeVariant,
     Interpolation<Theme>
 > = {
+    gray: styles.grayBadge,
     success: styles.successBadge,
     primary: styles.primaryBadge,
     danger: styles.dangerBadge,
@@ -51,7 +54,7 @@ export const badgeVariantStyles: Record<
 const Badge = ({
                    icon,
                    customCss,
-                    variant = "primary",
+                   variant = "gray",
                    children,
                }: BadgeProps) => {
     return (

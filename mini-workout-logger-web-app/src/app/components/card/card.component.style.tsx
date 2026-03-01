@@ -15,17 +15,16 @@ const float = keyframes`
 `;
 
 const styles = {
-    baseCard: (theme: Theme) =>
-        css({
-            position: "relative",
-            overflow: "hidden",
-            borderRadius: 15,
-            padding: "2rem",
-            backdropFilter: "blur(30px)",
-            WebkitBackdropFilter: "blur(30px)",
-            backgroundColor: transparentize(0.6, theme.colors.container1),
-            border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
-        }),
+    baseCard: (theme: Theme) => css({
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 15,
+        padding: "2rem",
+        backdropFilter: "blur(30px)",
+        WebkitBackdropFilter: "blur(30px)",
+        backgroundColor: transparentize(0.6, theme.colors.container1),
+        border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
+    }),
 
     /**
      * Blob card.
@@ -75,34 +74,22 @@ const styles = {
      * Label card.
      */
 
-    labelCard: css({
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
+    labelCard: (theme: Theme) => css({
+        // borderTop: `5px solid ${theme.colors.primary}`,
+        borderRadius: '0 0 0.75rem 0.75rem',
+        strokeLinejoin: 'round',
+        padding: '1.25rem 1rem',
+        boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
     }),
 
     label: (theme: Theme) => css({
-        position: "relative",
-        height: '6rem',
-        borderRadius: 20,
-        background: theme.colors.primary,
-        overflow: "hidden",
-
-        '& svg': {
-            color: transparentize(0.4, theme.colors.white),
-            // fontSize: theme.fontSizes.x_large,
-            // position: "absolute",
-            // top: 10,
-            // right: 10,
-            // transform: "rotate(15deg)",
-        }
-    }),
-
-    labelCardContainer: css({
-        marginTop: -65,
-        position: "relative",
-        zIndex: 2,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 1,
+        width: '100%',
+        backgroundColor: theme.colors.primary,
+        height: '0.5rem',
     }),
 
 };

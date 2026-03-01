@@ -1,6 +1,7 @@
 import { css, Theme } from '@emotion/react';
 
 const NAVBAR_HEIGHT = '4rem';
+const BORDER = (color: string) => `2px solid ${color}`;
 
 const styles = {
     wrapper: css({
@@ -19,14 +20,14 @@ const styles = {
         minWidth: '16rem',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: `1px solid ${theme.colors.border1}`,
+        borderRight: BORDER(theme.colors.border1),
         backgroundColor: theme.colors.background,
     }),
 
     sidebarTopDivider: (theme: Theme) => css({
         height: NAVBAR_HEIGHT,
         minHeight: NAVBAR_HEIGHT,
-        borderBottom: `1px solid ${theme.colors.border1}`,
+        borderBottom: BORDER(theme.colors.border1),
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -72,7 +73,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: '0 1.5rem',
-        borderBottom: `1px solid ${theme.colors.border1}`,
+        borderBottom: BORDER(theme.colors.border1),
         backgroundColor: theme.colors.background,
     }),
 

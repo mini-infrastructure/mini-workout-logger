@@ -7,7 +7,7 @@ export type DividerProps = {
 };
 
 const thicknessMap = {
-    thin: '1px',
+    thin: 'px',
     medium: '2px',
     thick: '4px',
 };

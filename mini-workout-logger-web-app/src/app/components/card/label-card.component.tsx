@@ -2,9 +2,26 @@
  * A card with a top div colored with a label theme.
  */
 import type {CardProps} from "./card.component.tsx";
-import {PropsWithChildren, ReactNode, useMemo} from "react";
+import {PropsWithChildren, ReactNode} from "react";
 import Card from "./card.component.tsx";
+import type {Theme} from "@emotion/react";
 import styles from "./card.component.style.tsx";
+
+export type LabelVariant = "success" | "warning" | "error" | "info";
+
+export const getVariantColor = (theme: Theme, variant: LabelVariant) => {
+    switch (variant) {
+        case "success":
+            return theme.colors.green;
+        case "warning":
+            return theme.colors.yellow;
+        case "error":
+            return theme.colors.red;
+        case "info":
+        default:
+            return theme.colors.primary;
+    }
+};
 
 export type LabelCardProps = CardProps & {
     icon: ReactNode;
@@ -15,12 +32,10 @@ const LabelCard = ({
                        children,
                    }: PropsWithChildren<LabelCardProps>) => {
     return (
-        <div css={styles.labelCard}>
+        <Card customCss={styles.labelCard}>
             <div css={styles.label}></div>
-            <Card customCss={styles.labelCardContainer}>
-                {children}
-            </Card>
-        </div>
+            {children}
+        </Card>
     );
 };
 
