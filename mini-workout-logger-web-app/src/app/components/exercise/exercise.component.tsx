@@ -63,8 +63,8 @@ const ExerciseCard = ({
                 {/*    <p>Muscles groups</p>*/}
                 {/*</div>*/}
                 <div css={styles.badgesWrapper}>
-                    {exercise.muscles.map((muscle) => (
-                        <Badge key={muscle.id}>{muscle.name}</Badge>
+                    {exercise.rootMuscles?.map((muscle) => (
+                        <Badge key={muscle}>{muscle}</Badge>
                     ))}
                 </div>
             </div>

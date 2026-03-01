@@ -53,8 +53,11 @@ SELECT add_exercise_muscle('Exercise.Chest_Press', 'Muscle.Anterior_Deltoid');
 SELECT add_exercise_muscle('Exercise.Chest_Press', 'Muscle.Triceps_Brachii');
 
 SELECT add_exercise('Exercise.Push_Up', 'STRENGTH', 'BEGINNER');
-SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Pectorals');
+SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Pectoralis');
 SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Deltoids');
+SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Anterior_Deltoid');
+SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Posterior_Deltoid');
+SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Medial_Deltoid');
 SELECT add_exercise_muscle('Exercise.Push_Up', 'Muscle.Triceps_Brachii');
 
 SELECT add_exercise('Exercise.Chest_Fly', 'STRENGTH', 'NOVICE');
