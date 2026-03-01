@@ -42,6 +42,21 @@ const styles = {
         color: theme.colors.green,
     }),
 
+    pinkBadge: (theme: Theme) => css({
+        backgroundColor: transparentize(0.9, theme.colors.pink),
+        color: theme.colors.pink,
+    }),
+
+    purpleBadge: (theme: Theme) => css({
+        backgroundColor: transparentize(0.9, theme.colors.purple),
+        color: theme.colors.purple,
+    }),
+
+    orangeBadge: (theme: Theme) => css({
+        backgroundColor: transparentize(0.9, theme.colors.orange),
+        color: theme.colors.orange,
+    }),
+
 };
 
 export default styles;

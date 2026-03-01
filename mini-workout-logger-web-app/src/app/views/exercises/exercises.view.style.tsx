@@ -22,7 +22,7 @@ const styles = {
         gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
         gap: '1rem',
         width: '100%',
-        height: '200vh',
+        // height: '200vh',
     }),
 
     col: (theme: Theme) => css({

@@ -15,7 +15,7 @@ const BlobCard = ({
     }, []);
 
     return (
-        <Card customCss={[styles.blobTheme(randomValues)]}>
+        <Card customCss={[styles.blobCard(randomValues)]}>
             {children}
         </Card>
     );

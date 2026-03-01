@@ -27,7 +27,11 @@ const styles = {
             border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
         }),
 
-    blobTheme: (random: RandomValues) => (theme: Theme) => {
+    /**
+     * Blob card.
+     */
+
+    blobCard: (random: RandomValues) => (theme: Theme) => {
         const second = {
             top: 100 - random.top,
             left: 100 - random.left,
@@ -66,6 +70,41 @@ const styles = {
             },
         });
     },
+
+    /**
+     * Label card.
+     */
+
+    labelCard: css({
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+    }),
+
+    label: (theme: Theme) => css({
+        position: "relative",
+        height: '6rem',
+        borderRadius: 20,
+        background: theme.colors.primary,
+        overflow: "hidden",
+
+        '& svg': {
+            color: transparentize(0.4, theme.colors.white),
+            // fontSize: theme.fontSizes.x_large,
+            // position: "absolute",
+            // top: 10,
+            // right: 10,
+            // transform: "rotate(15deg)",
+        }
+    }),
+
+    labelCardContainer: css({
+        marginTop: -65,
+        position: "relative",
+        zIndex: 2,
+    }),
+
 };
 
 export default styles;

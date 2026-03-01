@@ -65,6 +65,7 @@ const styles = {
      */
 
     session: css({
+        margin: '0.75rem 0',
     }),
 
     sessionHeader: css({

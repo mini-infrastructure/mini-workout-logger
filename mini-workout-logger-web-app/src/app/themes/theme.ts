@@ -26,6 +26,9 @@ const additionalColors = {
     red100: '#fb9d8e',
     red500: '#dc2828',
     green500: '#22c55e',
+    pink500: '#dd3aa1',
+    purple500: '#a626a6',
+    orange500: '#ff8800',
 };
 
 const fonts = {
@@ -60,9 +63,13 @@ export const lightTheme = {
         primary: baseColors.blue500,
         primaryHover: baseColors.blue700,
         secondary: baseColors.blue200,
+
         red: additionalColors.red500,
         yellow: additionalColors.yellow700,
         green: darken(0.1, additionalColors.green500),
+        pink: additionalColors.pink500,
+        purple: additionalColors.purple500,
+        orange: additionalColors.orange500,
     },
     fonts: fonts,
     fontSizes: fontSizes,
@@ -86,10 +93,11 @@ export const darkTheme = {
         secondary: baseColors.blue200,
 
         red: additionalColors.red500,
-        pastelRed: additionalColors.red100,
         yellow: additionalColors.yellow700,
-        pastelYellow: additionalColors.yellow100,
-        green: additionalColors.green500,
+        green: darken(0.1, additionalColors.green500),
+        pink: additionalColors.pink500,
+        purple: additionalColors.purple500,
+        orange: additionalColors.orange500,
     },
     fonts: fonts,
     fontSizes: fontSizes,

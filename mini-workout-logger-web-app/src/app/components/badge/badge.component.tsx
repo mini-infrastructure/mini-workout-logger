@@ -14,13 +14,20 @@ export type BadgeVariant =
     | "success"
     | "primary"
     | "danger"
-    | "warning";
+    | "warning"
+    | "pink"
+    | "purple"
+    | "orange"
+    ;
 
-export const badgeVariants: BadgeVariant[] = [
+    export const badgeVariants: BadgeVariant[] = [
     "success",
     "primary",
     "danger",
     "warning",
+    "pink",
+    "purple",
+    "orange",
 ];
 
 export function getRandomBadgeVariant(): BadgeVariant {
@@ -36,6 +43,9 @@ export const badgeVariantStyles: Record<
     primary: styles.primaryBadge,
     danger: styles.dangerBadge,
     warning: styles.warningBadge,
+    pink: styles.pinkBadge,
+    purple: styles.purpleBadge,
+    orange: styles.orangeBadge,
 };
 
 const Badge = ({
