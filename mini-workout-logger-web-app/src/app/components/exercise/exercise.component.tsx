@@ -8,8 +8,11 @@ import {
     getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
-import LabelCard from "../card/label-card.component.tsx";
+import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
 import {FaRegPlayCircle} from "react-icons/fa";
+import Button from "../button/button.component.tsx";
+import {MdOutlineEdit} from "react-icons/md";
+import {FaRegTrashCan} from "react-icons/fa6";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -22,46 +25,12 @@ const ExerciseCard = ({
                           customCss,
                       }: ExerciseCardProps) => {
     return (
-        <LabelCard icon={<FaRegPlayCircle />}>
+        <LabelCard>
 
-            <p>{exercise.name}</p>
-
-            {/*/!*  Header  *!/*/}
-            {/*<div css={styles.headerWrapper}>*/}
-            {/*    <div css={styles.nameIconWrapper}>*/}
-            {/*        <div css={styles.iconWrapper}>*/}
-            {/*            <MdOutlineDownhillSkiing />*/}
-            {/*        </div>*/}
-
-            {/*        <p>{exercise.name}</p>*/}
-            {/*    </div>*/}
-
-            {/*    <div css={styles.buttonsWrapper}>*/}
-            {/*        <Button*/}
-            {/*            icon={<MdOutlineEdit />}*/}
-            {/*            customCss={[styles.headerButton, styles.editButton]}*/}
-            {/*        />*/}
-            {/*        <Button*/}
-            {/*            icon={<FaRegTrashCan />}*/}
-            {/*            customCss={[styles.headerButton, styles.trashButton]}*/}
-            {/*        />*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-
-            {/*/!*  Description  *!/*/}
-            {/*<div css={styles.session}>*/}
-            {/*    <div css={[styles.sessionHeader]}>*/}
-            {/*        <MdOutlineDescription />*/}
-            {/*        <p>This exercise should be performed...</p>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+            <CardHeader>{exercise.name}</CardHeader>
 
             {/*  Muscles badges  */}
             <div css={styles.session}>
-                {/*<div css={[styles.sessionHeader]}>*/}
-                {/*    <LuBicepsFlexed />*/}
-                {/*    <p>Muscles groups</p>*/}
-                {/*</div>*/}
                 <div css={styles.badgesWrapper}>
                     {exercise.rootMuscles?.map((muscle) => (
                         <Badge key={muscle}>{muscle}</Badge>
@@ -71,10 +40,6 @@ const ExerciseCard = ({
 
             {/*  Characteristics  */}
             <div css={[styles.session]}>
-                {/*<div css={[styles.sessionHeader]}>*/}
-                {/*    <FaList />*/}
-                {/*    <p>Characteristics</p>*/}
-                {/*</div>*/}
                 <div css={styles.badgesWrapper}>
                     <Badge
                         icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}

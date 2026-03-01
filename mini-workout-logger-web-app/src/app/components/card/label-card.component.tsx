@@ -6,6 +6,8 @@ import {PropsWithChildren, ReactNode} from "react";
 import Card from "./card.component.tsx";
 import type {Theme} from "@emotion/react";
 import styles from "./card.component.style.tsx";
+import { BsThreeDots } from "react-icons/bs";
+import Button from "../button/button.component.tsx";
 
 export type LabelVariant = "success" | "warning" | "error" | "info";
 
@@ -23,17 +25,26 @@ export const getVariantColor = (theme: Theme, variant: LabelVariant) => {
     }
 };
 
-export type LabelCardProps = CardProps & {
-    icon: ReactNode;
-};
+export type LabelCardProps = CardProps & {};
+
+export const CardHeader = ({children}: PropsWithChildren) => {
+    return (
+        <div css={styles.header}>
+            {children}
+        </div>
+    );
+}
 
 const LabelCard = ({
-                       icon,
                        children,
                    }: PropsWithChildren<LabelCardProps>) => {
     return (
         <Card customCss={styles.labelCard}>
-            <div css={styles.label}></div>
+            <div css={styles.label} className="label-bar">
+                <div className="label-button">
+                    <Button icon={<BsThreeDots />} customCss={styles.labelButton} />
+                </div>
+            </div>
             {children}
         </Card>
     );

@@ -75,11 +75,30 @@ const styles = {
      */
 
     labelCard: (theme: Theme) => css({
-        // borderTop: `5px solid ${theme.colors.primary}`,
+        position: 'relative',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
         padding: '1.25rem 1rem',
         boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
+        overflow: 'visible',
+
+        '&:hover .label-bar': {
+            transform: 'translateY(-100%)',
+            height: '1.2rem',
+            borderRadius: '0.75rem 0.75rem 0 0',
+        },
+
+        '& .label-button': {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            height: '100%',
+        },
+    }),
+
+    header: css({
+        fontWeight: 700,
     }),
 
     label: (theme: Theme) => css({
@@ -90,6 +109,19 @@ const styles = {
         width: '100%',
         backgroundColor: theme.colors.primary,
         height: '0.5rem',
+        transition: 'transform 0.2s ease',
+    }),
+
+    labelButton: (theme: Theme) => css({
+        backgroundColor: 'transparent',
+        height: '100%',
+        color: theme.colors.white,
+        border: 'none',
+        cursor: 'pointer',
+         '&:hover': {
+             color: theme.colors.white,
+             backgroundColor: transparentize(0.8, theme.colors.white),
+         },
     }),
 
 };

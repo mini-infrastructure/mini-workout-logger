@@ -112,15 +112,35 @@ const styles = {
         });
     },
 
-    purpleBadge: (theme: Theme) => css({
-        backgroundColor: transparentize(0.9, theme.colors.purple),
-        color: theme.colors.purple,
-    }),
+    purpleBadge: (theme: Theme) => {
+        const baseColor = theme.colors.purple;
 
-    orangeBadge: (theme: Theme) => css({
-        backgroundColor: transparentize(0.9, theme.colors.orange),
-        color: theme.colors.orange,
-    }),
+        return css({
+            backgroundColor: transparentize(0.9, baseColor),
+            color: theme.colors.purple,
+            transition: 'all 0.2s ease',
+
+            '&:hover': {
+                backgroundColor: baseColor,
+                color: theme.colors.white,
+            },
+        });
+    },
+
+    orangeBadge: (theme: Theme) => {
+        const baseColor = theme.colors.orange;
+
+        return css({
+            backgroundColor: transparentize(0.9, baseColor),
+            color: theme.colors.orange,
+            transition: 'all 0.2s ease',
+
+            '&:hover': {
+                backgroundColor: baseColor,
+                color: theme.colors.white,
+            },
+        });
+    },
 
 };
 

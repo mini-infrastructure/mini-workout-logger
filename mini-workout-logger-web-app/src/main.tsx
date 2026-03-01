@@ -8,7 +8,7 @@ import {darkTheme, lightTheme} from './app/themes/theme';
 import {ThemeToggleContext} from './app/themes/theme-context';
 
 function Root() {
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(false);
 
     const toggleTheme = () => setIsDark(prev => !prev);
     const theme = isDark ? darkTheme : lightTheme;
