@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.services;
 
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
+import com.mini.java_core.entity.Text;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
 import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,32 @@ public class MuscleService extends AbstractService<Muscle,
                 parentMuscles.stream()
                              .map(mapper::toDTO)
                              .collect(Collectors.toList()));
+    }
+
+    public Set<Muscle> findRootMuscles(Set<Muscle> muscles) {
+        Set<Muscle> rootMuscles = new HashSet<>();
+        for (Muscle muscle : muscles) {
+            if (muscle.getMuscleGroups() == null || muscle.getMuscleGroups().isEmpty()) {
+                rootMuscles.add(muscle);
+            }
+        }
+        return rootMuscles;
+    }
+
+    public Set<Muscle> findRootMuscles() {
+        return repository.findAll().stream()
+                         .filter(muscle -> muscle.getMuscleGroups() == null || muscle.getMuscleGroups().isEmpty())
+                         .collect(Collectors.toSet());
+    }
+
+    public ResponseEntity<ResponseDTO<String>> getRootMuscles() {
+        Set<Muscle> rootMuscles = findRootMuscles();
+        return ResponseHelper.success(
+                HttpStatus.OK,
+                ResponseMessage.ENTITIES_FOUND.getMessage(),
+                rootMuscles.stream()
+                           .map(muscle -> muscle.getName().getValue())
+                           .collect(Collectors.toList()));
     }
 
 }
