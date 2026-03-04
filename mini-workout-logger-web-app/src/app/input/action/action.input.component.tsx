@@ -12,21 +12,21 @@ export const themeMap: Record<ActionSwitchType, (theme: Theme) => Interpolation<
 
 type ActionSwitchProps = {
     type?: ActionSwitchType;
+    checked: boolean;
+    onChange: (checked: boolean) => void;
 };
 
 const ActionSwitch = ({
                           type = "hamburger",
-                          children
+                          checked,
+                          onChange,
                       }: PropsWithChildren<ActionSwitchProps>) => {
-
-    const [checked, setChecked] = useState(false);
-
     return (
         <label css={styles.dropdownButton}>
             <input
                 type="checkbox"
                 checked={checked}
-                onChange={(e) => setChecked(e.target.checked)}
+                onChange={(e) => onChange(e.target.checked)}
             />
 
             <div css={styles.switchButton}>

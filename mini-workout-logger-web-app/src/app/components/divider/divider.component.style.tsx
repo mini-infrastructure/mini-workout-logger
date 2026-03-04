@@ -3,10 +3,9 @@ import {darken} from 'polished';
 
 const styles = {
     divider: (theme: any) => css({
-        display: 'flex',
         width: '90%',
-        borderTopStyle: 'solid',
-        borderColor: theme.colors.border1,
+        border: 'none',
+        borderBottom: `1px solid ${theme.colors.border1}`,
     }),
 };
 
