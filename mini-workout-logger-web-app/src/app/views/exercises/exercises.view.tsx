@@ -10,7 +10,9 @@ const ExercisesDatabaseView = () => {
     return (
         <Layout
             navbarContent={
-                <ActionSwitch />
+                <ActionSwitch
+                    type="filter"
+                />
             }
         >
             <div css={styles.cardsWrapper}>
