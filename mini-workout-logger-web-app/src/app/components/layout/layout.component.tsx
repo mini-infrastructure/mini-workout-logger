@@ -1,15 +1,22 @@
-import { PropsWithChildren } from 'react';
+import {PropsWithChildren, ReactNode} from 'react';
 import styles from "./layout.component.style.tsx";
 import Sidebar from "./sidebar.component.tsx";
 import Navbar from "./navbar.component.tsx";
 
-const Layout = ({ children }: PropsWithChildren) => {
+type LayoutProps = {
+    children: ReactNode;
+    navbarContent?: ReactNode;
+};
+
+const Layout = ({ children, navbarContent }: PropsWithChildren<LayoutProps>) => {
     return (
         <div css={styles.wrapper}>
             <Sidebar />
 
             <div css={styles.contentArea}>
-                <Navbar />
+                <Navbar>
+                    {navbarContent}
+                </Navbar>
 
                 <main css={styles.mainContent}>
                     {children}

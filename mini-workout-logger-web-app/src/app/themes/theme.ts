@@ -16,7 +16,8 @@ const baseColors = {
 
     blue500: '#3b82f6',
     blue700: '#014e8e',
-    blue200: '#A7D7FF',
+    blue200: '#6495ed',
+    blue100: '#A7D7FF',
 };
 
 const additionalColors = {
@@ -70,6 +71,7 @@ export const lightTheme = {
         pink: additionalColors.pink500,
         purple: additionalColors.purple500,
         orange: additionalColors.orange500,
+        pastelBlue: baseColors.blue100,
     },
     fonts: fonts,
     fontSizes: fontSizes,

@@ -83,6 +83,11 @@ const styles = {
         overflowY: 'auto',
     }),
 
+    navbarRight: css({
+        display: 'flex',
+        flexDirection: 'row',
+    }),
+
     breadcrumb: (theme: Theme) => css({
         display: "flex",
         alignItems: "center",

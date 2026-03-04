@@ -42,7 +42,7 @@ const LabelCard = ({
         <Card customCss={styles.labelCard}>
             <div css={styles.label} className="label-bar">
                 <div className="label-button">
-                    <Button icon={<BsThreeDots />} customCss={styles.labelButton} />
+                    {/*<Button icon={<BsThreeDots />} customCss={styles.labelButton} />*/}
                 </div>
             </div>
             {children}

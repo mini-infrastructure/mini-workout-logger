@@ -1,10 +1,9 @@
 import styles from "./layout.component.style.tsx";
 import { useLocation } from "react-router-dom";
-import { RiMoonFill } from "react-icons/ri";
-import ToggleButton from "../button/toggle/toggle.button.component.tsx";
 import ToggleThemeButton from "../button/toggle/toggle-theme.button.component.tsx";
+import {PropsWithChildren} from "react";
 
-const Navbar = () => {
+const Navbar = ({ children }: PropsWithChildren) => {
     const { pathname } = useLocation();
 
     const getBreadcrumbParts = () => {
@@ -56,9 +55,10 @@ const Navbar = () => {
                 </p>
             </>
 
-            <>
+            <div css={styles.navbarRight}>
+                {children}
                 <ToggleThemeButton />
-            </>
+            </div>
         </nav>
     );
 };

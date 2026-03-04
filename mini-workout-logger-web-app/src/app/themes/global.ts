@@ -21,7 +21,8 @@ const globalStyles = (theme: {
         green: string;
         pink: string;
         purple: string;
-        orange: string
+        orange: string;
+        pastelBlue: string;
     };
     fonts: { primary: string; secondary: string; number: string };
     fontSizes: {

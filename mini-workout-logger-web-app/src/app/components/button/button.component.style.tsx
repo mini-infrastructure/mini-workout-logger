@@ -78,6 +78,7 @@ const styles = {
 
         ':hover': {
             opacity: 0.9,
+            backgroundColor: theme.colors.primary,
             backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.secondary)}, transparent)`,
         },
     }),
@@ -164,9 +165,8 @@ const styles = {
     }),
 
     seeMoreButton: (theme: Theme) => css({
-        color: darken(0.2, theme.colors.primary),
         ':hover': {
-            backgroundColor: transparentize(0.9, theme.colors.primary),
+            backgroundColor: transparentize(0.8, theme.colors.secondary),
         },
     }),
 
