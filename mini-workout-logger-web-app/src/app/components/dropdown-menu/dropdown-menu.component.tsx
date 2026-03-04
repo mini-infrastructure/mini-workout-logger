@@ -1,11 +1,12 @@
 import type {ReactNode} from "react";
-import type {Theme} from "@emotion/react";
+import type {Interpolation, Theme} from "@emotion/react";
 import {css} from "@emotion/react";
-import Button from "../button/button.component.tsx";
-import ActionSwitch from "../../input/action/action.input.component.tsx";
-import {useState} from "react";
+import Button, {ButtonProps} from "../button/button.component.tsx";
+import ActionSwitch, {ActionSwitchType} from "../../input/action/action.input.component.tsx";
+import {useEffect, useRef, useState} from "react";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
+import {BsThreeDots} from "react-icons/bs";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 
@@ -31,24 +32,59 @@ export const getIconColor = (color: MenuItemColor = "info") => (theme: Theme) =>
     });
 };
 
+type DropdownTrigger = "button" | "action-switch";
+
 type DropdownProps = {
     items: DropdownMenuItem[];
     title?: string;
+    trigger?: DropdownTrigger;
+    customTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const DropdownMenu = ({ items, title }: DropdownProps) => {
-    const [open, setOpen] = useState(true);
+const DropdownMenu = ({
+                          items,
+                          title,
+                          trigger = "button",
+    customTriggerCss,
+                      }: DropdownProps) => {
+    const [open, setOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!containerRef.current) return;
+
+            if (!containerRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
-        <div css={styles.container}>
-            <ActionSwitch
-                type="filter"
-                checked={open}
-                onChange={setOpen}
-            />
+        <div css={styles.container} ref={containerRef}>
+            {trigger === "action-switch" ? (
+                <ActionSwitch
+                    type="filter"
+                    checked={open}
+                    onChange={setOpen}
+                />
+            ) : (
+                <Button
+                    onClick={() => setOpen((prev) => !prev)}
+                    isClicked={open}
+                    icon={<BsThreeDots size={14} />}
+                    customCss={customTriggerCss ? (Array.isArray(customTriggerCss) ? customTriggerCss : [customTriggerCss]) : []}
+                >
+                </Button>
+            )}
 
             {open && (
-                <nav css={styles.menu}>
+                <nav css={styles.menu} >
                     {title && <legend css={styles.legend}>{title}</legend>}
 
                     <ul css={styles.ul}>

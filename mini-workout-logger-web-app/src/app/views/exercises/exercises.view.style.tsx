@@ -30,7 +30,7 @@ const styles = {
         borderRadius: 15,
         padding: '1rem',
         boxSizing: 'border-box',
-    })
+    }),
 };
 
 export default styles;

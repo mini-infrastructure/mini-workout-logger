@@ -35,7 +35,11 @@ const ExercisesDatabaseView = () => {
     return (
         <Layout
             navbarContent={
-                <DropdownMenu title="Ações" items={items} />
+                <DropdownMenu
+                    title="Actions"
+                    items={items}
+                    trigger="action-switch"
+                />
             }
         >
             <div css={styles.cardsWrapper}>
