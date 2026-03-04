@@ -3,7 +3,7 @@ import styles from "./switch.input.component.style.tsx";
 import type {Interpolation, Theme} from "@emotion/react";
 
 // Todo: sm, lg sizes
-export type ToggleSize = "md";
+export type ToggleSize = "sm" | "md" | "lg";
 
 export type SwitchInputProps = {
     onIcon: ReactNode;
@@ -27,7 +27,23 @@ const sizeMap: Record<ToggleSize,
         iconSize: string;
     }
 > = {
+    sm: {
+        width: "2.8rem",
+        height: "1.4rem",
+        button: "1rem",
+        buttonOffset: "0.15rem",
+        iconOffset: "0.4rem",
+        iconSize: "0.7rem",
+    },
     md: {
+        width: "3.5rem",
+        height: "1.8rem",
+        button: "1.4rem",
+        buttonOffset: "0.2rem",
+        iconOffset: "0.5rem",
+        iconSize: "0.9rem",
+    },
+    lg: {
         width: "4.03rem",
         height: "2.07rem",
         button: "1.61rem",
@@ -43,7 +59,7 @@ const SwitchInput = ({
                          offIcon,
                          onClick,
                          isOn,
-                         size = "md",
+                         size = "lg",
                          onSliderCustomCss,
                          offSliderCustomCss,
                          onIconCustomCss,
