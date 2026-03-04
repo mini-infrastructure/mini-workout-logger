@@ -1,9 +1,9 @@
-import {ThemeToggleContext} from "../../../themes/theme-context.ts";
+import {ThemeToggleContext} from "../../themes/theme-context.ts";
 import {useContext} from "react";
-import ToggleButton from "./toggle.button.component.tsx";
+import SwitchInput from "./switch.input.component.tsx";
 import { RiMoonFill } from "react-icons/ri";
 import { MdWbSunny } from "react-icons/md";
-import styles from "./toggle.button.component.style";
+import styles from "./switch.input.component.style.tsx";
 
 const ToggleThemeButton = () => {
     const context = useContext(ThemeToggleContext);
@@ -13,7 +13,7 @@ const ToggleThemeButton = () => {
     const { toggleTheme, isDark } = context;
 
     return (
-        <ToggleButton
+        <SwitchInput
             onIcon={<RiMoonFill />}
             onIconCustomCss={styles.iconOnCustom}
             offIconCustomCss={styles.offIconCustomCss}

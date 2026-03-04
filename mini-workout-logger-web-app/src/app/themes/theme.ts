@@ -3,7 +3,7 @@ import {darken, lighten, saturate} from "polished";
 const baseColors = {
     white: '#FFFFFF',
 
-    gray100: '#00000026',
+    gray100: '#F3F5F7',
     gray200: '#EAEAEC',
     gray300: '#8D8D8D',
     gray500: '#80786B',

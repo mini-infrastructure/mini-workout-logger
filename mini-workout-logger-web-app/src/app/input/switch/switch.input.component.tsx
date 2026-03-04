@@ -1,10 +1,11 @@
 import { ReactNode, CSSProperties } from "react";
-import styles from "./toggle.button.component.style";
+import styles from "./switch.input.component.style.tsx";
 import type {Interpolation, Theme} from "@emotion/react";
 
-export type ToggleSize = "sm" | "md" | "lg";
+// Todo: sm, lg sizes
+export type ToggleSize = "md";
 
-export type ToggleButtonProps = {
+export type SwitchInputProps = {
     onIcon: ReactNode;
     offIcon: ReactNode;
     onClick: () => void;
@@ -16,8 +17,7 @@ export type ToggleButtonProps = {
     offIconCustomCss?: Interpolation<Theme>;
 };
 
-const sizeMap: Record<
-    ToggleSize,
+const sizeMap: Record<ToggleSize,
     {
         width: string;
         height: string;
@@ -27,23 +27,7 @@ const sizeMap: Record<
         iconSize: string;
     }
 > = {
-    sm: {
-        width: "2.8rem",
-        height: "1.4rem",
-        button: "1rem",
-        buttonOffset: "0.15rem",
-        iconOffset: "0.4rem",
-        iconSize: "0.7rem",
-    },
     md: {
-        width: "3.5rem",
-        height: "1.8rem",
-        button: "1.4rem",
-        buttonOffset: "0.2rem",
-        iconOffset: "0.5rem",
-        iconSize: "0.9rem",
-    },
-    lg: {
         width: "4.03rem",
         height: "2.07rem",
         button: "1.61rem",
@@ -53,18 +37,18 @@ const sizeMap: Record<
     },
 };
 
-// Todo: `ToggleButton`: Alert to agnostic component, move to ``
-const ToggleButton = ({
-                          onIcon,
-                          offIcon,
-                          onClick,
-                          isOn,
-                          size = "lg",
-                          onSliderCustomCss,
-                          offSliderCustomCss,
-                          onIconCustomCss,
-                          offIconCustomCss,
-                      }: ToggleButtonProps) => {
+// Todo: `SwitchInput`: Alert to agnostic component, move to ``
+const SwitchInput = ({
+                         onIcon,
+                         offIcon,
+                         onClick,
+                         isOn,
+                         size = "md",
+                         onSliderCustomCss,
+                         offSliderCustomCss,
+                         onIconCustomCss,
+                         offIconCustomCss,
+                     }: SwitchInputProps) => {
     const selectedSize = sizeMap[size];
 
     const cssVariables: CSSProperties & Record<string, string> = {
@@ -101,4 +85,4 @@ const ToggleButton = ({
     );
 };
 
-export default ToggleButton;
+export default SwitchInput;
