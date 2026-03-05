@@ -1,30 +1,48 @@
 import {css, Theme} from '@emotion/react';
-import {darken, transparentize} from "polished";
+import {transparentize} from "polished";
 
 const styles = {
+
+    /**
+     * Default Button.
+     */
+
     button: (theme: Theme) => css({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '1rem 1.5rem',
+
+        padding: '0.5rem 1rem',
         borderRadius: 15,
         border: 'none',
         cursor: 'pointer',
         width: 'auto',
-        color: theme.colors.text,
-        margin: '0.5rem',
-        fontSize: '1rem',
+        lineHeight: '1rem',
+        fontSize: theme.fontSizes.medium,
+        fontFamily: 'inherit',
 
-        transition: 'all 0.2s ease',
+        backgroundColor: theme.colors.background,
+        color: theme.colors.text,
+
+        transition: 'background-color 0.2s ease, color 0.2s ease',
+
         ':hover': {
-            transform: 'translateY(-0.1rem)',
+            backgroundColor: theme.colors.container1,
         },
-        ':active': {
-            transform: 'translateY(0)',
-        },
+
+        // ':focus': {
+        //     backgroundColor: theme.colors.container2,
+        //     outline: 'none',
+        // },
+
         ':disabled': {
             opacity: 0.5,
+            pointerEvents: 'none',
             cursor: 'not-allowed',
+        },
+
+        '&[data-active="true"]': {
+            backgroundColor: theme.colors.container1 + '80',
         },
     }),
 
@@ -32,65 +50,105 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: "0 0.5rem 0 0",
-        width: '0.9vw'
+        margin: '0 0.5rem 0 0',
+        width: '0.8rem',
+        height: '0.8rem',
     }),
+
+    onlyIconButton: css({
+        padding: '0.6rem',
+        borderRadius: 8,
+    }),
+
+    onlyIcon: css({
+        margin: '0',
+        padding: '0',
+    }),
+
+    /**
+     * Primary Button.
+     */
 
     buttonPrimary: (theme: Theme) => css({
         fontWeight: 700,
         backgroundColor: theme.colors.primary,
         border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
-        color: theme.colors.lightText,
+        color: theme.colors.white,
         backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary)}, transparent)`,
 
         ':hover': {
             opacity: 0.9,
+            backgroundColor: theme.colors.primary,
             backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.secondary)}, transparent)`,
         },
     }),
 
     iconPrimary: css({
-        fontSize: "1.3rem",
     }),
+
+    /**
+     * Secondary Button.
+     */
 
     buttonSecondary: (theme: Theme) => css({
         display: "flex",
         justifyContent: "flex-start",
-        padding: '0.7rem 0.9rem',
-        fontSize: '0.95rem',
-        backgroundColor: theme.colors.surface,
-        color: theme.colors.surfaceText,
-        border: `1px solid ${darken(0.1, theme.colors.surface)}`,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.surface)}, transparent)`,
+        backgroundColor: theme.colors.container2,
+        border: `1px solid ${theme.colors.border2}`,
+        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.container2)}, transparent)`,
 
         ':hover': {
-            backgroundImage: `linear-gradient(to top, ${theme.colors.surface}, transparent)`,
+            backgroundImage: `linear-gradient(to top, ${theme.colors.container2}, transparent)`,
         },
     }),
 
     iconSecondary: css({
-        fontSize: "1rem",
     }),
+
+    /**
+     * Sidebar Button.
+     */
 
     buttonSidebar: (theme: Theme) => css({
         display: "flex",
+        alignItems: "center",
         justifyContent: "flex-start",
-        margin: "0 0.4rem 0.4rem",
-        padding: "0.4rem",
-        cursor: "pointer",
-        fontSize: "0.9rem",
-        height: 'auto',
-        color: darken(0.8, theme.colors.surface),
-        backgroundColor: "transparent",
-        borderRadius: 10,
+        gap: "0.3rem",
 
-        ':hover': {
-            backgroundColor: theme.colors.surface,
+        width: "100%",
+        padding: "0.5rem",
+        borderRadius: 15,
+        border: "none",
+
+        backgroundColor: "transparent",
+        color: theme.colors.text3,
+
+        fontSize: theme.fontSizes.medium,
+        textAlign: "left",
+
+        cursor: "pointer",
+        outline: "none",
+
+        transition: "background-color 0.2s ease, color 0.2s ease",
+
+        ":active": {
+            backgroundColor: theme.colors.container2,
+            fontWeight: 600,
+        },
+
+        ":disabled": {
+            opacity: 0.5,
+            pointerEvents: "none",
+            cursor: "not-allowed",
         },
     }),
 
     iconSidebar: css({
     }),
+
+    /**
+     * Sidebar Collapse Button.
+     */
 
     buttonSidebarCollapse: css({
     }),
@@ -99,21 +157,27 @@ const styles = {
     }),
 
     collapseContainer: (theme: Theme) => css({
-        color: theme.colors.surfaceText,
+        color: theme.colors.text2,
     }),
 
     collapsableButton: css({
-        fontSize: "0.85rem",
         width: "100%",
+    }),
+
+    seeMoreButton: (theme: Theme) => css({
+        ':hover': {
+            backgroundColor: transparentize(0.8, theme.colors.secondary),
+        },
     }),
 
     verticalLine: (theme: Theme) => css({
         width: '1px',
-        backgroundColor: transparentize(0.7, theme.colors.surfaceText),
+        marginRight: '0.75rem',
+        backgroundColor: transparentize(0.7, theme.colors.text2),
     }),
 
     collapseItem: css({
-        margin: "0 1.2rem 0",
+        margin: "0 0.75rem 0",
         display: "flex",
         flexDirection: 'row',
         alignItems: 'stretch',

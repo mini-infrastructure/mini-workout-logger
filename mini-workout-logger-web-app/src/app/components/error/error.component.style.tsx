@@ -24,20 +24,19 @@ const styles = {
     }),
 
     status: (theme: Theme) => css({
-        fontSize: '15rem',
+        fontSize: theme.fontSizes.xxx_large,
         fontFamily: theme.fonts.number,
     }),
 
     title: (theme: Theme) => css({
-        fontSize: '2.5rem',
+        fontSize: theme.fontSizes.x_large,
         marginBottom: '-1rem',
         fontFamily: theme.fonts.secondary,
     }),
 
-    message: css({
-        fontSize: '1.5rem',
+    message: (theme: Theme) => css({
+        fontSize: theme.fontSizes.large,
         wordWrap: 'break-word',
-        maxWidth: '80%',
         textOverflow: 'ellipsis',
     }),
 

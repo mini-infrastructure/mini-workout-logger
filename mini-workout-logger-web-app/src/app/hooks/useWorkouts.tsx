@@ -9,11 +9,15 @@ export function useWorkouts() {
 
     useEffect(() => {
         WorkoutService.getAll()
-            .then(setWorkouts)
-            .catch(() => setError('Error fetching workouts'))
+            .then((data) => {
+                setWorkouts(data ?? []);
+            })
+            .catch(() => {
+                setError('Error fetching workouts');
+                setWorkouts([]);
+            })
             .finally(() => setLoading(false));
     }, []);
 
     return { workouts, loading, error };
-
 }

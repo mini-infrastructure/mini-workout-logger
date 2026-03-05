@@ -7,4 +7,5 @@ export interface ExerciseReadDTO {
     category?: ExerciseCategory;
     difficulty?: ExerciseDifficulty;
     muscles: MuscleReadDTO[];
+    rootMuscles: string[];
 }
