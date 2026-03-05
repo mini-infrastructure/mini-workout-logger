@@ -1,6 +1,7 @@
 import type {ExerciseReadDTO} from "../dtos/exercise-read.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import axios from "axios";
+import type {ExerciseWriteDTO} from "../dtos/exercise-write.dto.tsx";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
@@ -31,7 +32,7 @@ class ExerciseService {
         }
     }
 
-    async create(exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {
+    async create(exercise: ExerciseWriteDTO): Promise<ExerciseReadDTO> {
         try {
             const response = await axios.post<ApiResponseDTO<ExerciseReadDTO>>(
                 `${apiUrl}/exercises?lang=${lang}`,
@@ -44,7 +45,7 @@ class ExerciseService {
         }
     }
 
-    async update(id: number, exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {
+    async update(id: number, exercise: ExerciseWriteDTO): Promise<ExerciseReadDTO> {
         try {
             const response = await axios.put<ApiResponseDTO<ExerciseReadDTO>>(
                 `${apiUrl}/exercises/${id}?lang=${lang}`,
