@@ -1,5 +1,5 @@
-import { css, Theme } from "@emotion/react";
-import {darken, lighten, rgba} from "polished";
+import {css, Theme} from "@emotion/react";
+import {lighten, rgba} from "polished";
 
 const styles = {
     switch: (theme: Theme) => css({

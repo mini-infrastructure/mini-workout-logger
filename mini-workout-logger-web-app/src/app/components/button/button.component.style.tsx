@@ -1,5 +1,5 @@
 import {css, Theme} from '@emotion/react';
-import {darken, transparentize} from "polished";
+import {transparentize} from "polished";
 
 const styles = {
 

@@ -6,8 +6,7 @@ import Button from "../button/button.component.tsx";
 import ActionSwitch from "../../input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
-import {FaFolderPlus} from "react-icons/fa";
-import {IoClose, IoSettingsSharp} from "react-icons/io5";
+import {IoClose} from "react-icons/io5";
 import {HiCursorClick} from "react-icons/hi";
 
 export type MenuItemColor = "primary" | "danger" | "info";

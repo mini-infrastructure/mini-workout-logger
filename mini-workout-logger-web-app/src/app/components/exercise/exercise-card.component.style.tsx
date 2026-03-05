@@ -1,5 +1,4 @@
-import {css, Theme} from '@emotion/react';
-import {darken, rgba, transparentize} from "polished";
+import {css} from '@emotion/react';
 
 const styles = {
 

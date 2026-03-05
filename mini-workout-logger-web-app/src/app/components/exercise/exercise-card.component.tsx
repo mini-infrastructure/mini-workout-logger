@@ -1,6 +1,6 @@
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import type {Interpolation, Theme} from "@emotion/react";
-import styles from "./exercise.component.style.tsx";
+import styles from "./exercise-card.component.style.tsx";
 import Badge, {getRandomBadgeVariant} from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
@@ -8,11 +8,7 @@ import {
     getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
-import LabelCard, {CardHeader, LabelColor} from "../card/label-card.component.tsx";
-import {FaRegPlayCircle} from "react-icons/fa";
-import Button from "../button/button.component.tsx";
-import {MdOutlineEdit} from "react-icons/md";
-import {FaRegTrashCan} from "react-icons/fa6";
+import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,

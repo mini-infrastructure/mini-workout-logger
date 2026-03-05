@@ -1,6 +1,5 @@
 import Button from "../button.component.tsx";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
+import {IoIosArrowBack, IoIosArrowForward} from "react-icons/io";
 import styles from "./navigation.button.component.style.tsx";
 import {useNavigate} from "react-router-dom";
 

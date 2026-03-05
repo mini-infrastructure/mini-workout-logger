@@ -1,5 +1,5 @@
-import type { PropsWithChildren } from "react";
-import type { Interpolation, Theme } from "@emotion/react";
+import type {PropsWithChildren} from "react";
+import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./card.component.style";
 
 export type CardProps = {

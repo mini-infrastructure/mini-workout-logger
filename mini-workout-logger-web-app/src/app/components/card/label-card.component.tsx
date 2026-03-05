@@ -2,16 +2,13 @@
  * A card with a top div colored with a label theme.
  */
 import type {CardProps} from "./card.component.tsx";
-import {PropsWithChildren, ReactNode} from "react";
 import Card from "./card.component.tsx";
+import {PropsWithChildren} from "react";
 import type {Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 import styles from "./card.component.style.tsx";
-import { BsThreeDots } from "react-icons/bs";
-import Button from "../button/button.component.tsx";
 import DropdownMenu, {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
-import {css} from "@emotion/react";
-import {darken} from "polished";
 
 export type LabelCardProps = CardProps & {
     labelColor?: LabelColor,

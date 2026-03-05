@@ -1,8 +1,8 @@
 import {ThemeToggleContext} from "../../themes/theme-context.ts";
 import {useContext} from "react";
 import SwitchInput from "./switch.input.component.tsx";
-import { RiMoonFill } from "react-icons/ri";
-import { MdWbSunny } from "react-icons/md";
+import {RiMoonFill} from "react-icons/ri";
+import {MdWbSunny} from "react-icons/md";
 import styles from "./switch.input.component.style.tsx";
 
 const ToggleThemeButton = () => {

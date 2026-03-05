@@ -1,4 +1,4 @@
-import {StrictMode, useEffect, useState} from 'react';
+import {StrictMode, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Global, ThemeProvider} from '@emotion/react';
 

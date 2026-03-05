@@ -1,4 +1,4 @@
-import { css, Theme } from '@emotion/react';
+import {css, Theme} from '@emotion/react';
 
 const NAVBAR_HEIGHT = '4rem';
 const BORDER = (color: string) => `2px solid ${color}`;

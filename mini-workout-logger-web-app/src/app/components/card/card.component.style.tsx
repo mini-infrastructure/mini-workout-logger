@@ -1,5 +1,5 @@
-import { css, Theme, keyframes } from "@emotion/react";
-import { transparentize } from "polished";
+import {css, keyframes, Theme} from "@emotion/react";
+import {transparentize} from "polished";
 
 export type RandomValues = {
     top: number;

@@ -1,6 +1,6 @@
-import {PropsWithChildren, useState} from "react";
+import {PropsWithChildren} from "react";
 import styles from "./action.input.component.style.tsx";
-import {Theme, Interpolation, css} from '@emotion/react';
+import {Interpolation, Theme} from '@emotion/react';
 
 export type ActionSwitchType = "hamburger" | "filter" | "plus";
 

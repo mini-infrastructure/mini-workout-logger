@@ -1,5 +1,4 @@
 import {css, Theme} from "@emotion/react";
-import {darken} from "polished";
 
 const BUTTON_BG = (theme: Theme) => theme.colors.border1;
 const BUTTON_DIAMETER = '1.8rem';

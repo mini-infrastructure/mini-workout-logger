@@ -1,9 +1,9 @@
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import {FiDatabase, FiHome, FiSettings} from "react-icons/fi";
-import { IoAnalyticsSharp } from "react-icons/io5";
+import {IoAnalyticsSharp} from "react-icons/io5";
 import {FaRegCalendarAlt, FaRegFolder, FaRegFolderOpen} from "react-icons/fa";
-import { GiHelp } from "react-icons/gi";
+import {GiHelp} from "react-icons/gi";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
 import {useWorkouts} from "../../hooks/useWorkouts.tsx";
 import Divider from "../divider/divider.component.tsx";

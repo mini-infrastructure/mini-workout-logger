@@ -1,5 +1,5 @@
-import { PropsWithChildren, useMemo } from "react";
-import Card, { CardProps } from "./card.component";
+import {PropsWithChildren, useMemo} from "react";
+import Card, {CardProps} from "./card.component";
 import styles from "./card.component.style";
 
 const BlobCard = ({

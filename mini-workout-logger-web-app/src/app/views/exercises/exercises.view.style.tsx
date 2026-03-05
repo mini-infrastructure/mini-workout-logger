@@ -1,4 +1,4 @@
-import { css, Theme } from '@emotion/react';
+import {css, Theme} from '@emotion/react';
 
 const styles = {
     emptyWrapper: (theme: Theme) => css({
@@ -15,6 +15,10 @@ const styles = {
         height: '99%',
         padding: '0',
         margin: '0',
+    }),
+
+    actionsWrapper: css({
+        padding: '1rem',
     }),
 
     cardsWrapper: css({

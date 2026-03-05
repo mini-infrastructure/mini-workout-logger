@@ -5,10 +5,7 @@ import {FaBolt, FaDumbbell, FaFire, FaRunning, FaSeedling} from "react-icons/fa"
 import {MdSelfImprovement, MdTrendingUp} from "react-icons/md";
 import {GiMuscleUp, GiProgression, GiWeightLiftingUp} from "react-icons/gi";
 import type {ReactNode} from "react";
-import type {Theme} from "@emotion/react";
-import styles from "../components/badge/badge.component.style.tsx";
 import type {BadgeVariant} from "../components/badge/badge.component.tsx";
-import {badgeVariants} from "../components/badge/badge.component.tsx";
 
 export interface Exercise {
     id: number;

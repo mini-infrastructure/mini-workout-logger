@@ -1,11 +1,10 @@
 import Layout from "../../components/layout/layout.component.tsx";
 import styles from "./exercises.view.style.tsx";
 import {useExercises} from "../../hooks/useExercises.tsx";
-import ExerciseCard from "../../components/exercise/exercise.component.tsx";
-import ActionSwitch from "../../input/action/action.input.component.tsx";
+import ExerciseCard from "../../components/exercise/exercise-card.component.tsx";
 import type {DropdownMenuItem} from "../../components/dropdown-menu/dropdown-menu.component.tsx";
-import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import DropdownMenu from "../../components/dropdown-menu/dropdown-menu.component.tsx";
+import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import PrimaryButton from "../../components/button/button.primary.component.tsx";
 import {MdAdd} from "react-icons/md";
 
@@ -44,7 +43,7 @@ const ExercisesDatabaseView = () => {
                 />
             }
         >
-            <div>
+            <div css={styles.actionsWrapper}>
                 <PrimaryButton
                     icon={<MdAdd/>}
                 >
