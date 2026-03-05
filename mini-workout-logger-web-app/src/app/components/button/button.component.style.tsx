@@ -30,10 +30,10 @@ const styles = {
             backgroundColor: theme.colors.container1,
         },
 
-        ':focus': {
-            backgroundColor: theme.colors.container2,
-            outline: 'none',
-        },
+        // ':focus': {
+        //     backgroundColor: theme.colors.container2,
+        //     outline: 'none',
+        // },
 
         ':disabled': {
             opacity: 0.5,

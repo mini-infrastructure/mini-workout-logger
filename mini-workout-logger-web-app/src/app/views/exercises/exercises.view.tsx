@@ -6,6 +6,8 @@ import ActionSwitch from "../../input/action/action.input.component.tsx";
 import type {DropdownMenuItem} from "../../components/dropdown-menu/dropdown-menu.component.tsx";
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import DropdownMenu from "../../components/dropdown-menu/dropdown-menu.component.tsx";
+import PrimaryButton from "../../components/button/button.primary.component.tsx";
+import {MdAdd} from "react-icons/md";
 
 const items: DropdownMenuItem[] = [
     {
@@ -42,6 +44,13 @@ const ExercisesDatabaseView = () => {
                 />
             }
         >
+            <div>
+                <PrimaryButton
+                    icon={<MdAdd/>}
+                >
+                    Add Exercise
+                </PrimaryButton>
+            </div>
             <div css={styles.cardsWrapper}>
                 {exercises.map((exercise) => (
                     <ExerciseCard
