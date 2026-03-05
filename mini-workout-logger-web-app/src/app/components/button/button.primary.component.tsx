@@ -4,19 +4,21 @@ import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
 
 const PrimaryButton = ({
-                    onClick,
-                    path,
-                    disabled,
-                    customCss,
-                    icon,
-                    customIconCss,
-                    children
-                }: PropsWithChildren<ButtonProps>) => {
+                           onClick,
+                           path,
+                           disabled,
+                           customCss,
+                           icon,
+                           customIconCss,
+                           type,
+                           children
+                       }: PropsWithChildren<ButtonProps>) => {
     return (
         <Button
             onClick={onClick}
             path={path}
             disabled={disabled}
+            type={type}
             customCss={[
                 styles.buttonPrimary,
                 ...(customCss

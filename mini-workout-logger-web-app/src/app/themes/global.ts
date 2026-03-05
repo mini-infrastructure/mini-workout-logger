@@ -39,7 +39,8 @@ const globalStyles = (theme: {
         x_large: string;
         xx_large: string;
         xxx_large: string
-    }
+    },
+    shadow: { normal: string };
 }) => css({
     body: {
         margin: 0,

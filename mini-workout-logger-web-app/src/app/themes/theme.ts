@@ -1,4 +1,4 @@
-import {darken, lighten, saturate} from "polished";
+import {darken, lighten, saturate, transparentize} from "polished";
 
 const baseColors = {
     white: '#FFFFFF',
@@ -82,6 +82,9 @@ export const lightTheme = {
     },
     fonts: fonts,
     fontSizes: fontSizes,
+    shadow: {
+        normal: `0 4px 6px -1px ${transparentize(0.8, baseColors.black700)}`,
+    }
 };
 
 export const darkTheme = {
@@ -110,6 +113,9 @@ export const darkTheme = {
     },
     fonts: fonts,
     fontSizes: fontSizes,
+    shadow: {
+        normal: `0 4px 6px -1px ${transparentize(0.9, baseColors.gray700)}`,
+    }
 };
 
 export type AppTheme = typeof lightTheme;

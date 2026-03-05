@@ -13,6 +13,7 @@ export type ButtonProps = {
     clickedIcon?: ReactNode;
     customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
     isClicked?: boolean;
+    type?: "button" | "submit" | "reset";
 };
 
 const Button = ({
@@ -24,6 +25,7 @@ const Button = ({
                     clickedIcon,
                     customIconCss,
                     isClicked = false,
+                    type = "button",
                     children
                 }: PropsWithChildren<ButtonProps>) => {
     const navigate = useNavigate();
@@ -47,6 +49,7 @@ const Button = ({
             ]}
             onClick={handleClick}
             disabled={disabled}
+            type={type}
         >
             {(icon || clickedIcon) && (
                 <span

@@ -14,7 +14,7 @@ const styles = {
         zIndex: 9999,
         background: theme.colors.background,
         borderRadius: '0.375em',
-        boxShadow: `0 1px 5px ${transparentize(0.8, theme.colors.black)}`,
+        boxShadow: theme.shadow.normal,
         padding: '0.75rem',
         width: 'max-content',
         minWidth: '9rem',

@@ -7,6 +7,10 @@ import DropdownMenu from "../../components/dropdown-menu/dropdown-menu.component
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import PrimaryButton from "../../components/button/button.primary.component.tsx";
 import {MdAdd} from "react-icons/md";
+import {useState} from "react";
+import Modal from "../../components/modal/modal.component.tsx";
+import type {FormItem} from "../../input/form/form.input.component.tsx";
+import FormBuilder from "../../input/form/form.input.component.tsx";
 
 const items: DropdownMenuItem[] = [
     {
@@ -30,9 +34,38 @@ const items: DropdownMenuItem[] = [
     },
 ];
 
+const formItems: FormItem[] = [
+    {
+        name: "firstName",
+        label: "First name",
+        type: "text",
+        colSpan: 1,
+    },
+    {
+        name: "lastName",
+        label: "Last name",
+        type: "text",
+        colSpan: 1,
+    },
+    {
+        name: "email",
+        label: "Email",
+        type: "email",
+        colSpan: 2,
+    },
+    {
+        name: "bio",
+        label: "Bio",
+        type: "textarea",
+        colSpan: 2,
+    },
+];
+
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
-    console.log(exercises);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <Layout
             navbarContent={
@@ -46,9 +79,11 @@ const ExercisesDatabaseView = () => {
             <div css={styles.actionsWrapper}>
                 <PrimaryButton
                     icon={<MdAdd/>}
+                    onClick={() => setIsModalOpen(true)}
                 >
                     Add Exercise
                 </PrimaryButton>
+
             </div>
             <div css={styles.cardsWrapper}>
                 {exercises.map((exercise) => (
@@ -59,6 +94,18 @@ const ExercisesDatabaseView = () => {
                     />
                 ))}
             </div>
+
+            <Modal
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            >
+                <FormBuilder
+                    items={formItems}
+                    columns={2}
+                    onSubmit={(values) => console.log(values)}
+                    submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
+                />
+            </Modal>
         </Layout>
     );
 };
