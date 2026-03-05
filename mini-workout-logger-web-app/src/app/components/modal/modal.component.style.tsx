@@ -18,10 +18,11 @@ const styles = {
         position: 'relative',
         backgroundColor: theme.colors.background,
         borderRadius: '0.75rem',
-        padding: '3rem',
+        padding: '4rem',
         width: 'fit-content',
+        minWidth: '30vw',
+        maxWidth: '35vw',
         height: 'fit-content',
-        overflowY: 'auto',
         boxShadow: theme.shadow.normal,
     }),
 
@@ -31,7 +32,14 @@ const styles = {
         right: 0,
         color: theme.colors.red,
         borderRadius: '0 0.5rem 0 0.5rem',
-    })
+        margin: '1rem 1rem 0 0',
+    }),
+
+    closeButtonIcon: css({
+        width: 'auto',
+        height: 'auto',
+        fontSize: '1.2rem',
+    }),
 };
 
 export default styles;

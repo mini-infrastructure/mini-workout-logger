@@ -1,7 +1,9 @@
 import type {ReactNode, SyntheticEvent} from "react";
 import {useEffect, useState} from "react";
 import styles from "./form.input.component.style.tsx";
-import Button from "../../components/button/button.component.tsx";
+import Button from "../../button/button.component.tsx";
+import MultiSelect from "./multiselect.form.input.component.tsx";
+import Select from "./select.input.component.tsx";
 
 export type FormFieldType =
     | "text"
@@ -9,6 +11,7 @@ export type FormFieldType =
     | "password"
     | "number"
     | "select"
+    | "multiselect"
     | "textarea";
 
 export type FormItem = {
@@ -39,6 +42,11 @@ const buildInitialValues = (items: FormItem[]) => {
 
         if (item.type === "select" && item.options?.length) {
             values[item.name] = item.options[0].value;
+            return;
+        }
+
+        if (item.type === "multiselect") {
+            values[item.name] = item.initialValue ?? [];
             return;
         }
 
@@ -79,23 +87,25 @@ const FormBuilder = ({
                         <label>{item.label}</label>
 
                         {item.type === "select" ? (
-                            <select
-                                css={styles.input}
+                            <Select
+                                options={item.options ?? []}
                                 value={values[item.name] ?? ""}
-                                onChange={(e) => handleChange(item.name, e.target.value)}
-                            >
-                                {item.options?.map((opt) => (
-                                    <option key={opt.value} value={opt.value}>
-                                        {opt.label}
-                                    </option>
-                                ))}
-                            </select>
+                                onChange={(val) => handleChange(item.name, val)}
+                                placeholder={item.placeholder}
+                            />
                         ) : item.type === "textarea" ? (
                             <textarea
                                 css={styles.input}
                                 placeholder={item.placeholder}
                                 value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
+                            />
+                        ) : item.type === "multiselect" ? (
+                            <MultiSelect
+                                options={item.options ?? []}
+                                value={values[item.name] ?? []}
+                                onChange={(val) => handleChange(item.name, val)}
+                                placeholder={item.placeholder}
                             />
                         ) : (
                             <input

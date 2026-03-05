@@ -1,4 +1,4 @@
-import {ThemeToggleContext} from "../../themes/theme-context.ts";
+import {ThemeToggleContext} from "../../../themes/theme-context.ts";
 import {useContext} from "react";
 import SwitchInput from "./switch.input.component.tsx";
 import {RiMoonFill} from "react-icons/ri";
