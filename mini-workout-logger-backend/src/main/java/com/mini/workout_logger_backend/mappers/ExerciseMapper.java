@@ -8,12 +8,14 @@ import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.repositories.MuscleRepository;
+import com.mini.workout_logger_backend.services.ExerciseService;
 import com.mini.workout_logger_backend.services.MuscleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,20 +37,7 @@ public class ExerciseMapper
     protected void configure(ModelMapper mapper) {
 
         // Entity -> DTO (GET)
-        mapper.createTypeMap(Exercise.class, ExerciseReadDTO.class)
-                .setPostConverter(ctx -> {
-                    Exercise entity = ctx.getSource();
-                    ExerciseReadDTO dto = ctx.getDestination();
-
-                    if (!entity.getMuscles().isEmpty()) {
-                        Set< MuscleReadDTO> rootMuscles = muscleMapper.toDTO(muscleService.findRootMuscles(entity.getMuscles()));
-                        dto.setRootMuscles(rootMuscles.stream()
-                                .map(MuscleReadDTO::getName)
-                                .collect(Collectors.toSet()));
-                    }
-
-                    return dto;
-                });
+        mapper.createTypeMap(Exercise.class, ExerciseReadDTO.class);
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(ExerciseWriteDTO.class, Exercise.class)
