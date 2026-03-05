@@ -8,6 +8,7 @@ import com.mini.java_core.entity.AbstractEntity;
 import com.mini.java_core.entity.Text;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,6 +56,13 @@ public class Exercise extends AbstractEntity {
     @JsonIgnore
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
+    @ElementCollection(targetClass = ExerciseEquipment.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "exercise_equipment",
+            joinColumns = @JoinColumn(name = "exercise_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "equipment")
+    private Set<ExerciseEquipment> equipments = new HashSet<>();
+
     public void addMuscle(Muscle muscle) {
         this.muscles.add(muscle);
         muscle.getExercises().add(this);
@@ -86,6 +94,21 @@ public class Exercise extends AbstractEntity {
         this.workoutExercises.clear();
         if (workoutExercises != null) {
             workoutExercises.forEach(this::addWorkoutExercise);
+        }
+    }
+
+    public void addEquipments(ExerciseEquipment equipment) {
+        this.equipments.add(equipment);
+    }
+
+    public void removeEquipments(ExerciseEquipment equipment) {
+        this.equipments.remove(equipment);
+    }
+
+    public void setEquipments(Set<ExerciseEquipment> equipment) {
+        this.equipments.clear();
+        if (equipment != null) {
+            this.equipments.addAll(equipment);
         }
     }
 

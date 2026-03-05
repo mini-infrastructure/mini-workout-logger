@@ -8,7 +8,7 @@ const styles = {
 
     cardsWrapper: css({
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
         gap: '1rem',
         width: '100%',
     }),

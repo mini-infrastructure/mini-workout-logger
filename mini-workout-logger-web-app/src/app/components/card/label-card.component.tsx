@@ -60,13 +60,14 @@ const LabelCard = ({
                    }: PropsWithChildren<LabelCardProps>) => {
     return (
         <Card customCss={styles.labelCard}>
-            <div css={[styles.label, setLabelBackgroundColor(labelColor)]} className="label-bar">
+            <div css={styles.label}>
                 <div className="label-button">
                     <DropdownMenu
                         title="Actions"
                         items={dropdownItems}
                         trigger="button"
-                        customTriggerCss={styles.labelButton}
+                        // customTriggerCss={styles.labelButton}
+                        // customIconTriggerCss={styles.labelIconButton}
                     />
                 </div>
             </div>

@@ -9,6 +9,7 @@ import Divider from "../divider/divider.component.tsx";
 import {IoClose} from "react-icons/io5";
 import {HiCursorClick} from "react-icons/hi";
 import {useClickOut} from "../../hooks/useClickOut.tsx";
+import {FiMoreHorizontal} from "react-icons/fi";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 
@@ -41,6 +42,7 @@ type DropdownProps = {
     title?: string;
     trigger?: DropdownTrigger;
     customTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
+    customIconTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
 const DropdownMenu = ({
@@ -48,6 +50,7 @@ const DropdownMenu = ({
                           title,
                           trigger = "button",
                           customTriggerCss,
+                          customIconTriggerCss,
                       }: DropdownProps) => {
     const [open, setOpen] = useState(false);
 
@@ -67,9 +70,10 @@ const DropdownMenu = ({
                 <Button
                     onClick={() => setOpen((prev) => !prev)}
                     isClicked={open}
-                    icon={<HiCursorClick />}
+                    icon={<FiMoreHorizontal />}
                     clickedIcon={<IoClose />}
                     customCss={customTriggerCss ? (Array.isArray(customTriggerCss) ? customTriggerCss : [customTriggerCss]) : []}
+                    customIconCss={customIconTriggerCss ? (Array.isArray(customIconTriggerCss) ? customIconTriggerCss : [customIconTriggerCss]) : []}
                 >
                 </Button>
             )}

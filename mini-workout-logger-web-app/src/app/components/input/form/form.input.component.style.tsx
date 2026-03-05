@@ -66,9 +66,9 @@ const styles = {
     dropdownItem: (checked?: boolean) => (theme: Theme) => css({
         display: "flex",
         alignItems: "center",
-        padding: "8px",
+        padding: "0.5rem",
         cursor: "pointer",
-        gap: "8px",
+        gap: "0.5rem",
         background: checked ? theme.colors.container1 : "transparent",
 
         ":hover": {
@@ -76,8 +76,8 @@ const styles = {
         }
     }),
 
-    multiselectSelectedItems: (theme: Theme) => css({
-        padding: '1rem 0 0 0',
+    multiselectSelectedItems: (visible?: boolean) => css({
+        padding: visible ?  '1rem 0 0 0' : 0,
     }),
 
     badgeCustomCss: (theme: Theme) => css({

@@ -8,6 +8,7 @@ import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
 import com.mini.workout_logger_backend.entities.Muscle;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,12 @@ public class ExerciseService extends AbstractService<Exercise,
             for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new java.util.HashSet<>())) {
                 entity.addMuscle(parent);
             }
+        }
+
+        // Repĺaces the equipments set.
+        if (entity.getEquipments() != null) {
+            Set<ExerciseEquipment> newEquipments = new HashSet<>(entity.getEquipments());
+            entity.setEquipments(newEquipments);
         }
 
         return super.beforeSave(entity);

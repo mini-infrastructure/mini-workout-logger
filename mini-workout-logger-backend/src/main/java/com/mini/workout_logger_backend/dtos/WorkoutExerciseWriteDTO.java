@@ -3,6 +3,7 @@ package com.mini.workout_logger_backend.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.annotation.ExistsById;
 import com.mini.java_core.dto.WriteDTO;
+import com.mini.workout_logger_backend.annotations.WorkoutExerciseValidated;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@WorkoutExerciseValidated
 public class WorkoutExerciseWriteDTO extends WriteDTO {
 
     @NotNull

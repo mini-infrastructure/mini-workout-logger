@@ -2,7 +2,11 @@ import Modal from "../modal/modal.component.tsx";
 import FormBuilder, {FormItem} from "../input/form/form.input.component.tsx";
 import PrimaryButton from "../button/button.primary.component.tsx";
 import styles from "./exercise-modal-component.style.tsx";
-import {exerciseCategoryOptions, exerciseDifficultyOptions} from "../../models/exercise.model.tsx";
+import {
+    exerciseCategoryOptions,
+    exerciseDifficultyOptions,
+    exerciseEquipmentOptions
+} from "../../models/exercise.model.tsx";
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
@@ -24,7 +28,7 @@ const ExerciseModal = ({
     const exerciseFormItems: FormItem[] = [
         {
             name: "name",
-            label: "Exercise Name",
+            label: "Name",
             type: "text",
             placeholder: "e.g. Bench Press",
             initialValue: exercise?.name || "",
@@ -47,13 +51,21 @@ const ExerciseModal = ({
             colSpan: 1,
         },
         {
+            name: "equipments",
+            label: "Equipments",
+            type: "multiselect",
+            options: exerciseEquipmentOptions,
+            initialValue: exercise?.equipments || [],
+            colSpan: 2,
+        },
+        {
             name: "muscleIds",
             label: "Muscles",
             type: "multiselect",
             options: muscles.map(muscle => ({ label: muscle.name, value: muscle.id })),
             initialValue: exercise?.muscles.map(m => m.id) || [],
             colSpan: 2,
-        }
+        },
     ];
 
     const handleSubmit = async (values: any) => {
@@ -62,6 +74,7 @@ const ExerciseModal = ({
                 name: values.name,
                 category: values.category,
                 difficulty: values.difficulty,
+                equipments: values.equipments,
                 muscle_ids: values.muscleIds,
             };
 
@@ -84,6 +97,9 @@ const ExerciseModal = ({
             open={isModalOpen}
             onClose={() => setIsModalOpen(false)}
         >
+            <div css={styles.header}>
+                {exercise ? "Edit Exercise" : "Create Exercise"}
+            </div>
             <FormBuilder
                 items={exerciseFormItems}
                 columns={2}

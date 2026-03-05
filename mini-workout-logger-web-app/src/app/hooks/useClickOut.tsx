@@ -9,7 +9,8 @@ export const useClickOut = (ref: React.RefObject<HTMLDivElement | null>, callbac
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
+        // document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [ref, callback]);
 };

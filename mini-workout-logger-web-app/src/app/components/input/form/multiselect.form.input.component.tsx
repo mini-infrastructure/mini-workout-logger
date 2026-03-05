@@ -80,7 +80,7 @@ const MultiSelect = ({ options, value, onChange, placeholder }: MultiSelectProps
             )}
 
             {/* SELECTED ITEMS */}
-            <div css={styles.multiselectSelectedItems}>
+            <div css={styles.multiselectSelectedItems(!!selectedOptions.length)}>
                 {selectedOptions.map((opt) => (
                     <Badge
                         key={opt.value}

@@ -4,8 +4,8 @@ import styles from "./exercise-card.component.style.tsx";
 import Badge, {getRandomBadgeVariant} from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
-    ExerciseDifficultyIcons,
-    getExerciseDifficultyVariant,
+    ExerciseDifficultyIcons, ExerciseEquipmentIcons,
+    getExerciseDifficultyVariant, getExerciseEquipmentVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
 import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
@@ -66,7 +66,7 @@ const ExerciseCard = ({
 
             <CardHeader>{exercise.name}</CardHeader>
 
-            {/*  Muscles badges  */}
+            {/*  Exercise muscles  */}
             <div css={styles.session}>
                 <div css={styles.badgesWrapper}>
                     {exercise.rootMuscles?.map((muscle) => (
@@ -75,18 +75,35 @@ const ExerciseCard = ({
                 </div>
             </div>
 
+            {/*  Exercise equipments  */}
+            <div css={styles.session}>
+                <div css={styles.badgesWrapper}>
+                    {exercise.equipments?.map((equipment) => (
+                        <Badge
+                            key={equipment}
+                            icon={getIconFromMap(ExerciseEquipmentIcons, equipment)}
+                        >
+                            {equipment}
+                        </Badge>
+                    ))}
+                </div>
+            </div>
+
             {/*  Characteristics  */}
             <div css={[styles.session]}>
                 <div css={styles.badgesWrapper}>
+                    {/* Exercise Category */}
                     <Badge
                         icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
-                        variant={getRandomBadgeVariant()}
+                        // variant={getRandomBadgeVariant()}
                     >
                         {exercise.category}
                     </Badge>
+
+                    {/* Exercise Difficulty */}
                     <Badge
                         icon={getIconFromMap(ExerciseDifficultyIcons, exercise.difficulty)}
-                        variant={getExerciseDifficultyVariant(exercise.difficulty)}
+                        // variant={getExerciseDifficultyVariant(exercise.difficulty)}
                     >
                         {exercise.difficulty}
                     </Badge>

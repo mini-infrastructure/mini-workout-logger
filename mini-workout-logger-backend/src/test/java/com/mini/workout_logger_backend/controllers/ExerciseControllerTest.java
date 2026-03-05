@@ -60,7 +60,8 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                         ExerciseDifficulty.BEGINNER,
                         savedMuscles.stream()
                                 .map(Muscle::getId)
-                                .collect(Collectors.toSet())
+                                .collect(Collectors.toSet()),
+                        null
                 ),
                 new ExerciseWriteDTO("Push-Up"),
                 new ExerciseWriteDTO("Squat")
@@ -123,7 +124,8 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                 ExerciseDifficulty.BEGINNER,
                 savedMuscles.stream()
                         .map(Muscle::getId)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toSet()),
+                null
         );
 
         Exercise savedExercise =

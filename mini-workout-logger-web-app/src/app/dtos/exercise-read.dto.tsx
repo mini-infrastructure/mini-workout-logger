@@ -1,4 +1,4 @@
-import type {ExerciseCategory, ExerciseDifficulty} from "../models/exercise.model.tsx";
+import type {ExerciseCategory, ExerciseDifficulty, ExerciseEquipment} from "../models/exercise.model.tsx";
 import type {MuscleReadDTO} from "./muscle-read.dto.tsx";
 
 export interface ExerciseReadDTO {
@@ -6,6 +6,7 @@ export interface ExerciseReadDTO {
     name: string;
     category?: ExerciseCategory;
     difficulty?: ExerciseDifficulty;
+    equipments?: ExerciseEquipment[];
     muscles: MuscleReadDTO[];
     rootMuscles: string[];
 }

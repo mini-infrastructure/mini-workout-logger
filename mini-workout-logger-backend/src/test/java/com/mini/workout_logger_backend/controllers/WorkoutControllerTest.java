@@ -137,7 +137,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Push-Up",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.BEGINNER,
-                                        Set.of(savedMuscles.get(0).getId(), savedMuscles.get(1).getId())
+                                        Set.of(savedMuscles.get(0).getId(), savedMuscles.get(1).getId()),
+                                        null
                                 )
                         )
                 ),
@@ -147,7 +148,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Squat",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.BEGINNER,
-                                        Set.of(savedMuscles.get(2).getId())
+                                        Set.of(savedMuscles.get(2).getId()),
+                                        null
                                 )
                         )
                 ),
@@ -157,7 +159,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Deadlift",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.INTERMEDIATE,
-                                        Set.of(savedMuscles.get(1).getId(), savedMuscles.get(2).getId())
+                                        Set.of(savedMuscles.get(1).getId(), savedMuscles.get(2).getId()),
+                                        null
                                 )
                         )
                 )
@@ -250,7 +253,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                 "Chest-Fly",
                                 ExerciseCategory.STRENGTH,
                                 ExerciseDifficulty.BEGINNER,
-                                Set.of(savedMuscles.getFirst().getId())
+                                Set.of(savedMuscles.getFirst().getId()),
+                                null
                         )
                 )
         );

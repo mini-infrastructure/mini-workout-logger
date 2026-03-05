@@ -78,17 +78,10 @@ const styles = {
         position: 'relative',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
-        padding: '2.5rem 1rem 1.25rem 1rem',
+        padding: '1.5rem 1rem 1rem 1rem',
         boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
         overflow: 'visible',
         minHeight: '8.5rem',
-
-        // '&:hover .label-bar': {
-        //     transform: 'translateY(-70%)',
-        //     borderRadius: '0.75rem 0.75rem 0 0',
-        //     transition: 'transform 0.2s ease, border-radius 0.1s ease',
-        //     zIndex: 1,
-        // },
 
         '& .label-button': {
             width: '100%',
@@ -105,8 +98,8 @@ const styles = {
 
     label: (theme: Theme) => css({
         position: 'absolute',
-        top: 0,
-        left: 0,
+        top: 10,
+        left: -10,
         zIndex: 1,
         width: '100%',
         height: '1.2rem',
@@ -116,8 +109,9 @@ const styles = {
     labelButton: (theme: Theme) => css({
         backgroundColor: 'transparent',
         color: theme.colors.text2,
-        width: '1rem',
-        height: '1rem',
+        padding: 0,
+        width: 'auto',
+        height: 'auto',
         border: 'none',
         cursor: 'pointer',
          '&:hover': {
@@ -127,6 +121,12 @@ const styles = {
         ':focus': {
             backgroundColor: 'transparent',
         },
+    }),
+
+    labelIconButton: (theme: Theme) => css({
+        width: 'auto',
+        height: 'auto',
+        fontSize: theme.fontSizes.large,
     }),
 
 };

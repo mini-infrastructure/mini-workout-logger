@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.java_core.dto.ReadDTO;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +26,8 @@ public class ExerciseReadDTO extends ReadDTO {
     private ExerciseDifficulty difficulty;
 
     private Set<MuscleReadDTO> muscles = new HashSet<>();
+
+    private Set<ExerciseEquipment> equipments = new HashSet<>();
 
     private Set<String> rootMuscles = new HashSet<>();
 
