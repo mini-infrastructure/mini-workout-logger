@@ -22,6 +22,14 @@ const styles = {
         }
     }),
 
+    removeButton: (theme: Theme) => css({
+        backgroundColor: 'transparent',
+        padding: '0.2rem',
+        ':hover': {
+            backgroundColor: 'transparent',
+        },
+    }),
+
     grayBadge: (theme: Theme) => {
         const baseColor = theme.colors.border1;
 
@@ -33,7 +41,14 @@ const styles = {
             '&:hover': {
                 backgroundColor: theme.colors.border2,
                 color: invert(theme.colors.text),
+                '& button': {
+                    color: invert(theme.colors.text),
+                }
             },
+
+            '& button': {
+                color: theme.colors.text,
+            }
         });
     },
 
@@ -48,7 +63,15 @@ const styles = {
             '&:hover': {
                 backgroundColor: transparentize(0.35, baseColor),
                 color: theme.colors.white,
+
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: darken(0.2, baseColor),
+            }
         });
     },
 
@@ -63,7 +86,14 @@ const styles = {
             '&:hover': {
                 backgroundColor: transparentize(0.2, baseColor),
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: darken(0.2, baseColor),
+            }
         });
     },
 
@@ -78,7 +108,14 @@ const styles = {
             '&:hover': {
                 backgroundColor: transparentize(0.2, baseColor),
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: darken(0.1, baseColor),
+            }
         });
     },
 
@@ -87,13 +124,20 @@ const styles = {
 
         return css({
             backgroundColor: transparentize(0.9, baseColor),
-            color: theme.colors.green,
+            color: baseColor,
             transition: 'all 0.2s ease',
 
             '&:hover': {
                 backgroundColor: transparentize(0.35, baseColor),
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: baseColor,
+            }
         });
     },
 
@@ -102,13 +146,20 @@ const styles = {
 
         return css({
             backgroundColor: transparentize(0.9, baseColor),
-            color: theme.colors.pink,
+            color: baseColor,
             transition: 'all 0.2s ease',
 
             '&:hover': {
                 backgroundColor: transparentize(0.3, baseColor),
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: baseColor,
+            }
         });
     },
 
@@ -117,13 +168,20 @@ const styles = {
 
         return css({
             backgroundColor: transparentize(0.9, baseColor),
-            color: theme.colors.purple,
+            color: baseColor,
             transition: 'all 0.2s ease',
 
             '&:hover': {
                 backgroundColor: baseColor,
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: baseColor,
+            }
         });
     },
 
@@ -132,13 +190,20 @@ const styles = {
 
         return css({
             backgroundColor: transparentize(0.9, baseColor),
-            color: theme.colors.orange,
+            color: baseColor,
             transition: 'all 0.2s ease',
 
             '&:hover': {
                 backgroundColor: baseColor,
                 color: theme.colors.white,
+                '& button': {
+                    color: theme.colors.white,
+                }
             },
+
+            '& button': {
+                color: baseColor,
+            }
         });
     },
 

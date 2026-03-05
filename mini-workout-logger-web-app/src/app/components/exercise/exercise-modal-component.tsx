@@ -1,10 +1,12 @@
 import Modal from "../modal/modal.component.tsx";
-import FormBuilder, {FormItem} from "../../input/form/form.input.component.tsx";
+import FormBuilder, {FormItem} from "../input/form/form.input.component.tsx";
 import PrimaryButton from "../button/button.primary.component.tsx";
 import styles from "./exercise-modal-component.style.tsx";
 import {exerciseCategoryOptions, exerciseDifficultyOptions} from "../../models/exercise.model.tsx";
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
+import {useMuscles} from "../../hooks/useMuscles.tsx";
+import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
 
 export type ExerciseModalProps = {
     isModalOpen: boolean;
@@ -17,6 +19,8 @@ const ExerciseModal = ({
                            setIsModalOpen,
                            exercise,
                        }: ExerciseModalProps) => {
+    const { muscles, loading, error } = useMuscles();
+
     const exerciseFormItems: FormItem[] = [
         {
             name: "name",
@@ -42,14 +46,29 @@ const ExerciseModal = ({
             initialValue: exercise?.difficulty || exerciseDifficultyOptions[0].value,
             colSpan: 1,
         },
+        {
+            name: "muscleIds",
+            label: "Muscles",
+            type: "multiselect",
+            options: muscles.map(muscle => ({ label: muscle.name, value: muscle.id })),
+            initialValue: exercise?.muscles.map(m => m.id) || [],
+            colSpan: 2,
+        }
     ];
 
     const handleSubmit = async (values: any) => {
         try {
+            const payload: ExerciseWriteDTO = {
+                name: values.name,
+                category: values.category,
+                difficulty: values.difficulty,
+                muscle_ids: values.muscleIds,
+            };
+
             if (exercise?.id) {
-                await ExerciseService.update(exercise.id, values);
+                await ExerciseService.update(exercise.id, payload);
             } else {
-                await ExerciseService.create(values);
+                await ExerciseService.create(payload);
             }
 
             setIsModalOpen(false);
@@ -69,7 +88,7 @@ const ExerciseModal = ({
                 items={exerciseFormItems}
                 columns={2}
                 onSubmit={handleSubmit}
-                submitButton={<PrimaryButton type="submit" customCss={styles.submitButton}>Save</PrimaryButton>}
+                submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
             />
         </Modal>
     )

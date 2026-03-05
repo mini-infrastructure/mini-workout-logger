@@ -1,21 +1,6 @@
 import {css, Theme} from '@emotion/react';
 
 const styles = {
-    emptyWrapper: (theme: Theme) => css({
-        flex: 1,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: theme.fontSizes.xxx_large,
-        backgroundColor: theme.colors.container1,
-        borderRadius: 15,
-        border: `1px solid ${theme.colors.border1}`,
-        color: theme.colors.text2,
-
-        height: '99%',
-        padding: '0',
-        margin: '0',
-    }),
 
     actionsWrapper: css({
         padding: '1rem',

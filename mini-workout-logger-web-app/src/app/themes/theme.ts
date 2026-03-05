@@ -34,7 +34,7 @@ const additionalColors = {
 };
 
 const fonts = {
-    primary: "\"Noto Serif\", serif",
+    primary: "sans-serif",
     secondary: "\"EB Garamond\", serif",
     number: "'Sometype Mono', monospace",
 };

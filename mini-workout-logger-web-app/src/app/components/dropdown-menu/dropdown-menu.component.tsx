@@ -3,11 +3,12 @@ import {useEffect, useRef, useState} from "react";
 import type {Interpolation, Theme} from "@emotion/react";
 import {css} from "@emotion/react";
 import Button from "../button/button.component.tsx";
-import ActionSwitch from "../../input/action/action.input.component.tsx";
+import ActionSwitch from "../input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
 import {IoClose} from "react-icons/io5";
 import {HiCursorClick} from "react-icons/hi";
+import {useClickOut} from "../../hooks/useClickOut.tsx";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 
@@ -49,22 +50,10 @@ const DropdownMenu = ({
                           customTriggerCss,
                       }: DropdownProps) => {
     const [open, setOpen] = useState(false);
+
+    // Click out effect.
     const containerRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (!containerRef.current) return;
-
-            if (!containerRef.current.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    useClickOut(containerRef, () => setOpen(false));
 
     return (
         <div css={styles.container} ref={containerRef}>

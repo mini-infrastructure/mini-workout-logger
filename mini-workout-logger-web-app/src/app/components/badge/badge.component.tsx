@@ -1,6 +1,8 @@
 import type {ReactNode} from "react";
 import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./badge.component.style.tsx";
+import Button from "../button/button.component.tsx";
+import {IoMdClose} from "react-icons/io";
 
 export type BadgeProps = {
     key?: string | number;
@@ -8,6 +10,7 @@ export type BadgeProps = {
     icon?: ReactNode;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     variant?: BadgeVariant;
+    onRemove?: () => void;
 };
 
 export type BadgeVariant =
@@ -55,6 +58,7 @@ const Badge = ({
                    icon,
                    customCss,
                    variant = "gray",
+                   onRemove,
                    children,
                }: BadgeProps) => {
     return (
@@ -75,6 +79,14 @@ const Badge = ({
                 </span>
             )}
             {children}
+
+            {onRemove && (
+                <Button
+                    icon={<IoMdClose />}
+                    onClick={onRemove}
+                    customCss={styles.removeButton}
+                />
+            )}
         </span>
     );
 };
