@@ -31,9 +31,42 @@ class ExerciseService {
         }
     }
 
-    async create(exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {}
-    async update(id: string, exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {}
-    async delete(id: string): Promise<void> {}
+    async create(exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.post<ApiResponseDTO<ExerciseReadDTO>>(
+                `${apiUrl}/exercises?lang=${lang}`,
+                exercise
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error("Error creating exercise:", error);
+            throw error;
+        }
+    }
+
+    async update(id: number, exercise: ExerciseReadDTO): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.put<ApiResponseDTO<ExerciseReadDTO>>(
+                `${apiUrl}/exercises/${id}?lang=${lang}`,
+                exercise
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error(`Error updating exercise with id ${id}:`, error);
+            throw error;
+        }
+    }
+
+    async delete(id: number): Promise<void> {
+        try {
+            await axios.delete(
+                `${apiUrl}/exercises/${id}?lang=${lang}`
+            );
+        } catch (error) {
+            console.error(`Error deleting exercise with id ${id}:`, error);
+            throw error;
+        }
+    }
 
 }
 

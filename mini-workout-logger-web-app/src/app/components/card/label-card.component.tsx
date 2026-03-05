@@ -12,6 +12,7 @@ import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 
 export type LabelCardProps = CardProps & {
     labelColor?: LabelColor,
+    dropdownItems: DropdownMenuItem[],
 };
 
 export const CardHeader = ({children}: PropsWithChildren) => {
@@ -52,30 +53,9 @@ export const setLabelBackgroundColor = (color: LabelColor | undefined) => (theme
     });
 };
 
-const items: DropdownMenuItem[] = [
-    {
-        label: "Edit",
-        icon: <FiEdit size={14} />,
-        iconColor: "primary",
-        onClick: () => console.log("Edit"),
-    },
-    {
-        label: "Clone",
-        icon: <FiCopy size={14} />,
-        iconColor: "info",
-        onClick: () => console.log("Clone"),
-    },
-    {
-        dividerBefore: true,
-        label: "Delete",
-        icon: <FiTrash2 size={14} />,
-        iconColor: "danger",
-        onClick: () => console.log("Delete"),
-    },
-];
-
 const LabelCard = ({
                        labelColor = "gray",
+                       dropdownItems,
                        children,
                    }: PropsWithChildren<LabelCardProps>) => {
     return (
@@ -84,7 +64,7 @@ const LabelCard = ({
                 <div className="label-button">
                     <DropdownMenu
                         title="Actions"
-                        items={items}
+                        items={dropdownItems}
                         trigger="button"
                         customTriggerCss={styles.labelButton}
                     />

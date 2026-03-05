@@ -9,6 +9,11 @@ import {
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
 import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
+import type {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
+import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
+import {useState} from "react";
+import ExerciseModal from "./exercise-modal-component.tsx";
+import ExerciseService from "../../services/exercise.service.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -18,10 +23,46 @@ export type ExerciseCardProps = {
 
 const ExerciseCard = ({
                           exercise,
-                          customCss,
                       }: ExerciseCardProps) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleDelete = async () => {
+        if (!exercise?.id) return;
+        const confirmed = window.confirm(`Delete exercise "${exercise.name}"?`);
+        if (!confirmed) return;
+        try {
+            await ExerciseService.delete(exercise.id);
+            window.location.reload();
+
+        } catch (error) {
+            console.error("Error deleting exercise:", error);
+        }
+    };
+
+    const dropdownItems: DropdownMenuItem[] = [
+        {
+            label: "Edit",
+            icon: <FiEdit size={14} />,
+            iconColor: "primary",
+            onClick: () => setIsModalOpen(true),
+        },
+        {
+            label: "Clone",
+            icon: <FiCopy size={14} />,
+            iconColor: "info",
+            onClick: () => console.log("Clone"),
+        },
+        {
+            dividerBefore: true,
+            label: "Delete",
+            icon: <FiTrash2 size={14} />,
+            iconColor: "danger",
+            onClick: handleDelete,
+        },
+    ];
+
     return (
-        <LabelCard>
+        <LabelCard dropdownItems={dropdownItems}>
 
             <CardHeader>{exercise.name}</CardHeader>
 
@@ -51,6 +92,12 @@ const ExerciseCard = ({
                     </Badge>
                 </div>
             </div>
+
+            <ExerciseModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+                exercise={exercise}
+            />
 
         </LabelCard>
     );
