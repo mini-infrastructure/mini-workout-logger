@@ -92,3 +92,27 @@ export function getExerciseDifficultyVariant(
 
     return ExerciseDifficultyVariants[difficulty];
 }
+
+export const exerciseCategoryOptions = [
+    { label: "Strength", value: "STRENGTH" },
+    { label: "Cardio", value: "CARDIO" },
+    { label: "Stretching", value: "STRETCHING" },
+    { label: "Powerlifting", value: "POWERLIFTING" },
+    { label: "Olympic Weightlifting", value: "OLYMPIC_WEIGHTLIFTING" },
+    { label: "Strongman", value: "STRONGMAN" },
+    { label: "Calisthenics", value: "CALISTHENICS" },
+    { label: "Plyometrics", value: "PLYOMETRICS" },
+    { label: "Recovery", value: "RECOVERY" },
+    { label: "HIT", value: "HIT" },
+    { label: "Mobility", value: "MOBILITY" },
+    { label: "Pilates", value: "PILATES" },
+    { label: "Yoga", value: "YOGA" },
+    { label: "Warm Up", value: "WARM_UP" },
+];
+
+export const exerciseDifficultyOptions = [
+    { label: "Novice", value: "NOVICE" },
+    { label: "Beginner", value: "BEGINNER" },
+    { label: "Intermediate", value: "INTERMEDIATE" },
+    { label: "Advanced", value: "ADVANCED" },
+];

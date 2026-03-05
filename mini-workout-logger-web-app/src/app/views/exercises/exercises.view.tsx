@@ -11,6 +11,7 @@ import {useState} from "react";
 import Modal from "../../components/modal/modal.component.tsx";
 import type {FormItem} from "../../input/form/form.input.component.tsx";
 import FormBuilder from "../../input/form/form.input.component.tsx";
+import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
 
 const items: DropdownMenuItem[] = [
     {
@@ -39,6 +40,7 @@ const formItems: FormItem[] = [
         name: "firstName",
         label: "First name",
         type: "text",
+        placeholder: "Enter first name",
         colSpan: 1,
     },
     {
@@ -51,13 +53,19 @@ const formItems: FormItem[] = [
         name: "email",
         label: "Email",
         type: "email",
+        placeholder: "Enter email",
         colSpan: 2,
     },
     {
-        name: "bio",
-        label: "Bio",
-        type: "textarea",
+        name: "role",
+        label: "Role",
+        type: "select",
         colSpan: 2,
+        options: [
+            { label: "User", value: "user" },
+            { label: "Admin", value: "admin" },
+            { label: "Moderator", value: "moderator" },
+        ],
     },
 ];
 
@@ -95,17 +103,10 @@ const ExercisesDatabaseView = () => {
                 ))}
             </div>
 
-            <Modal
-                open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-            >
-                <FormBuilder
-                    items={formItems}
-                    columns={2}
-                    onSubmit={(values) => console.log(values)}
-                    submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
-                />
-            </Modal>
+            <ExerciseModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            />
         </Layout>
     );
 };

@@ -1,6 +1,7 @@
 import type {ReactNode, SyntheticEvent} from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "./form.input.component.style.tsx";
+import Button from "../../components/button/button.component.tsx";
 
 export type FormFieldType =
     | "text"
@@ -17,6 +18,7 @@ export type FormItem = {
     placeholder?: string;
     options?: { label: string; value: string }[];
     colSpan?: number;
+    initialValue?: any;
 };
 
 export type FormBuilderProps = {
@@ -26,13 +28,33 @@ export type FormBuilderProps = {
     submitButton?: ReactNode;
 };
 
+const buildInitialValues = (items: FormItem[]) => {
+    const values: Record<string, any> = {};
+
+    items.forEach((item) => {
+        if (item.initialValue !== undefined) {
+            values[item.name] = item.initialValue;
+            return;
+        }
+
+        if (item.type === "select" && item.options?.length) {
+            values[item.name] = item.options[0].value;
+            return;
+        }
+
+        values[item.name] = "";
+    });
+
+    return values;
+};
+
 const FormBuilder = ({
                          items,
                          columns,
                          onSubmit,
                          submitButton,
                      }: FormBuilderProps) => {
-    const [values, setValues] = useState<Record<string, any>>({});
+    const [values, setValues] = useState<Record<string, any>>(() => buildInitialValues(items));
 
     const handleChange = (name: string, value: any) => {
         setValues((prev) => ({ ...prev, [name]: value }));
@@ -42,6 +64,10 @@ const FormBuilder = ({
         e.preventDefault();
         onSubmit(values);
     };
+
+    useEffect(() => {
+        setValues(buildInitialValues(items));
+    }, [items]);
 
     return (
         <form css={styles.form(columns)} onSubmit={handleSubmit}>
@@ -55,6 +81,7 @@ const FormBuilder = ({
                         {item.type === "select" ? (
                             <select
                                 css={styles.input}
+                                value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                             >
                                 {item.options?.map((opt) => (
@@ -67,6 +94,7 @@ const FormBuilder = ({
                             <textarea
                                 css={styles.input}
                                 placeholder={item.placeholder}
+                                value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                             />
                         ) : (
@@ -74,6 +102,7 @@ const FormBuilder = ({
                                 css={styles.input}
                                 type={item.type}
                                 placeholder={item.placeholder}
+                                value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                             />
                         )}
@@ -82,7 +111,7 @@ const FormBuilder = ({
             })}
 
             <div css={styles.fieldWrapper(columns)}>
-                {submitButton ?? <button type="submit">Submit</button>}
+                {submitButton ?? <Button type="submit">Submit</Button>}
             </div>
         </form>
     );
