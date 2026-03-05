@@ -78,15 +78,17 @@ const styles = {
         position: 'relative',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
-        padding: '1.25rem 1rem',
+        padding: '2.5rem 1rem 1.25rem 1rem',
         boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
         overflow: 'visible',
+        minHeight: '8.5rem',
 
-        '&:hover .label-bar': {
-            transform: 'translateY(-100%)',
-            height: '1.2rem',
-            borderRadius: '0.75rem 0.75rem 0 0',
-        },
+        // '&:hover .label-bar': {
+        //     transform: 'translateY(-70%)',
+        //     borderRadius: '0.75rem 0.75rem 0 0',
+        //     transition: 'transform 0.2s ease, border-radius 0.1s ease',
+        //     zIndex: 1,
+        // },
 
         '& .label-button': {
             width: '100%',
@@ -107,14 +109,13 @@ const styles = {
         left: 0,
         zIndex: 1,
         width: '100%',
-        backgroundColor: theme.colors.primary,
-        height: '0.5rem',
+        height: '1.2rem',
         transition: 'transform 0.2s ease',
     }),
 
     labelButton: (theme: Theme) => css({
         backgroundColor: 'transparent',
-        color: theme.colors.white,
+        color: theme.colors.text2,
         width: '1rem',
         height: '1rem',
         border: 'none',

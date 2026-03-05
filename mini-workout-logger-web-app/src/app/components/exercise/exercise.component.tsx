@@ -8,7 +8,7 @@ import {
     getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
-import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
+import LabelCard, {CardHeader, LabelColor} from "../card/label-card.component.tsx";
 import {FaRegPlayCircle} from "react-icons/fa";
 import Button from "../button/button.component.tsx";
 import {MdOutlineEdit} from "react-icons/md";

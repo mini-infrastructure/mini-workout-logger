@@ -11,7 +11,7 @@ const styles = {
         position: 'absolute',
         top: '100%',
         right: 0,
-        zIndex: 100,
+        zIndex: 9999,
         background: theme.colors.background,
         borderRadius: '0.375em',
         boxShadow: `0 1px 5px ${transparentize(0.8, theme.colors.black)}`,

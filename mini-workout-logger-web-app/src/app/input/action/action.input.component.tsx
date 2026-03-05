@@ -1,6 +1,6 @@
 import {PropsWithChildren, useState} from "react";
 import styles from "./action.input.component.style.tsx";
-import {Theme, Interpolation} from '@emotion/react';
+import {Theme, Interpolation, css} from '@emotion/react';
 
 export type ActionSwitchType = "hamburger" | "filter" | "plus";
 
@@ -14,12 +14,14 @@ type ActionSwitchProps = {
     type?: ActionSwitchType;
     checked: boolean;
     onChange: (checked: boolean) => void;
+    customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
 const ActionSwitch = ({
                           type = "hamburger",
                           checked,
                           onChange,
+                          customCss,
                       }: PropsWithChildren<ActionSwitchProps>) => {
     return (
         <label css={styles.dropdownButton}>
@@ -29,7 +31,16 @@ const ActionSwitch = ({
                 onChange={(e) => onChange(e.target.checked)}
             />
 
-            <div css={styles.switchButton}>
+            <div
+                css={[
+                    styles.switchButton,
+                    ...(customCss
+                        ? Array.isArray(customCss)
+                            ? customCss
+                            : [customCss]
+                        : []),
+                ]}
+            >
                 <div className="button-bg" />
                 <div css={themeMap[type]}>
                     <span />

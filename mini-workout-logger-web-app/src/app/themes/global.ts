@@ -23,6 +23,12 @@ const globalStyles = (theme: {
         purple: string;
         orange: string;
         pastelBlue: string;
+        pastelGreen: string;
+        pastelPink: string;
+        pastelPurple: string;
+        pastelOrange: string;
+        pastelYellow: string;
+        pastelRed: string;
     };
     fonts: { primary: string; secondary: string; number: string };
     fontSizes: {

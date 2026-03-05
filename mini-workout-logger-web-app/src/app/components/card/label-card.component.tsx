@@ -10,24 +10,12 @@ import { BsThreeDots } from "react-icons/bs";
 import Button from "../button/button.component.tsx";
 import DropdownMenu, {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
+import {css} from "@emotion/react";
+import {darken} from "polished";
 
-export type LabelVariant = "success" | "warning" | "error" | "info";
-
-export const getVariantColor = (theme: Theme, variant: LabelVariant) => {
-    switch (variant) {
-        case "success":
-            return theme.colors.green;
-        case "warning":
-            return theme.colors.yellow;
-        case "error":
-            return theme.colors.red;
-        case "info":
-        default:
-            return theme.colors.primary;
-    }
+export type LabelCardProps = CardProps & {
+    labelColor?: LabelColor,
 };
-
-export type LabelCardProps = CardProps & {};
 
 export const CardHeader = ({children}: PropsWithChildren) => {
     return (
@@ -36,6 +24,36 @@ export const CardHeader = ({children}: PropsWithChildren) => {
         </div>
     );
 }
+
+export type LabelColor =
+    | "gray"
+    | "success"
+    | "primary"
+    | "danger"
+    | "warning"
+    | "pink"
+    | "purple"
+    | "orange"
+    ;
+
+export const setLabelBackgroundColor = (color: LabelColor | undefined) => (theme: Theme) => {
+    if (!color) return css({});
+
+    const map = {
+        gray: theme.colors.border1,
+        success: theme.colors.green,
+        primary: theme.colors.secondary,
+        danger: theme.colors.pastelRed,
+        warning: theme.colors.pastelYellow,
+        pink: theme.colors.pink,
+        purple: theme.colors.purple,
+        orange: theme.colors.orange,
+    };
+
+    return css({
+        backgroundColor: map[color],
+    });
+};
 
 const items: DropdownMenuItem[] = [
     {
@@ -60,15 +78,17 @@ const items: DropdownMenuItem[] = [
 ];
 
 const LabelCard = ({
+                       labelColor = "gray",
                        children,
                    }: PropsWithChildren<LabelCardProps>) => {
     return (
         <Card customCss={styles.labelCard}>
-            <div css={styles.label} className="label-bar">
+            <div css={[styles.label, setLabelBackgroundColor(labelColor)]} className="label-bar">
                 <div className="label-button">
                     <DropdownMenu
                         title="Actions"
                         items={items}
+                        trigger="button"
                         customTriggerCss={styles.labelButton}
                     />
                 </div>
