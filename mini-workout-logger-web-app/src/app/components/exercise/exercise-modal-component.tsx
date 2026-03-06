@@ -23,7 +23,7 @@ const ExerciseModal = ({
                            setIsModalOpen,
                            exercise,
                        }: ExerciseModalProps) => {
-    const { muscles, loading, error } = useMuscles();
+    const { muscles } = useMuscles();
 
     const exerciseFormItems: FormItem[] = [
         {

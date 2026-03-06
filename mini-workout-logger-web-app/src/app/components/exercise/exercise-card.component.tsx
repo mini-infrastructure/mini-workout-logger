@@ -15,6 +15,7 @@ import {useState} from "react";
 import ExerciseModal from "./exercise-modal-component.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import Card from "../card/card.component.tsx";
+import {MdOutlineCheckBox} from "react-icons/md";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -55,7 +56,7 @@ const ExerciseCard = ({
         },
         {
             label: "Select",
-            icon: <FiCopy />,
+            icon: <MdOutlineCheckBox />,
             iconColor: "info",
             onClick: () => console.log("Select"),
         },
