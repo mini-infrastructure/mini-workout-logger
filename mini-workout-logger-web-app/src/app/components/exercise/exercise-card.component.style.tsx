@@ -1,18 +1,53 @@
-import {css} from '@emotion/react';
+import {css, Theme} from '@emotion/react';
+import {transparentize} from "polished";
 
 const styles = {
 
-    cardWrapper: css({
-        padding: '0.6rem',
+    exerciseCard: (theme: Theme) => css({
+        position: 'relative',
+        borderRadius: '0 0 0.75rem 0.75rem',
+        strokeLinejoin: 'round',
+        padding: '1.5rem 1rem 1rem 1rem',
+        boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
+        overflow: 'visible',
+        minHeight: '8.5rem',
+    }),
+
+    dropdownWrapper: css({
+        width: '100%',
+        height: '1.2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        zIndex: 1,
+    }),
+
+    dropdownButton: (theme: Theme) => css({
+        backgroundColor: 'transparent',
+        color: theme.colors.text2,
+        border: 'none',
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: transparentize(0.9, theme.colors.secondary),
+            filter: `drop-shadow(0 0 2px ${transparentize(0.5, theme.colors.white)})`,
+        },
+        ':focus': {
+            backgroundColor: transparentize(0.9, theme.colors.secondary),
+        },
+    }),
+
+    dropdownIconButton: (theme: Theme) => css({
+        width: 'auto',
+        height: 'auto',
+        fontSize: theme.fontSizes.large,
     }),
 
     /**
      * Header.
      */
 
-    nameIconWrapper: css({
-        display: 'flex',
-        alignItems: 'center',
+    header: css({
+        fontWeight: 700,
     }),
 
     /**

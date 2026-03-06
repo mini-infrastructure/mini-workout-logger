@@ -1,19 +1,19 @@
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./exercise-card.component.style.tsx";
-import Badge, {getRandomBadgeVariant} from "../badge/badge.component.tsx";
+import Badge from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
     ExerciseDifficultyIcons, ExerciseEquipmentIcons,
-    getExerciseDifficultyVariant, getExerciseEquipmentVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
-import LabelCard, {CardHeader} from "../card/label-card.component.tsx";
 import type {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import {useState} from "react";
 import ExerciseModal from "./exercise-modal-component.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
+import Card from "../card/card.component.tsx";
+import DropdownMenu from "../dropdown-menu/dropdown-menu.component.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -62,61 +62,79 @@ const ExerciseCard = ({
     ];
 
     return (
-        <LabelCard dropdownItems={dropdownItems}>
+        <Card customCss={styles.exerciseCard}>
+            {/* Header */}
+            <div css={styles.dropdownWrapper}>
 
-            <CardHeader>{exercise.name}</CardHeader>
-
-            {/*  Exercise muscles  */}
-            <div css={styles.session}>
-                <div css={styles.badgesWrapper}>
-                    {exercise.rootMuscles?.map((muscle) => (
-                        <Badge key={muscle}>{muscle}</Badge>
-                    ))}
+                <div css={styles.header}>
+                    {exercise.name}
                 </div>
+
+                <DropdownMenu
+                    title="Actions"
+                    items={dropdownItems}
+                    trigger="button"
+                    customTriggerCss={styles.dropdownButton}
+                    customIconTriggerCss={styles.dropdownIconButton}
+                />
             </div>
 
-            {/*  Exercise equipments  */}
-            <div css={styles.session}>
-                <div css={styles.badgesWrapper}>
-                    {exercise.equipments?.map((equipment) => (
+            {/* Body */}
+            <div>
+                {/*  Exercise muscles  */}
+                <div css={styles.session}>
+                    <div css={styles.badgesWrapper}>
+                        {exercise.rootMuscles?.map((muscle) => (
+                            <Badge key={muscle}>{muscle}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                {/*  Exercise equipments  */}
+                <div css={styles.session}>
+                    <div css={styles.badgesWrapper}>
+                        {exercise.equipments?.map((equipment) => (
+                            <Badge
+                                key={equipment}
+                                icon={getIconFromMap(ExerciseEquipmentIcons, equipment)}
+                            >
+                                {equipment}
+                            </Badge>
+                        ))}
+                    </div>
+                </div>
+
+                {/*  Characteristics  */}
+                <div css={[styles.session]}>
+                    <div css={styles.badgesWrapper}>
+                        {/* Exercise Category */}
                         <Badge
-                            key={equipment}
-                            icon={getIconFromMap(ExerciseEquipmentIcons, equipment)}
+                            icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
+                            // variant={getRandomBadgeVariant()}
                         >
-                            {equipment}
+                            {exercise.category}
                         </Badge>
-                    ))}
+
+                        {/* Exercise Difficulty */}
+                        <Badge
+                            icon={getIconFromMap(ExerciseDifficultyIcons, exercise.difficulty)}
+                            // variant={getExerciseDifficultyVariant(exercise.difficulty)}
+                        >
+                            {exercise.difficulty}
+                        </Badge>
+                    </div>
                 </div>
+
             </div>
 
-            {/*  Characteristics  */}
-            <div css={[styles.session]}>
-                <div css={styles.badgesWrapper}>
-                    {/* Exercise Category */}
-                    <Badge
-                        icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
-                        // variant={getRandomBadgeVariant()}
-                    >
-                        {exercise.category}
-                    </Badge>
-
-                    {/* Exercise Difficulty */}
-                    <Badge
-                        icon={getIconFromMap(ExerciseDifficultyIcons, exercise.difficulty)}
-                        // variant={getExerciseDifficultyVariant(exercise.difficulty)}
-                    >
-                        {exercise.difficulty}
-                    </Badge>
-                </div>
-            </div>
-
+            {/* Edit exercise modal */}
             <ExerciseModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 exercise={exercise}
             />
 
-        </LabelCard>
+        </Card>
     );
 };
 

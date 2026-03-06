@@ -71,6 +71,7 @@ const styles = {
      */
 
     buttonPrimary: (theme: Theme) => css({
+        padding: '0.8rem 1.3rem',
         fontWeight: 700,
         backgroundColor: theme.colors.primary,
         border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
@@ -84,7 +85,10 @@ const styles = {
         },
     }),
 
-    iconPrimary: css({
+    iconPrimary: (theme: Theme) => css({
+        width: 'auto',
+        height: 'auto',
+        fontSize: theme.fontSizes.large,
     }),
 
     /**

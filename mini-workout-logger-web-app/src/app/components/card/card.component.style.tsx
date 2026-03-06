@@ -70,63 +70,6 @@ const styles = {
         });
     },
 
-    /**
-     * Label card.
-     */
-
-    labelCard: (theme: Theme) => css({
-        position: 'relative',
-        borderRadius: '0 0 0.75rem 0.75rem',
-        strokeLinejoin: 'round',
-        padding: '1.5rem 1rem 1rem 1rem',
-        boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
-        overflow: 'visible',
-        minHeight: '8.5rem',
-
-        '& .label-button': {
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            height: '100%',
-        },
-    }),
-
-    header: css({
-        fontWeight: 700,
-    }),
-
-    label: (theme: Theme) => css({
-        position: 'absolute',
-        top: 10,
-        left: -10,
-        zIndex: 1,
-        width: '100%',
-        height: '1.2rem',
-        transition: 'transform 0.2s ease',
-    }),
-
-    labelButton: (theme: Theme) => css({
-        marginTop: '1rem',
-        backgroundColor: 'transparent',
-        color: theme.colors.text2,
-        border: 'none',
-        cursor: 'pointer',
-         '&:hover': {
-             backgroundColor: transparentize(0.8, theme.colors.secondary),
-             filter: `drop-shadow(0 0 2px ${transparentize(0.5, theme.colors.white)})`,
-         },
-        ':focus': {
-            backgroundColor: transparentize(0.8, theme.colors.secondary),
-        },
-    }),
-
-    labelIconButton: (theme: Theme) => css({
-        width: 'auto',
-        height: 'auto',
-        fontSize: theme.fontSizes.large,
-    }),
-
 };
 
 export default styles;
