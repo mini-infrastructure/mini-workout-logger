@@ -5,8 +5,8 @@ import {FaBolt, FaDumbbell, FaFire, FaRunning, FaSeedling} from "react-icons/fa"
 import {MdFitnessCenter, MdSelfImprovement, MdTrendingUp} from "react-icons/md";
 import {GiMuscleUp, GiProgression, GiWeight, GiWeightLiftingUp} from "react-icons/gi";
 import type {ReactNode} from "react";
-import type {BadgeVariant} from "../components/badge/badge.component.tsx";
 import {TbBallBasketball, TbBandage, TbBarbell} from "react-icons/tb";
+import type {ColorVariant} from "../utils/colorsVariants.tsx";
 
 export interface Exercise {
     id: number;
@@ -100,7 +100,7 @@ export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
 
 export const ExerciseDifficultyVariants: Record<
     ExerciseDifficulty,
-    BadgeVariant
+    ColorVariant
 > = {
     NOVICE: "success",
     BEGINNER: "success",
@@ -110,7 +110,7 @@ export const ExerciseDifficultyVariants: Record<
 
 export const ExerciseEquipmentVariants: Record<
     ExerciseEquipment,
-    BadgeVariant
+    ColorVariant
 > = {
     BARBELL: "gray",
     DUMBBELL: "gray",
@@ -140,7 +140,7 @@ export function getIconFromMap<T extends string>(
 
 export function getExerciseDifficultyVariant(
     difficulty?: ExerciseDifficulty,
-): BadgeVariant | undefined {
+): ColorVariant | undefined {
     if (!difficulty) return undefined;
 
     return ExerciseDifficultyVariants[difficulty];
@@ -148,7 +148,7 @@ export function getExerciseDifficultyVariant(
 
 export function getExerciseEquipmentVariant(
     equipment?: ExerciseEquipment,
-): BadgeVariant | undefined {
+): ColorVariant | undefined {
     if (!equipment) return undefined;
 
     return ExerciseEquipmentVariants[equipment];

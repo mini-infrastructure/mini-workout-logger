@@ -78,6 +78,10 @@ const styles = {
         justifyContent: 'flex-start',
     }),
 
+    divider: css({
+        width: '100%',
+    }),
+
 };
 
 export default styles;

@@ -5,7 +5,7 @@ import Badge from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
     ExerciseDifficultyIcons,
-    ExerciseEquipmentIcons,
+    ExerciseEquipmentIcons, getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
 import type {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
@@ -16,6 +16,8 @@ import ExerciseModal from "./exercise-modal-component.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import Card from "../card/card.component.tsx";
 import {MdOutlineCheckBox} from "react-icons/md";
+import Divider from "../divider/divider.component.tsx";
+import Rating, {RatingLevelItem} from "../rating/rating.component.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,
@@ -69,6 +71,25 @@ const ExerciseCard = ({
         },
     ];
 
+    const difficultyLevels: RatingLevelItem[] = [
+        {
+            label: 'NOVICE',
+            level: 1,
+        },
+        {
+            label: 'BEGINNER',
+            level: 2,
+        },
+        {
+            label: 'INTERMEDIATE',
+            level: 3,
+        },
+        {
+            label: 'ADVANCED',
+            level: 4,
+        },
+    ];
+
     return (
         <Card customCss={styles.exerciseCard}>
             {/* Header */}
@@ -98,6 +119,19 @@ const ExerciseCard = ({
                     </div>
                 </div>
 
+                {/*  Category  */}
+                <div css={[styles.session]}>
+                    <div css={styles.badgesWrapper}>
+                        {/* Exercise Category */}
+                        <Badge
+                            icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
+                            // variant={getRandomBadgeVariant()}
+                        >
+                            {exercise.category}
+                        </Badge>
+                    </div>
+                </div>
+
                 {/*  Exercise equipments  */}
                 <div css={styles.session}>
                     <div css={styles.badgesWrapper}>
@@ -112,25 +146,15 @@ const ExerciseCard = ({
                     </div>
                 </div>
 
-                {/*  Characteristics  */}
-                <div css={[styles.session]}>
-                    <div css={styles.badgesWrapper}>
-                        {/* Exercise Category */}
-                        <Badge
-                            icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
-                            // variant={getRandomBadgeVariant()}
-                        >
-                            {exercise.category}
-                        </Badge>
+                <Divider customCss={styles.divider} />
 
-                        {/* Exercise Difficulty */}
-                        <Badge
-                            icon={getIconFromMap(ExerciseDifficultyIcons, exercise.difficulty)}
-                            // variant={getExerciseDifficultyVariant(exercise.difficulty)}
-                        >
-                            {exercise.difficulty}
-                        </Badge>
-                    </div>
+                {/* Footer */}
+                <div css={[styles.session]}>
+                    <Rating
+                        levelsInfo={difficultyLevels}
+                        selectedLevelLabel={exercise.difficulty}
+                        variant={getExerciseDifficultyVariant(exercise.difficulty)}
+                    />
                 </div>
 
             </div>
