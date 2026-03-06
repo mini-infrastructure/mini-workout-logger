@@ -27,7 +27,7 @@ const Rate = ({
     return (
         <span css={[
             styles.rate,
-            isFilled && styles.rateFilled(convertColorVariantToThemeColor(variant))
+            isFilled && styles.rateFilled(variant)
         ]} />
     );
 };
@@ -48,8 +48,10 @@ const Rating = ({
         ? levelsByLabel[selectedLevelLabel]?.level ?? 0
         : 0;
 
+    const variantColor = convertColorVariantToThemeColor(variant || "primary");
+
     return (
-        <div css={styles.ratesContainer}>
+        <div css={styles.ratesContainer(variantColor)}>
             {Array.from({ length: numOfLevels }, (_, index) => {
                 const level = index + 1;
 
@@ -57,7 +59,7 @@ const Rating = ({
                     <Rate
                         key={level}
                         isFilled={level <= selectedLevel}
-                        variant={variant || "primary"}
+                        variant={variantColor as ColorVariant}
                     />
                 );
             })}

@@ -2,12 +2,13 @@ import {css, Theme} from "@emotion/react";
 
 const styles = {
 
-    ratesContainer: (theme: Theme) => css({
+    ratesContainer: (color: string) => (theme: any) => css({
         display: 'flex',
         gap: '0.2rem',
         alignItems: 'center',
         textTransform: 'lowercase',
         fontFamily: theme.fonts.number,
+        color: theme.colors[color],
 
         '.selected-level-label::first-letter': {
             textTransform: 'uppercase',
@@ -25,6 +26,7 @@ const styles = {
 
     rateFilled: (color: string) => (theme: any) => css({
         backgroundColor: theme.colors[color],
+        color: theme.colors[color],
     }),
 
 };
