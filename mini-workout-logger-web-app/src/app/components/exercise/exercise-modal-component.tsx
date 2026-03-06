@@ -88,7 +88,7 @@ const ExerciseModal = ({
             window.location.reload();
 
         } catch (error) {
-            console.error("Error saving exercise:", error);
+            // Todo
         }
     };
 

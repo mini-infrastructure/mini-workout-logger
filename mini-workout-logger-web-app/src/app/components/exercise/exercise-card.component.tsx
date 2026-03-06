@@ -54,6 +54,12 @@ const ExerciseCard = ({
             onClick: () => console.log("Clone"),
         },
         {
+            label: "Select",
+            icon: <FiCopy size={14} />,
+            iconColor: "info",
+            onClick: () => console.log("Select"),
+        },
+        {
             dividerBefore: true,
             label: "Delete",
             icon: <FiTrash2 size={14} />,

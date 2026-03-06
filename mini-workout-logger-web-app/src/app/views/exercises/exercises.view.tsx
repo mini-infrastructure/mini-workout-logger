@@ -73,15 +73,7 @@ const ExercisesDatabaseView = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        <Layout
-            navbarContent={
-                <DropdownMenu
-                    title="Actions"
-                    items={items}
-                    trigger="action-switch"
-                />
-            }
-        >
+        <Layout>
             <div css={styles.actionsWrapper}>
                 <PrimaryButton
                     icon={<MdAdd/>}

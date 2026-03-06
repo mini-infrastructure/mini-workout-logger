@@ -9,6 +9,7 @@ import Divider from "../divider/divider.component.tsx";
 import {IoClose} from "react-icons/io5";
 import {useClickOut} from "../../hooks/useClickOut.tsx";
 import {FiMoreHorizontal} from "react-icons/fi";
+import {createPortal} from "react-dom";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 
@@ -57,6 +58,19 @@ const DropdownMenu = ({
     const containerRef = useRef<HTMLDivElement | null>(null);
     useClickOut(containerRef, () => setOpen(false));
 
+    // Dropdown menu state.
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+    const updatePosition = () => {
+        if (!containerRef.current) return;
+
+        const rect = containerRef.current.getBoundingClientRect();
+
+        setMenuPosition({
+            top: rect.bottom,
+            left: rect.right,
+        });
+    };
+
     return (
         <div css={styles.container} ref={containerRef}>
             {trigger === "action-switch" ? (
@@ -67,7 +81,13 @@ const DropdownMenu = ({
                 />
             ) : (
                 <Button
-                    onClick={() => setOpen((prev) => !prev)}
+                    onClick={() =>
+                        setOpen((prev) => {
+                            const next = !prev;
+                            if (next) updatePosition();
+                            return next;
+                        })
+                    }
                     isClicked={open}
                     icon={<FiMoreHorizontal />}
                     clickedIcon={<IoClose />}
@@ -77,8 +97,8 @@ const DropdownMenu = ({
                 </Button>
             )}
 
-            {open && (
-                <nav css={styles.menu} >
+            {open && createPortal(
+                <nav css={styles.menu(menuPosition.top, menuPosition.left)} >
                     {title && <legend css={styles.legend}>{title}</legend>}
 
                     <ul css={styles.ul}>
@@ -102,7 +122,8 @@ const DropdownMenu = ({
                             </li>
                         ))}
                     </ul>
-                </nav>
+                </nav>,
+                document.body
             )}
         </div>
     );

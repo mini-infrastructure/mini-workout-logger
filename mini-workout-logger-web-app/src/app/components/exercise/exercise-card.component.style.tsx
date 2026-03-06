@@ -3,8 +3,12 @@ import {transparentize} from "polished";
 
 const styles = {
 
+    cardActive: css({
+        zIndex: 1000,
+    }),
+
     exerciseCard: (theme: Theme) => css({
-        position: 'relative',
+        // position: 'relative',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
         padding: '1.5rem 1rem 1rem 1rem',
@@ -19,7 +23,6 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 1,
     }),
 
     dropdownButton: (theme: Theme) => css({
