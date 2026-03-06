@@ -43,26 +43,26 @@ const ExerciseCard = ({
     const dropdownItems: DropdownMenuItem[] = [
         {
             label: "Edit",
-            icon: <FiEdit size={14} />,
+            icon: <FiEdit />,
             iconColor: "primary",
             onClick: () => setIsModalOpen(true),
         },
         {
             label: "Clone",
-            icon: <FiCopy size={14} />,
+            icon: <FiCopy />,
             iconColor: "info",
             onClick: () => console.log("Clone"),
         },
         {
             label: "Select",
-            icon: <FiCopy size={14} />,
+            icon: <FiCopy />,
             iconColor: "info",
             onClick: () => console.log("Select"),
         },
         {
             dividerBefore: true,
             label: "Delete",
-            icon: <FiTrash2 size={14} />,
+            icon: <FiTrash2 />,
             iconColor: "danger",
             onClick: handleDelete,
         },

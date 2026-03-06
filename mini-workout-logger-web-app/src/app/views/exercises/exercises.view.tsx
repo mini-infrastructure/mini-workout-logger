@@ -11,62 +11,6 @@ import {useState} from "react";
 import type {FormItem} from "../../components/input/form/form.input.component.tsx";
 import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
 
-const items: DropdownMenuItem[] = [
-    {
-        label: "Edit",
-        icon: <FiEdit size={14} />,
-        iconColor: "primary",
-        onClick: () => console.log("Edit"),
-    },
-    {
-        label: "Clone",
-        icon: <FiCopy size={14} />,
-        iconColor: "info",
-        onClick: () => console.log("Clone"),
-    },
-    {
-        dividerBefore: true,
-        label: "Delete",
-        icon: <FiTrash2 size={14} />,
-        iconColor: "danger",
-        onClick: () => console.log("Delete"),
-    },
-];
-
-const formItems: FormItem[] = [
-    {
-        name: "firstName",
-        label: "First name",
-        type: "text",
-        placeholder: "Enter first name",
-        colSpan: 1,
-    },
-    {
-        name: "lastName",
-        label: "Last name",
-        type: "text",
-        colSpan: 1,
-    },
-    {
-        name: "email",
-        label: "Email",
-        type: "email",
-        placeholder: "Enter email",
-        colSpan: 2,
-    },
-    {
-        name: "role",
-        label: "Role",
-        type: "select",
-        colSpan: 2,
-        options: [
-            { label: "User", value: "user" },
-            { label: "Admin", value: "admin" },
-            { label: "Moderator", value: "moderator" },
-        ],
-    },
-];
-
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
 
