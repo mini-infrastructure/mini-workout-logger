@@ -53,6 +53,7 @@ const styles = {
         margin: '0 0.5rem 0 0',
         width: '0.8rem',
         height: '0.8rem',
+        pointerEvents: 'none',
     }),
 
     onlyIconButton: css({

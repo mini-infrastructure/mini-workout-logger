@@ -98,7 +98,7 @@ const ExerciseModal = ({
             onClose={() => setIsModalOpen(false)}
         >
             <div css={styles.header}>
-                {exercise ? "Edit Exercise" : "Create Exercise"}
+                {exercise ? "Edit exercise" : "Create exercise"}
             </div>
             <FormBuilder
                 items={exerciseFormItems}

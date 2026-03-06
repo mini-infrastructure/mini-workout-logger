@@ -66,8 +66,8 @@ const LabelCard = ({
                         title="Actions"
                         items={dropdownItems}
                         trigger="button"
-                        // customTriggerCss={styles.labelButton}
-                        // customIconTriggerCss={styles.labelIconButton}
+                        customTriggerCss={styles.labelButton}
+                        customIconTriggerCss={styles.labelIconButton}
                     />
                 </div>
             </div>

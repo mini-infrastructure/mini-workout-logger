@@ -107,19 +107,17 @@ const styles = {
     }),
 
     labelButton: (theme: Theme) => css({
+        marginTop: '1rem',
         backgroundColor: 'transparent',
         color: theme.colors.text2,
-        padding: 0,
-        width: 'auto',
-        height: 'auto',
         border: 'none',
         cursor: 'pointer',
          '&:hover': {
-             backgroundColor: 'transparent',
+             backgroundColor: transparentize(0.8, theme.colors.secondary),
              filter: `drop-shadow(0 0 2px ${transparentize(0.5, theme.colors.white)})`,
          },
         ':focus': {
-            backgroundColor: 'transparent',
+            backgroundColor: transparentize(0.8, theme.colors.secondary),
         },
     }),
 
