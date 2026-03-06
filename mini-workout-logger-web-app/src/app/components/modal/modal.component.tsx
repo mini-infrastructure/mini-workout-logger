@@ -1,5 +1,5 @@
 import type {PropsWithChildren} from "react";
-import {useEffect, useRef, useState} from "react";
+import {useRef} from "react";
 import {createPortal} from "react-dom";
 import styles from "./modal.component.style.tsx";
 import Button from "../button/button.component.tsx";

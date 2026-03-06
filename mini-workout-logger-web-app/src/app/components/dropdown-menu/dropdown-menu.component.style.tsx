@@ -1,5 +1,4 @@
 import {css} from "@emotion/react";
-import {transparentize} from "polished";
 
 const styles = {
     container: css({

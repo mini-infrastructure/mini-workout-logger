@@ -4,16 +4,17 @@ import styles from "./exercise-card.component.style.tsx";
 import Badge from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
-    ExerciseDifficultyIcons, ExerciseEquipmentIcons,
+    ExerciseDifficultyIcons,
+    ExerciseEquipmentIcons,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
 import type {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";
+import DropdownMenu from "../dropdown-menu/dropdown-menu.component.tsx";
 import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import {useState} from "react";
 import ExerciseModal from "./exercise-modal-component.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import Card from "../card/card.component.tsx";
-import DropdownMenu from "../dropdown-menu/dropdown-menu.component.tsx";
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO,

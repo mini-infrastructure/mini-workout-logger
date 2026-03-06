@@ -1,5 +1,5 @@
 import type {ReactNode} from "react";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import type {Interpolation, Theme} from "@emotion/react";
 import {css} from "@emotion/react";
 import Button from "../button/button.component.tsx";
@@ -7,7 +7,6 @@ import ActionSwitch from "../input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
 import {IoClose} from "react-icons/io5";
-import {HiCursorClick} from "react-icons/hi";
 import {useClickOut} from "../../hooks/useClickOut.tsx";
 import {FiMoreHorizontal} from "react-icons/fi";
 

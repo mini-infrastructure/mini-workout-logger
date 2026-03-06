@@ -1,9 +1,8 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import Badge from "../../badge/badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
-import {useClickOut} from "../../../hooks/useClickOut.tsx";
 
 type Option = {
     label: string;

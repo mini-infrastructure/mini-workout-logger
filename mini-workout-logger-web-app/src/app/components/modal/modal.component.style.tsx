@@ -1,5 +1,4 @@
 import {css, Theme} from "@emotion/react";
-import {transparentize} from "polished";
 
 const styles = {
     overlayStyle: (theme: Theme) => css({

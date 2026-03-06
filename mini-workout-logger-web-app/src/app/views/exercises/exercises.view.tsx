@@ -8,9 +8,7 @@ import {FiCopy, FiEdit, FiTrash2} from "react-icons/fi";
 import PrimaryButton from "../../components/button/button.primary.component.tsx";
 import {MdAdd} from "react-icons/md";
 import {useState} from "react";
-import Modal from "../../components/modal/modal.component.tsx";
 import type {FormItem} from "../../components/input/form/form.input.component.tsx";
-import FormBuilder from "../../components/input/form/form.input.component.tsx";
 import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
 
 const items: DropdownMenuItem[] = [
