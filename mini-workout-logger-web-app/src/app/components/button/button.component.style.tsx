@@ -50,7 +50,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: '0 0.5rem 0 0',
+        margin: '0 0.3rem 0 0',
         width: '0.8rem',
         height: '0.8rem',
         pointerEvents: 'none',

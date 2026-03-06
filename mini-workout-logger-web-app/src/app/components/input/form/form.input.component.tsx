@@ -120,7 +120,7 @@ const FormBuilder = ({
                 );
             })}
 
-            <div css={styles.fieldWrapper(columns)}>
+            <div css={styles.fieldWrapper(columns)} style={{ marginTop: "0.5rem" }}>
                 {submitButton ?? <Button type="submit">Submit</Button>}
             </div>
         </form>
