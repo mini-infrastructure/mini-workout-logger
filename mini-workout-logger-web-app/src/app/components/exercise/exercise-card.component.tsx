@@ -4,8 +4,8 @@ import styles from "./exercise-card.component.style.tsx";
 import Badge from "../badge/badge.component.tsx";
 import {
     ExerciseCategoryIcons,
-    ExerciseDifficultyIcons,
-    ExerciseEquipmentIcons, getExerciseDifficultyVariant,
+    ExerciseEquipmentIcons,
+    getExerciseDifficultyVariant,
     getIconFromMap,
 } from "../../models/exercise.model.tsx";
 import type {DropdownMenuItem} from "../dropdown-menu/dropdown-menu.component.tsx";

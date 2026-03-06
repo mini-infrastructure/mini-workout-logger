@@ -1,6 +1,6 @@
 import type {ColorVariant} from "../../utils/colorsVariants.tsx";
-import styles from "./rating.component.style.tsx";
 import {convertColorVariantToThemeColor} from "../../utils/colorsVariants.tsx";
+import styles from "./rating.component.style.tsx";
 import {PropsWithChildren} from "react";
 
 export type RatingLevelItem = {

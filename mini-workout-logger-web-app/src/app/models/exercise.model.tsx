@@ -1,18 +1,15 @@
 import {Muscle} from './muscle.model';
 import type {WorkoutExercise} from "./workout-exercise.model.tsx";
 import type {IconType} from "react-icons";
-import {FaBolt, FaDotCircle, FaDumbbell, FaFire, FaRunning, FaSeedling, FaWeightHanging} from "react-icons/fa";
+import {FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
 import {MdFitnessCenter, MdSelfImprovement, MdTrendingUp} from "react-icons/md";
-import {GiBodyBalance, GiMuscleUp, GiProgression, GiWeight, GiWeightLiftingUp} from "react-icons/gi";
+import {GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp} from "react-icons/gi";
 import type {ReactNode} from "react";
-import {TbBallBasketball, TbBandage, TbBarbell, TbJumpRope} from "react-icons/tb";
+import {TbBallBasketball, TbBandage, TbJumpRope} from "react-icons/tb";
 import type {ColorVariant} from "../utils/colorsVariants.tsx";
-import {PiBarbell} from "react-icons/pi";
 import {LiaDumbbellSolid} from "react-icons/lia";
-import {IoBarbell} from "react-icons/io5";
 import {BiBody} from "react-icons/bi";
 import {RiWeightFill} from "react-icons/ri";
-import {CgGym} from "react-icons/cg";
 import {GrYoga} from "react-icons/gr";
 
 export interface Exercise {
