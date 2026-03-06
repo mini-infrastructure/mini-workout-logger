@@ -8,7 +8,8 @@ const styles = {
     }),
 
     exerciseCard: (theme: Theme) => css({
-        // position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
         padding: '1.5rem 1rem 1rem 1rem',
@@ -81,6 +82,19 @@ const styles = {
     divider: css({
         width: '100%',
     }),
+
+    footerContainer: css({
+        display: 'flex',
+        marginTop: 'auto',
+        flexDirection: 'column',
+        gap: '0.5rem',
+    }),
+
+    footer: css({
+        display: 'flex',
+        justifyContent: 'space-between',
+        marginTop: 'auto',
+    })
 
 };
 

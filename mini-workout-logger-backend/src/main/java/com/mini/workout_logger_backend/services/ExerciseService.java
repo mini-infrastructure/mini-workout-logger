@@ -30,16 +30,20 @@ public class ExerciseService extends AbstractService<Exercise,
     @Autowired
     MuscleService muscleService;
 
+    // Todo: Get all filtered and paginates!!!
+
     @Override
     public Exercise beforeSave(Exercise entity) {
         // Adds the muscle groups associated with the muscle.
-        for (Muscle muscle : entity.getMuscles()) {
-            for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new java.util.HashSet<>())) {
+        Set<Muscle> currentMuscles = new HashSet<>(entity.getMuscles());
+
+        for (Muscle muscle : currentMuscles) {
+            for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new HashSet<>())) {
                 entity.addMuscle(parent);
             }
         }
 
-        // Repĺaces the equipments set.
+        // Replaces the equipments set.
         if (entity.getEquipments() != null) {
             Set<ExerciseEquipment> newEquipments = new HashSet<>(entity.getEquipments());
             entity.setEquipments(newEquipments);

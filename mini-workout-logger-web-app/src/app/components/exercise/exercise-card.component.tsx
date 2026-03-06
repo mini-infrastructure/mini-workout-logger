@@ -119,19 +119,6 @@ const ExerciseCard = ({
                     </div>
                 </div>
 
-                {/*  Category  */}
-                <div css={[styles.session]}>
-                    <div css={styles.badgesWrapper}>
-                        {/* Exercise Category */}
-                        <Badge
-                            icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
-                            // variant={getRandomBadgeVariant()}
-                        >
-                            {exercise.category}
-                        </Badge>
-                    </div>
-                </div>
-
                 {/*  Exercise equipments  */}
                 <div css={styles.session}>
                     <div css={styles.badgesWrapper}>
@@ -145,18 +132,23 @@ const ExerciseCard = ({
                         ))}
                     </div>
                 </div>
+            </div>
 
+            {/* Footer */}
+            <div css={[styles.session, styles.footerContainer]}>
                 <Divider customCss={styles.divider} />
 
-                {/* Footer */}
-                <div css={[styles.session]}>
+                <div css={styles.footer}>
                     <Rating
                         levelsInfo={difficultyLevels}
                         selectedLevelLabel={exercise.difficulty}
                         variant={getExerciseDifficultyVariant(exercise.difficulty)}
                     />
-                </div>
 
+                    <Badge icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}>
+                        {exercise.category}
+                    </Badge>
+                </div>
             </div>
 
             {/* Edit exercise modal */}

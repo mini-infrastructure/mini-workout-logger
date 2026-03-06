@@ -1,12 +1,19 @@
 import {Muscle} from './muscle.model';
 import type {WorkoutExercise} from "./workout-exercise.model.tsx";
 import type {IconType} from "react-icons";
-import {FaBolt, FaDumbbell, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
+import {FaBolt, FaDotCircle, FaDumbbell, FaFire, FaRunning, FaSeedling, FaWeightHanging} from "react-icons/fa";
 import {MdFitnessCenter, MdSelfImprovement, MdTrendingUp} from "react-icons/md";
-import {GiMuscleUp, GiProgression, GiWeight, GiWeightLiftingUp} from "react-icons/gi";
+import {GiBodyBalance, GiMuscleUp, GiProgression, GiWeight, GiWeightLiftingUp} from "react-icons/gi";
 import type {ReactNode} from "react";
-import {TbBallBasketball, TbBandage, TbBarbell} from "react-icons/tb";
+import {TbBallBasketball, TbBandage, TbBarbell, TbJumpRope} from "react-icons/tb";
 import type {ColorVariant} from "../utils/colorsVariants.tsx";
+import {PiBarbell} from "react-icons/pi";
+import {LiaDumbbellSolid} from "react-icons/lia";
+import {IoBarbell} from "react-icons/io5";
+import {BiBody} from "react-icons/bi";
+import {RiWeightFill} from "react-icons/ri";
+import {CgGym} from "react-icons/cg";
+import {GrYoga} from "react-icons/gr";
 
 export interface Exercise {
     id: number;
@@ -59,19 +66,19 @@ export type ExerciseDifficulty =
     ;
 
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
-    STRENGTH: FaDumbbell,
+    STRENGTH: FaFire,
     CARDIO: FaRunning,
     STRETCHING: MdSelfImprovement,
     POWERLIFTING: GiWeightLiftingUp,
     OLYMPIC_WEIGHTLIFTING: GiWeightLiftingUp,
     STRONGMAN: GiMuscleUp,
-    CALISTHENICS: GiMuscleUp,
+    CALISTHENICS: GiBodyBalance,
     PLYOMETRICS: FaBolt,
     RECOVERY: MdSelfImprovement,
     HIT: FaFire,
     MOBILITY: MdSelfImprovement,
     PILATES: MdSelfImprovement,
-    YOGA: MdSelfImprovement,
+    YOGA: GrYoga,
     WARM_UP: FaBolt,
 };
 
@@ -83,19 +90,19 @@ export const ExerciseDifficultyIcons: Record<ExerciseDifficulty, IconType> = {
 };
 
 export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
-    BARBELL: TbBarbell,
-    DUMBBELL: FaDumbbell,
-    BODYWEIGHT: MdFitnessCenter,
+    BARBELL: LiaDumbbellSolid,
+    DUMBBELL: LiaDumbbellSolid,
+    BODYWEIGHT: BiBody,
     BOSU_BALL: TbBallBasketball,
-    CABLE: MdFitnessCenter,
+    CABLE: TbJumpRope,
     EXERCISE_BALL: TbBallBasketball,
     MACHINE: MdFitnessCenter,
     SMITH_MACHINE: MdFitnessCenter,
     MEDICINE_BALL: TbBallBasketball,
-    PLATE: GiWeightLiftingUp,
+    PLATE: FaDotCircle,
     RESISTANCE_BAND: TbBandage,
-    TRX: MdFitnessCenter,
-    KETTLEBELL: GiWeight,
+    TRX: TbJumpRope,
+    KETTLEBELL: RiWeightFill,
 };
 
 export const ExerciseDifficultyVariants: Record<
