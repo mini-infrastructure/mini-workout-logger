@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
+import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.annotations.WorkoutExecutionValidated;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -20,7 +21,7 @@ import java.util.List;
 @WorkoutExecutionValidated
 public class WorkoutExecutionWriteDTO extends WriteDTO {
 
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     @JsonProperty("workout_id")
     @Schema(hidden = true)
     private Long workoutId;

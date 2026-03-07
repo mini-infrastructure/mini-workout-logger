@@ -4,6 +4,8 @@ CREATE TABLE exercises (
     name VARCHAR(255) NOT NULL UNIQUE,
     category VARCHAR(255),
     difficulty VARCHAR(50),
+    force VARCHAR(50),
+    mechanics VARCHAR(50),
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL

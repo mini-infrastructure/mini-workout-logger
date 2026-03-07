@@ -2,9 +2,7 @@ package com.mini.workout_logger_backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.java_core.dto.ReadDTO;
-import com.mini.workout_logger_backend.enums.ExerciseCategory;
-import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
-import com.mini.workout_logger_backend.enums.ExerciseEquipment;
+import com.mini.workout_logger_backend.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +11,8 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
+// TODO: Criar parâmetro que indica possíveis substituições para o exercício baseado nos mesmos músculos envolvidos,
+//       e talvez baseado em exercícios relacionados também
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
@@ -25,9 +25,22 @@ public class ExerciseReadDTO extends ReadDTO {
 
     private ExerciseDifficulty difficulty;
 
+    private Set<ExerciseEquipment> equipments = new HashSet<>();
+
+    private ExerciseForceDirection force;
+
+    private ExerciseMechanics mechanics;
+
+    @JsonIgnore
+    private Set<ExerciseMuscleReadDTO> exerciseMuscles = new HashSet<>();
+
     private Set<MuscleReadDTO> muscles = new HashSet<>();
 
-    private Set<ExerciseEquipment> equipments = new HashSet<>();
+    private Set<MuscleReadDTO> targetMuscles = new HashSet<>();
+
+    private Set<MuscleReadDTO> synergistMuscles = new HashSet<>();
+
+    private Set<MuscleReadDTO> stabilizerMuscles = new HashSet<>();
 
     private Set<String> rootMuscles = new HashSet<>();
 

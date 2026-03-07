@@ -6,6 +6,7 @@ CREATE TABLE workout_exercises (
     exercise_id BIGINT NOT NULL,
     equipment VARCHAR(50),
     rest_time_seconds INTEGER,
+    role VARCHAR(50),
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

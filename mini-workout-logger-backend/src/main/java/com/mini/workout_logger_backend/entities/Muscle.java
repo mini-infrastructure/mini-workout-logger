@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.converter.TextConverter;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.java_core.entity.Text;
+import com.mini.workout_logger_backend.enums.ExerciseMuscleMovementClassification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,8 +39,8 @@ public class Muscle extends AbstractEntity {
     private Set<Muscle> muscles = new HashSet<>();
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "muscles")
-    private Set<Exercise> exercises = new HashSet<>();
+    @OneToMany(mappedBy = "muscle")
+    private Set<ExerciseMuscle> exerciseMuscles = new HashSet<>();
 
     public void addMuscleGroup(Muscle muscle) {
         this.muscleGroups.add(muscle);
@@ -55,23 +56,6 @@ public class Muscle extends AbstractEntity {
         this.muscleGroups.clear();
         if (muscleGroups != null) {
             this.muscleGroups.addAll(muscleGroups);
-        }
-    }
-
-    public void addExercise(Exercise exercise) {
-        this.exercises.add(exercise);
-        exercise.getMuscles().add(this);
-    }
-
-    public void removeExercise(Exercise exercise) {
-        this.exercises.remove(exercise);
-        exercise.getMuscles().remove(this);
-    }
-
-    public void setExercises(Set<Exercise> exercises) {
-        this.exercises.clear();
-        if (exercises != null) {
-            this.exercises.addAll(exercises);
         }
     }
 

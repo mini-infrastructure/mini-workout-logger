@@ -1,14 +1,13 @@
 package com.mini.workout_logger_backend.controllers;
 
 import com.mini.java_core.AbstractCrudControllerTest;
-import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
-import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
-import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
-import com.mini.workout_logger_backend.dtos.MuscleWriteDTO;
+import com.mini.workout_logger_backend.dtos.*;
 import com.mini.workout_logger_backend.entities.Exercise;
+import com.mini.workout_logger_backend.entities.ExerciseMuscle;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseMuscleMovementClassification;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.mappers.MuscleMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
@@ -59,7 +58,10 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.BEGINNER,
                         savedMuscles.stream()
-                                .map(Muscle::getId)
+                                .map(muscle -> new ExerciseMuscleWriteDTO(
+                                        muscle.getId(),
+                                        ExerciseMuscleMovementClassification.TARGET
+                                ))
                                 .collect(Collectors.toSet()),
                         null
                 ),
@@ -123,7 +125,10 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                 ExerciseCategory.STRENGTH,
                 ExerciseDifficulty.BEGINNER,
                 savedMuscles.stream()
-                        .map(Muscle::getId)
+                        .map(muscle -> new ExerciseMuscleWriteDTO(
+                                muscle.getId(),
+                                ExerciseMuscleMovementClassification.TARGET
+                        ))
                         .collect(Collectors.toSet()),
                 null
         );

@@ -78,7 +78,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null)
                                     ),
                                     ExerciseEquipment.BODYWEIGHT,
-                                    30
+                                    30,
+                                    WorkoutExerciseRole.BASIC
                                 ),
                                 new WorkoutExerciseWriteDTO(
                                     savedExercises.getLast().getId(),
@@ -87,8 +88,9 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 55.0, null),
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 60.0, null)
                                     ),
-                                    ExerciseEquipment.DUMBBELL,
-                                    45
+                                    ExerciseEquipment.BARBELL,
+                                    45,
+                                    WorkoutExerciseRole.AUXILIARY
                                 )
                         )
                 ),
@@ -102,8 +104,9 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null)
                                         ),
-                                        ExerciseEquipment.BODYWEIGHT,
-                                        60
+                                        ExerciseEquipment.BARBELL,
+                                        60,
+                                        WorkoutExerciseRole.BASIC
                                 )
                         )
                 )
@@ -137,8 +140,17 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Push-Up",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.BEGINNER,
-                                        Set.of(savedMuscles.get(0).getId(), savedMuscles.get(1).getId()),
-                                        null
+                                        Set.of(
+                                                new ExerciseMuscleWriteDTO(
+                                                        savedMuscles.get(0).getId(),
+                                                        ExerciseMuscleMovementClassification.TARGET
+                                                ),
+                                                new ExerciseMuscleWriteDTO(
+                                                        savedMuscles.get(1).getId(),
+                                                        ExerciseMuscleMovementClassification.TARGET
+                                                )
+                                        ),
+                                        Set.of(ExerciseEquipment.BODYWEIGHT)
                                 )
                         )
                 ),
@@ -148,8 +160,13 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Squat",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.BEGINNER,
-                                        Set.of(savedMuscles.get(2).getId()),
-                                        null
+                                        Set.of(
+                                                new ExerciseMuscleWriteDTO(
+                                                        savedMuscles.get(2).getId(),
+                                                        ExerciseMuscleMovementClassification.STABILIZER
+                                                )
+                                        ),
+                                        Set.of(ExerciseEquipment.BODYWEIGHT)
                                 )
                         )
                 ),
@@ -159,8 +176,17 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                         "Deadlift",
                                         ExerciseCategory.STRENGTH,
                                         ExerciseDifficulty.INTERMEDIATE,
-                                        Set.of(savedMuscles.get(1).getId(), savedMuscles.get(2).getId()),
-                                        null
+                                        Set.of(
+                                                new ExerciseMuscleWriteDTO(
+                                                        savedMuscles.get(1).getId(),
+                                                        ExerciseMuscleMovementClassification.TARGET
+                                                ),
+                                                new ExerciseMuscleWriteDTO(
+                                                        savedMuscles.get(2).getId(),
+                                                        ExerciseMuscleMovementClassification.TARGET
+                                                )
+                                        ),
+                                        Set.of(ExerciseEquipment.BARBELL)
                                 )
                         )
                 )
@@ -253,8 +279,13 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                 "Chest-Fly",
                                 ExerciseCategory.STRENGTH,
                                 ExerciseDifficulty.BEGINNER,
-                                Set.of(savedMuscles.getFirst().getId()),
-                                null
+                                Set.of(
+                                        new ExerciseMuscleWriteDTO(
+                                                savedMuscles.getFirst().getId(),
+                                                ExerciseMuscleMovementClassification.TARGET
+                                        )
+                                ),
+                                Set.of(ExerciseEquipment.BARBELL)
                         )
                 )
         );
@@ -267,7 +298,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 75.0, null)
                 ),
                 ExerciseEquipment.BARBELL,
-                60
+                60,
+                WorkoutExerciseRole.AUXILIARY
         );
 
         mockMvc.perform(MockMvcRequestBuilders.put(getBaseUrl() + "/{id}/exercises", workout.getId())
