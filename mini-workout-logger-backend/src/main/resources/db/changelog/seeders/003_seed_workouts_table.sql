@@ -19,6 +19,7 @@ CREATE OR REPLACE FUNCTION add_workout_exercise(
     p_workout_id BIGINT,
     p_exercise_name VARCHAR,
     p_position INTEGER,
+    p_role VARCHAR,
     p_equipment VARCHAR DEFAULT NULL,
     p_rest_time_seconds INTEGER DEFAULT NULL
 )
@@ -39,6 +40,7 @@ BEGIN
         workout_id,
         exercise_id,
         position,
+        role,
         equipment,
         rest_time_seconds,
         created_at,
@@ -48,12 +50,12 @@ BEGIN
         p_workout_id,
         v_exercise_id,
         p_position,
+        p_role,
         p_equipment,
         p_rest_time_seconds,
         NOW(),
         NOW()
     );
-    ---ON CONFLICT (workout_id, position) DO NOTHING;
 
     SELECT id INTO v_workout_exercise_id
     FROM workout_exercises
@@ -116,25 +118,27 @@ BEGIN
         v_workout_id,
         'Exercise.Chest_Press',
         0,
+        'BASIC',
         'BARBELL',
         90
     );
 
-    v_we_2 := add_workout_exercise(
-        v_workout_id,
-        'Exercise.Push_Up',
-        1,
-        'BODYWEIGHT',
-        60
-    );
+--    v_we_2 := add_workout_exercise(
+--        v_workout_id,
+--        'Exercise.Push_Up',
+--        1,
+--        'AUXILIARY',
+--        'BODYWEIGHT',
+--        60
+--    );
 
     PERFORM add_set(v_we_1, 0, 'WARMUP', 'REPS_X_WEIGHT', 12, 40);
     PERFORM add_set(v_we_1, 1, 'NORMAL',   'REPS_X_WEIGHT', 10, 60);
     PERFORM add_set(v_we_1, 2, 'NORMAL',   'REPS_X_WEIGHT', 8,  70);
 
-    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 15, NULL);
-    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 12, NULL);
-    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, NULL);
+--    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 15, NULL);
+--    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 12, NULL);
+--    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, NULL);
 
     ------------------------------------------------------------------
     -- WORKOUT 2: Treino Peito + Ombro
@@ -145,25 +149,27 @@ BEGIN
         v_workout_id,
         'Exercise.Chest_Press',
         0,
+        'BASIC',
         'BARBELL',
         90
     );
 
-    v_we_2 := add_workout_exercise(
-        v_workout_id,
-        'Exercise.Chest_Fly',
-        1,
-        'DUMBBELL',
-        75
-    );
+--    v_we_2 := add_workout_exercise(
+--        v_workout_id,
+--        'Exercise.Chest_Fly',
+--        1,
+--        'AUXILIARY',
+--        'DUMBBELL',
+--        75
+--    );
 
     PERFORM add_set(v_we_1, 0, 'NORMAL', 'REPS_X_WEIGHT', 10, 60);
     PERFORM add_set(v_we_1, 1, 'NORMAL', 'REPS_X_WEIGHT', 8,  70);
     PERFORM add_set(v_we_1, 2, 'NORMAL', 'REPS_X_WEIGHT', 6,  80);
 
-    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 12, 20);
-    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 22);
-    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 8,  24);
+--    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 12, 20);
+--    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 22);
+--    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 8,  24);
 
 END;
 $$;

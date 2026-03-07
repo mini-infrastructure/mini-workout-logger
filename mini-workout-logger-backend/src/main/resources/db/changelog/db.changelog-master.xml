@@ -25,16 +25,16 @@
         <sqlFile path="db/changelog/migrations/010_create_set_executions_table.sql"/>
     </changeSet>
 
-<!--    <changeSet id="2" author="carolina">-->
-<!--        <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"-->
-<!--                 endDelimiter="$_$"-->
-<!--                 splitStatements="false"/>-->
-<!--        <sqlFile path="db/changelog/seeders/002_seed_exercises_table.sql"-->
-<!--                 endDelimiter="$_$"-->
-<!--                 splitStatements="false"/>-->
-<!--        <sqlFile path="db/changelog/seeders/003_seed_workouts_table.sql"-->
-<!--                 endDelimiter="$_$"-->
-<!--                 splitStatements="false"/>-->
-<!--    </changeSet>-->
+    <changeSet id="2" author="carolina">
+        <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
+        <sqlFile path="db/changelog/seeders/002_seed_exercises_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
+        <sqlFile path="db/changelog/seeders/003_seed_workouts_table.sql"
+                 endDelimiter="$_$"
+                 splitStatements="false"/>
+    </changeSet>
 
 </databaseChangeLog>
