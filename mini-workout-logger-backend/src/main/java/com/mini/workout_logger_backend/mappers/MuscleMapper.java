@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 
-import static java.util.stream.Collectors.toCollection;
-
 @Component
 public class MuscleMapper extends AbstractMapper<Muscle, MuscleReadDTO, MuscleWriteDTO> {
 

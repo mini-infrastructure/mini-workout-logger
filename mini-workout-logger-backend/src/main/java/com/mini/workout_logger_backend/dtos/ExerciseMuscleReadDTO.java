@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExerciseMuscleReadDTO extends ReadDTO {
 
-    private MuscleReadDTO muscle;
+    private String muscleName;
 
     private ExerciseMuscleMovementClassification role;
 

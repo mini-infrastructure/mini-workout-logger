@@ -23,7 +23,11 @@ public class ExerciseMuscleMapper
     @Override
     protected void configure(ModelMapper mapper) {
         // Entity -> DTO (GET)
-        mapper.createTypeMap(ExerciseMuscle.class, ExerciseMuscleReadDTO.class);
+        mapper.createTypeMap(ExerciseMuscle.class, ExerciseMuscleReadDTO.class)
+                .addMappings(m -> {
+                    m.map(src -> src.getMuscle().getName().getValue(),
+                            ExerciseMuscleReadDTO::setMuscleName);
+                });
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(ExerciseMuscleWriteDTO.class, ExerciseMuscle.class)
