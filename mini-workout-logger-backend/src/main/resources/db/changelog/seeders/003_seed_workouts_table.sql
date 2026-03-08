@@ -20,7 +20,6 @@ CREATE OR REPLACE FUNCTION add_workout_exercise(
     p_exercise_name VARCHAR,
     p_position INTEGER,
     p_role VARCHAR,
-    p_equipment VARCHAR DEFAULT NULL,
     p_rest_time_seconds INTEGER DEFAULT NULL
 )
 RETURNS BIGINT AS $$
@@ -41,7 +40,6 @@ BEGIN
         exercise_id,
         position,
         role,
-        equipment,
         rest_time_seconds,
         created_at,
         updated_at
@@ -51,7 +49,6 @@ BEGIN
         v_exercise_id,
         p_position,
         p_role,
-        p_equipment,
         p_rest_time_seconds,
         NOW(),
         NOW()
@@ -119,7 +116,6 @@ BEGIN
         'Exercise.Chest_Press',
         0,
         'BASIC',
-        'BARBELL',
         90
     );
 
@@ -128,7 +124,6 @@ BEGIN
 --        'Exercise.Push_Up',
 --        1,
 --        'AUXILIARY',
---        'BODYWEIGHT',
 --        60
 --    );
 
@@ -150,7 +145,6 @@ BEGIN
         'Exercise.Chest_Press',
         0,
         'BASIC',
-        'BARBELL',
         90
     );
 
@@ -159,7 +153,6 @@ BEGIN
 --        'Exercise.Chest_Fly',
 --        1,
 --        'AUXILIARY',
---        'DUMBBELL',
 --        75
 --    );
 

@@ -7,6 +7,7 @@ import com.mini.workout_logger_backend.entities.ExerciseMuscle;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.enums.ExerciseMuscleMovementClassification;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.mappers.MuscleMapper;
@@ -63,7 +64,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                                         ExerciseMuscleMovementClassification.TARGET
                                 ))
                                 .collect(Collectors.toSet()),
-                        null
+                        ExerciseEquipment.MACHINE
                 ),
                 new ExerciseWriteDTO("Push-Up"),
                 new ExerciseWriteDTO("Squat")

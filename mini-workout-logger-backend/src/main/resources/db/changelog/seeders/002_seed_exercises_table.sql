@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION add_exercise(
     exercise_name VARCHAR,
     exercise_category VARCHAR,
     exercise_difficulty VARCHAR,
-    exercise_equipments VARCHAR[] DEFAULT NULL,
+    exercise_equipment VARCHAR DEFAULT NULL,
     exercise_force VARCHAR DEFAULT NULL,
     exercise_mechanics VARCHAR DEFAULT NULL
 )
@@ -13,8 +13,19 @@ DECLARE
     eq VARCHAR;
 BEGIN
 
-    INSERT INTO exercises (name, category, difficulty, force, mechanics, created_at, updated_at)
-    VALUES (exercise_name, exercise_category, exercise_difficulty, exercise_force, exercise_mechanics, NOW(), NOW())
+    INSERT INTO exercises (
+        name, category, difficulty, equipment, force, mechanics, created_at, updated_at
+    )
+    VALUES (
+        exercise_name,        -- name
+        exercise_category,    -- category
+        exercise_difficulty,  -- difficulty
+        exercise_equipment,   -- equipment
+        exercise_force,       -- force
+        exercise_mechanics,   -- mechanics
+        NOW(),                -- created_at
+        NOW()                 -- updated_at
+    )
     ON CONFLICT (name) DO NOTHING;
 
     SELECT id INTO p_exercise_id
@@ -26,15 +37,6 @@ BEGIN
         pg_get_serial_sequence('exercises','id'),
         COALESCE((SELECT MAX(id) FROM exercises),1)
     );
-
-    IF exercise_equipments IS NOT NULL THEN
-        FOREACH eq IN ARRAY exercise_equipments
-        LOOP
-            INSERT INTO exercise_equipment (exercise_id, equipment)
-            VALUES (p_exercise_id, eq)
-            ON CONFLICT DO NOTHING;
-        END LOOP;
-    END IF;
 
 END;
 $$ LANGUAGE plpgsql;
@@ -92,7 +94,7 @@ SELECT add_exercise(
     'Exercise.Chest_Press',
     'STRENGTH',
     'INTERMEDIATE',
-    ARRAY['BARBELL','DUMBBELL','MACHINE'],
+    'BARBELL',
     'PUSH',
     'COMPOUND'
 );

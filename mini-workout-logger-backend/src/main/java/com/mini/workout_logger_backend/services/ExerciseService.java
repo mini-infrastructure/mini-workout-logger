@@ -50,12 +50,6 @@ public class ExerciseService extends AbstractService<Exercise,
             }
         }
 
-        // Replaces the equipments set.
-        if (entity.getEquipments() != null) {
-            Set<ExerciseEquipment> newEquipments = new HashSet<>(entity.getEquipments());
-            entity.setEquipments(newEquipments);
-        }
-
         return super.beforeSave(entity);
     }
 

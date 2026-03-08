@@ -55,12 +55,9 @@ public class Exercise extends AbstractEntity {
     @JsonIgnore
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
-    @ElementCollection(targetClass = ExerciseEquipment.class, fetch = FetchType.LAZY)
-    @CollectionTable(name = "exercise_equipment",
-            joinColumns = @JoinColumn(name = "exercise_id"))
-    @Enumerated(EnumType.STRING)
     @Column(name = "equipment")
-    private Set<ExerciseEquipment> equipments = new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private ExerciseEquipment equipment;
 
     @Column(name = "force")
     @Enumerated(EnumType.STRING)
@@ -137,21 +134,6 @@ public class Exercise extends AbstractEntity {
         this.workoutExercises.clear();
         if (workoutExercises != null) {
             workoutExercises.forEach(this::addWorkoutExercise);
-        }
-    }
-
-    public void addEquipments(ExerciseEquipment equipment) {
-        this.equipments.add(equipment);
-    }
-
-    public void removeEquipments(ExerciseEquipment equipment) {
-        this.equipments.remove(equipment);
-    }
-
-    public void setEquipments(Set<ExerciseEquipment> equipment) {
-        this.equipments.clear();
-        if (equipment != null) {
-            this.equipments.addAll(equipment);
         }
     }
 

@@ -23,17 +23,7 @@ public class WorkoutExerciseValidator implements ConstraintValidator<WorkoutExer
         boolean hasError = false;
         context.disableDefaultConstraintViolation();
 
-        if (value.getEquipment() != null) {
-            Exercise exercise = exerciseRepository.safeFindById(value.getExerciseId());
-            if (exercise.getEquipments() != null && !exercise.getEquipments().contains(value.getEquipment())) {
-                addViolation(context,
-                        "equipment",
-                        "Equipment " + value.getEquipment() +
-                                " is not valid for exercise ID " + value.getExerciseId() +
-                        ". Valid equipments are: " + exercise.getEquipments());
-                hasError = true;
-            }
-        }
+        // Todo
 
         return !hasError;
     }

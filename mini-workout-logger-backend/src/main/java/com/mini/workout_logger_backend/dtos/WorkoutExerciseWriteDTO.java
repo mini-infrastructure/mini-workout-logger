@@ -33,8 +33,6 @@ public class WorkoutExerciseWriteDTO extends WriteDTO {
     @Valid
     private List<SetWriteDTO> sets;
 
-    private ExerciseEquipment equipment;
-
     @Min(0)
     @JsonProperty("rest_time_seconds")
     private Integer restTimeSeconds;

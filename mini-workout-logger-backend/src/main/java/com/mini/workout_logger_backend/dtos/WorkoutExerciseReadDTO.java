@@ -23,8 +23,6 @@ public class WorkoutExerciseReadDTO extends ReadDTO {
 
     private List<SetReadDTO> sets;
 
-    private ExerciseEquipment equipment;
-
     @JsonProperty("rest_time_seconds")
     private Integer restTimeSeconds;
 

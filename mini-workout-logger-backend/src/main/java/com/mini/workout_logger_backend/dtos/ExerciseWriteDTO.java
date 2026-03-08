@@ -34,7 +34,7 @@ public class ExerciseWriteDTO extends WriteDTO {
     @JsonProperty("exercise_muscles")
     private Set<ExerciseMuscleWriteDTO> exerciseMuscles = new HashSet<>();
 
-    private Set<ExerciseEquipment> equipments = new HashSet<>();
+    private ExerciseEquipment equipment;
 
     public ExerciseWriteDTO(String name) {
         this.name = name;

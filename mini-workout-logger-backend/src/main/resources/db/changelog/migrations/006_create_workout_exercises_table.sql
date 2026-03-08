@@ -4,7 +4,6 @@ CREATE TABLE workout_exercises (
     workout_id BIGINT NOT NULL,
     position INTEGER,
     exercise_id BIGINT NOT NULL,
-    equipment VARCHAR(50),
     rest_time_seconds INTEGER,
     role VARCHAR(50),
 

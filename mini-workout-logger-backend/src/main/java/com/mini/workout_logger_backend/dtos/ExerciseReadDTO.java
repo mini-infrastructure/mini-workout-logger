@@ -25,7 +25,7 @@ public class ExerciseReadDTO extends ReadDTO {
 
     private ExerciseDifficulty difficulty;
 
-    private Set<ExerciseEquipment> equipments = new HashSet<>();
+    private ExerciseEquipment equipment;
 
     private ExerciseForceDirection force;
 

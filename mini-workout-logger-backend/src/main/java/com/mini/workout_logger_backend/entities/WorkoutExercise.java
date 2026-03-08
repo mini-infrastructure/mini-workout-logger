@@ -46,10 +46,6 @@ public class WorkoutExercise extends AbstractEntity {
     @OrderColumn(name = "position")
     private List<Set> sets = new ArrayList<>();
 
-    @Column(name = "equipment")
-    @Enumerated(EnumType.STRING)
-    private ExerciseEquipment equipment;
-
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 

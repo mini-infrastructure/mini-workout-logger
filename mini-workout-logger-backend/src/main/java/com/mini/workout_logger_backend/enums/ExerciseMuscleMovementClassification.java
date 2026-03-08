@@ -1,9 +1,11 @@
 package com.mini.workout_logger_backend.enums;
 
+import com.mini.java_core.enums.TranslatableEnum;
+
 /**
  * Source: @see <a href="https://exrx.net/Kinesiology/Glossary#MuscleMovementClassification">ExRx.net - Muscle Movement Classification</a>
  */
-public enum ExerciseMuscleMovementClassification {
+public enum ExerciseMuscleMovementClassification implements TranslatableEnum<ExerciseMuscleMovementClassification> {
 
     /**
      * A muscle that causes motion.

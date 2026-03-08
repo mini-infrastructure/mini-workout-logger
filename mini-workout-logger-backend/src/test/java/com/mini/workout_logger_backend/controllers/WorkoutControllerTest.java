@@ -77,7 +77,6 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null),
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null)
                                     ),
-                                    ExerciseEquipment.BODYWEIGHT,
                                     30,
                                     WorkoutExerciseRole.BASIC
                                 ),
@@ -88,7 +87,6 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 55.0, null),
                                             new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 60.0, null)
                                     ),
-                                    ExerciseEquipment.BARBELL,
                                     45,
                                     WorkoutExerciseRole.AUXILIARY
                                 )
@@ -104,7 +102,6 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null)
                                         ),
-                                        ExerciseEquipment.BARBELL,
                                         60,
                                         WorkoutExerciseRole.BASIC
                                 )
@@ -150,7 +147,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                         ExerciseMuscleMovementClassification.TARGET
                                                 )
                                         ),
-                                        Set.of(ExerciseEquipment.BODYWEIGHT)
+                                        ExerciseEquipment.BODYWEIGHT
                                 )
                         )
                 ),
@@ -166,7 +163,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                         ExerciseMuscleMovementClassification.STABILIZER
                                                 )
                                         ),
-                                        Set.of(ExerciseEquipment.BODYWEIGHT)
+                                        ExerciseEquipment.BODYWEIGHT
                                 )
                         )
                 ),
@@ -186,7 +183,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                         ExerciseMuscleMovementClassification.TARGET
                                                 )
                                         ),
-                                        Set.of(ExerciseEquipment.BARBELL)
+                                        ExerciseEquipment.BARBELL
                                 )
                         )
                 )
@@ -285,7 +282,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                                 ExerciseMuscleMovementClassification.TARGET
                                         )
                                 ),
-                                Set.of(ExerciseEquipment.BARBELL)
+                                ExerciseEquipment.BARBELL
                         )
                 )
         );
@@ -297,7 +294,6 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 70.0, null),
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 75.0, null)
                 ),
-                ExerciseEquipment.BARBELL,
                 60,
                 WorkoutExerciseRole.AUXILIARY
         );
