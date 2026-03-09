@@ -125,7 +125,10 @@ const ExerciseModal = ({
                     inputEnabled: false,
                 },
             ],
-            initialValue: exercise?.muscles?.map(m => m.id) || [],
+            initialValue: exercise?.exercise_muscles?.map(m => ({
+                first: m.muscle_id,
+                second: m.role,
+            })) || [],
         },
     ];
 
@@ -142,16 +145,17 @@ const ExerciseModal = ({
                 mechanics: values.mechanics,
                 role: values.role,
                 type: values.type,
+                exercise_muscles: values.muscles,
             };
 
-            if (exercise?.id) {
-                await ExerciseService.update(exercise.id, payload);
-            } else {
-                await ExerciseService.create(payload);
-            }
-
-            setIsModalOpen(false);
-            window.location.reload();
+            // if (exercise?.id) {
+            //     await ExerciseService.update(exercise.id, payload);
+            // } else {
+            //     await ExerciseService.create(payload);
+            // }
+            //
+            // setIsModalOpen(false);
+            // window.location.reload();
 
         } catch (error) {
             // Todo

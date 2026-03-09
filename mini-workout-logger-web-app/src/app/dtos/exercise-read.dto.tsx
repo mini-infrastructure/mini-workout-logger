@@ -5,6 +5,7 @@ import type {
     ExerciseForceDirection, ExerciseMechanics, ExerciseRole, ExerciseType
 } from "../models/exercise.model.tsx";
 import type {MuscleReadDTO} from "./muscle-read.dto.tsx";
+import type {ExerciseMuscleWriteDTO} from "./exercise-muscle-write.dto.tsx";
 
 export interface ExerciseReadDTO {
     id: number;
@@ -17,6 +18,7 @@ export interface ExerciseReadDTO {
     role?: ExerciseRole;
     type?: ExerciseType;
     groupName?: string;
+    exercise_muscles?: ExerciseMuscleWriteDTO[];
     muscles?: MuscleReadDTO[];
     targetMuscles?: MuscleReadDTO[];
     synergistMuscles?: MuscleReadDTO[];

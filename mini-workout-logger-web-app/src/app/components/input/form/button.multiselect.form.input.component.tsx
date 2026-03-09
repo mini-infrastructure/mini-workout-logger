@@ -11,13 +11,11 @@ type ButtonMultiSelectProps = {
         label?: string;
         inputEnabled?: boolean;
     };
-
     second: {
         options: FormOption[];
         label?: string;
         inputEnabled?: boolean;
     };
-
     value: { first: string; second: string }[];
     onChange: (val: { first: string; second: string }[]) => void;
 };
@@ -32,14 +30,16 @@ const ButtonMultiSelect = ({
     const [firstValue, setFirstValue] = useState("");
     const [secondValue, setSecondValue] = useState("");
 
+    const usedFirstValues = value.map((v) => v.first);
+
+    const availableFirstOptions = first.options.filter(
+        (opt) => !usedFirstValues.includes(opt.value)
+    );
+
     const addOption = () => {
         if (!firstValue || !secondValue) return;
 
-        const exists = value.some(
-            (v) => v.first === firstValue && v.second === secondValue
-        );
-
-        if (exists) return;
+        if (usedFirstValues.includes(firstValue)) return;
 
         onChange([...value, { first: firstValue, second: secondValue }]);
 
@@ -61,7 +61,7 @@ const ButtonMultiSelect = ({
             {/* SELECTORS */}
             <div css={styles.buttonMultiSelectContainer}>
                 <ButtonSelect
-                    options={first.options}
+                    options={availableFirstOptions}
                     placeholder={first.label}
                     inputEnabled={first.inputEnabled}
                     value={firstValue}
@@ -79,7 +79,10 @@ const ButtonMultiSelect = ({
 
             {/* ADD BUTTON */}
             <div css={styles.buttonMultiSelectAddButton}>
-                <SecondaryButton onClick={addOption}>
+                <SecondaryButton
+                    onClick={addOption}
+                    disabled={!firstValue || !secondValue}
+                >
                     Add option
                 </SecondaryButton>
             </div>
