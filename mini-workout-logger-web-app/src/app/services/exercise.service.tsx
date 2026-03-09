@@ -68,6 +68,18 @@ class ExerciseService {
         }
     }
 
+    async getAllExerciseGroupNames(): Promise<string[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<string[]>>(
+                `${apiUrl}/exercises/groups?lang=${lang}`
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching exercise group names:', error);
+            return [];
+        }
+    }
+
 }
 
 export default new ExerciseService();

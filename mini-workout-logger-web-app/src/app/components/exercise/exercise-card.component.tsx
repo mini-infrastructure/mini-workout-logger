@@ -122,14 +122,12 @@ const ExerciseCard = ({
                 {/*  Exercise equipments  */}
                 <div css={styles.session}>
                     <div css={styles.badgesWrapper}>
-                        {exercise.equipments?.map((equipment) => (
-                            <Badge
-                                key={equipment}
-                                icon={getIconFromMap(ExerciseEquipmentIcons, equipment)}
-                            >
-                                {equipment}
-                            </Badge>
-                        ))}
+                        <Badge
+                            key={exercise.equipment}
+                            icon={getIconFromMap(ExerciseEquipmentIcons, exercise.equipment)}
+                        >
+                            {exercise.equipment}
+                        </Badge>
                     </div>
                 </div>
             </div>

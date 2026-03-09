@@ -1,4 +1,4 @@
-import {Muscle} from './muscle.model';
+import {ExerciseMuscleMovementClassification, Muscle} from './muscle.model';
 import type {WorkoutExercise} from "./workout-exercise.model.tsx";
 import type {IconType} from "react-icons";
 import {FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
@@ -17,9 +17,26 @@ export interface Exercise {
     name: string;
     category?: ExerciseCategory;
     difficulty?: ExerciseDifficulty;
-    equipments?: ExerciseEquipment[];
-    muscles?: Muscle[];
-    workoutExercises: WorkoutExercise[];
+    equipment?: ExerciseEquipment;
+    force?: ExerciseForceDirection;
+    mechanics?: ExerciseMechanics;
+    role?: ExerciseRole;
+    type?: ExerciseType;
+    group?: ExerciseGroup;
+    workoutExercises?: WorkoutExercise[];
+    exerciseMuscles?: ExerciseMuscle[];
+}
+
+export interface ExerciseGroup {
+    id: number;
+    name: string;
+}
+
+export interface ExerciseMuscle {
+    id: number;
+    exercise: Exercise;
+    muscle: Muscle;
+    role: ExerciseMuscleMovementClassification;
 }
 
 export type ExerciseEquipment =
@@ -60,6 +77,30 @@ export type ExerciseDifficulty =
     | 'BEGINNER'
     | 'INTERMEDIATE'
     | 'ADVANCED'
+    ;
+
+export type ExerciseForceDirection =
+    | 'PUSH'
+    | 'PULL'
+    | 'SLIDE'
+    | 'ROTATE_OR_TWIST'
+    ;
+
+export type ExerciseMechanics =
+    | 'ISOLATED'
+    | 'COMPOUND'
+    ;
+
+export type ExerciseRole =
+    | 'BASIC'
+    | 'AUXILIARY'
+    | 'BASIC_OR_AUXILIARY'
+    ;
+
+export type ExerciseType =
+    | 'BILATERAL'
+    | 'ISOLATERAL'
+    | 'UNILATERAL'
     ;
 
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
@@ -198,3 +239,36 @@ export const exerciseEquipmentOptions = [
     { label: "Kettlebell", value: "KETTLEBELL" },
 ];
 
+export const exerciseForceOptions = [
+    { label: "Push", value: "PUSH" },
+    { label: "Pull", value: "PULL" },
+    { label: "Slide", value: "SLIDE" },
+    { label: "Rotate or Twist", value: "ROTATE_OR_TWIST" },
+];
+
+export const exerciseMechanicsOptions = [
+    { label: "Isolated", value: "ISOLATED" },
+    { label: "Compound", value: "COMPOUND" },
+];
+
+export const exerciseRoleOptions = [
+    { label: "Basic", value: "BASIC" },
+    { label: "Auxiliary", value: "AUXILIARY" },
+    { label: "Basic or Auxiliary", value: "BASIC_OR_AUXILIARY" },
+];
+
+export const exerciseTypeOptions = [
+    { label: "Bilateral", value: "BILATERAL" },
+    { label: "Isolateral", value: "ISOLATERAL" },
+    { label: "Unilateral", value: "UNILATERAL" },
+];
+
+export const exerciseMuscleMovementClassificationOptions = [
+    { label: "Agonist", value: "AGONIST" },
+    { label: "Antagonist", value: "ANTAGONIST" },
+    { label: "Target", value: "TARGET" },
+    { label: "Synergist", value: "SYNERGIST" },
+    { label: "Stabilizer", value: "STABILIZER" },
+    { label: "Dynamic Stabilizer", value: "DYNAMIC_STABILIZER" },
+    { label: "Antagonist Stabilizer", value: "ANTAGONIST_STABILIZER" },
+];

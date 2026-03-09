@@ -4,24 +4,42 @@ import styles from "./form.input.component.style.tsx";
 import Button from "../../button/button.component.tsx";
 import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
+import ButtonSelect from "./button.select.input.component.tsx";
+import ButtonMultiSelect from "./button.multiselect.form.input.component.tsx";
 
 export type FormFieldType =
     | "text"
     | "email"
     | "password"
     | "number"
+    | "textarea"
     | "select"
     | "multiselect"
-    | "textarea";
+    | "buttonselect"
+    | "buttonmultiselect"
+    ;
+
+export type FormOption = {
+    label: string;
+    value: string;
+};
+
+export type FormOptions = {
+    label: string;
+    options: FormOption[];
+    placeholder?: string;
+    inputEnabled?: boolean;
+};
 
 export type FormItem = {
     name: string;
     label: string;
     type: FormFieldType;
     placeholder?: string;
-    options?: { label: string; value: string }[];
+    options?: FormOption[] | FormOptions[];
     colSpan?: number;
     initialValue?: any;
+    inputEnabled?: boolean;
 };
 
 export type FormBuilderProps = {
@@ -88,7 +106,7 @@ const FormBuilder = ({
 
                         {item.type === "select" ? (
                             <Select
-                                options={item.options ?? []}
+                                options={item.options as FormOption[]}
                                 value={values[item.name] ?? ""}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
@@ -102,10 +120,25 @@ const FormBuilder = ({
                             />
                         ) : item.type === "multiselect" ? (
                             <MultiSelect
-                                options={item.options ?? []}
+                                options={item.options as FormOption[]}
                                 value={values[item.name] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
+                            />
+                        ) : item.type === "buttonselect" ? (
+                            <ButtonSelect
+                                options={item.options as FormOption[]}
+                                placeholder={item.placeholder}
+                                value={values[item.name] ?? ""}
+                                inputEnabled={item.inputEnabled}
+                                onChange={(val) => handleChange(item.name, val)}
+                            />
+                        ) : item.type === "buttonmultiselect" ? (
+                            <ButtonMultiSelect
+                                first={item.options?.[0]}
+                                second={item.options?.[1]}
+                                value={values[item.name] ?? []}
+                                onChange={(val) => handleChange(item.name, val)}
                             />
                         ) : (
                             <input

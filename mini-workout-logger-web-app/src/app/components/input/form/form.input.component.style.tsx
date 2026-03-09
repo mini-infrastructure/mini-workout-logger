@@ -83,6 +83,40 @@ const styles = {
     badgeCustomCss: (theme: Theme) => css({
         margin: '0 0.25rem 0.5rem 0',
     }),
+
+    multiassociativeSelectBox: css({
+        display: 'flex',
+        justifyContent: 'stretch',
+
+        '& button': {
+            width: '20%',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+
+        '& input': {
+            width: '80%',
+            margin: "0 1rem 0 0",
+        }
+    }),
+
+    buttonMultiSelectContainer: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        margin: '0 0 1rem 0'
+    }),
+
+    buttonMultiSelectAddButton: css({
+        display: 'flex',
+        justifyContent: 'center',
+        '& button': {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+    }),
+
 };
 
 export default styles;

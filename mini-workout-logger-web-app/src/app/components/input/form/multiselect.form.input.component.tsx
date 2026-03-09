@@ -3,20 +3,21 @@ import styles from "./form.input.component.style.tsx";
 import Badge from "../../badge/badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
-
-type Option = {
-    label: string;
-    value: string;
-};
+import type {FormOption} from "./form.input.component.tsx";
 
 type MultiSelectProps = {
-    options: Option[];
-    value: string[];
-    onChange: (values: string[]) => void;
+    options: FormOption[];
     placeholder?: string;
+    onChange: (values: string[]) => void;
+    value: string[];
 };
 
-const MultiSelect = ({ options, value, onChange, placeholder }: MultiSelectProps) => {
+const MultiSelect = ({
+                         options,
+                         value,
+                         onChange,
+                         placeholder
+                     }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
     const toggleDropdown = () => setOpen((prev) => !prev);
 

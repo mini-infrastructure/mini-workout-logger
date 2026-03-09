@@ -7,3 +7,13 @@ export interface Muscle {
     muscles?: Muscle[];
     exercises?: Exercise[];
 }
+
+export type ExerciseMuscleMovementClassification =
+    | 'AGONIST'
+    | 'ANTAGONIST'
+    | 'TARGET'
+    | 'SYNERGIST'
+    | 'STABILIZER'
+    | 'DYNAMIC_STABILIZER'
+    | 'ANTAGONIST_STABILIZER'
+    ;

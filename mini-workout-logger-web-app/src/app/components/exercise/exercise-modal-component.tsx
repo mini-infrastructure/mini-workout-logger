@@ -5,12 +5,14 @@ import styles from "./exercise-modal-component.style.tsx";
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
-    exerciseEquipmentOptions
+    exerciseEquipmentOptions, exerciseForceOptions, exerciseMechanicsOptions,
+    exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
 } from "../../models/exercise.model.tsx";
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
 import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
+import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
 
 export type ExerciseModalProps = {
     isModalOpen: boolean;
@@ -24,22 +26,35 @@ const ExerciseModal = ({
                            exercise,
                        }: ExerciseModalProps) => {
     const { muscles } = useMuscles();
+    const { exerciseGroupNames } = useExerciseGroupNames();
 
     const exerciseFormItems: FormItem[] = [
         {
             name: "name",
             label: "Name",
             type: "text",
-            placeholder: "e.g. Bench Press",
+            placeholder: "e.g. Barbell Squat",
             initialValue: exercise?.name || "",
-            colSpan: 2,
+            colSpan: 4,
+        },
+        {
+            name: "groupName",
+            label: "Group name",
+            type: "buttonselect",
+            placeholder: "e.g. Squat",
+            initialValue: exercise?.groupName || "",
+            colSpan: 4,
+            options: exerciseGroupNames?.map(name => ({
+                label: name,
+                value: name,
+            })),
         },
         {
             name: "category",
             label: "Category",
             type: "select",
             options: exerciseCategoryOptions,
-            initialValue: exercise?.category || exerciseCategoryOptions[0].value,
+            initialValue: exercise?.category,
             colSpan: 1,
         },
         {
@@ -47,35 +62,86 @@ const ExerciseModal = ({
             label: "Difficulty",
             type: "select",
             options: exerciseDifficultyOptions,
-            initialValue: exercise?.difficulty || exerciseDifficultyOptions[0].value,
+            initialValue: exercise?.difficulty,
             colSpan: 1,
         },
         {
-            name: "equipments",
-            label: "Equipments",
-            type: "multiselect",
+            name: "equipment",
+            label: "Equipment",
+            type: "select",
             options: exerciseEquipmentOptions,
-            initialValue: exercise?.equipments || [],
-            colSpan: 2,
+            initialValue: exercise?.equipment,
+            colSpan: 1,
         },
         {
-            name: "muscleIds",
+            name: "force",
+            label: "Force",
+            type: "select",
+            options: exerciseForceOptions,
+            initialValue: exercise?.force,
+            colSpan: 1,
+        },
+        {
+            name: "mechanics",
+            label: "Mechanics",
+            type: "select",
+            options: exerciseMechanicsOptions,
+            initialValue: exercise?.mechanics,
+            colSpan: 1,
+        },
+        {
+            name: "role",
+            label: "Exercise role",
+            type: "select",
+            options: exerciseRoleOptions,
+            initialValue: exercise?.role,
+            colSpan: 1,
+        },
+        {
+            name: "type",
+            label: "Type",
+            type: "select",
+            options: exerciseTypeOptions,
+            initialValue: exercise?.type,
+            colSpan: 1,
+        },
+        {
+            name: "muscles",
             label: "Muscles",
-            type: "multiselect",
-            options: muscles.map(muscle => ({ label: muscle.name, value: muscle.id })),
-            initialValue: exercise?.muscles.map(m => m.id) || [],
+            type: "buttonmultiselect",
             colSpan: 2,
+            options: [
+                {
+                    label: "Muscles",
+                    options: muscles.map(m => ({
+                        label: m.name,
+                        value: m.id,
+                    })),
+                    inputEnabled: false
+                },
+                {
+                    label: "Muscle Movement Classification",
+                    options: exerciseMuscleMovementClassificationOptions,
+                    inputEnabled: false,
+                },
+            ],
+            initialValue: exercise?.muscles?.map(m => m.id) || [],
         },
     ];
 
     const handleSubmit = async (values: any) => {
+        console.log(values);
         try {
             const payload: ExerciseWriteDTO = {
                 name: values.name,
+                groupName: values.groupName,
                 category: values.category,
                 difficulty: values.difficulty,
-                equipments: values.equipments,
-                muscle_ids: values.muscleIds,
+                equipment: values.equipment,
+                force: values.force,
+                mechanics: values.mechanics,
+                role: values.role,
+                type: values.type,
             };
 
             if (exercise?.id) {

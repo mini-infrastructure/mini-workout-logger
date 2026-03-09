@@ -1,18 +1,27 @@
-import {useState} from "react";
-import styles from "./form.input.component.style.tsx";
-import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
-import Button from "../../button/button.component.tsx";
 import type {FormOption} from "./form.input.component.tsx";
+import styles from "./form.input.component.style.tsx";
+import SecondaryButton from "../../button/button.secondary.component.tsx";
+import {useState} from "react";
 
-export type SelectProps = {
+type ButtonSelectProps = {
+    key?: any;
+    inputEnabled?: boolean;
     options: FormOption[];
     placeholder?: string;
-    onChange: (val: string) => void;
     value: string;
+    onChange: (val: string) => void;
 };
 
-const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
+const ButtonSelect = ({
+                          inputEnabled = false,
+                          options,
+                          placeholder,
+                          value,
+                          onChange,
+                      }: ButtonSelectProps) => {
+
     const [open, setOpen] = useState(false);
+
     const toggleDropdown = () => setOpen((prev) => !prev);
 
     const handleSelect = (val: string) => {
@@ -20,25 +29,31 @@ const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
         setOpen(false);
     };
 
-    const selectedOption = options.find((opt) => opt.value === value);
+    const selectedOption = options.find((o) => o.value === value);
+    const displayValue = selectedOption?.label ?? "";
 
     return (
         <div css={styles.wrapper}>
-            {/* SELECT BOX */}
-            <div
-                onClick={() => setOpen(!open)}
-                css={styles.input}
-            >
-                <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>
 
-                <Button
-                    icon={<MdKeyboardArrowDown />}
-                    clickedIcon={<MdKeyboardArrowUp />}
+            <div
+                css={styles.multiassociativeSelectBox}
+                onClick={() => setOpen(!open)}
+            >
+                <input
+                    css={styles.input}
+                    type="text"
+                    placeholder={placeholder}
+                    value={displayValue}
+                    disabled={!inputEnabled}
+                    readOnly
+                />
+
+                <SecondaryButton
                     isClicked={open}
                     onClick={toggleDropdown}
-                    customCss={styles.inputButton}
-                    customIconCss={styles.inputButtonIcon}
-                />
+                >
+                    Choose
+                </SecondaryButton>
             </div>
 
             {open && (
@@ -62,4 +77,4 @@ const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
     );
 };
 
-export default Select;
+export default ButtonSelect;
