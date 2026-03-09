@@ -132,6 +132,9 @@ SELECT add_muscle('Muscle.Vastus_Medialis', 'Muscle.Quadriceps');
 SELECT add_muscle('Muscle.Vastus_Intermedius', 'Muscle.Quadriceps');
 SELECT add_muscle('Muscle.Hamstrings', 'Muscle.Thighs');
 SELECT add_muscle('Muscle.Hip_Adductors', 'Muscle.Thighs');
+SELECT add_muscle('Muscle.Adductor_Brevis', 'Muscle.Hip_Adductors');
+SELECT add_muscle('Muscle.Adductor_Longus', 'Muscle.Hip_Adductors');
+SELECT add_muscle('Muscle.Adductor_Magnus', 'Muscle.Hip_Adductors');
 -- Legs/Calves
 SELECT add_muscle('Muscle.Calves', 'Muscle.Legs');
 SELECT add_muscle('Muscle.Gastrocnemius', 'Muscle.Calves');

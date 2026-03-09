@@ -8,10 +8,12 @@ import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
 import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
+import com.mini.workout_logger_backend.entities.ExerciseGroup;
 import com.mini.workout_logger_backend.entities.ExerciseMuscle;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
+import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,13 +27,16 @@ import static java.util.stream.Collectors.toCollection;
 
 @Service
 public class ExerciseService extends AbstractService<Exercise,
-                                                     ExerciseReadDTO,
-                                                     ExerciseWriteDTO,
-                                                     ExerciseMapper,
-                                                     ExerciseRepository> {
+        ExerciseReadDTO,
+        ExerciseWriteDTO,
+        ExerciseMapper,
+        ExerciseRepository> {
 
     @Autowired
     MuscleService muscleService;
+
+    @Autowired
+    ExerciseGroupRepository exerciseGroupRepository;
 
     // Todo: Get all filtered and paginates!!!
 
@@ -77,6 +82,32 @@ public class ExerciseService extends AbstractService<Exercise,
                         .getName()
                         .getValue())
                 .collect(toCollection(LinkedHashSet::new));
+    }
+
+    public ResponseEntity<ResponseDTO<String>> getAllExerciseGroupNames() {
+        List<String> groupNames = exerciseGroupRepository.findAll()
+                .stream()
+                .map(eg -> eg.getName().getValue())
+                .toList();
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITIES_FOUND.getMessage(),
+                groupNames);
+    }
+
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> listExercisesByMuscleGroup(String muscleGroupName) {
+        List<ExerciseReadDTO> exercises = repository.findAll()
+                .stream()
+                .filter(exercise -> {
+                    if (exercise.getGroup() == null || exercise.getGroup().getName() == null) {
+                        return false;
+                    }
+                    return exercise.getGroup().getName().getValue().equalsIgnoreCase(muscleGroupName);
+                })
+                .map(mapper::toDTO)
+                .toList();
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITIES_FOUND.getMessage(),
+                exercises);
     }
 
 }

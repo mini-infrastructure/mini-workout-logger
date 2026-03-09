@@ -11,7 +11,10 @@ CREATE OR REPLACE FUNCTION add_exercise(
     target_muscles TEXT[] DEFAULT '{}',
     synergist_muscles TEXT[] DEFAULT '{}',
     stabilizer_muscles TEXT[] DEFAULT '{}',
-    dynamic_stabilizer_muscles TEXT[] DEFAULT '{}'
+    dynamic_stabilizer_muscles TEXT[] DEFAULT '{}',
+    agonist_muscles TEXT[] DEFAULT '{}',
+    antagonist_muscles TEXT[] DEFAULT '{}',
+    antagonist_stabilizer_muscles TEXT[] DEFAULT '{}'
 )
 RETURNS VOID AS $$
 DECLARE
@@ -86,6 +89,24 @@ BEGIN
         PERFORM add_exercise_muscle(exercise_name, muscle, 'DYNAMIC_STABILIZER');
     END LOOP;
 
+    -- AGONIST muscles
+    FOREACH muscle IN ARRAY agonist_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'AGONIST');
+    END LOOP;
+
+    -- ANTAGONIST muscles
+    FOREACH muscle IN ARRAY antagonist_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'ANTAGONIST');
+    END LOOP;
+
+    -- ANTAGONIST_STABILIZER muscles
+    FOREACH muscle IN ARRAY antagonist_stabilizer_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'ANTAGONIST_STABILIZER');
+    END LOOP;
+
     -- Reset sequence
     PERFORM setval(
         pg_get_serial_sequence('exercises','id'),
@@ -154,18 +175,37 @@ $$ LANGUAGE plpgsql;
 --    'MECHANICS',
 --    'ROLE',
 --    'TYPE',
+---- TARGET MUSCLES
 --    ARRAY[
 --        '',
 --        ''
 --    ],
+---- SYNERGIST MUSCLES
 --    ARRAY[
 --        '',
 --        ''
 --    ],
+---- STABILIZER MUSCLES
 --    ARRAY[
 --        '',
 --        ''
 --    ],
+---- DYNAMIC_STABILIZER MUSCLES
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+---- AGONIST MUSCLES
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+---- ANTAGONIST MUSCLES
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+---- ANTAGONIST_STABILIZER MUSCLES
 --    ARRAY[
 --        '',
 --        ''
@@ -297,24 +337,89 @@ SELECT add_exercise(
 );
 
 -- Legs
---SELECT add_exercise(
---    'Exercise.Barbell_Squat',
---    'Exercise.Squat',
---    'STRENGTH',
---    'INTERMEDIATE',
---    'BARBELL',
---    'PUSH',
---    'COMPOUND',
---    'BASIC',
---    'ISOLATERAL',
---    ARRAY['Muscle.Quadriceps'],
---    ARRAY[
---        '',
---        ''
---    ],
---    ARRAY[
---        '',
---        ''
---    ]
---);
+SELECT add_exercise(
+    'Exercise.Barbell_Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'INTERMEDIATE',
+    'BARBELL',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'ISOLATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ],
+    '{}',
+    '{}',
+    ARRAY[
+        'Muscle.Abdominal',
+        'Muscle.Obliques'
+    ]
+);
 
+SELECT add_exercise(
+    'Exercise.Dumbbell_Forward_Lunge',
+    'Exercise.Lunge',
+    'STRENGTH',
+    'BEGINNER',
+    'DUMBBELL',
+    'PUSH',
+    'COMPOUND',
+    'AUXILIARY',
+    'ISOLATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae',
+        'Muscle.Upper_Trapezius',
+        'Muscle.Lower_Trapezius',
+        'Muscle.Levator_Scapulae',
+        'Muscle.Tibialis_Anterior',
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus',
+        'Muscle.Quadratus_Lumborum',
+        'Muscle.Obliques'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Machine_Leg_Press_45_Degree',
+    'Exercise.Leg_Press',
+    'STRENGTH',
+    'BEGINNER',
+    'MACHINE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    '{}',
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
