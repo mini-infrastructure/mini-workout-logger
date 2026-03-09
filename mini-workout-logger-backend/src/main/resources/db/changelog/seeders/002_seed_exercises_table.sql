@@ -7,9 +7,11 @@ CREATE OR REPLACE FUNCTION add_exercise(
     exercise_force VARCHAR DEFAULT NULL,
     exercise_mechanics VARCHAR DEFAULT NULL,
     exercise_role VARCHAR DEFAULT NULL,
+    exercise_type VARCHAR DEFAULT NULL,
     target_muscles TEXT[] DEFAULT '{}',
     synergist_muscles TEXT[] DEFAULT '{}',
-    stabilizer_muscles TEXT[] DEFAULT '{}'
+    stabilizer_muscles TEXT[] DEFAULT '{}',
+    dynamic_stabilizer_muscles TEXT[] DEFAULT '{}'
 )
 RETURNS VOID AS $$
 DECLARE
@@ -36,6 +38,7 @@ BEGIN
         force,
         mechanics,
         role,
+        type,
         group_id,
         created_at,
         updated_at
@@ -48,6 +51,7 @@ BEGIN
         exercise_force,
         exercise_mechanics,
         exercise_role,
+        exercise_type,
         p_group_id,
         NOW(),
         NOW()
@@ -74,6 +78,12 @@ BEGIN
     FOREACH muscle IN ARRAY stabilizer_muscles
     LOOP
         PERFORM add_exercise_muscle(exercise_name, muscle, 'STABILIZER');
+    END LOOP;
+
+    -- DYNAMIC_STABILIZER muscles
+    FOREACH muscle IN ARRAY dynamic_stabilizer_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'DYNAMIC_STABILIZER');
     END LOOP;
 
     -- Reset sequence
@@ -143,6 +153,7 @@ $$ LANGUAGE plpgsql;
 --    'FORCE',
 --    'MECHANICS',
 --    'ROLE',
+--    'TYPE',
 --    ARRAY[
 --        '',
 --        ''
@@ -155,6 +166,10 @@ $$ LANGUAGE plpgsql;
 --        '',
 --        ''
 --    ],
+--    ARRAY[
+--        '',
+--        ''
+--    ]
 --);
 
 -- Chest exercises
@@ -167,6 +182,7 @@ SELECT add_exercise(
     'PUSH',
     'ISOLATED',
     'AUXILIARY',
+    'ISOLATERAL',
     ARRAY['Muscle.Sternal'],
     ARRAY[
         'Muscle.Clavicular',
@@ -190,6 +206,7 @@ SELECT add_exercise(
     'PUSH',
     'ISOLATED',
     'AUXILIARY',
+    'ISOLATERAL',
     ARRAY['Muscle.Sternal'],
     ARRAY[
         'Muscle.Clavicular',
@@ -213,6 +230,7 @@ SELECT add_exercise(
     'PUSH',
     'ISOLATED',
     'AUXILIARY',
+    'ISOLATERAL',
     ARRAY['Muscle.Sternal'],
     ARRAY[
         'Muscle.Clavicular',
@@ -242,6 +260,30 @@ SELECT add_exercise(
     'PUSH',
     'COMPOUND',
     'BASIC_OR_AUXILIARY',
+    'ISOLATERAL',
+    ARRAY['Muscle.Sternal'],
+    ARRAY[
+        'Muscle.Clavicular',
+        'Muscle.Anterior_Deltoid',
+        'Muscle.Triceps',
+        'Muscle.Coracobrachialis'
+    ],
+    '{}',
+    ARRAY[
+    'Muscle.Biceps'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Cable_Isolateral_Chest_Press',
+    'Exercise.Chest_Press',
+    'STRENGTH',
+    'NOVICE',
+    'CABLE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC_OR_AUXILIARY',
+    'ISOLATERAL',
     ARRAY['Muscle.Sternal'],
     ARRAY[
         'Muscle.Clavicular',
@@ -253,3 +295,26 @@ SELECT add_exercise(
         'Muscle.Biceps'
     ]
 );
+
+-- Legs
+--SELECT add_exercise(
+--    'Exercise.Barbell_Squat',
+--    'Exercise.Squat',
+--    'STRENGTH',
+--    'INTERMEDIATE',
+--    'BARBELL',
+--    'PUSH',
+--    'COMPOUND',
+--    'BASIC',
+--    'ISOLATERAL',
+--    ARRAY['Muscle.Quadriceps'],
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+--    ARRAY[
+--        '',
+--        ''
+--    ]
+--);
+
