@@ -31,6 +31,12 @@ public class ExerciseReadDTO extends ReadDTO {
 
     private ExerciseMechanics mechanics;
 
+    private ExerciseRole role;
+
+    private ExerciseType type;
+
+    private String groupName;
+
     @JsonIgnore
     private Set<ExerciseMuscleReadDTO> exerciseMuscles = new HashSet<>();
 

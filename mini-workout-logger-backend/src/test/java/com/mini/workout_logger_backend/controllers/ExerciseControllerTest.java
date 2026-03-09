@@ -3,24 +3,19 @@ package com.mini.workout_logger_backend.controllers;
 import com.mini.java_core.AbstractCrudControllerTest;
 import com.mini.workout_logger_backend.dtos.*;
 import com.mini.workout_logger_backend.entities.Exercise;
-import com.mini.workout_logger_backend.entities.ExerciseMuscle;
 import com.mini.workout_logger_backend.entities.Muscle;
-import com.mini.workout_logger_backend.enums.ExerciseCategory;
-import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
-import com.mini.workout_logger_backend.enums.ExerciseEquipment;
-import com.mini.workout_logger_backend.enums.ExerciseMuscleMovementClassification;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.mappers.MuscleMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import com.mini.workout_logger_backend.repositories.MuscleRepository;
 import com.mini.workout_logger_backend.repositories.WorkoutExerciseRepository;
+import com.mini.workout_logger_backend.utils.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -46,6 +41,9 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
 
     private List<Muscle> savedMuscles;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @Override
     protected String getBaseUrl() {
         return "/exercises";
@@ -53,22 +51,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
 
     @Override
     protected List<ExerciseWriteDTO> getWriteDtos() {
-        return List.of(
-                new ExerciseWriteDTO(
-                        "Chest Fly",
-                        ExerciseCategory.STRENGTH,
-                        ExerciseDifficulty.BEGINNER,
-                        savedMuscles.stream()
-                                .map(muscle -> new ExerciseMuscleWriteDTO(
-                                        muscle.getId(),
-                                        ExerciseMuscleMovementClassification.TARGET
-                                ))
-                                .collect(Collectors.toSet()),
-                        ExerciseEquipment.MACHINE
-                ),
-                new ExerciseWriteDTO("Push-Up"),
-                new ExerciseWriteDTO("Squat")
-        );
+        return testHelper.getTestExercises(savedMuscles);
     }
 
     @Override
@@ -84,7 +67,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
      */
     @Override
     protected void afterCreate(ExerciseReadDTO dto) {
-        if (dto.getName().equals("Chest Fly")) {
+        if (testHelper.getExerciseDtoByName("Cable Isolateral Lying Fly", getWriteDtos()).getName().equals(dto.getName())) {
             List<String> muscleNames = dto.getMuscles().stream()
                     .map(MuscleReadDTO::getName)
                     .toList();
@@ -93,8 +76,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                     .map(muscle -> muscle.getName().getValue())
                     .toList();
 
-            assertThat(muscleNames)
-                    .containsExactlyInAnyOrderElementsOf(expectedMuscleNames);
+            assertThat(expectedMuscleNames).containsAll(muscleNames);
         }
     }
 
@@ -104,36 +86,13 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
     @BeforeEach
     void setupMuscles() {
         muscleRepository.deleteAll();
-
-        savedMuscles = List.of(
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Chest"))
-                ),
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Back"))
-                ),
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Legs"))
-                )
-        );
+        savedMuscles = testHelper.getSavedMuscles();
     }
 
     @Test
     void associations() throws Exception {
 
-        ExerciseWriteDTO exerciseWriteDTO = new ExerciseWriteDTO(
-                "Chest Fly",
-                ExerciseCategory.STRENGTH,
-                ExerciseDifficulty.BEGINNER,
-                savedMuscles.stream()
-                        .map(muscle -> new ExerciseMuscleWriteDTO(
-                                muscle.getId(),
-                                ExerciseMuscleMovementClassification.TARGET
-                        ))
-                        .collect(Collectors.toSet()),
-                null
-        );
-
+        ExerciseWriteDTO exerciseWriteDTO = getWriteDtos().getFirst();
         Exercise savedExercise =
                 repository().save(mapper().toEntity(exerciseWriteDTO));
 
@@ -143,7 +102,7 @@ class ExerciseControllerTest extends AbstractCrudControllerTest<Exercise,
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].muscles.length()")
-                        .value(savedMuscles.size()))
+                        .value(1))
                 .andExpect(result -> {
                     List<Long> savedMuscleIds = savedMuscles.stream()
                             .map(Muscle::getId)

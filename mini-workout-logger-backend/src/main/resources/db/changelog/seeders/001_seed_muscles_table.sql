@@ -57,6 +57,7 @@ SELECT add_muscle('Muscle.Upper_Arms', 'Muscle.Arms');
 SELECT add_muscle('Muscle.Triceps', 'Muscle.Upper_Arms');
 SELECT add_muscle('Muscle.Biceps', 'Muscle.Upper_Arms');
 SELECT add_muscle('Muscle.Brachialis', 'Muscle.Upper_Arms');
+SELECT add_muscle('Muscle.Coracobrachialis', 'Muscle.Upper_Arms');
 -- Arms/Forearms
 SELECT add_muscle('Muscle.Forearms', 'Muscle.Arms');
 SELECT add_muscle('Muscle.Brachioradialis', 'Muscle.Forearms');

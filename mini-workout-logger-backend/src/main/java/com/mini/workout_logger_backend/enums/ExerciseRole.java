@@ -6,7 +6,7 @@ import com.mini.java_core.enums.TranslatableEnum;
  * Source: @see <a href="https://exrx.net/WeightTraining/Glossary#Basic">ExRx.net - Basic</a> and
  *         @see <a href="https://exrx.net/WeightTraining/Glossary#Auxiliary">ExRx.net - Auxiliary</a>
  */
-public enum WorkoutExerciseRole implements TranslatableEnum<WorkoutExerciseRole> {
+public enum ExerciseRole implements TranslatableEnum<ExerciseRole> {
 
     /**
      * A principal exercise that involves more muscle mass and allows heavier loads, producing greater overall intensity.
@@ -18,6 +18,8 @@ public enum WorkoutExerciseRole implements TranslatableEnum<WorkoutExerciseRole>
      * the primary exercises.
      */
     AUXILIARY,
+
+    BASIC_OR_AUXILIARY,
     ;
 
 }

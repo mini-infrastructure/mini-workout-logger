@@ -1,30 +1,56 @@
--- Adds a new exercise.
 CREATE OR REPLACE FUNCTION add_exercise(
     exercise_name VARCHAR,
+    exercise_group_name VARCHAR,
     exercise_category VARCHAR,
     exercise_difficulty VARCHAR,
     exercise_equipment VARCHAR DEFAULT NULL,
     exercise_force VARCHAR DEFAULT NULL,
-    exercise_mechanics VARCHAR DEFAULT NULL
+    exercise_mechanics VARCHAR DEFAULT NULL,
+    exercise_role VARCHAR DEFAULT NULL,
+    target_muscles TEXT[] DEFAULT '{}',
+    synergist_muscles TEXT[] DEFAULT '{}',
+    stabilizer_muscles TEXT[] DEFAULT '{}'
 )
 RETURNS VOID AS $$
 DECLARE
     p_exercise_id BIGINT;
-    eq VARCHAR;
+    p_group_id BIGINT;
+    muscle TEXT;
 BEGIN
 
+    -- Exercise group
+    INSERT INTO exercise_groups (name, created_at, updated_at)
+    VALUES (exercise_group_name, NOW(), NOW())
+    ON CONFLICT (name) DO NOTHING;
+
+    SELECT id INTO p_group_id
+    FROM exercise_groups
+    WHERE name = exercise_group_name;
+
+    -- Insert exercise
     INSERT INTO exercises (
-        name, category, difficulty, equipment, force, mechanics, created_at, updated_at
+        name,
+        category,
+        difficulty,
+        equipment,
+        force,
+        mechanics,
+        role,
+        group_id,
+        created_at,
+        updated_at
     )
     VALUES (
-        exercise_name,        -- name
-        exercise_category,    -- category
-        exercise_difficulty,  -- difficulty
-        exercise_equipment,   -- equipment
-        exercise_force,       -- force
-        exercise_mechanics,   -- mechanics
-        NOW(),                -- created_at
-        NOW()                 -- updated_at
+        exercise_name,
+        exercise_category,
+        exercise_difficulty,
+        exercise_equipment,
+        exercise_force,
+        exercise_mechanics,
+        exercise_role,
+        p_group_id,
+        NOW(),
+        NOW()
     )
     ON CONFLICT (name) DO NOTHING;
 
@@ -32,7 +58,25 @@ BEGIN
     FROM exercises
     WHERE name = exercise_name;
 
-    -- reset sequence
+    -- TARGET muscles
+    FOREACH muscle IN ARRAY target_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'TARGET');
+    END LOOP;
+
+    -- SYNERGIST muscles
+    FOREACH muscle IN ARRAY synergist_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'SYNERGIST');
+    END LOOP;
+
+    -- STABILIZER muscles
+    FOREACH muscle IN ARRAY stabilizer_muscles
+    LOOP
+        PERFORM add_exercise_muscle(exercise_name, muscle, 'STABILIZER');
+    END LOOP;
+
+    -- Reset sequence
     PERFORM setval(
         pg_get_serial_sequence('exercises','id'),
         COALESCE((SELECT MAX(id) FROM exercises),1)
@@ -89,15 +133,123 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Template
+--SELECT add_exercise(
+--    'Exercise.**',
+--    'Exercise.**',
+--    'CATEGORY',
+--    'DIFFICULTY',
+--    'EQUIPMENT',
+--    'FORCE',
+--    'MECHANICS',
+--    'ROLE',
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+--    ARRAY[
+--        '',
+--        ''
+--    ],
+--);
+
 -- Chest exercises
 SELECT add_exercise(
+    'Exercise.Cable_Isolateral_Lying_Fly',
+    'Exercise.Chest_Fly',
+    'STRENGTH',
+    'BEGINNER',
+    'CABLE',
+    'PUSH',
+    'ISOLATED',
+    'AUXILIARY',
+    ARRAY['Muscle.Sternal'],
+    ARRAY[
+        'Muscle.Clavicular',
+        'Muscle.Anterior_Deltoid',
+        'Muscle.Biceps',
+        'Muscle.Coracobrachialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors',
+        'Muscle.Triceps',
+        'Muscle.Brachialis'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Cable_Isolateral_Cable_Fly',
+    'Exercise.Chest_Fly',
+    'STRENGTH',
+    'BEGINNER',
+    'CABLE',
+    'PUSH',
+    'ISOLATED',
+    'AUXILIARY',
+    ARRAY['Muscle.Sternal'],
+    ARRAY[
+        'Muscle.Clavicular',
+        'Muscle.Anterior_Deltoid',
+        'Muscle.Biceps',
+        'Muscle.Coracobrachialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors',
+        'Muscle.Triceps',
+        'Muscle.Brachialis'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Cable_Isolateral_Standing_Fly',
+    'Exercise.Chest_Fly',
+    'STRENGTH',
+    'BEGINNER',
+    'CABLE',
+    'PUSH',
+    'ISOLATED',
+    'AUXILIARY',
+    ARRAY['Muscle.Sternal'],
+    ARRAY[
+        'Muscle.Clavicular',
+        'Muscle.Pectoralis_Minor',
+        'Muscle.Rhomboids',
+        'Muscle.Levator_Scapulae',
+        'Muscle.Latissimus_Dorsi',
+        'Muscle.Coracobrachialis'
+    ],
+    ARRAY[
+        'Muscle.Biceps',
+        'Muscle.Brachialis',
+        'Muscle.Triceps',
+        'Muscle.Wrist_Flexors',
+        'Muscle.Abdominal',
+        'Muscle.Obliques',
+        'Muscle.Erector_Spinae'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Cable_Isolateral_Bench_Press',
     'Exercise.Chest_Press',
     'STRENGTH',
-    'INTERMEDIATE',
-    'BARBELL',
+    'NOVICE',
+    'CABLE',
     'PUSH',
-    'COMPOUND'
+    'COMPOUND',
+    'BASIC_OR_AUXILIARY',
+    ARRAY['Muscle.Sternal'],
+    ARRAY[
+        'Muscle.Clavicular',
+        'Muscle.Anterior_Deltoid',
+        'Muscle.Triceps',
+        'Muscle.Coracobrachialis'
+    ],
+    ARRAY[
+        'Muscle.Biceps'
+    ]
 );
-SELECT add_exercise_muscle('Exercise.Chest_Press', 'Muscle.Pectoralis_Major', 'TARGET');
-SELECT add_exercise_muscle('Exercise.Chest_Press', 'Muscle.Anterior_Deltoid', 'TARGET');
-SELECT add_exercise_muscle('Exercise.Chest_Press', 'Muscle.Triceps_Brachii', 'TARGET');

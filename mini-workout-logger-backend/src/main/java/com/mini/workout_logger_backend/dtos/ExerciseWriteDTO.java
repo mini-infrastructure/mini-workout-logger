@@ -3,11 +3,8 @@ package com.mini.workout_logger_backend.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.java_core.validation.group.RestMethod;
-import com.mini.workout_logger_backend.enums.ExerciseCategory;
-import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
-import com.mini.workout_logger_backend.enums.ExerciseEquipment;
+import com.mini.workout_logger_backend.enums.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,14 +27,23 @@ public class ExerciseWriteDTO extends WriteDTO {
 
     private ExerciseDifficulty difficulty;
 
-    @Valid
-    @JsonProperty("exercise_muscles")
-    private Set<ExerciseMuscleWriteDTO> exerciseMuscles = new HashSet<>();
-
+    @NotNull(groups = RestMethod.OnCreate.class)
     private ExerciseEquipment equipment;
 
-    public ExerciseWriteDTO(String name) {
-        this.name = name;
-    }
+    private ExerciseForceDirection force;
+
+    private ExerciseMechanics mechanics;
+
+    private ExerciseRole role;
+
+    private ExerciseType type;
+
+    @NotNull(groups = RestMethod.OnCreate.class)
+    private String groupName;
+
+    @Valid
+    @NotNull(groups = RestMethod.OnCreate.class)
+    @JsonProperty("exercise_muscles")
+    private Set<ExerciseMuscleWriteDTO> exerciseMuscles = new HashSet<>();
 
 }

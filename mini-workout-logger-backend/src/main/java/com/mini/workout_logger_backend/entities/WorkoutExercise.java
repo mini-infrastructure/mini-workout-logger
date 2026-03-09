@@ -3,8 +3,6 @@ package com.mini.workout_logger_backend.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
-import com.mini.workout_logger_backend.enums.ExerciseEquipment;
-import com.mini.workout_logger_backend.enums.WorkoutExerciseRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,10 +46,6 @@ public class WorkoutExercise extends AbstractEntity {
 
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
-
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private WorkoutExerciseRole role;
 
     @JsonBackReference
     @OneToMany(mappedBy = "workoutExercise",

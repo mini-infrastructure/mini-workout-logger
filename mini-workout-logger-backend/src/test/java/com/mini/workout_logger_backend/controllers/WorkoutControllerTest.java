@@ -10,6 +10,7 @@ import com.mini.workout_logger_backend.entities.WorkoutExercise;
 import com.mini.workout_logger_backend.enums.*;
 import com.mini.workout_logger_backend.mappers.*;
 import com.mini.workout_logger_backend.repositories.*;
+import com.mini.workout_logger_backend.utils.TestHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,53 +61,15 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
 
     private List<Exercise> savedExercises;
 
+    @Autowired
+    private TestHelper testHelper;
+
     @Override
     protected String getBaseUrl() { return "/workouts"; }
 
     @Override
     protected List<WorkoutWriteDTO> getWriteDtos() {
-        return List.of(
-                new WorkoutWriteDTO(
-                        "Upper Body Workout",
-                        List.of(
-                                new WorkoutExerciseWriteDTO(
-                                    savedExercises.getFirst().getId(),
-                                    List.of(
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null),
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null),
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null)
-                                    ),
-                                    30,
-                                    WorkoutExerciseRole.BASIC
-                                ),
-                                new WorkoutExerciseWriteDTO(
-                                    savedExercises.getLast().getId(),
-                                    List.of(
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 50.0, null),
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 55.0, null),
-                                            new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 60.0, null)
-                                    ),
-                                    45,
-                                    WorkoutExerciseRole.AUXILIARY
-                                )
-                        )
-                ),
-                new WorkoutWriteDTO(
-                        "Leg Day",
-                        List.of(
-                                new WorkoutExerciseWriteDTO(
-                                        savedExercises.getLast().getId(),
-                                        List.of(
-                                                new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
-                                                new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
-                                                new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null)
-                                        ),
-                                        60,
-                                        WorkoutExerciseRole.BASIC
-                                )
-                        )
-                )
-        );
+        return testHelper.getWorkoutExercises(savedExercises);
     }
 
     /**
@@ -117,77 +79,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
     void setupMusclesAndExercises() {
         muscleRepository.deleteAll();
         exerciseRepository.deleteAll();
-
-        savedMuscles = List.of(
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Chest"))
-                ),
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Back"))
-                ),
-                muscleRepository.save(
-                        muscleMapper.toEntity(new MuscleWriteDTO("Legs"))
-                )
-        );
-
-        savedExercises = List.of(
-                exerciseRepository.save(
-                        exerciseMapper.toEntity(
-                                new ExerciseWriteDTO(
-                                        "Push-Up",
-                                        ExerciseCategory.STRENGTH,
-                                        ExerciseDifficulty.BEGINNER,
-                                        Set.of(
-                                                new ExerciseMuscleWriteDTO(
-                                                        savedMuscles.get(0).getId(),
-                                                        ExerciseMuscleMovementClassification.TARGET
-                                                ),
-                                                new ExerciseMuscleWriteDTO(
-                                                        savedMuscles.get(1).getId(),
-                                                        ExerciseMuscleMovementClassification.TARGET
-                                                )
-                                        ),
-                                        ExerciseEquipment.BODYWEIGHT
-                                )
-                        )
-                ),
-                exerciseRepository.save(
-                        exerciseMapper.toEntity(
-                                new ExerciseWriteDTO(
-                                        "Squat",
-                                        ExerciseCategory.STRENGTH,
-                                        ExerciseDifficulty.BEGINNER,
-                                        Set.of(
-                                                new ExerciseMuscleWriteDTO(
-                                                        savedMuscles.get(2).getId(),
-                                                        ExerciseMuscleMovementClassification.STABILIZER
-                                                )
-                                        ),
-                                        ExerciseEquipment.BODYWEIGHT
-                                )
-                        )
-                ),
-                exerciseRepository.save(
-                        exerciseMapper.toEntity(
-                                new ExerciseWriteDTO(
-                                        "Deadlift",
-                                        ExerciseCategory.STRENGTH,
-                                        ExerciseDifficulty.INTERMEDIATE,
-                                        Set.of(
-                                                new ExerciseMuscleWriteDTO(
-                                                        savedMuscles.get(1).getId(),
-                                                        ExerciseMuscleMovementClassification.TARGET
-                                                ),
-                                                new ExerciseMuscleWriteDTO(
-                                                        savedMuscles.get(2).getId(),
-                                                        ExerciseMuscleMovementClassification.TARGET
-                                                )
-                                        ),
-                                        ExerciseEquipment.BARBELL
-                                )
-                        )
-                )
-        );
+        savedMuscles = testHelper.getSavedMuscles();
+        savedExercises = testHelper.getSavedExercises(savedMuscles);
     }
 
     /**
@@ -196,45 +89,64 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
      */
     @Override
     protected void afterCreate(WorkoutReadDTO dto) {
-        if (dto.getName().equals("Upper Body Workout")) {
-            List<WorkoutExercise> actualWorkoutExercises = workoutExerciseRepository.findAll()
-                    .stream()
-                    .filter(we -> we.getWorkout().getId().equals(dto.getId()))
-                    .toList();
-            List<com.mini.workout_logger_backend.entities.Set> actualSets = setRepository.findAll()
-                    .stream()
-                    .filter(s -> s.getWorkoutExercise().getWorkout().getId().equals(dto.getId()))
-                    .toList();
-            Map<Long, List<com.mini.workout_logger_backend.entities.Set>> setsByWorkoutExerciseId =
-                    actualSets.stream()
-                            .collect(Collectors.groupingBy(
-                                    s -> s.getWorkoutExercise().getId()
-                            ));
-            Map<String, WorkoutExercise> exercisesByName = actualWorkoutExercises.stream()
-                    .collect(Collectors.toMap(
-                            we -> we.getExercise().getName().getValue(),
-                            we -> we
-                    ));
+        WorkoutWriteDTO expectedWorkout =
+                testHelper.getWorkoutDtoByName(dto.getName(), getWriteDtos());
 
-            assertThat(exercisesByName).containsKeys("Push-Up", "Deadlift");
-            assertThat(setsByWorkoutExerciseId.get(exercisesByName.get("Push-Up").getId())).hasSize(3);
-            assertThat(setsByWorkoutExerciseId.get(exercisesByName.get("Deadlift").getId())).hasSize(3);
+        List<WorkoutExercise> actualWorkoutExercises = workoutExerciseRepository.findAll()
+                .stream()
+                .filter(we -> we.getWorkout().getId().equals(dto.getId()))
+                .toList();
 
-            WorkoutExercise we1 = actualWorkoutExercises.get(0);
-            WorkoutExercise we2 = actualWorkoutExercises.get(1);
+        List<com.mini.workout_logger_backend.entities.Set> actualSets = setRepository.findAll()
+                .stream()
+                .filter(s -> s.getWorkoutExercise().getWorkout().getId().equals(dto.getId()))
+                .toList();
 
-            assertThat(actualSets).hasSize(6);
-            assertThat(setsByWorkoutExerciseId.get(we1.getId())).hasSize(3);
-            assertThat(we1.getExercise().getName().getValue()).isEqualTo("Push-Up");
-            assertThat(setsByWorkoutExerciseId.get(we2.getId())).hasSize(3);
-            assertThat(we2.getExercise().getName().getValue()).isEqualTo("Deadlift");
+        Map<Long, List<com.mini.workout_logger_backend.entities.Set>> setsByWorkoutExerciseId =
+                actualSets.stream()
+                        .collect(Collectors.groupingBy(
+                                s -> s.getWorkoutExercise().getId()
+                        ));
+
+        Map<Long, WorkoutExercise> workoutExerciseByExerciseId =
+                actualWorkoutExercises.stream()
+                        .collect(Collectors.toMap(
+                                we -> we.getExercise().getId(),
+                                we -> we
+                        ));
+
+        assertThat(actualWorkoutExercises)
+                .hasSize(expectedWorkout.getWorkoutExercises().size());
+
+        int expectedTotalSets = expectedWorkout.getWorkoutExercises()
+                .stream()
+                .mapToInt(e -> e.getSets().size())
+                .sum();
+
+        assertThat(actualSets).hasSize(expectedTotalSets);
+
+        for (WorkoutExerciseWriteDTO expectedExercise : expectedWorkout.getWorkoutExercises()) {
+
+            WorkoutExercise actualExercise =
+                    workoutExerciseByExerciseId.get(expectedExercise.getExerciseId());
+
+            assertThat(actualExercise).isNotNull();
+
+            List<com.mini.workout_logger_backend.entities.Set> sets =
+                    setsByWorkoutExerciseId.get(actualExercise.getId());
+
+            assertThat(sets)
+                    .hasSize(expectedExercise.getSets().size());
         }
     }
 
     @Test
     void _listExercisesAndSets() throws Exception {
-        // Create workout.
-        Workout workout = repository().save(mapper().toEntity(getWriteDtos().getFirst()));
+        // Create workouts.
+        List<Workout> workouts = testHelper.getSavedWorkouts(getWriteDtos());
+        Workout workout = workouts.getFirst();
+        List<WorkoutExercise> workoutExercises = workout.getWorkoutExercises();
+        Exercise exercise = exerciseRepository.safeFindById(workoutExercises.getFirst().getExercise().getId());
 
         // List exercises.
         MvcResult exercisesResult = mockMvc.perform(
@@ -242,8 +154,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                 .queryParam("lang", "pt_BR")
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()").value(2))
-                .andExpect(jsonPath("$.data[0].exercise.name").value("Push-Up"))
+                .andExpect(jsonPath("$.data.length()").value(workoutExercises.size()))
+                .andExpect(jsonPath("$.data[0].exercise.name").value(exercise.getName().getValue()))
                 .andReturn();
 
         // Extract workoutExerciseId from response.
@@ -260,7 +172,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.data.length()").value(3));
+                .andExpect(jsonPath("$.data.length()").value(workoutExercises.getFirst().getSets().size()));
     }
 
     @Test
@@ -270,22 +182,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
         int oldExerciseCount = workout.getWorkoutExercises().size();
 
         // Create new exercise.
-        Exercise exercise = exerciseRepository.save(
-                exerciseMapper.toEntity(
-                        new ExerciseWriteDTO(
-                                "Chest-Fly",
-                                ExerciseCategory.STRENGTH,
-                                ExerciseDifficulty.BEGINNER,
-                                Set.of(
-                                        new ExerciseMuscleWriteDTO(
-                                                savedMuscles.getFirst().getId(),
-                                                ExerciseMuscleMovementClassification.TARGET
-                                        )
-                                ),
-                                ExerciseEquipment.BARBELL
-                        )
-                )
-        );
+        Exercise exercise = exerciseRepository.save(savedExercises.getFirst());
 
         // Perform.
         WorkoutExerciseWriteDTO we = new WorkoutExerciseWriteDTO(
@@ -294,8 +191,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 70.0, null),
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 75.0, null)
                 ),
-                60,
-                WorkoutExerciseRole.AUXILIARY
+                60
         );
 
         mockMvc.perform(MockMvcRequestBuilders.put(getBaseUrl() + "/{id}/exercises", workout.getId())
@@ -306,7 +202,7 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()").value(oldExerciseCount + 1))
-                .andExpect(jsonPath("$.data[?(@.exercise.name == 'Chest-Fly')]").exists())
+                .andExpect(jsonPath("$.data[?(@.exercise.name == '" + exercise.getName().getValue() + "')]").exists())
                 .andReturn();
 
     }

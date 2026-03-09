@@ -67,6 +67,19 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseMechanics mechanics;
 
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private ExerciseGroup group;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private ExerciseRole role;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ExerciseType type;
+
     public Set<Muscle> getMuscles() {
         return exerciseMuscles
                 .stream()
