@@ -24,11 +24,17 @@ export type FormOption = {
     value: string;
 };
 
-export type FormOptions = {
-    label: string;
-    options: FormOption[];
-    placeholder?: string;
-    inputEnabled?: boolean;
+export type ButtonMultiSelectFieldOptions = {
+    first: {
+        label?: string;
+        options: FormOption[];
+        inputEnabled?: boolean;
+    };
+    second: {
+        label?: string;
+        options: FormOption[];
+        inputEnabled?: boolean;
+    };
 };
 
 export type FormItem = {
@@ -36,7 +42,7 @@ export type FormItem = {
     label: string;
     type: FormFieldType;
     placeholder?: string;
-    options?: FormOption[] | FormOptions[];
+    options?: FormOption[] | ButtonMultiSelectFieldOptions;
     colSpan?: number;
     initialValue?: any;
     inputEnabled?: boolean;
@@ -68,6 +74,11 @@ const buildInitialValues = (items: FormItem[]) => {
             return;
         }
 
+        if (item.type === "buttonmultiselect") {
+            values[item.name] = [];
+            return;
+        }
+
         values[item.name] = "";
     });
 
@@ -95,10 +106,14 @@ const FormBuilder = ({
         setValues(buildInitialValues(items));
     }, [items]);
 
+
     return (
         <form css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
                 const colSpan = Math.min(item.colSpan ?? 1, columns);
+                if (item.type === "buttonmultiselect") {
+                    console.log(values);
+                }
 
                 return (
                     <div key={item.name} css={styles.fieldWrapper(colSpan)}>
@@ -135,8 +150,7 @@ const FormBuilder = ({
                             />
                         ) : item.type === "buttonmultiselect" ? (
                             <ButtonMultiSelect
-                                first={item.options?.[0]}
-                                second={item.options?.[1]}
+                                options={item.options as ButtonMultiSelectFieldOptions}
                                 value={values[item.name] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                             />

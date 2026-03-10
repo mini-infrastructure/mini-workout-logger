@@ -1,28 +1,36 @@
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import type {FormOption} from "./form.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";
 import SecondaryButton from "../../button/button.secondary.component.tsx";
 import Badge from "../../badge/badge.component.tsx";
 import styles from "./form.input.component.style.tsx";
 
-type ButtonMultiSelectProps = {
+export type ButtonMultiSelectValue = {
+    first: string;
+    second: string;
+};
+
+export type ButtonMultiSelectOptions = {
     first: {
-        options: FormOption[];
         label?: string;
+        options: FormOption[];
         inputEnabled?: boolean;
     };
     second: {
-        options: FormOption[];
         label?: string;
+        options: FormOption[];
         inputEnabled?: boolean;
     };
-    value: { first: string; second: string }[];
-    onChange: (val: { first: string; second: string }[]) => void;
+};
+
+type ButtonMultiSelectProps = {
+    options: ButtonMultiSelectOptions;
+    value: ButtonMultiSelectValue[];
+    onChange: (val: ButtonMultiSelectValue[]) => void;
 };
 
 const ButtonMultiSelect = ({
-                               first,
-                               second,
+                               options,
                                value,
                                onChange,
                            }: ButtonMultiSelectProps) => {
@@ -30,54 +38,53 @@ const ButtonMultiSelect = ({
     const [firstValue, setFirstValue] = useState("");
     const [secondValue, setSecondValue] = useState("");
 
-    const usedFirstValues = value.map((v) => v.first);
+    const usedFirstValues = value.map(v => v.first);
 
-    const availableFirstOptions = first.options.filter(
-        (opt) => !usedFirstValues.includes(opt.value)
+    const availableFirstOptions = useMemo(
+        () => options.first.options.filter(o => !usedFirstValues.includes(o.value)),
+        [options.first.options, usedFirstValues]
     );
 
     const addOption = () => {
         if (!firstValue || !secondValue) return;
 
-        if (usedFirstValues.includes(firstValue)) return;
-
-        onChange([...value, { first: firstValue, second: secondValue }]);
+        onChange([
+            ...value,
+            { first: firstValue, second: secondValue }
+        ]);
 
         setFirstValue("");
         setSecondValue("");
     };
 
     const removeOption = (index: number) => {
-        const newValues = value.filter((_, i) => i !== index);
-        onChange(newValues);
+        onChange(value.filter((_, i) => i !== index));
     };
 
-    const getLabel = (opt: string, options: FormOption[]) =>
-        options.find((o) => o.value === opt)?.label ?? opt;
+    const getLabel = (val: string, options: FormOption[]) =>
+        options.find(o => o.value === val)?.label ?? val;
 
     return (
         <div css={styles.wrapper}>
 
-            {/* SELECTORS */}
             <div css={styles.buttonMultiSelectContainer}>
                 <ButtonSelect
                     options={availableFirstOptions}
-                    placeholder={first.label}
-                    inputEnabled={first.inputEnabled}
+                    placeholder={options.first.label}
+                    inputEnabled={options.first.inputEnabled}
                     value={firstValue}
                     onChange={setFirstValue}
                 />
 
                 <ButtonSelect
-                    options={second.options}
-                    placeholder={second.label}
-                    inputEnabled={second.inputEnabled}
+                    options={options.second.options}
+                    placeholder={options.second.label}
+                    inputEnabled={options.second.inputEnabled}
                     value={secondValue}
                     onChange={setSecondValue}
                 />
             </div>
 
-            {/* ADD BUTTON */}
             <div css={styles.buttonMultiSelectAddButton}>
                 <SecondaryButton
                     onClick={addOption}
@@ -87,12 +94,11 @@ const ButtonMultiSelect = ({
                 </SecondaryButton>
             </div>
 
-            {/* SELECTED OPTIONS */}
             <div css={styles.multiselectSelectedItems(value.length > 0)}>
                 {value.map((item, index) => {
 
-                    const firstLabel = getLabel(item.first, first.options);
-                    const secondLabel = getLabel(item.second, second.options);
+                    const firstLabel = getLabel(item.first, options.first.options);
+                    const secondLabel = getLabel(item.second, options.second.options);
 
                     return (
                         <Badge

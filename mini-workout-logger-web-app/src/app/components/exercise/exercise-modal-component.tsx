@@ -110,31 +110,36 @@ const ExerciseModal = ({
             label: "Muscles",
             type: "buttonmultiselect",
             colSpan: 2,
-            options: [
-                {
+            options: {
+                first: {
                     label: "Muscles",
                     options: muscles.map(m => ({
                         label: m.name,
                         value: m.id,
                     })),
-                    inputEnabled: false
+                    inputEnabled: false,
                 },
-                {
+                second: {
                     label: "Muscle Movement Classification",
                     options: exerciseMuscleMovementClassificationOptions,
                     inputEnabled: false,
-                },
-            ],
+                }
+            },
             initialValue: exercise?.exercise_muscles?.map(m => ({
-                first: m.muscle_id,
+                first: String(m.muscle_id),
                 second: m.role,
             })) || [],
-        },
+        }
     ];
 
     const handleSubmit = async (values: any) => {
         console.log(values);
         try {
+            const exerciseMuscles = (values.muscles ?? []).map((m: any) => ({
+                muscle_id: Number(m.first),
+                role: m.second,
+            }));
+
             const payload: ExerciseWriteDTO = {
                 name: values.name,
                 groupName: values.groupName,
@@ -145,17 +150,17 @@ const ExerciseModal = ({
                 mechanics: values.mechanics,
                 role: values.role,
                 type: values.type,
-                exercise_muscles: values.muscles,
+                exerciseMuscles: exerciseMuscles,
             };
 
-            // if (exercise?.id) {
-            //     await ExerciseService.update(exercise.id, payload);
-            // } else {
-            //     await ExerciseService.create(payload);
-            // }
-            //
-            // setIsModalOpen(false);
-            // window.location.reload();
+            if (exercise?.id) {
+                await ExerciseService.update(exercise.id, payload);
+            } else {
+                await ExerciseService.create(payload);
+            }
+
+            setIsModalOpen(false);
+            window.location.reload();
 
         } catch (error) {
             // Todo
