@@ -40,7 +40,7 @@ const ExerciseModal = ({
             colSpan: 4,
         },
         {
-            name: "groupName",
+            name: "group_name",
             label: "Group name",
             type: "buttonselect",
             placeholder: "e.g. Squat",
@@ -108,7 +108,7 @@ const ExerciseModal = ({
             colSpan: 1,
         },
         {
-            name: "muscles",
+            name: "exercise_muscles",
             label: "Muscles",
             type: "buttonmultiselect",
             colSpan: 2,
@@ -136,7 +136,7 @@ const ExerciseModal = ({
 
     const handleSubmit = async (values: any) => {
         try {
-            const exerciseMuscles = (values.muscles ?? []).map((m: any) => ({
+            const exerciseMuscles = (values.exercise_muscles ?? []).map((m: any) => ({
                 muscle_id: Number(m.first),
                 role: m.second,
             }));
