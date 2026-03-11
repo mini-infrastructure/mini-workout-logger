@@ -38,6 +38,7 @@ public class ExerciseWriteDTO extends WriteDTO {
 
     private ExerciseType type;
 
+    @JsonProperty("group_name")
     @NotNull(groups = RestMethod.OnCreate.class)
     private String groupName;
 

@@ -21,7 +21,7 @@ const styles = {
         padding: '4rem',
         width: 'fit-content',
         minWidth: '30vw',
-        maxWidth: '35vw',
+        maxWidth: '50vw',
         height: 'fit-content',
         boxShadow: theme.shadow.normal,
     }),

@@ -13,6 +13,7 @@ import ExerciseService from "../../services/exercise.service.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
 import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
 import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
+import {useMemo} from "react";
 
 export type ExerciseModalProps = {
     isModalOpen: boolean;
@@ -27,8 +28,9 @@ const ExerciseModal = ({
                        }: ExerciseModalProps) => {
     const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
+    console.log('exercise_muscles', exercise?.exercise_muscles)
 
-    const exerciseFormItems: FormItem[] = [
+    const exerciseFormItems: FormItem[] = useMemo(() => [
         {
             name: "name",
             label: "Name",
@@ -42,7 +44,7 @@ const ExerciseModal = ({
             label: "Group name",
             type: "buttonselect",
             placeholder: "e.g. Squat",
-            initialValue: exercise?.groupName || "",
+            initialValue: exercise?.group_name || "",
             colSpan: 4,
             options: exerciseGroupNames?.map(name => ({
                 label: name,
@@ -126,14 +128,13 @@ const ExerciseModal = ({
                 }
             },
             initialValue: exercise?.exercise_muscles?.map(m => ({
-                first: String(m.muscle_id),
+                first: String(m.muscle_name),
                 second: m.role,
-            })) || [],
+            })) ?? [],
         }
-    ];
+    ], [exercise, muscles, exerciseGroupNames]);
 
     const handleSubmit = async (values: any) => {
-        console.log(values);
         try {
             const exerciseMuscles = (values.muscles ?? []).map((m: any) => ({
                 muscle_id: Number(m.first),
@@ -142,7 +143,7 @@ const ExerciseModal = ({
 
             const payload: ExerciseWriteDTO = {
                 name: values.name,
-                groupName: values.groupName,
+                group_name: values.group_name,
                 category: values.category,
                 difficulty: values.difficulty,
                 equipment: values.equipment,
@@ -150,7 +151,7 @@ const ExerciseModal = ({
                 mechanics: values.mechanics,
                 role: values.role,
                 type: values.type,
-                exerciseMuscles: exerciseMuscles,
+                exercise_muscles: exerciseMuscles,
             };
 
             if (exercise?.id) {

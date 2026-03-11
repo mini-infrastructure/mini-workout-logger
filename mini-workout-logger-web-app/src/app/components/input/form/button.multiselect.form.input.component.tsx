@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import type {FormOption} from "./form.input.component.tsx";
+import type {ButtonMultiSelectFieldOptions, FormOption} from "./form.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";
 import SecondaryButton from "../../button/button.secondary.component.tsx";
 import Badge from "../../badge/badge.component.tsx";
@@ -10,21 +10,8 @@ export type ButtonMultiSelectValue = {
     second: string;
 };
 
-export type ButtonMultiSelectOptions = {
-    first: {
-        label?: string;
-        options: FormOption[];
-        inputEnabled?: boolean;
-    };
-    second: {
-        label?: string;
-        options: FormOption[];
-        inputEnabled?: boolean;
-    };
-};
-
 type ButtonMultiSelectProps = {
-    options: ButtonMultiSelectOptions;
+    options: ButtonMultiSelectFieldOptions;
     value: ButtonMultiSelectValue[];
     onChange: (val: ButtonMultiSelectValue[]) => void;
 };
@@ -34,6 +21,7 @@ const ButtonMultiSelect = ({
                                value,
                                onChange,
                            }: ButtonMultiSelectProps) => {
+    console.log('Value:', value);
 
     const [firstValue, setFirstValue] = useState("");
     const [secondValue, setSecondValue] = useState("");

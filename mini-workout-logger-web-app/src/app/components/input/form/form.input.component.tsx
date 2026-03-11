@@ -29,11 +29,13 @@ export type ButtonMultiSelectFieldOptions = {
         label?: string;
         options: FormOption[];
         inputEnabled?: boolean;
+        initialValue?: string;
     };
     second: {
         label?: string;
         options: FormOption[];
         inputEnabled?: boolean;
+        initialValue?: string;
     };
 };
 
@@ -64,18 +66,13 @@ const buildInitialValues = (items: FormItem[]) => {
             return;
         }
 
-        if (item.type === "select" && item.options?.length) {
+        if (item.type === "select" &&  Array.isArray(item.options) && item.options.length) {
             values[item.name] = item.options[0].value;
             return;
         }
 
         if (item.type === "multiselect") {
             values[item.name] = item.initialValue ?? [];
-            return;
-        }
-
-        if (item.type === "buttonmultiselect") {
-            values[item.name] = [];
             return;
         }
 
@@ -103,18 +100,16 @@ const FormBuilder = ({
     };
 
     useEffect(() => {
-        setValues(buildInitialValues(items));
+        setValues(prev => ({
+            ...prev,
+            ...buildInitialValues(items)
+        }));
     }, [items]);
-
 
     return (
         <form css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
                 const colSpan = Math.min(item.colSpan ?? 1, columns);
-                if (item.type === "buttonmultiselect") {
-                    console.log(values);
-                }
-
                 return (
                     <div key={item.name} css={styles.fieldWrapper(colSpan)}>
                         <label>{item.label}</label>

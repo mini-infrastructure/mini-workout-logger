@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.annotation.ExistsById;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.java_core.validation.group.RestMethod;
@@ -17,6 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExerciseMuscleWriteDTO extends WriteDTO {
 
+    @JsonProperty("muscle_id")
     @ExistsById(repository = MuscleRepository.class)
     @NotNull(groups = RestMethod.OnCreate.class)
     private Long muscleId;

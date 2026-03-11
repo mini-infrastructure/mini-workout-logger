@@ -15,6 +15,6 @@ export interface ExerciseWriteDTO {
     mechanics?: ExerciseMechanics;
     role?: ExerciseRole;
     type?: ExerciseType;
-    groupName?: string;
-    exerciseMuscles?: ExerciseMuscleWriteDTO[];
+    group_name?: string;
+    exercise_muscles?: ExerciseMuscleWriteDTO[];
 }
