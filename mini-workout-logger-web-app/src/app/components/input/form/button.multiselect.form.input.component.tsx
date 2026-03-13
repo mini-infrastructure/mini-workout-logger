@@ -21,8 +21,6 @@ const ButtonMultiSelect = ({
                                value,
                                onChange,
                            }: ButtonMultiSelectProps) => {
-    console.log('Value:', value);
-
     const [firstValue, setFirstValue] = useState("");
     const [secondValue, setSecondValue] = useState("");
 

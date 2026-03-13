@@ -28,7 +28,6 @@ const ExerciseModal = ({
                        }: ExerciseModalProps) => {
     const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
-    console.log('exercise_muscles', exercise?.exercise_muscles)
 
     const exerciseFormItems: FormItem[] = useMemo(() => [
         {
