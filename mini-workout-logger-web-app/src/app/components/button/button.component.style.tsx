@@ -107,7 +107,10 @@ const styles = {
         },
     }),
 
-    iconSecondary: css({
+    iconSecondary: (theme: Theme) => css({
+        width: 'auto',
+        height: 'auto',
+        fontSize: theme.fontSizes.large,
     }),
 
     /**
