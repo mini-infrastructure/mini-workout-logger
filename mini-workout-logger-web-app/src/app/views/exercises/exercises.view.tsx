@@ -3,7 +3,7 @@ import styles from "./exercises.view.style.tsx";
 import {useExercises} from "../../hooks/useExercises.tsx";
 import ExerciseCard from "../../components/exercise/exercise-card.component.tsx";
 import PrimaryButton from "../../components/button/button.primary.component.tsx";
-import {MdAdd} from "react-icons/md";
+import {MdAdd, MdFilterAltOff} from "react-icons/md";
 import {useState} from "react";
 import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
 import {FaSearch} from "react-icons/fa";
@@ -65,6 +65,14 @@ const ExercisesDatabaseView = () => {
         });
     };
 
+    const hasActiveFilters = Object.values(filters).some(
+        (values) => values.length > 0
+    );
+
+    const clearFilters = () => {
+        setFilters({});
+    };
+
     return (
         <Layout>
             <div css={styles.actionsWrapper}>
@@ -106,13 +114,21 @@ const ExercisesDatabaseView = () => {
                         key={muscle}
                         customCss={styles.rootMuscleBadges}
                         icon={RootMuscleIcons[muscle] || <FcDislike />}
-                        onClick={() => handleBadgeClick("muscles", muscle) }
-                        selected={filters.muscles?.includes(muscle) }
+                        onClick={() => handleBadgeClick("muscles", muscle)}
+                        selected={filters.muscles?.includes(muscle)}
                         variant="primary"
                     >
                         {muscle}
                     </Badge>
                 ))}
+                {hasActiveFilters && (
+                    <Button
+                        onClick={clearFilters}
+                        icon={<MdFilterAltOff />}
+                    >
+                        Clear filters
+                    </Button>
+                )}
             </div>
 
             <div css={styles.cardsAndFiltersWrapper}>
