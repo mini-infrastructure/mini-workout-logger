@@ -14,19 +14,21 @@ import {useMuscles} from "../../hooks/useMuscles.tsx";
 import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
 import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
 import {useMemo} from "react";
+import type {MuscleReadDTO} from "../../dtos/muscle-read.dto.tsx";
 
 export type ExerciseModalProps = {
     isModalOpen: boolean;
     setIsModalOpen: (isOpen: boolean) => void;
     exercise?: ExerciseReadDTO;
+    muscles: MuscleReadDTO[];
 }
 
 const ExerciseModal = ({
                            isModalOpen,
                            setIsModalOpen,
                            exercise,
+                           muscles,
                        }: ExerciseModalProps) => {
-    const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
 
     const exerciseFormItems: FormItem[] = useMemo(() => [
@@ -114,7 +116,7 @@ const ExerciseModal = ({
             options: {
                 first: {
                     label: "Muscles",
-                    options: muscles.map(m => ({
+                    options: (muscles ?? []).map(m => ({
                         label: m.name,
                         value: m.id,
                     })),

@@ -20,6 +20,18 @@ class MuscleService {
         }
     }
 
+    async getRootMuscles(): Promise<String[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<String[]>>(
+                `${apiUrl}/muscles/roots?lang=${lang}`
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching root muscles:', error);
+            return [];
+        }
+    }
+
     async getById(id: string): Promise<MuscleReadDTO> {
         try {
             const response = await axios.get<ApiResponseDTO<MuscleReadDTO>>(

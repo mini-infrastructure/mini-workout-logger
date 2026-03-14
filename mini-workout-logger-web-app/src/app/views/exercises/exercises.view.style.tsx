@@ -1,5 +1,5 @@
 import {css, Theme} from '@emotion/react';
-import {darken, lighten} from "polished";
+import {darken, invert, lighten, transparentize} from "polished";
 
 const styles = {
 
@@ -69,6 +69,28 @@ const styles = {
         fontSize: theme.fontSizes.large,
     }),
 
+    // Muscle badges
+
+    rootMuscleBadgesWrapper: css({
+        display: 'flex',
+        gap: '0.5rem',
+        margin: '0 0 1rem 0',
+    }),
+
+    rootMuscleBadges: (theme: Theme) => css({
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '0.5rem',
+        minWidth: '4rem',
+        backgroundColor: theme.colors.background,
+        border: `1px solid ${theme.colors.border1}`,
+        '&:hover': {
+            backgroundColor: transparentize(0.8, theme.colors.secondary),
+            color: theme.colors.primary,
+            border: `1px solid ${transparentize(0.4, theme.colors.primary)}`,
+        },
+    }),
+
     // Body.
 
     cardsWrapper: css({
@@ -94,7 +116,7 @@ const styles = {
         overflow: 'hidden',
         backgroundColor: theme.colors.container1,
         border: open ? `1px solid ${theme.colors.border1}` : 'none',
-        borderRadius: 15,
+        borderRadius: 10,
         padding: open ? '1rem' : 0,
         marginBottom: open ? '1rem' : 0,
     }),

@@ -10,9 +10,16 @@ import {FaSearch} from "react-icons/fa";
 import SecondaryButton from "../../components/button/button.secondary.component.tsx";
 import {HiAdjustmentsHorizontal} from "react-icons/hi2";
 import Button from "../../components/button/button.component.tsx";
+import {useMuscles} from "../../hooks/useMuscles.tsx";
+import Badge from "../../components/badge/badge.component.tsx";
+import {useRootMuscles} from "../../hooks/useRootMuscles.tsx";
+import {FcDislike} from "react-icons/fc";
+import {RootMuscleIcons} from "../../models/muscle.model.tsx";
 
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
+    const { muscles } = useMuscles();
+    const { rootMuscles } = useRootMuscles();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFiltersWrapperOpen, setIsFiltersWrapperOpen] = useState(false);
@@ -52,6 +59,18 @@ const ExercisesDatabaseView = () => {
                 </Button>
             </div>
 
+            <div css={styles.rootMuscleBadgesWrapper}>
+                {rootMuscles.map(muscle => (
+                    <Badge
+                        key={muscle}
+                        customCss={styles.rootMuscleBadges}
+                        icon={RootMuscleIcons[muscle] || <FcDislike />}
+                    >
+                        {muscle}
+                    </Badge>
+                ))}
+            </div>
+
             <div css={styles.filtersWrapper(isFiltersWrapperOpen)}>
                 Filtros
             </div>
@@ -69,6 +88,7 @@ const ExercisesDatabaseView = () => {
             <ExerciseModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                muscles={muscles}
             />
         </Layout>
     );
