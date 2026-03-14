@@ -21,6 +21,21 @@ import {
     exerciseEquipmentOptions, exerciseForceOptions, exerciseMechanicsOptions,
     exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
 } from "../../models/exercise.model.tsx";
+import * as React from "react";
+
+const ExerciseFilters = {
+    equipment: { label: 'Equipment' },
+    muscles: { label: 'Muscles' },
+    category: { label: 'Category' },
+    difficulty: { label: 'Difficulty' },
+    force: { label: 'Force' },
+    mechanics: { label: 'Mechanics' },
+    role: { label: 'Role' },
+    type: { label: 'Type' },
+    movementClassification: { label: 'Movement Classification' },
+};
+
+export type ExerciseFilterKey = keyof typeof ExerciseFilters;
 
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
@@ -29,6 +44,26 @@ const ExercisesDatabaseView = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFiltersWrapperOpen, setIsFiltersWrapperOpen] = useState(false);
+
+    const [filters, setFilters] = useState<Record<string, string[]>>({});
+
+    const handleBadgeClick = (filter: ExerciseFilterKey, value: string) => {
+        console.log(`Clicked badge for filter: ${filter}, value: ${value}`);
+        setFilters(prev => {
+            const current = prev[filter] ?? [];
+
+            const exists = current.includes(value);
+
+            const updated = exists
+                ? current.filter(v => v !== value)
+                : [...current, value];
+
+            return {
+                ...prev,
+                [filter]: updated,
+            };
+        });
+    };
 
     return (
         <Layout>
@@ -71,6 +106,9 @@ const ExercisesDatabaseView = () => {
                         key={muscle}
                         customCss={styles.rootMuscleBadges}
                         icon={RootMuscleIcons[muscle] || <FcDislike />}
+                        onClick={() => handleBadgeClick("muscles", muscle) }
+                        selected={filters.muscles?.includes(muscle) }
+                        variant="primary"
                     >
                         {muscle}
                     </Badge>
@@ -84,6 +122,8 @@ const ExercisesDatabaseView = () => {
                             key={exercise.id}
                             exercise={exercise}
                             customCss={styles.col}
+                            onBadgeClick={handleBadgeClick}
+                            filters={filters}
                         />
                     ))}
                 </div>
@@ -91,82 +131,136 @@ const ExercisesDatabaseView = () => {
                 <div css={styles.filtersWrapper(isFiltersWrapperOpen)}>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Equipment</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.equipment.label}</div>
                         <div css={styles.filterOptionContent}>
-                            {exerciseEquipmentOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                            {exerciseEquipmentOptions.map(item => (
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("equipment", item.value)}
+                                    selected={filters.equipment?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Muscles</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.muscles.label}</div>
                         <div css={styles.filterOptionContent}>
                             {muscles.map((muscle) => (
-                                <Badge key={muscle.id}>{muscle.name}</Badge>
+                                <Badge
+                                    key={muscle.id}
+                                    onClick={() => handleBadgeClick("muscles", muscle.name)}
+                                    selected={filters.muscles?.includes(muscle.name)}
+                                >
+                                    {muscle.name}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Category</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.category.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseCategoryOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("category", item.value)}
+                                    selected={filters.category?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Difficulty</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.difficulty.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseDifficultyOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("difficulty", item.value)}
+                                    selected={filters.difficulty?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Force</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.force.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseForceOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("force", item.value)}
+                                    selected={filters.force?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Mechanics</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.mechanics.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseMechanicsOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("mechanics", item.value)}
+                                    selected={filters.mechanics?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Role</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.role.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseRoleOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("role", item.value)}
+                                    selected={filters.role?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Type</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.type.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseTypeOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("type", item.value)}
+                                    selected={filters.type?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>
 
                     <div css={styles.filterOptions}>
-                        <div css={styles.filterOptionHeader}>Movement Classification</div>
+                        <div css={styles.filterOptionHeader}>{ExerciseFilters.movementClassification.label}</div>
                         <div css={styles.filterOptionContent}>
                             {exerciseMuscleMovementClassificationOptions.map((item) => (
-                                <Badge key={item.value}>{item.label}</Badge>
+                                <Badge
+                                    key={item.value}
+                                    onClick={() => handleBadgeClick("movementClassification", item.value)}
+                                    selected={filters.movementClassification?.includes(item.value)}
+                                >
+                                    {item.label}
+                                </Badge>
                             ))}
                         </div>
                     </div>

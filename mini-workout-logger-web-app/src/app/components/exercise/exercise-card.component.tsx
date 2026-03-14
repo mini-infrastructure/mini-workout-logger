@@ -18,15 +18,20 @@ import Card from "../card/card.component.tsx";
 import {MdOutlineCheckBox} from "react-icons/md";
 import Divider from "../divider/divider.component.tsx";
 import Rating, {RatingLevelItem} from "../rating/rating.component.tsx";
+import type {ExerciseFilterKey} from "../../views/exercises/exercises.view.tsx";
 
 export type ExerciseCardProps = {
-    exercise: ExerciseReadDTO,
-    key?: string | number;
+    exercise: ExerciseReadDTO;
+    key?: any;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
+    onBadgeClick?: (filter: ExerciseFilterKey, value: string) => void;
+    filters?: Record<string, string[]>;
 };
 
 const ExerciseCard = ({
                           exercise,
+                          onBadgeClick,
+    filters,
                       }: ExerciseCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -114,7 +119,13 @@ const ExerciseCard = ({
                 <div css={styles.session}>
                     <div css={styles.badgesWrapper}>
                         {exercise.root_muscles?.map((muscle) => (
-                            <Badge key={muscle}>{muscle}</Badge>
+                            <Badge
+                                key={muscle}
+                                onClick={() => onBadgeClick?.("muscles", muscle)}
+                                selected={filters?.muscles?.includes(muscle)}
+                            >
+                                {muscle}
+                            </Badge>
                         ))}
                     </div>
                 </div>
@@ -122,12 +133,16 @@ const ExerciseCard = ({
                 {/*  Exercise equipments  */}
                 <div css={styles.session}>
                     <div css={styles.badgesWrapper}>
-                        <Badge
-                            key={exercise.equipment}
-                            icon={getIconFromMap(ExerciseEquipmentIcons, exercise.equipment)}
-                        >
-                            {exercise.equipment}
-                        </Badge>
+                        {exercise.equipment && (
+                            <Badge
+                                key={exercise.equipment}
+                                icon={getIconFromMap(ExerciseEquipmentIcons, exercise.equipment)}
+                                onClick={() => onBadgeClick?.("equipment", exercise.equipment!)}
+                                selected={filters?.equipment?.includes(exercise.equipment)}
+                            >
+                                {exercise.equipment}
+                            </Badge>
+                        )}
                     </div>
                 </div>
             </div>
@@ -143,7 +158,11 @@ const ExerciseCard = ({
                         variant={getExerciseDifficultyVariant(exercise.difficulty)}
                     />
 
-                    <Badge icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}>
+                    <Badge
+                        icon={getIconFromMap(ExerciseCategoryIcons, exercise.category)}
+                        onClick={() => onBadgeClick?.("category", exercise.category!)}
+                        selected={filters?.category?.includes(exercise.category!)}
+                    >
                         {exercise.category}
                     </Badge>
                 </div>

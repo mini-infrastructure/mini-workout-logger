@@ -5,6 +5,7 @@ import Button from "../button/button.component.tsx";
 import {IoMdClose} from "react-icons/io";
 import type {ColorVariant} from "../../utils/colorsVariants.tsx";
 import {colorVariants} from "../../utils/colorsVariants.tsx";
+import * as React from "react";
 
 export type BadgeProps = {
     key?: string | number;
@@ -13,6 +14,8 @@ export type BadgeProps = {
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     variant?: ColorVariant;
     onRemove?: () => void;
+    onClick?: (() => void);
+    selected?: boolean;
 };
 
 export function getRandomBadgeVariant(): ColorVariant {
@@ -39,10 +42,20 @@ const Badge = ({
                    customCss,
                    variant = "gray",
                    onRemove,
+                   onClick,
+                   selected = false,
                    children,
                }: BadgeProps) => {
+
+    const handleClick = () => {
+        console.log(selected);
+        if (onClick) onClick();
+    };
+
     return (
         <span
+            onClick={handleClick}
+            data-selected={selected}
             css={[
                 styles.badge,
                 badgeVariantStyles[variant],
