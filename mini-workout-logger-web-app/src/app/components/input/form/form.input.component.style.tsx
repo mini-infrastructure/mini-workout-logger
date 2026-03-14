@@ -33,6 +33,7 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         cursor: "pointer",
+        color: theme.colors.text,
     }),
 
     inputButton: css({

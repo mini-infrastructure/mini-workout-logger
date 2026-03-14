@@ -15,6 +15,12 @@ import Badge from "../../components/badge/badge.component.tsx";
 import {useRootMuscles} from "../../hooks/useRootMuscles.tsx";
 import {FcDislike} from "react-icons/fc";
 import {RootMuscleIcons} from "../../models/muscle.model.tsx";
+import {
+    exerciseCategoryOptions,
+    exerciseDifficultyOptions,
+    exerciseEquipmentOptions, exerciseForceOptions, exerciseMechanicsOptions,
+    exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
+} from "../../models/exercise.model.tsx";
 
 const ExercisesDatabaseView = () => {
     const { exercises } = useExercises();
@@ -29,7 +35,7 @@ const ExercisesDatabaseView = () => {
             <div css={styles.actionsWrapper}>
                 <div css={styles.headerWrapper}>
                     <div css={styles.header}>Exercises Database</div>
-                    <div>16 of 16 exercises</div>
+                    <div>{exercises.length} {exercises.length === 1 ? 'exercise' : 'exercises'}</div>
                 </div>
 
                 <PrimaryButton
@@ -72,7 +78,87 @@ const ExercisesDatabaseView = () => {
             </div>
 
             <div css={styles.filtersWrapper(isFiltersWrapperOpen)}>
-                Filtros
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Category</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseCategoryOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Muscles</div>
+                    <div css={styles.filterOptionContent}>
+                        {muscles.map((muscle) => (
+                            <Badge key={muscle.id}>{muscle.name}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Difficulty</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseDifficultyOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Equipment</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseEquipmentOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Force</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseForceOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Mechanics</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseMechanicsOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Role</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseRoleOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Type</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseTypeOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
+                <div css={styles.filterOptions}>
+                    <div css={styles.filterOptionHeader}>Movement Classification</div>
+                    <div css={styles.filterOptionContent}>
+                        {exerciseMuscleMovementClassificationOptions.map((item) => (
+                            <Badge key={item.value}>{item.label}</Badge>
+                        ))}
+                    </div>
+                </div>
+
             </div>
 
             <div css={styles.cardsWrapper}>

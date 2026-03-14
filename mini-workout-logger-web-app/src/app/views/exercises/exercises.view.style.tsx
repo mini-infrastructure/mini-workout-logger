@@ -121,6 +121,23 @@ const styles = {
         marginBottom: open ? '1rem' : 0,
     }),
 
+    filterOptions: css({
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '0 0 1rem 0',
+    }),
+
+    filterOptionHeader: (theme: Theme) => css({
+        margin: '0 0 1rem 0',
+        fontSize: theme.fontSizes.larger,
+    }),
+
+    filterOptionContent: css({
+        display: 'flex',
+        gap: '0.5rem',
+        flexWrap: 'wrap',
+    }),
+
 };
 
 export default styles;
