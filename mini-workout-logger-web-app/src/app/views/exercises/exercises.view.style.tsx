@@ -99,6 +99,9 @@ const styles = {
         gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
         gap: '1rem',
         width: '100%',
+
+        overflowY: 'auto',
+        height: '100%',
     }),
 
     col: (theme: Theme) => css({
@@ -109,16 +112,33 @@ const styles = {
         boxSizing: 'border-box',
     }),
 
+    cardsAndFiltersWrapper: (theme: Theme) => css({
+        display: 'flex',
+        gap: '1rem',
+        width: '100%',
+
+        height: '68.5vh',
+        minHeight: 0,
+    }),
+
     filtersWrapper: (open: boolean) => (theme: Theme) => css({
-        height: open ? 'auto' : 0,
-        transition: 'all 0.25s ease',
+        flex: open ? 1 : 0,
+        width: open ? '50vw' : 0,
         opacity: open ? 1 : 0,
         overflow: 'hidden',
+
+        position: 'sticky',
+        top: 0,
+
+        maxHeight: '100%',
+        overflowY: 'auto',
+
+        transition: 'all 0.25s ease',
+
         backgroundColor: theme.colors.container1,
-        border: open ? `1px solid ${theme.colors.border1}` : 'none',
-        borderRadius: 10,
+        border: `1px solid ${theme.colors.border1}`,
+        borderRadius: 15,
         padding: open ? '1rem' : 0,
-        marginBottom: open ? '1rem' : 0,
     }),
 
     filterOptions: css({

@@ -77,98 +77,101 @@ const ExercisesDatabaseView = () => {
                 ))}
             </div>
 
-            <div css={styles.filtersWrapper(isFiltersWrapperOpen)}>
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Category</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseCategoryOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
-                    </div>
+            <div css={styles.cardsAndFiltersWrapper}>
+                <div css={styles.cardsWrapper}>
+                    {exercises.map((exercise) => (
+                        <ExerciseCard
+                            key={exercise.id}
+                            exercise={exercise}
+                            customCss={styles.col}
+                        />
+                    ))}
                 </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Muscles</div>
-                    <div css={styles.filterOptionContent}>
-                        {muscles.map((muscle) => (
-                            <Badge key={muscle.id}>{muscle.name}</Badge>
-                        ))}
+                <div css={styles.filtersWrapper(isFiltersWrapperOpen)}>
+
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Equipment</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseEquipmentOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Difficulty</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseDifficultyOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Muscles</div>
+                        <div css={styles.filterOptionContent}>
+                            {muscles.map((muscle) => (
+                                <Badge key={muscle.id}>{muscle.name}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Equipment</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseEquipmentOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Category</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseCategoryOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Force</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseForceOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Difficulty</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseDifficultyOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Mechanics</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseMechanicsOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Force</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseForceOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Role</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseRoleOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Mechanics</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseMechanicsOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Type</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseTypeOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Role</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseRoleOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div css={styles.filterOptions}>
-                    <div css={styles.filterOptionHeader}>Movement Classification</div>
-                    <div css={styles.filterOptionContent}>
-                        {exerciseMuscleMovementClassificationOptions.map((item) => (
-                            <Badge key={item.value}>{item.label}</Badge>
-                        ))}
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Type</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseTypeOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
                     </div>
+
+                    <div css={styles.filterOptions}>
+                        <div css={styles.filterOptionHeader}>Movement Classification</div>
+                        <div css={styles.filterOptionContent}>
+                            {exerciseMuscleMovementClassificationOptions.map((item) => (
+                                <Badge key={item.value}>{item.label}</Badge>
+                            ))}
+                        </div>
+                    </div>
+
                 </div>
-
-            </div>
-
-            <div css={styles.cardsWrapper}>
-                {exercises.map((exercise) => (
-                    <ExerciseCard
-                        key={exercise.id}
-                        exercise={exercise}
-                        customCss={styles.col}
-                    />
-                ))}
             </div>
 
             <ExerciseModal
