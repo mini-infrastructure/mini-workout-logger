@@ -164,53 +164,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Template
---SELECT add_exercise(
---    'Exercise.**',
---    'Exercise.**',
---    'CATEGORY',
---    'DIFFICULTY',
---    'EQUIPMENT',
---    'FORCE',
---    'MECHANICS',
---    'ROLE',
---    'TYPE',
----- TARGET MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- SYNERGIST MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- STABILIZER MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- DYNAMIC_STABILIZER MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- AGONIST MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- ANTAGONIST MUSCLES
---    ARRAY[
---        '',
---        ''
---    ],
----- ANTAGONIST_STABILIZER MUSCLES
---    ARRAY[
---        '',
---        ''
---    ]
---);
 
 -- Chest exercises
 SELECT add_exercise(
@@ -310,7 +263,7 @@ SELECT add_exercise(
     ],
     '{}',
     ARRAY[
-    'Muscle.Biceps'
+        'Muscle.Biceps'
     ]
 );
 
@@ -338,15 +291,38 @@ SELECT add_exercise(
 
 -- Legs
 SELECT add_exercise(
+    'Exercise.Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'NOVICE',
+    'BODYWEIGHT',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    '{}',
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
     'Exercise.Barbell_Squat',
     'Exercise.Squat',
     'STRENGTH',
-    'INTERMEDIATE',
+    'NOVICE',
     'BARBELL',
     'PUSH',
     'COMPOUND',
     'BASIC',
-    'ISOLATERAL',
+    'BILATERAL',
     ARRAY['Muscle.Quadriceps'],
     ARRAY[
         'Muscle.Gluteus_Maximus',
@@ -365,6 +341,150 @@ SELECT add_exercise(
     ARRAY[
         'Muscle.Abdominal',
         'Muscle.Obliques'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Smith_Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'BEGINNER',
+    'MACHINE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ],
+    '{}',
+    '{}',
+    ARRAY[
+        'Muscle.Abdominal',
+        'Muscle.Obliques'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Split_Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'BEGINNER',
+    'BARBELL',
+    'PUSH',
+    'COMPOUND',
+    'AUXILIARY',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae',
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Single_Leg_Split_Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'INTERMEDIATE',
+    'BARBELL',
+    'PUSH',
+    'COMPOUND',
+    'AUXILIARY',
+    'UNILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae',
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Dumbbell_Squat',
+    'Exercise.Squat',
+    'STRENGTH',
+    'INTERMEDIATE',
+    'BARBELL',
+    'PUSH',
+    'COMPOUND',
+    'AUXILIARY',
+    'UNILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Erector_Spinae',
+        'uscle.Upper_Trapezius',
+        'Muscle.Middle_Trapezius',
+        'Muscle.Levator_Scapulae',
+        'Muscle.Rhomboids'
+    ],
+    '{}',
+    ARRAY[
+        'Muscle.Rectus_Femoris',
+        'Muscle.Obliques'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Lunge',
+    'Exercise.Lunge',
+    'STRENGTH',
+    'BEGINNER',
+    'BODYWEIGHT',
+    'PUSH',
+    'COMPOUND',
+    'BASIC_OR_AUXILIARY',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Tibialis_Anterior',
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus',
+        'Muscle.Quadratus_Lumborum',
+        'Muscle.Obliques'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
     ]
 );
 
@@ -402,6 +522,34 @@ SELECT add_exercise(
 );
 
 SELECT add_exercise(
+    'Exercise.Rear_Lunge',
+    'Exercise.Lunge',
+    'STRENGTH',
+    'BEGINNER',
+    'DUMBBELL',
+    'PUSH',
+    'COMPOUND',
+    'BASIC_OR_AUXILIARY',
+    'ISOLATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus',
+        'Muscle.Quadratus_Lumborum',
+        'Muscle.Obliques'
+    ],
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
     'Exercise.Machine_Leg_Press_45_Degree',
     'Exercise.Leg_Press',
     'STRENGTH',
@@ -422,4 +570,370 @@ SELECT add_exercise(
         'Muscle.Hamstrings',
         'Muscle.Gastrocnemius'
     ]
+);
+
+SELECT add_exercise(
+    'Exercise.Sled_Lying_Leg_Press',
+    'Exercise.Leg_Press',
+    'STRENGTH',
+    'BEGINNER',
+    'MACHINE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    '{}',
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Sled_Seated_Leg_Press',
+    'Exercise.Leg_Press',
+    'STRENGTH',
+    'BEGINNER',
+    'MACHINE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY[
+        'Muscle.Gluteus_Maximus',
+        'Muscle.Adductor_Magnus',
+        'Muscle.Soleus'
+    ],
+    '{}',
+    ARRAY[
+        'Muscle.Hamstrings',
+        'Muscle.Gastrocnemius'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Kneeling_Quadriceps_Stretch',
+    'Exercise.Quadriceps_Stretch',
+    'STRETCHING',
+    'NOVICE',
+    'BODYWEIGHT',
+    NULL,
+    NULL,
+    'AUXILIARY',
+    'ISOLATERAL',
+    ARRAY['Muscle.Rectus_Femoris'],
+    ARRAY[
+        'Muscle.Quadriceps'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Standing_Quadriceps_Stretch',
+    'Exercise.Quadriceps_Stretch',
+    'STRETCHING',
+    'NOVICE',
+    'BODYWEIGHT',
+    NULL,
+    NULL,
+    'AUXILIARY',
+    'ISOLATERAL',
+    ARRAY['Muscle.Rectus_Femoris'],
+    ARRAY[
+        'Muscle.Quadriceps'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Standing_Calf_Raise',
+    'Exercise.Calf_Raise',
+    'STRENGTH',
+    'BEGINNER',
+    'BODYWEIGHT',
+    'PUSH',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Gastrocnemius'],
+    ARRAY[
+        'Muscle.Soleus'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Standing_Leg_Calf_Raise',
+    'Exercise.Calf_Raise',
+    'STRENGTH',
+    'BEGINNER',
+    'BARBELL',
+    'PUSH',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Gastrocnemius'],
+    ARRAY[
+        'Muscle.Soleus'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Dumbbell_Standing_Calf_Raise',
+    'Exercise.Calf_Raise',
+    'STRENGTH',
+    'BEGINNER',
+    'DUMBBELL',
+    'PUSH',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Gastrocnemius'],
+    ARRAY[
+        'Muscle.Soleus'
+    ],
+    ARRAY[
+        'Muscle.Upper_Trapezius',
+        'Muscle.Middle_Trapezius',
+        'Muscle.Levator_Scapulae',
+        'Muscle.Gluteus_Medius',
+        'Muscle.Gluteus_Minimus'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.PlateLoaded_Lever_Calf_Extension',
+    'Exercise.Calf_Extension',
+    'STRENGTH',
+    'BEGINNER',
+    'PLATE',
+    'PUSH',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Gastrocnemius'],
+    ARRAY[
+        'Muscle.Soleus'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Weighted_Neck_Flexion',
+    'Exercise.Neck_Flexion',
+    'STRENGTH',
+    'BEGINNER',
+    'PLATE',
+    'PULL',
+    'ISOLATED',
+    'BASIC_OR_AUXILIARY',
+    NULL,
+    ARRAY['Muscle.Sternocleidomastoid'],
+    '{}',
+    ARRAY[
+        'Muscle.Abdominal',
+        'Muscle.Obliques'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Cable_Neck_Flexion',
+    'Exercise.Neck_Flexion',
+    'STRENGTH',
+    'BEGINNER',
+    'CABLE',
+    'PULL',
+    'ISOLATED',
+    'BASIC_OR_AUXILIARY',
+    NULL,
+    ARRAY['Muscle.Sternocleidomastoid'],
+    '{}',
+    ARRAY[
+        'Muscle.Abdominal',
+        'Muscle.Obliques'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Curl',
+    'Exercise.Curl',
+    'STRENGTH',
+    'BEGINNER',
+    'BARBELL',
+    'PULL',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Biceps'],
+    ARRAY[
+        'Muscle.Brachialis',
+        'Muscle.Brachioradialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Dumbbell_Curl',
+    'Exercise.Curl',
+    'STRENGTH',
+    'BEGINNER',
+    'DUMBBELL',
+    'PULL',
+    'ISOLATED',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Biceps'],
+    ARRAY[
+        'Muscle.Brachialis',
+        'Muscle.Brachioradialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors',
+        'Muscle.Levator_Scapulae',
+        'Muscle.Coracobrachialis',
+        'Muscle.Upper_Trapezius',
+        'Muscle.Middle_Trapezius',
+        'Muscle.Anterior_Deltoid'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Preacher_Curl',
+    'Exercise.Curl',
+    'STRENGTH',
+    'BEGINNER',
+    'BARBELL',
+    'PULL',
+    'ISOLATED',
+    'AUXILIARY',
+    'BILATERAL',
+    ARRAY['Muscle.Brachialis'],
+    ARRAY[
+        'Muscle.Biceps',
+        'Muscle.Brachioradialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Lever_Preacher_Curl',
+    'Exercise.Curl',
+    'STRENGTH',
+    'BEGINNER',
+    'MACHINE',
+    'PULL',
+    'ISOLATED',
+    'AUXILIARY',
+    'BILATERAL',
+    ARRAY['Muscle.Brachialis'],
+    ARRAY[
+        'Muscle.Biceps',
+        'Muscle.Brachioradialis'
+    ],
+    ARRAY[
+        'Muscle.Wrist_Flexors'
+    ],
+    '{}',
+    '{}',
+    ARRAY[
+        'Muscle.Triceps'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Barbell_Military_Press',
+    'Exercise.Overhead_Press',
+    'STRENGTH',
+    'NOVICE',
+    'BARBELL',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Anterior_Deltoid'],
+    ARRAY[
+        'Muscle.Pectoralis_Major',
+        'Muscle.Clavicular',
+        'Muscle.Lateral_Deltoid',
+        'Muscle.Coracobrachialis',
+        'Muscle.Middle_Trapezius',
+        'Muscle.Lower_Trapezius',
+        'Muscle.Serratus_Anterior'
+    ],
+    ARRAY[
+        'Muscle.Upper_Trapezius',
+        'Muscle.Levator_Scapulae'
+    ],
+    ARRAY[
+        'Muscle.Triceps',
+        'Muscle.Biceps'
+    ]
+);
+
+SELECT add_exercise(
+    'Exercise.Sled_Shoulder_Press',
+    'Exercise.Overhead_Press',
+    'STRENGTH',
+    'NOVICE',
+    'MACHINE',
+    'PUSH',
+    'COMPOUND',
+    'BASIC',
+    'BILATERAL',
+    ARRAY['Muscle.Anterior_Deltoid'],
+    ARRAY[
+        'Muscle.Supinators',
+        'Muscle.Lateral_Deltoid',
+        'Muscle.Pectoralis_Major',
+        'Muscle.Clavicular',
+        'Muscle.Coracobrachialis',
+        'Muscle.Triceps',
+        'Muscle.Middle_Trapezius',
+        'Muscle.Lower_Trapezius',
+        'Muscle.Serratus_Anterior'
+    ],
+    ARRAY[
+        'Muscle.Upper_Trapezius',
+        'Muscle.Levator_Scapulae'
+    ],
+    ARRAY[
+        'Muscle.Triceps',
+        'Muscle.Biceps'
+    ]
+);
+
+SELECT add_exercise(
+   'Exercise.Barbell_Upright_Row',
+   'Exercise.Row',
+   'STRENGTH',
+   'BEGINNER',
+   'BARBELL',
+   'PULL',
+   'COMPOUND',
+   'AUXILIARY',
+   'BILATERAL',
+   ARRAY['Muscle.Lateral_Deltoid'],
+   ARRAY[
+       'Muscle.Supinators',
+       'Muscle.Anterior_Deltoid',
+       'Muscle.Brachialis',
+       'Muscle.Biceps',
+       'Muscle.Middle_Trapezius',
+       'Muscle.Lower_Trapezius',
+       'Muscle.Middle_Trapezius',
+       'Muscle.Lower_Trapezius',
+       'Muscle.Teres_Minor',
+       'Muscle.Serratus_Anterior'
+   ],
+   ARRAY[
+       'Muscle.Upper_Trapezius',
+        'Muscle.Levator_Scapulae'
+   ]
 );
