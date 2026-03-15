@@ -2,7 +2,7 @@ import {useLocation} from "react-router-dom";
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import Layout from "../../components/layout/layout.component.tsx";
 import FormBuilder, {FormItem} from "../../components/input/form/form.input.component.tsx";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
@@ -13,6 +13,8 @@ import {useMuscles} from "../../hooks/useMuscles.tsx";
 import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
 import PrimaryButton from "../../components/button/button.primary.component.tsx";
 import styles from "./exercise.view.style.tsx";
+import Button from "../../components/button/button.component.tsx";
+import {FiEdit, FiTrash2} from "react-icons/fi";
 
 type LocationState = {
     exercise: ExerciseReadDTO;
@@ -23,6 +25,9 @@ const ExerciseView = () => {
     const { exercise } = location.state as LocationState;
     const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
+    const [isDisabled, setIsDisabled] = useState(true);
+
+    const toggleDisabled = () => setIsDisabled(prev => !prev);
 
     const exerciseFormItems: FormItem[] = useMemo(() => [
         {
@@ -131,7 +136,20 @@ const ExerciseView = () => {
     const handleSubmit = async (values: any) => {};
 
     return (
-        <Layout>
+        <Layout
+            navbarContent={
+                <Button
+                    onClick={toggleDisabled}
+                    icon={<FiEdit />}
+                    isClicked={!isDisabled}
+                    clickedIcon={<FiTrash2 />}
+                    customCss={styles.editCancelBtn(!isDisabled)}
+                    customIconCss={styles.editCancelIconBtn(!isDisabled)}
+                >
+                    {isDisabled ? "Edit" : "Cancel"}
+                </Button>
+            }
+        >
             <div css={styles.wrap}>
                 <div css={styles.formContainer}>
                     <FormBuilder
@@ -139,7 +157,7 @@ const ExerciseView = () => {
                         columns={2}
                         onSubmit={handleSubmit}
                         submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
-                        disabled={true}
+                        disabled={isDisabled}
                     />
                 </div>
                 <div css={styles.right}></div>

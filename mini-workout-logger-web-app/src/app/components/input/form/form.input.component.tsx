@@ -122,6 +122,7 @@ const FormBuilder = ({
                                 value={values[item.name] ?? ""}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
+                                disabled={disabled}
                             />
                         ) : item.type === "textarea" ? (
                             <textarea
@@ -129,6 +130,7 @@ const FormBuilder = ({
                                 placeholder={item.placeholder}
                                 value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
+                                disabled={disabled}
                             />
                         ) : item.type === "multiselect" ? (
                             <MultiSelect
@@ -136,6 +138,7 @@ const FormBuilder = ({
                                 value={values[item.name] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
+                                disabled={disabled}
                             />
                         ) : item.type === "buttonselect" ? (
                             <ButtonSelect
@@ -144,12 +147,14 @@ const FormBuilder = ({
                                 value={values[item.name] ?? ""}
                                 inputEnabled={item.inputEnabled}
                                 onChange={(val) => handleChange(item.name, val)}
+                                disabled={disabled}
                             />
                         ) : item.type === "buttonmultiselect" ? (
                             <ButtonMultiSelect
                                 options={item.options as ButtonMultiSelectFieldOptions}
                                 value={values[item.name] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
+                                disabled={disabled}
                             />
                         ) : (
                             <input
@@ -158,6 +163,7 @@ const FormBuilder = ({
                                 placeholder={item.placeholder}
                                 value={values[item.name] ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
+                                disabled={disabled}
                             />
                         )}
                     </div>

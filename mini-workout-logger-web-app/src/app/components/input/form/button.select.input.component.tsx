@@ -10,6 +10,7 @@ type ButtonSelectProps = {
     placeholder?: string;
     value: string;
     onChange: (val: string) => void;
+    disabled?: boolean;
 };
 
 const ButtonSelect = ({
@@ -18,6 +19,7 @@ const ButtonSelect = ({
                           placeholder,
                           value,
                           onChange,
+                          disabled = false,
                       }: ButtonSelectProps) => {
 
     const [open, setOpen] = useState(false);
@@ -36,7 +38,7 @@ const ButtonSelect = ({
         <div css={styles.wrapper}>
 
             <div
-                css={styles.multiassociativeSelectBox}
+                css={styles.multiassociativeSelectBox(disabled!)}
                 onClick={() => setOpen(!open)}
             >
                 <input
@@ -48,12 +50,14 @@ const ButtonSelect = ({
                     readOnly
                 />
 
-                <SecondaryButton
-                    isClicked={open}
-                    onClick={toggleDropdown}
-                >
-                    Choose
-                </SecondaryButton>
+                {!disabled && (
+                    <SecondaryButton
+                        isClicked={open}
+                        onClick={toggleDropdown}
+                    >
+                        Choose
+                    </SecondaryButton>
+                )}
             </div>
 
             {open && (

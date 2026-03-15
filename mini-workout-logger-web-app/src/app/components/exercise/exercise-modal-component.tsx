@@ -20,16 +20,15 @@ export type ExerciseModalProps = {
     isModalOpen: boolean;
     setIsModalOpen: (isOpen: boolean) => void;
     exercise?: ExerciseReadDTO;
-    muscles?: MuscleReadDTO[];
 }
 
 const ExerciseModal = ({
                            isModalOpen,
                            setIsModalOpen,
                            exercise,
-                           muscles,
                        }: ExerciseModalProps) => {
     const { exerciseGroupNames } = useExerciseGroupNames();
+    const { muscles } = useMuscles();
 
     const exerciseFormItems: FormItem[] = useMemo(() => [
         {

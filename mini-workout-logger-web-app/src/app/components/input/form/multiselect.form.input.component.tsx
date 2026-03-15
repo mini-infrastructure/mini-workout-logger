@@ -10,13 +10,15 @@ type MultiSelectProps = {
     placeholder?: string;
     onChange: (values: string[]) => void;
     value: string[];
+    disabled?: boolean;
 };
 
 const MultiSelect = ({
                          options,
                          value,
                          onChange,
-                         placeholder
+                         placeholder,
+                         disabled = false,
                      }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
     const toggleDropdown = () => setOpen((prev) => !prev);

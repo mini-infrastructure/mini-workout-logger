@@ -7,7 +7,6 @@ import {MdAdd, MdFilterAltOff} from "react-icons/md";
 import {useState} from "react";
 import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
 import {FaSearch} from "react-icons/fa";
-import SecondaryButton from "../../components/button/button.secondary.component.tsx";
 import {HiAdjustmentsHorizontal} from "react-icons/hi2";
 import Button from "../../components/button/button.component.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
@@ -23,7 +22,6 @@ import {
 } from "../../models/exercise.model.tsx";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import {slugify} from "../../hooks/slugfy.tsx";
 
 const ExerciseFilters = {
     equipment: { label: 'Equipment' },
@@ -52,7 +50,6 @@ const ExercisesDatabaseView = () => {
     const navigate = useNavigate();
 
     const handleBadgeClick = (filter: ExerciseFilterKey, value: string) => {
-        console.log(`Clicked badge for filter: ${filter}, value: ${value}`);
         setFilters(prev => {
             const current = prev[filter] ?? [];
 
@@ -296,7 +293,6 @@ const ExercisesDatabaseView = () => {
             <ExerciseModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
-                muscles={muscles}
             />
         </Layout>
     );

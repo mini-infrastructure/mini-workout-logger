@@ -20,10 +20,14 @@ const Select = ({
                     disabled,
                 }: SelectProps) => {
     const [open, setOpen] = useState(false);
-    const toggleDropdown = () => setOpen((prev) => !prev);
+    const toggleDropdown = () => {
+        if (disabled) return;
+        setOpen((prev) => !prev);
+    }
 
     const handleSelect = (val: string) => {
         onChange(val);
+        if (disabled) return;
         setOpen(false);
     };
 
@@ -41,14 +45,16 @@ const Select = ({
             >
                 <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>
 
-                <Button
-                    icon={<MdKeyboardArrowDown />}
-                    clickedIcon={<MdKeyboardArrowUp />}
-                    isClicked={open}
-                    onClick={toggleDropdown}
-                    customCss={styles.inputButton}
-                    customIconCss={styles.inputButtonIcon}
-                />
+                {!disabled && (
+                    <Button
+                        icon={<MdKeyboardArrowDown />}
+                        clickedIcon={<MdKeyboardArrowUp />}
+                        isClicked={open}
+                        onClick={toggleDropdown}
+                        customCss={styles.inputButton}
+                        customIconCss={styles.inputButtonIcon}
+                    />
+                )}
             </div>
 
             {open && (

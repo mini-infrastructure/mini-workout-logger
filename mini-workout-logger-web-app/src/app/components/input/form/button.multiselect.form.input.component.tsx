@@ -14,12 +14,14 @@ type ButtonMultiSelectProps = {
     options: ButtonMultiSelectFieldOptions;
     value: ButtonMultiSelectValue[];
     onChange: (val: ButtonMultiSelectValue[]) => void;
+    disabled?: boolean;
 };
 
 const ButtonMultiSelect = ({
                                options,
                                value,
                                onChange,
+                               disabled = false,
                            }: ButtonMultiSelectProps) => {
     const [firstValue, setFirstValue] = useState("");
     const [secondValue, setSecondValue] = useState("");
@@ -53,34 +55,38 @@ const ButtonMultiSelect = ({
     return (
         <div css={styles.wrapper}>
 
-            <div css={styles.buttonMultiSelectContainer}>
-                <ButtonSelect
-                    options={availableFirstOptions}
-                    placeholder={options.first.label}
-                    inputEnabled={options.first.inputEnabled}
-                    value={firstValue}
-                    onChange={setFirstValue}
-                />
+            {!disabled && (
+                <>
+                    <div css={styles.buttonMultiSelectContainer}>
+                        <ButtonSelect
+                            options={availableFirstOptions}
+                            placeholder={options.first.label}
+                            inputEnabled={options.first.inputEnabled}
+                            value={firstValue}
+                            onChange={setFirstValue}
+                        />
 
-                <ButtonSelect
-                    options={options.second.options}
-                    placeholder={options.second.label}
-                    inputEnabled={options.second.inputEnabled}
-                    value={secondValue}
-                    onChange={setSecondValue}
-                />
-            </div>
+                        <ButtonSelect
+                            options={options.second.options}
+                            placeholder={options.second.label}
+                            inputEnabled={options.second.inputEnabled}
+                            value={secondValue}
+                            onChange={setSecondValue}
+                        />
+                    </div>
 
-            <div css={styles.buttonMultiSelectAddButton}>
-                <SecondaryButton
-                    onClick={addOption}
-                    disabled={!firstValue || !secondValue}
-                >
-                    Add option
-                </SecondaryButton>
-            </div>
+                    <div css={styles.buttonMultiSelectAddButton}>
+                        <SecondaryButton
+                            onClick={addOption}
+                            disabled={!firstValue || !secondValue}
+                        >
+                            Add option
+                        </SecondaryButton>
+                    </div>
+                </>
+            )}
 
-            <div css={styles.multiselectSelectedItems(value.length > 0)}>
+                <div css={styles.multiselectSelectedItems((value.length > 0) && !disabled)}>
                 {value.map((item, index) => {
 
                     const firstLabel = getLabel(item.first, options.first.options);
@@ -89,7 +95,7 @@ const ButtonMultiSelect = ({
                     return (
                         <Badge
                             key={`${item.first}-${item.second}-${index}`}
-                            onRemove={() => removeOption(index)}
+                            onRemove={!disabled ? () => removeOption(index) : undefined}
                             customCss={styles.badgeCustomCss}
                         >
                             {firstLabel} + {secondLabel}

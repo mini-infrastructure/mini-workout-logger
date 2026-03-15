@@ -85,7 +85,7 @@ const styles = {
         margin: '0 0.25rem 0.5rem 0',
     }),
 
-    multiassociativeSelectBox: css({
+    multiassociativeSelectBox: (disabled: boolean) => css({
         display: 'flex',
         justifyContent: 'stretch',
 
@@ -96,8 +96,8 @@ const styles = {
         },
 
         '& input': {
-            width: '80%',
-            margin: "0 1rem 0 0",
+            width: disabled ? '100%' : '80%',
+            margin: disabled ? '0' : '0 1rem 0 0',
         }
     }),
 
