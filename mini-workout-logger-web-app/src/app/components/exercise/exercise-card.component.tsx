@@ -15,7 +15,7 @@ import {useState} from "react";
 import ExerciseModal from "./exercise-modal-component.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import Card from "../card/card.component.tsx";
-import {MdOutlineCheckBox} from "react-icons/md";
+import {MdOpenInNew, MdOutlineCheckBox} from "react-icons/md";
 import Divider from "../divider/divider.component.tsx";
 import Rating, {RatingLevelItem} from "../rating/rating.component.tsx";
 import type {ExerciseFilterKey} from "../../views/exercises/exercises.view.tsx";
@@ -26,12 +26,14 @@ export type ExerciseCardProps = {
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     onBadgeClick?: (filter: ExerciseFilterKey, value: string) => void;
     filters?: Record<string, string[]>;
+    onClick?: (() => void);
 };
 
 const ExerciseCard = ({
                           exercise,
                           onBadgeClick,
-    filters,
+                          filters,
+                          onClick,
                       }: ExerciseCardProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -56,17 +58,23 @@ const ExerciseCard = ({
             onClick: () => setIsModalOpen(true),
         },
         {
-            label: "Clone",
-            icon: <FiCopy />,
+            label: "Open",
+            icon: <MdOpenInNew />,
             iconColor: "info",
-            onClick: () => console.log("Clone"),
+            onClick: onClick,
         },
-        {
-            label: "Select",
-            icon: <MdOutlineCheckBox />,
-            iconColor: "info",
-            onClick: () => console.log("Select"),
-        },
+        // {
+        //     label: "Clone",
+        //     icon: <FiCopy />,
+        //     iconColor: "info",
+        //     onClick: () => console.log("Clone"),
+        // },
+        // {
+        //     label: "Select",
+        //     icon: <MdOutlineCheckBox />,
+        //     iconColor: "info",
+        //     onClick: () => console.log("Select"),
+        // },
         {
             dividerBefore: true,
             label: "Delete",
@@ -96,7 +104,10 @@ const ExerciseCard = ({
     ];
 
     return (
-        <Card customCss={styles.exerciseCard}>
+        <Card
+            customCss={styles.exerciseCard}
+            // onClick={onClick}
+        >
             {/* Header */}
             <div css={styles.dropdownWrapper}>
 
@@ -104,13 +115,17 @@ const ExerciseCard = ({
                     {exercise.name}
                 </div>
 
-                <DropdownMenu
-                    title="Actions"
-                    items={dropdownItems}
-                    trigger="button"
-                    customTriggerCss={styles.dropdownButton}
-                    customIconTriggerCss={styles.dropdownIconButton}
-                />
+                <div
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <DropdownMenu
+                        title="Actions"
+                        items={dropdownItems}
+                        trigger="button"
+                        customTriggerCss={styles.dropdownButton}
+                        customIconTriggerCss={styles.dropdownIconButton}
+                    />
+                </div>
             </div>
 
             {/* Body */}

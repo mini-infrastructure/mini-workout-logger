@@ -9,9 +9,16 @@ export type SelectProps = {
     placeholder?: string;
     onChange: (val: string) => void;
     value: string;
+    disabled?: boolean;
 };
 
-const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
+const Select = ({
+                    options,
+                    value,
+                    onChange,
+                    placeholder,
+                    disabled,
+                }: SelectProps) => {
     const [open, setOpen] = useState(false);
     const toggleDropdown = () => setOpen((prev) => !prev);
 
@@ -26,7 +33,10 @@ const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
         <div css={styles.wrapper}>
             {/* SELECT BOX */}
             <div
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    if (disabled) return;
+                    setOpen(!open);
+                }}
                 css={styles.input}
             >
                 <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>

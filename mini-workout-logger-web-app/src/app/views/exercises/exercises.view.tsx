@@ -22,6 +22,8 @@ import {
     exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
 } from "../../models/exercise.model.tsx";
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
+import {slugify} from "../../hooks/slugfy.tsx";
 
 const ExerciseFilters = {
     equipment: { label: 'Equipment' },
@@ -46,6 +48,8 @@ const ExercisesDatabaseView = () => {
     const [isFiltersWrapperOpen, setIsFiltersWrapperOpen] = useState(false);
 
     const [filters, setFilters] = useState<Record<string, string[]>>({});
+
+    const navigate = useNavigate();
 
     const handleBadgeClick = (filter: ExerciseFilterKey, value: string) => {
         console.log(`Clicked badge for filter: ${filter}, value: ${value}`);
@@ -138,6 +142,11 @@ const ExercisesDatabaseView = () => {
                             key={exercise.id}
                             exercise={exercise}
                             customCss={styles.col}
+                            onClick={() =>
+                                navigate(`/exercises/${exercise.id}`, {
+                                    state: { exercise }
+                                })
+                            }
                             onBadgeClick={handleBadgeClick}
                             filters={filters}
                         />

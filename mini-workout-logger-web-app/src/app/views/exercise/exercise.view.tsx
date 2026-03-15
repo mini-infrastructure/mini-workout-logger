@@ -1,34 +1,27 @@
-import Modal from "../modal/modal.component.tsx";
-import FormBuilder, {FormItem} from "../input/form/form.input.component.tsx";
-import PrimaryButton from "../button/button.primary.component.tsx";
-import styles from "./exercise-modal-component.style.tsx";
+import {useLocation} from "react-router-dom";
+import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
+import Layout from "../../components/layout/layout.component.tsx";
+import FormBuilder, {FormItem} from "../../components/input/form/form.input.component.tsx";
+import {useMemo} from "react";
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
     exerciseEquipmentOptions, exerciseForceOptions, exerciseMechanicsOptions,
     exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
 } from "../../models/exercise.model.tsx";
-import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
-import ExerciseService from "../../services/exercise.service.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
-import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
 import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
-import {useMemo} from "react";
-import type {MuscleReadDTO} from "../../dtos/muscle-read.dto.tsx";
+import PrimaryButton from "../../components/button/button.primary.component.tsx";
+import styles from "./exercise.view.style.tsx";
 
-export type ExerciseModalProps = {
-    isModalOpen: boolean;
-    setIsModalOpen: (isOpen: boolean) => void;
-    exercise?: ExerciseReadDTO;
-    muscles?: MuscleReadDTO[];
-}
+type LocationState = {
+    exercise: ExerciseReadDTO;
+};
 
-const ExerciseModal = ({
-                           isModalOpen,
-                           setIsModalOpen,
-                           exercise,
-                           muscles,
-                       }: ExerciseModalProps) => {
+const ExerciseView = () => {
+    const location = useLocation();
+    const { exercise } = location.state as LocationState;
+    const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
 
     const exerciseFormItems: FormItem[] = useMemo(() => [
@@ -135,56 +128,25 @@ const ExerciseModal = ({
         }
     ], [exercise, muscles, exerciseGroupNames]);
 
-    const handleSubmit = async (values: any) => {
-        try {
-            const exerciseMuscles = (values.exercise_muscles ?? []).map((m: any) => ({
-                muscle_id: Number(m.first),
-                role: m.second,
-            }));
-
-            const payload: ExerciseWriteDTO = {
-                name: values.name,
-                group_name: values.group_name,
-                category: values.category,
-                difficulty: values.difficulty,
-                equipment: values.equipment,
-                force: values.force,
-                mechanics: values.mechanics,
-                role: values.role,
-                type: values.type,
-                exercise_muscles: exerciseMuscles,
-            };
-
-            if (exercise?.id) {
-                await ExerciseService.update(exercise.id, payload);
-            } else {
-                await ExerciseService.create(payload);
-            }
-
-            setIsModalOpen(false);
-            window.location.reload();
-
-        } catch (error) {
-            // Todo
-        }
-    };
+    const handleSubmit = async (values: any) => {};
 
     return (
-        <Modal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-        >
-            <div css={styles.header}>
-                {exercise ? "Edit exercise" : "Create exercise"}
+        <Layout>
+            <div css={styles.wrap}>
+                <div css={styles.formContainer}>
+                    <FormBuilder
+                        items={exerciseFormItems}
+                        columns={2}
+                        onSubmit={handleSubmit}
+                        submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
+                        disabled={true}
+                    />
+                </div>
+                <div css={styles.right}></div>
             </div>
-            <FormBuilder
-                items={exerciseFormItems}
-                columns={2}
-                onSubmit={handleSubmit}
-                submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
-            />
-        </Modal>
-    )
-}
+        </Layout>
+    );
+};
 
-export default ExerciseModal;
+
+export default ExerciseView;

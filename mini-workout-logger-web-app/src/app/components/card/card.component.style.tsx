@@ -15,7 +15,7 @@ const float = keyframes`
 `;
 
 const styles = {
-    baseCard: (theme: Theme) => css({
+    baseCard: (clicked: boolean) => (theme: Theme) => css({
         position: "relative",
         overflow: "hidden",
         borderRadius: 15,
@@ -24,6 +24,7 @@ const styles = {
         WebkitBackdropFilter: "blur(30px)",
         backgroundColor: transparentize(0.6, theme.colors.container1),
         border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
+        cursor: clicked ? "pointer" : "default",
     }),
 
     /**

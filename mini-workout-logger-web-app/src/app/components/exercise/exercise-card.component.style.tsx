@@ -12,7 +12,7 @@ const styles = {
         flexDirection: 'column',
         borderRadius: '0 0 0.75rem 0.75rem',
         strokeLinejoin: 'round',
-        padding: '1.5rem 1rem 1rem 1rem',
+        padding: '2.5rem 2rem 2rem 2rem',
         boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
         overflow: 'visible',
         minHeight: '8.5rem',

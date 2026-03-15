@@ -55,6 +55,7 @@ export type FormBuilderProps = {
     columns: number;
     onSubmit: (values: Record<string, any>) => void;
     submitButton?: ReactNode;
+    disabled?: boolean;
 };
 
 const buildInitialValues = (items: FormItem[]) => {
@@ -87,6 +88,7 @@ const FormBuilder = ({
                          columns,
                          onSubmit,
                          submitButton,
+                         disabled = false,
                      }: FormBuilderProps) => {
     const [values, setValues] = useState<Record<string, any>>(() => buildInitialValues(items));
 
@@ -162,9 +164,13 @@ const FormBuilder = ({
                 );
             })}
 
-            <div css={styles.fieldWrapper(columns)} style={{ marginTop: "0.5rem" }}>
-                {submitButton ?? <Button type="submit">Submit</Button>}
-            </div>
+            {!disabled ? (
+                <div css={styles.fieldWrapper(columns)} style={{ marginTop: "0.5rem" }}>
+                    {submitButton ?? <Button type="submit">Submit</Button>}
+                </div>
+            ) : (
+                <></>
+            )}
         </form>
     );
 };
