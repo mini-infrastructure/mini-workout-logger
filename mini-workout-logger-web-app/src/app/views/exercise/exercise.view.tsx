@@ -16,6 +16,7 @@ import styles from "./exercise.view.style.tsx";
 import Button from "../../components/button/button.component.tsx";
 import {FiEdit, FiTrash2} from "react-icons/fi";
 import {useExercise} from "../../hooks/useExercise.tsx";
+import Field from "../../components/field/field.component.tsx";
 
 type LocationState = {
     exercise: ExerciseReadDTO;
@@ -38,116 +39,6 @@ const ExerciseView = () => {
 
     const toggleDisabled = () => setIsDisabled(prev => !prev);
 
-    console.log(exercise)
-
-    const exerciseFormItems: FormItem[] = useMemo(() => {
-        if (!exercise) return [];
-
-        return [
-            {
-                name: "name",
-                label: "Name",
-                type: "text",
-                placeholder: "e.g. Barbell Squat",
-                initialValue: exercise.name || "",
-                colSpan: 4,
-            },
-            {
-                name: "group_name",
-                label: "Group name",
-                type: "buttonselect",
-                placeholder: "e.g. Squat",
-                initialValue: exercise.group_name || "",
-                colSpan: 4,
-                options: exerciseGroupNames?.map(name => ({
-                    label: name,
-                    value: name,
-                })),
-            },
-            {
-                name: "category",
-                label: "Category",
-                type: "select",
-                options: exerciseCategoryOptions,
-                initialValue: exercise.category,
-                colSpan: 1,
-            },
-            {
-                name: "difficulty",
-                label: "Difficulty",
-                type: "select",
-                options: exerciseDifficultyOptions,
-                initialValue: exercise.difficulty,
-                colSpan: 1,
-            },
-            {
-                name: "equipment",
-                label: "Equipment",
-                type: "select",
-                options: exerciseEquipmentOptions,
-                initialValue: exercise.equipment,
-                colSpan: 1,
-            },
-            {
-                name: "force",
-                label: "Force",
-                type: "select",
-                options: exerciseForceOptions,
-                initialValue: exercise.force,
-                colSpan: 1,
-            },
-            {
-                name: "mechanics",
-                label: "Mechanics",
-                type: "select",
-                options: exerciseMechanicsOptions,
-                initialValue: exercise.mechanics,
-                colSpan: 1,
-            },
-            {
-                name: "role",
-                label: "Exercise role",
-                type: "select",
-                options: exerciseRoleOptions,
-                initialValue: exercise.role,
-                colSpan: 1,
-            },
-            {
-                name: "type",
-                label: "Type",
-                type: "select",
-                options: exerciseTypeOptions,
-                initialValue: exercise.type,
-                colSpan: 1,
-            },
-            {
-                name: "exercise_muscles",
-                label: "Muscles",
-                type: "buttonmultiselect",
-                colSpan: 2,
-                options: {
-                    first: {
-                        label: "Muscles",
-                        options: (muscles ?? []).map(m => ({
-                            label: m.name,
-                            value: m.id,
-                        })),
-                        inputEnabled: false,
-                    },
-                    second: {
-                        label: "Muscle Movement Classification",
-                        options: exerciseMuscleMovementClassificationOptions,
-                        inputEnabled: false,
-                    }
-                },
-                initialValue: exercise.exercise_muscles?.map(m => ({
-                    first: String(m.muscle_name),
-                    second: m.role,
-                })) ?? [],
-            }
-        ];
-    }, [exercise, muscles, exerciseGroupNames]);
-
     const handleSubmit = async (values: any) => {};
 
     return (
@@ -166,14 +57,17 @@ const ExerciseView = () => {
             }
         >
             <div css={styles.wrap}>
-                <div css={styles.formContainer}>
-                    <FormBuilder
-                        items={exerciseFormItems}
-                        columns={2}
-                        onSubmit={handleSubmit}
-                        submitButton={<PrimaryButton type="submit">Save</PrimaryButton>}
-                        disabled={isDisabled}
-                    />
+                <div css={styles.exerciseDescriptionWrapper}>
+                    <Field header="Name" content={exercise?.name} />
+                    <Field header="Equipment" content={exercise?.equipment} />
+                    <Field header="Category" content={exercise?.category} />
+                    <Field header="Muscles" content={exercise?.muscles?.map(muscle => muscle.name).join(", ")} />
+                    <Field header="Exercise group name" content={exercise?.group_name} />
+                    <Field header="Difficulty" content={exercise?.difficulty} />
+                    <Field header="Type" content={exercise?.type} />
+                    <Field header="Role" content={exercise?.role} />
+                    <Field header="Force" content={exercise?.force} />
+                    <Field header="Mechanics" content={exercise?.mechanics} />
                 </div>
                 <div css={styles.right}></div>
             </div>

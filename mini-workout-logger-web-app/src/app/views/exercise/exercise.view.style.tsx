@@ -17,13 +17,14 @@ const styles = {
         display: "flex",
     }),
 
-    formContainer: css({
+    exerciseDescriptionWrapper: css({
         flex: 2
     }),
 
     right: css({
         flex: 2
     }),
+
 };
 
 export default styles;

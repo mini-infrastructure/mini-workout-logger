@@ -74,6 +74,8 @@ const ExercisesDatabaseView = () => {
         setFilters({});
     };
 
+    console.log(filters);
+
     return (
         <Layout>
             <div css={styles.actionsWrapper}>
@@ -174,7 +176,7 @@ const ExercisesDatabaseView = () => {
                                 <Badge
                                     key={muscle.id}
                                     onClick={() => handleBadgeClick("muscles", muscle.name)}
-                                    selected={filters.muscles?.includes(muscle.name)}
+                                    selected={filters.muscles?.includes(String(muscle.id))}
                                 >
                                     {muscle.name}
                                 </Badge>
