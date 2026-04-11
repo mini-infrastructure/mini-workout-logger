@@ -13,6 +13,9 @@ CREATE TABLE set_executions (
     actual_duration_seconds INTEGER,
     completed BOOLEAN NOT NULL DEFAULT FALSE,
     skipped BOOLEAN NOT NULL DEFAULT FALSE,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    duration BIGINT,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

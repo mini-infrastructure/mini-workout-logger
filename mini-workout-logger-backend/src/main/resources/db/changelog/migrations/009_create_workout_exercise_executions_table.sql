@@ -4,6 +4,9 @@ CREATE TABLE workout_exercise_executions (
     workout_execution_id BIGINT NOT NULL,
     workout_exercise_id BIGINT NOT NULL,
     skipped BOOLEAN NOT NULL DEFAULT FALSE,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    duration BIGINT,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
