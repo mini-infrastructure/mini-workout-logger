@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,14 +28,11 @@ public class Set extends AbstractEntity {
     @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
 
-    @Column(name = "position")
-    private Integer position;
-
     @JsonBackReference
     @OneToMany(mappedBy = "set",
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
-    private List<SetExecution> setExecutions;
+    private List<SetExecution> setExecutions = new ArrayList<>();
 
     @Column(name = "category", nullable = false)
     @Enumerated(EnumType.STRING)

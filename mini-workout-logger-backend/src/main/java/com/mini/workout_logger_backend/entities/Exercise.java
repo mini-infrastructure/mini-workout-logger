@@ -44,7 +44,7 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseDifficulty difficulty;
 
-    @JsonManagedReference
+    @JsonManagedReference("exercise-exercisemuscle")
     @OneToMany(mappedBy = "exercise",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
@@ -67,7 +67,7 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseMechanics mechanics;
 
-    @JsonManagedReference
+    @JsonManagedReference("exercise-group")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     private ExerciseGroup group;
@@ -113,6 +113,9 @@ public class Exercise extends AbstractEntity {
     }
 
     public void addExerciseMuscle(ExerciseMuscle exerciseMuscle) {
+        if (exerciseMuscle.getMuscle() == null) {
+            throw new IllegalArgumentException("ExerciseMuscle must have a muscle assigned before being added to an Exercise");
+        }
         this.exerciseMuscles.add(exerciseMuscle);
         exerciseMuscle.setExercise(this);
     }

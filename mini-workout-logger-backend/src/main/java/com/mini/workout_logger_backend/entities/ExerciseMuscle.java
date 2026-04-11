@@ -1,5 +1,7 @@
 package com.mini.workout_logger_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.workout_logger_backend.enums.ExerciseMuscleMovementClassification;
 import jakarta.persistence.*;
@@ -28,10 +30,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ExerciseMuscle extends AbstractEntity {
 
+    @JsonBackReference("exercise-exercisemuscle")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
+    @JsonManagedReference("exercisemuscle-muscle")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "muscle_id", nullable = false)
     private Muscle muscle;

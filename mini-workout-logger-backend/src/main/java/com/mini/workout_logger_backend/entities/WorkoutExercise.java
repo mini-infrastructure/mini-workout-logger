@@ -29,9 +29,6 @@ public class WorkoutExercise extends AbstractEntity {
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
-    @Column(name = "position")
-    private Integer position;
-
     @JsonManagedReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "exercise_id", nullable = false)
@@ -48,8 +45,7 @@ public class WorkoutExercise extends AbstractEntity {
     private Integer restTimeSeconds;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "workoutExercise",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "workoutExercise")
     private List<WorkoutExerciseExecution> executions = new ArrayList<>();
 
     public int getPosition() {
