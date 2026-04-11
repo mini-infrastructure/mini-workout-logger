@@ -4,8 +4,8 @@ import type {WorkoutExerciseExecution} from "./workout-exercise-execution.model.
 export interface WorkoutExecution {
     id: number;
     workout: Workout;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
     completed: boolean;
     workoutExerciseExecutions: WorkoutExerciseExecution[];
 }

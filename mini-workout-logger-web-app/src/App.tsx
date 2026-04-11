@@ -12,12 +12,8 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route>
-                    <Route path="/muscles" element={<MusclesView />} />
                     <Route path="/" element={<DashboardView />} />
-                    <Route path="/exercises" element={<ExercisesDatabaseView />} />
-                    <Route path="/exercises/:id" element={<ExerciseView />} />
                     <Route path="/workouts" element={<WorkoutsView />} />
-                    <Route path="/settings" element={<SettingsView />} />
                     <Route path="*" element={<NotFoundView />} />
                 </Route>
             </Routes>
