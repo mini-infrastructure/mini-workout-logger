@@ -13,7 +13,7 @@ public class GreetingController {
 
     @GetMapping("/greeting")
     public String getGreeting() {
-        return messageService.getLocalizedMessage("ExerciseCategory.STRETCHING");
+        return messageService.getLocalizedMessage("ExerciseDifficulty.NOVICE");
     }
 
 }

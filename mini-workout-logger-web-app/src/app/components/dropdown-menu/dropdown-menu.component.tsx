@@ -1,13 +1,15 @@
 import type {ReactNode} from "react";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import type {Interpolation, Theme} from "@emotion/react";
 import {css} from "@emotion/react";
 import Button from "../button/button.component.tsx";
-import ActionSwitch from "../../input/action/action.input.component.tsx";
+import ActionSwitch from "../input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
 import {IoClose} from "react-icons/io5";
-import {HiCursorClick} from "react-icons/hi";
+import {useClickOut} from "../../hooks/useClickOut.tsx";
+import {FiMoreHorizontal} from "react-icons/fi";
+import {createPortal} from "react-dom";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 
@@ -40,6 +42,7 @@ type DropdownProps = {
     title?: string;
     trigger?: DropdownTrigger;
     customTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
+    customIconTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
 const DropdownMenu = ({
@@ -47,24 +50,26 @@ const DropdownMenu = ({
                           title,
                           trigger = "button",
                           customTriggerCss,
+                          customIconTriggerCss,
                       }: DropdownProps) => {
     const [open, setOpen] = useState(false);
+
+    // Click out effect.
     const containerRef = useRef<HTMLDivElement | null>(null);
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (!containerRef.current) return;
+    useClickOut(containerRef, () => setOpen(false));
 
-            if (!containerRef.current.contains(event.target as Node)) {
-                setOpen(false);
-            }
-        };
+    // Dropdown menu state.
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
+    const updatePosition = () => {
+        if (!containerRef.current) return;
 
-        document.addEventListener("mousedown", handleClickOutside);
+        const rect = containerRef.current.getBoundingClientRect();
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+        setMenuPosition({
+            top: rect.bottom,
+            left: rect.right,
+        });
+    };
 
     return (
         <div css={styles.container} ref={containerRef}>
@@ -76,17 +81,24 @@ const DropdownMenu = ({
                 />
             ) : (
                 <Button
-                    onClick={() => setOpen((prev) => !prev)}
+                    onClick={() =>
+                        setOpen((prev) => {
+                            const next = !prev;
+                            if (next) updatePosition();
+                            return next;
+                        })
+                    }
                     isClicked={open}
-                    icon={<HiCursorClick />}
+                    icon={<FiMoreHorizontal />}
                     clickedIcon={<IoClose />}
                     customCss={customTriggerCss ? (Array.isArray(customTriggerCss) ? customTriggerCss : [customTriggerCss]) : []}
+                    customIconCss={customIconTriggerCss ? (Array.isArray(customIconTriggerCss) ? customIconTriggerCss : [customIconTriggerCss]) : []}
                 >
                 </Button>
             )}
 
-            {open && (
-                <nav css={styles.menu} >
+            {open && createPortal(
+                <nav css={styles.menu(menuPosition.top, menuPosition.left)} >
                     {title && <legend css={styles.legend}>{title}</legend>}
 
                     <ul css={styles.ul}>
@@ -110,7 +122,8 @@ const DropdownMenu = ({
                             </li>
                         ))}
                     </ul>
-                </nav>
+                </nav>,
+                document.body
             )}
         </div>
     );

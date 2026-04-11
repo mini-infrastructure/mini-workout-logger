@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.ReadDTO;
 import lombok.AllArgsConstructor;
@@ -18,11 +19,8 @@ public class MuscleReadDTO extends ReadDTO {
 
     private String name;
 
+    @JsonIgnore
     @JsonProperty("muscle_groups")
     private Set<MuscleReadDTO> muscleGroups = new HashSet<>();
-
-    public MuscleReadDTO(String name) {
-        this.name = name;
-    }
 
 }

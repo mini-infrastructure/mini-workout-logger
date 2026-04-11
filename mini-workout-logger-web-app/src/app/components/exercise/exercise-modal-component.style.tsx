@@ -1,8 +1,10 @@
-import {css, Theme} from '@emotion/react';
+import {css} from '@emotion/react';
 
 const styles = {
-    submitButton: css({
-        marginTop: '1rem',
+    header: (theme: any) => css({
+        fontSize: theme.fontSizes.large,
+        textAlign: 'center',
+        padding: '0 0 1rem 0'
     }),
 };
 

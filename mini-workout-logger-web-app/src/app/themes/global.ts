@@ -21,14 +21,7 @@ const globalStyles = (theme: {
         green: string;
         pink: string;
         purple: string;
-        orange: string;
-        pastelBlue: string;
-        pastelGreen: string;
-        pastelPink: string;
-        pastelPurple: string;
-        pastelOrange: string;
-        pastelYellow: string;
-        pastelRed: string;
+        orange: string
     };
     fonts: { primary: string; secondary: string; number: string };
     fontSizes: {
@@ -39,8 +32,49 @@ const globalStyles = (theme: {
         x_large: string;
         xx_large: string;
         xxx_large: string
-    },
-    shadow: { normal: string };
+    };
+    shadow: { normal: string }
+} | {
+    mode: string;
+    colors: {
+        white: string;
+        black: string;
+        background: string;
+        text: string;
+        container1: string;
+        border1: string;
+        container2: string;
+        border2: string;
+        text2: string;
+        text3: string;
+        primary: string;
+        primaryHover: string;
+        secondary: string;
+        red: string;
+        yellow: string;
+        green: string;
+        pink: string;
+        purple: string;
+        orange: string;
+        pastelBlue: string;
+        pastelGreen: string;
+        pastelPink: string;
+        pastelPurple: string;
+        pastelOrange: string;
+        pastelYellow: string;
+        pastelRed: string
+    };
+    fonts: { primary: string; secondary: string; number: string };
+    fontSizes: {
+        small: string;
+        medium: string;
+        large: string;
+        larger: string;
+        x_large: string;
+        xx_large: string;
+        xxx_large: string
+    };
+    shadow: { normal: string }
 }) => css({
     body: {
         margin: 0,

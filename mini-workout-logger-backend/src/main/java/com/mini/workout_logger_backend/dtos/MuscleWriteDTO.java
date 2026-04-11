@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
+import com.mini.java_core.validation.group.RestMethod;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class MuscleWriteDTO extends WriteDTO {
 
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     private String name;
 
     @JsonProperty("muscle_group_ids")

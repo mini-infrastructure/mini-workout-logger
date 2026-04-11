@@ -4,7 +4,6 @@ import Sidebar from "./sidebar.component.tsx";
 import Navbar from "./navbar.component.tsx";
 
 type LayoutProps = {
-    children: ReactNode;
     navbarContent?: ReactNode;
 };
 

@@ -1,5 +1,4 @@
 import {css} from "@emotion/react";
-import {transparentize} from "polished";
 
 const styles = {
     container: css({
@@ -7,10 +6,11 @@ const styles = {
         display: 'inline-block',
     }),
 
-    menu: (theme: any) => css({
-        position: 'absolute',
-        top: '100%',
-        right: 0,
+    menu: (top, left) => (theme: any) => css({
+        position: 'fixed',
+        top: top,
+        left: left,
+        transform: "translateX(-100%)",
         zIndex: 9999,
         background: theme.colors.background,
         borderRadius: '0.375em',

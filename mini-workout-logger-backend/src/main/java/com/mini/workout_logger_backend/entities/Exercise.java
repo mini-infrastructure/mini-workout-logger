@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.converter.TextConverter;
 import com.mini.java_core.entity.AbstractEntity;
 import com.mini.java_core.entity.Text;
-import com.mini.workout_logger_backend.enums.ExerciseCategory;
-import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+// TODO: Auto relacionamento para registrar exercícios relacionados, que possuem uma pequena variação entre si;
 @Entity
 @Table(name = "exercises", indexes = {
         @Index(name = "idx_exercises_name", columnList = "name"),
@@ -44,31 +45,91 @@ public class Exercise extends AbstractEntity {
     private ExerciseDifficulty difficulty;
 
     @JsonManagedReference
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "exercises_muscles",
-               joinColumns = @JoinColumn(name = "exercise_id"),
-               inverseJoinColumns = @JoinColumn(name = "muscle_id"))
-    private Set<Muscle> muscles = new HashSet<>();
+    @OneToMany(mappedBy = "exercise",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<ExerciseMuscle> exerciseMuscles = new HashSet<>();
 
     @JsonBackReference
     @OneToMany(mappedBy = "exercise")
     @JsonIgnore
     private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
-    public void addMuscle(Muscle muscle) {
-        this.muscles.add(muscle);
-        muscle.getExercises().add(this);
+    @Column(name = "equipment")
+    @Enumerated(EnumType.STRING)
+    private ExerciseEquipment equipment;
+
+    @Column(name = "force")
+    @Enumerated(EnumType.STRING)
+    private ExerciseForceDirection force;
+
+    @Column(name = "mechanics")
+    @Enumerated(EnumType.STRING)
+    private ExerciseMechanics mechanics;
+
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private ExerciseGroup group;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private ExerciseRole role;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ExerciseType type;
+
+    public Set<Muscle> getMuscles() {
+        return exerciseMuscles
+                .stream()
+                .map(ExerciseMuscle::getMuscle)
+                .collect(Collectors.toSet());
     }
 
-    public void removeMuscle(Muscle muscle) {
-        this.muscles.remove(muscle);
-        muscle.getExercises().remove(this);
+    public Set<Muscle> getMusclesByRole(ExerciseMuscleMovementClassification role) {
+        return exerciseMuscles
+                .stream()
+                .filter(em -> em.getRole() == role)
+                .map(ExerciseMuscle::getMuscle)
+                .collect(Collectors.toSet());
     }
 
-    public void setMuscles(Set<Muscle> muscles) {
-        this.muscles.clear();
-        if (muscles != null) {
-            this.muscles.addAll(muscles);
+    public ExerciseMuscleMovementClassification roleOf(Muscle muscle) {
+        return exerciseMuscles.stream()
+                .filter(em -> em.getMuscle().equals(muscle))
+                .map(ExerciseMuscle::getRole)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public void addMuscle(Muscle muscle, ExerciseMuscleMovementClassification role) {
+        ExerciseMuscle em = new ExerciseMuscle();
+        em.setExercise(this);
+        em.setMuscle(muscle);
+        em.setRole(role);
+
+        this.exerciseMuscles.add(em);
+    }
+
+    public void addExerciseMuscle(ExerciseMuscle exerciseMuscle) {
+        this.exerciseMuscles.add(exerciseMuscle);
+        exerciseMuscle.setExercise(this);
+    }
+
+    public void removeExerciseMuscle(ExerciseMuscle em) {
+        this.exerciseMuscles.remove(em);
+        em.setExercise(null);
+        em.setMuscle(null);
+    }
+
+    public void setExerciseMuscles(Set<ExerciseMuscle> exerciseMuscles) {
+        for (ExerciseMuscle em : new HashSet<>(this.exerciseMuscles)) {
+            removeExerciseMuscle(em);
+        }
+
+        if (exerciseMuscles != null) {
+            exerciseMuscles.forEach(this::addExerciseMuscle);
         }
     }
 

@@ -1,9 +1,10 @@
 import type {PropsWithChildren} from "react";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {createPortal} from "react-dom";
 import styles from "./modal.component.style.tsx";
 import Button from "../button/button.component.tsx";
 import {IoClose} from "react-icons/io5";
+import {useClickOut} from "../../hooks/useClickOut.tsx";
 
 export type ModalProps = {
     open: boolean;
@@ -18,33 +19,38 @@ const Modal = ({
                    children,
                }: PropsWithChildren<ModalProps>) => {
 
+    // Close effect.
+    const [isClosing, setIsClosing] = useState(false);
+    const handleClose = () => {
+        setIsClosing(true);
+
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 250);
+    };
+
     // Focus the modal when it opens; Close the modal when Escape is pressed.
-    useEffect(() => {
-        if (!open) return;
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") {
-                onClose();
-            }
-        };
-        document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [open, onClose]);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    useClickOut(containerRef, handleClose);
 
     if (!open) return null;
 
     return createPortal(
-        <div css={styles.overlayStyle} onMouseDown={onClose}>
+        <div css={styles.overlayStyle} onMouseDown={handleClose}>
             <div
-                css={styles.modalStyle}
+                css={[
+                    styles.modalStyle,
+                    isClosing ? styles.modalCloseEffect : styles.modalOpenEffect
+                ]}
                 onMouseDown={(e) => e.stopPropagation()}
             >
                 {showCloseButton && (
                     <Button
                         icon={<IoClose />}
-                        onClick={onClose}
+                        onClick={handleClose}
                         customCss={styles.closeButton}
+                        customIconCss={styles.closeButtonIcon}
                     ></Button>
                 )}
                 {children}
