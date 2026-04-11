@@ -38,9 +38,12 @@ public class SetExecution extends Execution {
     @Column(name = "completed", nullable = false)
     private Boolean completed;
 
+    @Column(name = "skipped", nullable = false)
+    private boolean skipped = false;
+
     @Override
     public boolean getCompleted() {
-        return this.completed;
+        return this.completed || this.skipped;
     }
 
 }

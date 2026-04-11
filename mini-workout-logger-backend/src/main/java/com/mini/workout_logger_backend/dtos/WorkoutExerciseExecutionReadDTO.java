@@ -26,6 +26,8 @@ public class WorkoutExerciseExecutionReadDTO extends ReadDTO {
 
     private boolean completed;
 
+    private boolean skipped;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     @JsonProperty("start_time")
     @Schema(example = "01/01/2026 12:00:00")

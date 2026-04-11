@@ -6,7 +6,8 @@ CREATE TABLE set_executions (
     actual_repetitions INTEGER,
     actual_weight DOUBLE PRECISION,
     actual_duration_seconds INTEGER,
-    completed BOOLEAN DEFAULT FALSE,
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
+    skipped BOOLEAN NOT NULL DEFAULT FALSE,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

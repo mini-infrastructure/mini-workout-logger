@@ -26,4 +26,6 @@ public class SetExecutionReadDTO extends ReadDTO {
 
     private boolean completed;
 
+    private boolean skipped;
+
 }

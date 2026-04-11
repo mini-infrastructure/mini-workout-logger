@@ -29,6 +29,9 @@ public class WorkoutExerciseExecution extends Execution {
     @JoinColumn(name = "workout_exercise_id", nullable = false)
     private WorkoutExercise workoutExercise;
 
+    @Column(name = "skipped", nullable = false)
+    private boolean skipped = false;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "workoutExerciseExecution",
                cascade = {CascadeType.ALL},
@@ -37,8 +40,8 @@ public class WorkoutExerciseExecution extends Execution {
 
     @Override
     public boolean getCompleted() {
-        return !setExecutions.isEmpty()
-                && setExecutions.stream().allMatch(SetExecution::getCompleted);
+        return this.skipped
+                || (!setExecutions.isEmpty() && setExecutions.stream().allMatch(SetExecution::getCompleted));
     }
 
     public void addSetExecution(SetExecution setExecution) {
