@@ -19,7 +19,6 @@ CREATE OR REPLACE FUNCTION add_workout_exercise(
     p_workout_id BIGINT,
     p_exercise_name VARCHAR,
     p_position INTEGER,
-    p_role VARCHAR,
     p_rest_time_seconds INTEGER DEFAULT NULL
 )
 RETURNS BIGINT AS $$
@@ -39,7 +38,6 @@ BEGIN
         workout_id,
         exercise_id,
         position,
-        role,
         rest_time_seconds,
         created_at,
         updated_at
@@ -48,7 +46,6 @@ BEGIN
         p_workout_id,
         v_exercise_id,
         p_position,
-        p_role,
         p_rest_time_seconds,
         NOW(),
         NOW()
@@ -78,7 +75,6 @@ BEGIN
         workout_exercise_id,
         position,
         category,
-        type,
         repetitions,
         weight,
         duration_seconds,
@@ -89,7 +85,6 @@ BEGIN
         p_workout_exercise_id,
         p_position,
         p_category,
-        p_type,
         p_repetitions,
         p_weight,
         p_duration_seconds,
@@ -109,23 +104,13 @@ BEGIN
     ------------------------------------------------------------------
     -- WORKOUT 1: Treino Peito Básico
     ------------------------------------------------------------------
-    v_workout_id := add_workout('Treino Peito Básico');
+    v_workout_id := add_workout('Treino Superiores');
 
     v_we_1 := add_workout_exercise(
         v_workout_id,
-        'Exercise.Chest_Press',
-        0,
-        'BASIC',
+        'Exercise.Cable_Isolateral_Bench_Press',
         90
     );
-
---    v_we_2 := add_workout_exercise(
---        v_workout_id,
---        'Exercise.Push_Up',
---        1,
---        'AUXILIARY',
---        60
---    );
 
     PERFORM add_set(v_we_1, 0, 'WARMUP', 'REPS_X_WEIGHT', 12, 40);
     PERFORM add_set(v_we_1, 1, 'NORMAL',   'REPS_X_WEIGHT', 10, 60);
@@ -136,33 +121,8 @@ BEGIN
 --    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, NULL);
 
     ------------------------------------------------------------------
-    -- WORKOUT 2: Treino Peito + Ombro
+    -- WORKOUT 2: Treino Inferiores
     ------------------------------------------------------------------
-    v_workout_id := add_workout('Treino Peito + Ombro');
-
-    v_we_1 := add_workout_exercise(
-        v_workout_id,
-        'Exercise.Chest_Press',
-        0,
-        'BASIC',
-        90
-    );
-
---    v_we_2 := add_workout_exercise(
---        v_workout_id,
---        'Exercise.Chest_Fly',
---        1,
---        'AUXILIARY',
---        75
---    );
-
-    PERFORM add_set(v_we_1, 0, 'NORMAL', 'REPS_X_WEIGHT', 10, 60);
-    PERFORM add_set(v_we_1, 1, 'NORMAL', 'REPS_X_WEIGHT', 8,  70);
-    PERFORM add_set(v_we_1, 2, 'NORMAL', 'REPS_X_WEIGHT', 6,  80);
-
---    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 12, 20);
---    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 22);
---    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 8,  24);
 
 END;
 $$;

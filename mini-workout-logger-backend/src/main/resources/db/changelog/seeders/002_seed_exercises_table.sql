@@ -238,7 +238,7 @@ SELECT add_exercise(
         'Muscle.Brachialis',
         'Muscle.Triceps',
         'Muscle.Wrist_Flexors',
-        'Muscle.Abdominal',
+        'Muscle.Abdominal',Exercise.Chest_Press
         'Muscle.Obliques',
         'Muscle.Erector_Spinae'
     ]
