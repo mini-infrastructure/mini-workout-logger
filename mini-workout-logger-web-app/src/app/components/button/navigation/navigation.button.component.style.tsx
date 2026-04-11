@@ -4,7 +4,7 @@ const styles = {
     wrapper: css({
         display: 'flex',
         height: '50%',
-        gap: '0.1rem',
+        gap: 'var(--stack-gap-micro)',
     }),
 
 };

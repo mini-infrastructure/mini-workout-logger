@@ -1,6 +1,5 @@
 import styles from "./layout.component.style.tsx";
 import {useLocation} from "react-router-dom";
-import ToggleThemeButton from "../input/switch/theme-switch.input.component.tsx";
 import {PropsWithChildren} from "react";
 
 const Navbar = ({ children }: PropsWithChildren) => {
@@ -57,7 +56,6 @@ const Navbar = ({ children }: PropsWithChildren) => {
 
             <div css={styles.navbarRight}>
                 {children}
-                <ToggleThemeButton />
             </div>
         </nav>
     );

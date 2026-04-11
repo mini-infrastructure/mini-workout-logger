@@ -1,24 +1,20 @@
-import {css, Theme} from '@emotion/react';
-import {darken, invert, lighten, transparentize} from "polished";
+import {css} from "@emotion/react";
 
 const styles = {
-
-    actionsWrapper: (theme: Theme) => css({
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    }),
-
-    headerWrapper: (theme: Theme) => css({
+    badgeContainer: css({
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.5rem',
+        gap: 'var(--stack-gap-normal)',
+        padding: 'var(--base-size-16)',
+        backgroundColor: 'var(--color-container1)',
     }),
 
-    header: (theme: Theme) => css({
-        fontSize: theme.fontSizes.larger,
+    badgeGroup: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 'var(--stack-gap-condensed)',
+        alignItems: 'center',
     }),
-
 };
 
 export default styles;

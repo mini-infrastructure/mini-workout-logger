@@ -1,7 +1,7 @@
-import {css, Theme} from '@emotion/react';
+import {css} from '@emotion/react';
 
-const NAVBAR_HEIGHT = '4rem';
-const BORDER = (color: string) => `2px solid ${color}`;
+const NAVBAR_HEIGHT = 'var(--base-size-64)';
+const BORDER = `var(--borderWidth-thin) solid var(--color-border)`;
 
 const styles = {
     wrapper: css({
@@ -15,39 +15,39 @@ const styles = {
      * Sidebar.
      */
 
-    sidebar: (theme: Theme) => css({
+    sidebar: css({
         width: 'fit-content',
-        minWidth: '16rem',
+        minWidth: 'var(--layout-sidebar-minWidth)',
         display: 'flex',
         flexDirection: 'column',
-        borderRight: BORDER(theme.colors.border1),
-        backgroundColor: theme.colors.background,
+        borderRight: BORDER,
+        backgroundColor: 'var(--color-container1)',
     }),
 
-    sidebarTopDivider: (theme: Theme) => css({
+    sidebarTopDivider: css({
         height: NAVBAR_HEIGHT,
         minHeight: NAVBAR_HEIGHT,
-        borderBottom: BORDER(theme.colors.border1),
+        borderBottom: BORDER,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '0 0.75rem',
+        padding: `0 var(--overlay-padding-condensed)`,
     }),
 
-    sidebarHeader: (theme: Theme) => css({
+    sidebarHeader: css({
         textTransform: 'uppercase',
-        fontSize: theme.fontSizes.small,
-        color: theme.colors.text2,
-        fontFamily: theme.fonts.number,
-        padding: '0.5rem 0',
+        fontSize: 'var(--size-small)',
+        color: 'var(--color-text)',
+        fontFamily: 'var(--font-number)',
+        padding: `var(--base-size-8) 0`,
     }),
 
     sidebarContent: css({
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.2rem',
-        padding: '0.5rem 0.75rem',
+        gap: 'var(--stack-gap-nano)',
+        padding: `var(--base-size-8) var(--overlay-padding-condensed)`,
     }),
 
     contentArea: css({
@@ -56,30 +56,30 @@ const styles = {
         flexDirection: 'column',
     }),
 
-    mainContent: (theme: Theme) => css({
+    mainContent: css({
         flex: 1,
-        padding: '1rem',
+        padding: 'var(--base-size-16)',
         overflowY: 'auto',
-        backgroundColor: theme.colors.background,
+        backgroundColor: 'var(--color-bg)',
     }),
 
     /**
      * Navbar.
      */
 
-    navbar: (theme: Theme) => css({
+    navbar: css({
         height: NAVBAR_HEIGHT,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 1.5rem',
-        borderBottom: BORDER(theme.colors.border1),
-        backgroundColor: theme.colors.background,
+        padding: `0 var(--stack-gap-spacious)`,
+        borderBottom: BORDER,
+        backgroundColor: 'var(--color-container1)',
     }),
 
     main: css({
         flex: 1,
-        padding: '2rem',
+        padding: 'var(--base-size-32)',
         overflowY: 'auto',
     }),
 
@@ -88,24 +88,22 @@ const styles = {
         flexDirection: 'row',
     }),
 
-    breadcrumb: (theme: Theme) => css({
-        display: "flex",
-        alignItems: "center",
-        fontSize: theme.fontSizes.large,
+    breadcrumb: css({
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: 'var(--size-large)',
     }),
 
-    breadcrumbItem: (theme: Theme) => css({
+    breadcrumbItem: css({}),
+
+    breadcrumbInactive: css({
+        color: 'var(--color-border)',
     }),
 
-    breadcrumbInactive: (theme: Theme) => css({
-        color: theme.colors.text2,
+    breadcrumbSeparator: css({
+        margin: '0 0.4rem',
+        color: 'var(--color-border)',
     }),
-
-    breadcrumbSeparator: (theme: Theme) => css({
-        margin: "0 0.4rem",
-        color: theme.colors.text2,
-    }),
-
 };
 
 export default styles;

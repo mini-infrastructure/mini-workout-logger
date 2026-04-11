@@ -23,11 +23,11 @@ export type DropdownMenuItem = {
     dividerBefore?: boolean;
 };
 
-const getIconColor = (color: MenuItemColor = "info") => (theme: Theme) => {
-    const map = {
-        primary: theme.colors.primary,
-        danger: theme.colors.red,
-        info: theme.colors.text2,
+const getIconColor = (color: MenuItemColor = "info") => {
+    const map: Record<MenuItemColor, string> = {
+        primary: "var(--color-blue)",
+        danger:  "var(--color-red)",
+        info:    "var(--color-gray)",
     };
 
     return css({

@@ -1,4 +1,5 @@
 import {PropsWithChildren, useState} from "react";
+import {useLocation} from "react-router-dom";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
@@ -21,6 +22,8 @@ const SidebarCollapseButton = ({
                                    children
                        }: PropsWithChildren<SidebarCollapseButtonProps>) => {
     const [isOpen, setIsOpen] = useState(false);
+    const { pathname } = useLocation();
+    const isActive = path !== undefined && pathname.startsWith(path);
 
     const handleClick = () => {
         if (disabled) return;
@@ -35,6 +38,7 @@ const SidebarCollapseButton = ({
                 disabled={disabled}
                 customCss={[
                     styles.buttonSidebar,
+                    isActive && styles.buttonSidebarActive,
                     styles.buttonSidebarCollapse,
                     ...(customCss
                         ? Array.isArray(customCss)

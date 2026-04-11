@@ -6,25 +6,25 @@ const styles = {
         display: 'inline-block',
     }),
 
-    menu: (top, left) => (theme: any) => css({
+    menu: (top, left) => css({
         position: 'fixed',
         top: top,
         left: left,
         transform: "translateX(-100%)",
-        zIndex: 9999,
-        background: theme.colors.background,
-        borderRadius: '0.375em',
-        boxShadow: theme.shadow.normal,
-        padding: '0.75rem',
+        zIndex: 'var(--base-zIndex-overlay)' as any,
+        background: "var(--color-container1)",
+        borderRadius: 'var(--overlay-borderRadius)',
+        boxShadow: "var(--shadow-normal)",
+        padding: 'var(--overlay-padding-condensed)',
         width: 'max-content',
-        minWidth: '9rem',
+        minWidth: 'var(--overlay-minWidth)',
     }),
 
-    legend: (theme: any) =>  css({
+    legend: css({
         textTransform: 'uppercase',
-        fontSize: theme.fontSizes.small,
-        fontFamily: theme.fonts.number,
-        padding: '0 0 0.5rem 0',
+        fontSize: "var(--size-small)",
+        fontFamily: "var(--font-number)",
+        padding: `0 0 var(--base-size-8) 0`,
     }),
 
     ul: css({
@@ -33,19 +33,19 @@ const styles = {
         padding: 0,
     }),
 
-    menuButton: (theme: any) =>  css({
+    menuButton: css({
         width: '100%',
-        height: '1.5rem',
+        height: 'var(--base-size-24)',
         justifyContent: 'flex-start',
-        fontFamily: theme.fonts.number,
-        borderRadius: 8,
-        padding: '0 0.5rem',
+        fontFamily: "var(--font-number)",
+        borderRadius: 'var(--borderRadius-medium)',
+        padding: `0 var(--base-size-8)`,
 
         ':hover': {
-            backgroundColor: theme.colors.secondary,
-            color: theme.colors.white,
+            backgroundColor: "var(--color-border)",
+            color: "var(--color-white)",
             '& svg': {
-                color: theme.colors.white,
+                color: "var(--color-white)",
             },
         },
     }),

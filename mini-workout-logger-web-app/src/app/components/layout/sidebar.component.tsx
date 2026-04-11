@@ -40,13 +40,11 @@ const Sidebar = ({}: SidebarProps) => {
                 </SidebarButton>
 
                 {/* Workouts */}
-                <SidebarCollapseButton
+                <SidebarButton
                     icon={<FaRegFolder />}
-                    clickedIcon={<FaRegFolderOpen />}
-                    menuItems={workouts.map((workout) => (workout.name))}
                     path={"/workouts"}>
                     Workouts
-                </SidebarCollapseButton>
+                </SidebarButton>
 
                 <SidebarButton
                     path={"/calendar"}

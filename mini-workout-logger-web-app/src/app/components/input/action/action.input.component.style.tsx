@@ -1,6 +1,6 @@
-import {css, Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 
-const BUTTON_BG = (theme: Theme) => theme.colors.border1;
+const BUTTON_BG = 'var(--color-border)';
 const BUTTON_DIAMETER = '1.8rem';
 const BUTTON_HOVER_SCALE = '1.15';
 
@@ -9,7 +9,7 @@ const BUTTON_HOVER_SCALE = '1.15';
 const BURGER_LINE_WIDTH = '1.125em';
 const BURGER_LINE_HEIGHT = '0.125em';
 const BURGER_OFFSET = '0.625em';
-const BURGER_COLOR = (theme: Theme) => theme.colors.text2;
+const BURGER_COLOR = 'var(--color-gray)';
 const BURGER_LINE_BORDER_RADIUS = '0.1875em';
 const BURGER_BTN_BORDER_RADIUS = `calc(${BUTTON_DIAMETER} / 2)`;
 const BURGER_LINE_TRANSITION = '.3s';
@@ -24,11 +24,11 @@ const BURGER_ENABLE_OUTLINE_OFFSET = BURGER_ENABLE_OUTLINE_WIDTH;
 const NAV_PADDING_X = '0.25em';
 const NAV_PADDING_Y = '0.625em';
 const NAV_BORDER_RADIUS = '0.375em';
-const NAV_BORDER_COLOR = (theme: Theme) => theme.colors.container1;
+const NAV_BORDER_COLOR = 'var(--color-container1)';
 const NAV_BORDER_WIDTH = '0.0625em';
 const NAV_SHADOW_COLOR = 'rgba(0, 0, 0, .2)';
 const NAV_SHADOW_WIDTH = '0 1px 5px';
-const NAV_BG = (theme: Theme) => theme.colors.container2;
+const NAV_BG = 'var(--color-container2)';
 const NAV_FONT_FAMILY = 'Menlo, Roboto Mono, monospace';
 const NAV_DEFAULT_SCALE = '.8';
 const NAV_ACTIVE_SCALE = '1';
@@ -38,31 +38,31 @@ const NAV_POSITION_RIGHT = 'unset';
 // Nav Title
 
 const NAV_TITLE_SIZE = '0.625em';
-const NAV_TITLE_COLOR = (theme: Theme) => theme.colors.border1;
-const NAV_TITLE_PADDING_X = '1rem';
+const NAV_TITLE_COLOR = 'var(--color-border)';
+const NAV_TITLE_PADDING_X = 'var(--base-size-16)';
 const NAV_TITLE_PADDING_Y = '0.25em';
 
 // Nav Button
 
-const NAV_BUTTON_PADDING_X = '1rem';
+const NAV_BUTTON_PADDING_X = 'var(--base-size-16)';
 const NAV_BUTTON_PADDING_Y = '0.375em';
 const NAV_BUTTON_BORDER_RADIUS = '0.375em';
-const NAV_BUTTON_FONT_SIZE = '12px';
-const NAV_BUTTON_HOVER_BG = (theme: Theme) => theme.colors.primary;
-const NAV_BUTTON_HOVER_TEXT_COLOR = (theme: Theme) => theme.colors.white;
+const NAV_BUTTON_FONT_SIZE = 'var(--size-small)';
+const NAV_BUTTON_HOVER_BG = 'var(--color-blue)';
+const NAV_BUTTON_HOVER_TEXT_COLOR = 'var(--color-white)';
 const NAV_BUTTON_DISTANCE = '0.875em';
 
 // Underline
 
 const UNDERLINE_BORDER_WIDTH = '0.0625em';
-const UNDERLINE_BORDER_COLOR = (theme: Theme) => theme.colors.container1;
+const UNDERLINE_BORDER_COLOR = 'var(--color-container1)';
 const UNDERLINE_MARGIN_Y = '0.3125em';
 
 const styles = {
 
     dropdownButton: css({
         padding: '0',
-        margin: '0 0.5rem',
+        margin: `0 var(--base-size-8)`,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -78,7 +78,7 @@ const styles = {
         }
     }),
 
-    switchButton: (theme: Theme) => css({
+    switchButton: css({
         position: 'relative',
         width: BUTTON_DIAMETER,
         height: BUTTON_DIAMETER,
@@ -95,7 +95,7 @@ const styles = {
         '.button-bg': {
             position: 'absolute',
             inset: 0,
-            backgroundColor: BUTTON_BG(theme),
+            backgroundColor: BUTTON_BG,
             borderRadius: BURGER_BTN_BORDER_RADIUS,
             transition: 'transform .1s ease-in-out',
         },
@@ -109,12 +109,12 @@ const styles = {
         },
 
         '&:focus:not(:hover)': {
-            outlineColor: BURGER_ENABLE_OUTLINE_COLOR(theme),
+            outlineColor: BURGER_ENABLE_OUTLINE_COLOR,
             outlineOffset: BURGER_ENABLE_OUTLINE_OFFSET,
         },
     }),
 
-    hamburger_x_theme: (theme: Theme) => css({
+    hamburger_x_theme: css({
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -126,7 +126,7 @@ const styles = {
             position: 'absolute',
             height: BURGER_LINE_HEIGHT,
             width: BURGER_LINE_WIDTH,
-            backgroundColor: BURGER_COLOR(theme),
+            backgroundColor: BURGER_COLOR,
             borderRadius: BURGER_LINE_BORDER_RADIUS,
             transition: BURGER_LINE_TRANSITION,
         },
@@ -161,7 +161,7 @@ const styles = {
         },
     }),
 
-    filter_x_theme: (theme: Theme) => css({
+    filter_x_theme: css({
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -172,7 +172,7 @@ const styles = {
         'span': {
             position: 'absolute',
             height: BURGER_LINE_HEIGHT,
-            backgroundColor: BURGER_COLOR(theme),
+            backgroundColor: BURGER_COLOR,
             borderRadius: BURGER_LINE_BORDER_RADIUS,
             transition: BURGER_LINE_TRANSITION,
             left: '50%',
@@ -212,7 +212,7 @@ const styles = {
         },
     }),
 
-    plus_x_theme: (theme: Theme) => css({
+    plus_x_theme: css({
         position: 'relative',
         width: '100%',
         height: '100%',
@@ -224,7 +224,7 @@ const styles = {
             position: 'absolute',
             height: BURGER_LINE_HEIGHT,
             width: BURGER_LINE_WIDTH,
-            backgroundColor: BURGER_COLOR(theme),
+            backgroundColor: BURGER_COLOR,
             borderRadius: BURGER_LINE_BORDER_RADIUS,
             transition: BURGER_LINE_TRANSITION,
         },
@@ -255,11 +255,7 @@ const styles = {
 
     }),
 
-    /**
-     *
-     */
-
-    dropdownMenu: (theme: Theme) => css({
+    dropdownMenu: css({
 
     }),
 

@@ -1,212 +1,62 @@
-import {css, Theme} from "@emotion/react";
-import {darken, invert, transparentize} from "polished";
+import {css, SerializedStyles} from "@emotion/react";
+
+const createColoredBadge = (
+    colorVar: string,
+    borderColorVar: string,
+): SerializedStyles => css({
+    backgroundColor: `var(${colorVar})`,
+    color: `var(${borderColorVar})`,
+    transition: 'none',
+    '& button': {
+        color: `var(${borderColorVar})`,
+    },
+
+    '&:hover, &[data-selected="true"]': {
+        backgroundColor: `color-mix(in srgb, var(${colorVar}) 80%, var(--color-bg))`,
+        color: `color-mix(in srgb, var(${borderColorVar}) 70%, black)`,
+        '& button': {
+            color: `color-mix(in srgb, var(${borderColorVar}) 80%, black)`,
+        },
+    },
+});
 
 const styles = {
-    badge: (theme: Theme) => css({
-        fontFamily: theme.fonts.number,
-        lineHeight: ' 1.25rem',
-        padding: '2px .5rem',
-        borderRadius: 15,
+    badge: css({
+        fontFamily: 'var(--font-number)',
+        lineHeight: 'var(--base-size-24)',
+        padding: `2px var(--base-size-8)`,
+        borderRadius: 'var(--borderRadius-large)',
         cursor: 'pointer',
         outline: 'none',
         border: 'none',
-        backgroundColor: theme.colors.container2,
+        backgroundColor: 'var(--color-container2)',
         display: 'inline-flex',
         alignItems: 'center',
     }),
 
     icon: css({
-        marginRight: '0.4rem',
+        marginRight: 'var(--stack-gap-tiny)',
         '& svg': {
             display: 'block',
-        }
+        },
     }),
 
-    removeButton: (theme: Theme) => css({
+    removeButton: css({
         backgroundColor: 'transparent',
-        padding: '0.2rem',
+        padding: 'var(--stack-gap-nano)',
         ':hover': {
             backgroundColor: 'transparent',
         },
     }),
 
-    grayBadge: (theme: Theme) => {
-        const baseColor = theme.colors.border1;
-
-        return css({
-            backgroundColor: baseColor,
-            color: theme.colors.text,
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: theme.colors.border2,
-                color: invert(theme.colors.text),
-                '& button': {
-                    color: invert(theme.colors.text),
-                }
-            },
-
-            '& button': {
-                color: theme.colors.text,
-            }
-        });
-    },
-
-    primaryBadge: (theme: Theme) => {
-        const baseColor = theme.colors.primary;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: darken(0.2, baseColor),
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: transparentize(0.35, baseColor),
-                color: theme.colors.white,
-
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: darken(0.2, baseColor),
-            }
-        });
-    },
-
-    dangerBadge: (theme: Theme) => {
-        const baseColor = theme.colors.red;
-
-        return css({
-            backgroundColor: transparentize(0.8, baseColor),
-            color: darken(0.2, baseColor),
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: transparentize(0.2, baseColor),
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: darken(0.2, baseColor),
-            }
-        });
-    },
-
-    warningBadge: (theme: Theme) => {
-        const baseColor = theme.colors.yellow;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: darken(0.1, baseColor),
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: transparentize(0.2, baseColor),
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: darken(0.1, baseColor),
-            }
-        });
-    },
-
-    successBadge: (theme: Theme) => {
-        const baseColor = theme.colors.green;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: baseColor,
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: transparentize(0.35, baseColor),
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: baseColor,
-            }
-        });
-    },
-
-    pinkBadge: (theme: Theme) => {
-        const baseColor = theme.colors.pink;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: baseColor,
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: transparentize(0.3, baseColor),
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: baseColor,
-            }
-        });
-    },
-
-    purpleBadge: (theme: Theme) => {
-        const baseColor = theme.colors.purple;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: baseColor,
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: baseColor,
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: baseColor,
-            }
-        });
-    },
-
-    orangeBadge: (theme: Theme) => {
-        const baseColor = theme.colors.orange;
-
-        return css({
-            backgroundColor: transparentize(0.9, baseColor),
-            color: baseColor,
-            transition: 'all 0.2s ease',
-
-            '&:hover, &[data-selected="true"]': {
-                backgroundColor: baseColor,
-                color: theme.colors.white,
-                '& button': {
-                    color: theme.colors.white,
-                }
-            },
-
-            '& button': {
-                color: baseColor,
-            }
-        });
-    },
-
+    grayBadge:   createColoredBadge('--color-gray',   '--color-gray-border'),
+    primaryBadge: createColoredBadge('--color-blue',  '--color-blue-border'),
+    dangerBadge:  createColoredBadge('--color-red',   '--color-red-border'),
+    warningBadge: createColoredBadge('--color-yellow','--color-yellow-border'),
+    successBadge: createColoredBadge('--color-green', '--color-green-border'),
+    pinkBadge:    createColoredBadge('--color-pink',  '--color-pink-border'),
+    purpleBadge:  createColoredBadge('--color-purple','--color-purple-border'),
+    orangeBadge:  createColoredBadge('--color-orange','--color-orange-border'),
 };
 
 export default styles;

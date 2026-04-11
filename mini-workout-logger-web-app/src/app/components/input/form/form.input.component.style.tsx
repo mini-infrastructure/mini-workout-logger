@@ -1,39 +1,39 @@
-import {css, Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 
 const styles = {
     wrapper: {
         position: "relative",
     },
 
-    form: (columns: number) => (theme: Theme) => css({
+    form: (columns: number) => css({
         display: "grid",
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gap: "1rem",
+        gap: "var(--stack-gap-normal)",
     }),
 
-    fieldWrapper: (colSpan: number) => (theme: Theme) => css({
+    fieldWrapper: (colSpan: number) => css({
         gridColumn: `span ${colSpan}`,
         display: "flex",
         flexDirection: "column",
-        gap: "0.5rem",
+        gap: "var(--stack-gap-condensed)",
 
         '& label': {
-            color: theme.colors.text,
+            color: "var(--color-text)",
         }
     }),
 
-    input: (theme: Theme) => css({
+    input: css({
         padding: "0.6rem 0.8rem",
-        borderRadius: "6px",
-        backgroundColor: theme.colors.container1,
+        borderRadius: "var(--borderRadius-small)",
+        backgroundColor: `var(--color-container1)`,
         border: 'none',
-        fontSize: "0.9rem",
-        minWidth: '10rem',
+        fontSize: "var(--size-input-text)",
+        minWidth: 'var(--control-minWidth)',
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         cursor: "pointer",
-        color: theme.colors.text,
+        color: "var(--color-text)",
     }),
 
     inputButton: css({
@@ -42,47 +42,47 @@ const styles = {
         padding: 0,
     }),
 
-    inputButtonIcon: (theme: Theme) => css({
-        color: theme.colors.text,
+    inputButtonIcon: css({
+        color: "var(--color-text)",
         width: 'auto',
         height: 'auto',
-        fontSize: '1.2rem',
+        fontSize: 'var(--size-icon-sm)',
     }),
 
     dropdown: css({
         position: "absolute",
         width: "100%",
-        borderRadius: "6px",
-        marginTop: "4px",
-        zIndex: 10,
-        maxHeight: "200px",
+        borderRadius: "var(--borderRadius-small)",
+        marginTop: "var(--base-size-4)",
+        zIndex: 'var(--base-zIndex-10)' as any,
+        maxHeight: "var(--overlay-maxHeight)",
         overflowY: "auto",
     }),
 
-    dropdownContainer: (theme: Theme) => css({
-        border: `1px solid ${theme.colors.container1}`,
-        background: theme.colors.background,
+    dropdownContainer: css({
+        border: `var(--borderWidth-thin) solid var(--color-container1)`,
+        background: `var(--color-bg)`,
     }),
 
-    dropdownItem: (checked?: boolean) => (theme: Theme) => css({
+    dropdownItem: (checked?: boolean) => css({
         display: "flex",
         alignItems: "center",
-        padding: "0.5rem",
+        padding: "var(--base-size-8)",
         cursor: "pointer",
-        gap: "0.5rem",
-        background: checked ? theme.colors.container1 : "transparent",
+        gap: "var(--stack-gap-condensed)",
+        background: checked ? `var(--color-container1)` : "transparent",
 
         ":hover": {
-            background: theme.colors.container2,
+            background: "var(--color-container2)",
         }
     }),
 
     multiselectSelectedItems: (visible?: boolean) => css({
-        padding: visible ?  '1rem 0 0 0' : 0,
+        padding: visible ? `var(--base-size-16) 0 0 0` : 0,
     }),
 
-    badgeCustomCss: (theme: Theme) => css({
-        margin: '0 0.25rem 0.5rem 0',
+    badgeCustomCss: css({
+        margin: `0 var(--base-size-4) var(--base-size-8) 0`,
     }),
 
     multiassociativeSelectBox: (disabled: boolean) => css({
@@ -97,15 +97,15 @@ const styles = {
 
         '& input': {
             width: disabled ? '100%' : '80%',
-            margin: disabled ? '0' : '0 1rem 0 0',
+            margin: disabled ? '0' : `0 var(--base-size-16) 0 0`,
         }
     }),
 
     buttonMultiSelectContainer: css({
         display: 'flex',
         flexDirection: 'column',
-        gap: '1rem',
-        margin: '0 0 1rem 0'
+        gap: 'var(--stack-gap-normal)',
+        margin: `0 0 var(--stack-gap-normal) 0`,
     }),
 
     buttonMultiSelectAddButton: css({

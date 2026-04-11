@@ -1,14 +1,14 @@
-import { css, Theme } from "@emotion/react";
+import { css } from "@emotion/react";
 
 const styles = {
-    description: (theme: Theme) => css({
+    description: css({
         display: "flex",
         alignItems: "center",
-        gap: "0.5rem",
-        margin: "1rem 0",
+        gap: "var(--stack-gap-condensed)",
+        margin: "var(--base-size-16) 0",
         padding: "0.6rem 0.8rem",
-        borderRadius: "6px",
-        backgroundColor: theme.colors.container1,
+        borderRadius: "var(--borderRadius-small)",
+        backgroundColor: "var(--color-container1)",
         cursor: "pointer",
     }),
 
@@ -27,16 +27,16 @@ const styles = {
         flex: 1,
     }),
 
-    copyButton: (theme: Theme) => css({
+    copyButton: css({
         backgroundColor: 'transparent',
 
         ':hover': {
-            backgroundColor: theme.colors.background,
+            backgroundColor: "var(--color-container1)",
         },
 
         ':focus': {
-            backgroundColor: theme.colors.primary,
-            color: theme.colors.white,
+            backgroundColor: "var(--color-blue)",
+            color: "var(--color-white)",
         },
     }),
 };
