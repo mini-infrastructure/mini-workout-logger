@@ -32,8 +32,8 @@ public class SwaggerConfig {
                             .in("query")
                             .required(false)
                             .schema(new StringSchema()
-                                    ._enum(List.of("en_US", "pt_BR"))
-                                    ._default("pt_BR")));
+                                    ._enum(List.of("pt_BR", "en_US"))
+                                    ._default("en_US")));
                 });
             });
         };

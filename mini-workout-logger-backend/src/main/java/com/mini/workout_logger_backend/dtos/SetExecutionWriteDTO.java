@@ -3,6 +3,7 @@ package com.mini.workout_logger_backend.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.annotation.ExistsById;
 import com.mini.java_core.dto.WriteDTO;
+import com.mini.java_core.validation.group.RestMethod;
 import com.mini.workout_logger_backend.repositories.SetRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SetExecutionWriteDTO extends WriteDTO {
 
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     @ExistsById(repository = SetRepository.class)
     @JsonProperty("set_id")
     private Long setId;
@@ -30,7 +31,7 @@ public class SetExecutionWriteDTO extends WriteDTO {
     @JsonProperty("actual_duration_seconds")
     private Integer actualDurationSeconds;
 
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     private boolean completed;
 
 }

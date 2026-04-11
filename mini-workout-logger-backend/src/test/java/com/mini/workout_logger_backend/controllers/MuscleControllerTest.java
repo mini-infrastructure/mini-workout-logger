@@ -6,7 +6,9 @@ import com.mini.workout_logger_backend.dtos.MuscleWriteDTO;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.mappers.MuscleMapper;
 import com.mini.workout_logger_backend.repositories.MuscleRepository;
+import com.mini.workout_logger_backend.utils.TestHelper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import java.util.List;
@@ -23,6 +25,9 @@ class MuscleControllerTest extends AbstractCrudControllerTest<Muscle,
                                                               MuscleMapper,
                                                               MuscleRepository> {
 
+    @Autowired
+    private TestHelper testHelper;
+
     @Override
     protected String getBaseUrl() {
         return "/muscles";
@@ -30,11 +35,7 @@ class MuscleControllerTest extends AbstractCrudControllerTest<Muscle,
 
     @Override
     protected List<MuscleWriteDTO> getWriteDtos() {
-        return List.of(
-                new MuscleWriteDTO("Biceps"),
-                new MuscleWriteDTO("Triceps"),
-                new MuscleWriteDTO("Deltoids")
-        );
+        return testHelper.getTestMuscles();
     }
 
     @Test

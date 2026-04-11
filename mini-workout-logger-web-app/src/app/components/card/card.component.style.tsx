@@ -15,7 +15,7 @@ const float = keyframes`
 `;
 
 const styles = {
-    baseCard: (theme: Theme) => css({
+    baseCard: (clicked: boolean) => (theme: Theme) => css({
         position: "relative",
         overflow: "hidden",
         borderRadius: 15,
@@ -24,6 +24,7 @@ const styles = {
         WebkitBackdropFilter: "blur(30px)",
         backgroundColor: transparentize(0.6, theme.colors.container1),
         border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
+        cursor: clicked ? "pointer" : "default",
     }),
 
     /**
@@ -69,65 +70,6 @@ const styles = {
             },
         });
     },
-
-    /**
-     * Label card.
-     */
-
-    labelCard: (theme: Theme) => css({
-        position: 'relative',
-        borderRadius: '0 0 0.75rem 0.75rem',
-        strokeLinejoin: 'round',
-        padding: '2.5rem 1rem 1.25rem 1rem',
-        boxShadow: `0 4px 6px ${transparentize(0.95, theme.colors.black)}`,
-        overflow: 'visible',
-        minHeight: '8.5rem',
-
-        // '&:hover .label-bar': {
-        //     transform: 'translateY(-70%)',
-        //     borderRadius: '0.75rem 0.75rem 0 0',
-        //     transition: 'transform 0.2s ease, border-radius 0.1s ease',
-        //     zIndex: 1,
-        // },
-
-        '& .label-button': {
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            height: '100%',
-        },
-    }),
-
-    header: css({
-        fontWeight: 700,
-    }),
-
-    label: (theme: Theme) => css({
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: 1,
-        width: '100%',
-        height: '1.2rem',
-        transition: 'transform 0.2s ease',
-    }),
-
-    labelButton: (theme: Theme) => css({
-        backgroundColor: 'transparent',
-        color: theme.colors.text2,
-        width: '1rem',
-        height: '1rem',
-        border: 'none',
-        cursor: 'pointer',
-         '&:hover': {
-             backgroundColor: 'transparent',
-             filter: `drop-shadow(0 0 2px ${transparentize(0.5, theme.colors.white)})`,
-         },
-        ':focus': {
-            backgroundColor: 'transparent',
-        },
-    }),
 
 };
 

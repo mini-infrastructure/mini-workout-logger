@@ -3,7 +3,6 @@ package com.mini.workout_logger_backend.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mini.java_core.entity.AbstractEntity;
-import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,10 +43,6 @@ public class WorkoutExercise extends AbstractEntity {
             orphanRemoval = true)
     @OrderColumn(name = "position")
     private List<Set> sets = new ArrayList<>();
-
-    @Column(name = "equipment")
-    @Enumerated(EnumType.STRING)
-    private ExerciseEquipment equipment;
 
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;

@@ -5,6 +5,7 @@ import DashboardView from "./app/views/dashboard/dashboard.view.tsx";
 import ExercisesDatabaseView from "./app/views/exercises/exercises.view.tsx";
 import WorkoutsView from "./app/views/workouts/workouts.view.tsx";
 import SettingsView from "./app/views/settings/settings.view.tsx";
+import ExerciseView from "./app/views/exercise/exercise.view.tsx";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Route path="/muscles" element={<MusclesView />} />
                     <Route path="/" element={<DashboardView />} />
                     <Route path="/exercises" element={<ExercisesDatabaseView />} />
+                    <Route path="/exercises/:id" element={<ExerciseView />} />
                     <Route path="/workouts" element={<WorkoutsView />} />
                     <Route path="/settings" element={<SettingsView />} />
                     <Route path="*" element={<NotFoundView />} />

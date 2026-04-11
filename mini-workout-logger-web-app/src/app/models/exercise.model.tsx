@@ -1,20 +1,59 @@
-import {Muscle} from './muscle.model';
+import {ExerciseMuscleMovementClassification, Muscle} from './muscle.model';
 import type {WorkoutExercise} from "./workout-exercise.model.tsx";
 import type {IconType} from "react-icons";
-import {FaBolt, FaDumbbell, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
-import {MdSelfImprovement, MdTrendingUp} from "react-icons/md";
-import {GiMuscleUp, GiProgression, GiWeightLiftingUp} from "react-icons/gi";
+import {FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
+import {MdFitnessCenter, MdSelfImprovement, MdTrendingUp} from "react-icons/md";
+import {GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp} from "react-icons/gi";
 import type {ReactNode} from "react";
-import type {BadgeVariant} from "../components/badge/badge.component.tsx";
+import {TbBallBasketball, TbBandage, TbJumpRope} from "react-icons/tb";
+import type {ColorVariant} from "../utils/colorsVariants.tsx";
+import {LiaDumbbellSolid} from "react-icons/lia";
+import {BiBody} from "react-icons/bi";
+import {RiWeightFill} from "react-icons/ri";
+import {GrYoga} from "react-icons/gr";
 
 export interface Exercise {
     id: number;
     name: string;
     category?: ExerciseCategory;
     difficulty?: ExerciseDifficulty;
-    muscles?: Muscle[];
-    workoutExercises: WorkoutExercise[];
+    equipment?: ExerciseEquipment;
+    force?: ExerciseForceDirection;
+    mechanics?: ExerciseMechanics;
+    role?: ExerciseRole;
+    type?: ExerciseType;
+    group?: ExerciseGroup;
+    workoutExercises?: WorkoutExercise[];
+    exerciseMuscles?: ExerciseMuscle[];
 }
+
+export interface ExerciseGroup {
+    id: number;
+    name: string;
+}
+
+export interface ExerciseMuscle {
+    id: number;
+    exercise: Exercise;
+    muscle: Muscle;
+    role: ExerciseMuscleMovementClassification;
+}
+
+export type ExerciseEquipment =
+    | 'BARBELL'
+    | 'DUMBBELL'
+    | 'BODYWEIGHT'
+    | 'BOSU_BALL'
+    | 'CABLE'
+    | 'EXERCISE_BALL'
+    | 'MACHINE'
+    | 'SMITH_MACHINE'
+    | 'MEDICINE_BALL'
+    | 'PLATE'
+    | 'RESISTANCE_BAND'
+    | 'TRX'
+    | 'KETTLEBELL'
+    ;
 
 export type ExerciseCategory =
     | 'STRENGTH'
@@ -40,20 +79,44 @@ export type ExerciseDifficulty =
     | 'ADVANCED'
     ;
 
+export type ExerciseForceDirection =
+    | 'PUSH'
+    | 'PULL'
+    | 'SLIDE'
+    | 'ROTATE_OR_TWIST'
+    ;
+
+export type ExerciseMechanics =
+    | 'ISOLATED'
+    | 'COMPOUND'
+    ;
+
+export type ExerciseRole =
+    | 'BASIC'
+    | 'AUXILIARY'
+    | 'BASIC_OR_AUXILIARY'
+    ;
+
+export type ExerciseType =
+    | 'BILATERAL'
+    | 'ISOLATERAL'
+    | 'UNILATERAL'
+    ;
+
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
-    STRENGTH: FaDumbbell,
+    STRENGTH: FaFire,
     CARDIO: FaRunning,
     STRETCHING: MdSelfImprovement,
     POWERLIFTING: GiWeightLiftingUp,
     OLYMPIC_WEIGHTLIFTING: GiWeightLiftingUp,
     STRONGMAN: GiMuscleUp,
-    CALISTHENICS: GiMuscleUp,
+    CALISTHENICS: GiBodyBalance,
     PLYOMETRICS: FaBolt,
     RECOVERY: MdSelfImprovement,
     HIT: FaFire,
     MOBILITY: MdSelfImprovement,
     PILATES: MdSelfImprovement,
-    YOGA: MdSelfImprovement,
+    YOGA: GrYoga,
     WARM_UP: FaBolt,
 };
 
@@ -64,14 +127,49 @@ export const ExerciseDifficultyIcons: Record<ExerciseDifficulty, IconType> = {
     ADVANCED: FaFire,
 };
 
+export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
+    BARBELL: LiaDumbbellSolid,
+    DUMBBELL: LiaDumbbellSolid,
+    BODYWEIGHT: BiBody,
+    BOSU_BALL: TbBallBasketball,
+    CABLE: TbJumpRope,
+    EXERCISE_BALL: TbBallBasketball,
+    MACHINE: MdFitnessCenter,
+    SMITH_MACHINE: MdFitnessCenter,
+    MEDICINE_BALL: TbBallBasketball,
+    PLATE: FaDotCircle,
+    RESISTANCE_BAND: TbBandage,
+    TRX: TbJumpRope,
+    KETTLEBELL: RiWeightFill,
+};
+
 export const ExerciseDifficultyVariants: Record<
     ExerciseDifficulty,
-    BadgeVariant
+    ColorVariant
 > = {
     NOVICE: "success",
     BEGINNER: "success",
     INTERMEDIATE: "warning",
     ADVANCED: "danger",
+};
+
+export const ExerciseEquipmentVariants: Record<
+    ExerciseEquipment,
+    ColorVariant
+> = {
+    BARBELL: "gray",
+    DUMBBELL: "gray",
+    BODYWEIGHT: "success",
+    BOSU_BALL: "warning",
+    CABLE: "gray",
+    EXERCISE_BALL: "warning",
+    MACHINE: "gray",
+    SMITH_MACHINE: "gray",
+    MEDICINE_BALL: "warning",
+    PLATE: "gray",
+    RESISTANCE_BAND: "success",
+    TRX: "warning",
+    KETTLEBELL: "gray",
 };
 
 export function getIconFromMap<T extends string>(
@@ -87,10 +185,18 @@ export function getIconFromMap<T extends string>(
 
 export function getExerciseDifficultyVariant(
     difficulty?: ExerciseDifficulty,
-): BadgeVariant | undefined {
+): ColorVariant | undefined {
     if (!difficulty) return undefined;
 
     return ExerciseDifficultyVariants[difficulty];
+}
+
+export function getExerciseEquipmentVariant(
+    equipment?: ExerciseEquipment,
+): ColorVariant | undefined {
+    if (!equipment) return undefined;
+
+    return ExerciseEquipmentVariants[equipment];
 }
 
 export const exerciseCategoryOptions = [
@@ -115,4 +221,54 @@ export const exerciseDifficultyOptions = [
     { label: "Beginner", value: "BEGINNER" },
     { label: "Intermediate", value: "INTERMEDIATE" },
     { label: "Advanced", value: "ADVANCED" },
+];
+
+export const exerciseEquipmentOptions = [
+    { label: "Barbell", value: "BARBELL" },
+    { label: "Dumbbell", value: "DUMBBELL" },
+    { label: "Bodyweight", value: "BODYWEIGHT" },
+    { label: "BOSU Ball", value: "BOSU_BALL" },
+    { label: "Cable", value: "CABLE" },
+    { label: "Exercise Ball", value: "EXERCISE_BALL" },
+    { label: "Machine", value: "MACHINE" },
+    { label: "Smith Machine", value: "SMITH_MACHINE" },
+    { label: "Medicine Ball", value: "MEDICINE_BALL" },
+    { label: "Plate", value: "PLATE" },
+    { label: "Resistance Band", value: "RESISTANCE_BAND" },
+    { label: "TRX", value: "TRX" },
+    { label: "Kettlebell", value: "KETTLEBELL" },
+];
+
+export const exerciseForceOptions = [
+    { label: "Push", value: "PUSH" },
+    { label: "Pull", value: "PULL" },
+    { label: "Slide", value: "SLIDE" },
+    { label: "Rotate or Twist", value: "ROTATE_OR_TWIST" },
+];
+
+export const exerciseMechanicsOptions = [
+    { label: "Isolated", value: "ISOLATED" },
+    { label: "Compound", value: "COMPOUND" },
+];
+
+export const exerciseRoleOptions = [
+    { label: "Basic", value: "BASIC" },
+    { label: "Auxiliary", value: "AUXILIARY" },
+    { label: "Basic or Auxiliary", value: "BASIC_OR_AUXILIARY" },
+];
+
+export const exerciseTypeOptions = [
+    { label: "Bilateral", value: "BILATERAL" },
+    { label: "Isolateral", value: "ISOLATERAL" },
+    { label: "Unilateral", value: "UNILATERAL" },
+];
+
+export const exerciseMuscleMovementClassificationOptions = [
+    { label: "Agonist", value: "AGONIST" },
+    { label: "Antagonist", value: "ANTAGONIST" },
+    { label: "Target", value: "TARGET" },
+    { label: "Synergist", value: "SYNERGIST" },
+    { label: "Stabilizer", value: "STABILIZER" },
+    { label: "Dynamic Stabilizer", value: "DYNAMIC_STABILIZER" },
+    { label: "Antagonist Stabilizer", value: "ANTAGONIST_STABILIZER" },
 ];

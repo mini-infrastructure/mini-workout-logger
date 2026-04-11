@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
+import com.mini.java_core.validation.group.RestMethod;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 public class WorkoutWriteDTO extends WriteDTO {
 
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     private String name;
 
     @Valid
-    @NotNull
+    @NotNull(groups = RestMethod.OnCreate.class)
     @JsonProperty("workout_exercises")
     private List<WorkoutExerciseWriteDTO> workoutExercises;
 

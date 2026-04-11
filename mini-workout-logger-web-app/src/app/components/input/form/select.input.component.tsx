@@ -1,26 +1,33 @@
-import { useState } from "react";
+import {useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import Button from "../../button/button.component.tsx";
+import type {FormOption} from "./form.input.component.tsx";
 
-type Option = {
-    label: string;
-    value: string;
-};
-
-type SelectProps = {
-    options: Option[];
-    value: string;
-    onChange: (val: string) => void;
+export type SelectProps = {
+    options: FormOption[];
     placeholder?: string;
+    onChange: (val: string) => void;
+    value: string;
+    disabled?: boolean;
 };
 
-const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
+const Select = ({
+                    options,
+                    value,
+                    onChange,
+                    placeholder,
+                    disabled,
+                }: SelectProps) => {
     const [open, setOpen] = useState(false);
-    const toggleDropdown = () => setOpen((prev) => !prev);
+    const toggleDropdown = () => {
+        if (disabled) return;
+        setOpen((prev) => !prev);
+    }
 
     const handleSelect = (val: string) => {
         onChange(val);
+        if (disabled) return;
         setOpen(false);
     };
 
@@ -30,19 +37,24 @@ const Select = ({ options, value, onChange, placeholder }: SelectProps) => {
         <div css={styles.wrapper}>
             {/* SELECT BOX */}
             <div
-                onClick={() => setOpen(!open)}
+                onClick={() => {
+                    if (disabled) return;
+                    setOpen(!open);
+                }}
                 css={styles.input}
             >
                 <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>
 
-                <Button
-                    icon={<MdKeyboardArrowDown />}
-                    clickedIcon={<MdKeyboardArrowUp />}
-                    isClicked={open}
-                    onClick={toggleDropdown}
-                    customCss={styles.inputButton}
-                    customIconCss={styles.inputButtonIcon}
-                />
+                {!disabled && (
+                    <Button
+                        icon={<MdKeyboardArrowDown />}
+                        clickedIcon={<MdKeyboardArrowUp />}
+                        isClicked={open}
+                        onClick={toggleDropdown}
+                        customCss={styles.inputButton}
+                        customIconCss={styles.inputButtonIcon}
+                    />
+                )}
             </div>
 
             {open && (

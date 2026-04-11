@@ -1,23 +1,25 @@
-import {useRef, useState} from "react";
+import {useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import Badge from "../../badge/badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
-import {useClickOut} from "../../../hooks/useClickOut.tsx";
-
-type Option = {
-    label: string;
-    value: string;
-};
+import type {FormOption} from "./form.input.component.tsx";
 
 type MultiSelectProps = {
-    options: Option[];
-    value: string[];
-    onChange: (values: string[]) => void;
+    options: FormOption[];
     placeholder?: string;
+    onChange: (values: string[]) => void;
+    value: string[];
+    disabled?: boolean;
 };
 
-const MultiSelect = ({ options, value, onChange, placeholder }: MultiSelectProps) => {
+const MultiSelect = ({
+                         options,
+                         value,
+                         onChange,
+                         placeholder,
+                         disabled = false,
+                     }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
     const toggleDropdown = () => setOpen((prev) => !prev);
 
@@ -80,7 +82,7 @@ const MultiSelect = ({ options, value, onChange, placeholder }: MultiSelectProps
             )}
 
             {/* SELECTED ITEMS */}
-            <div css={styles.multiselectSelectedItems}>
+            <div css={styles.multiselectSelectedItems(!!selectedOptions.length)}>
                 {selectedOptions.map((opt) => (
                     <Badge
                         key={opt.value}

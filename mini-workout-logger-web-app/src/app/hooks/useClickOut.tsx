@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import * as React from "react";
+import {useEffect} from "react";
 
 export const useClickOut = (ref: React.RefObject<HTMLDivElement | null>, callback: () => void) => {
     useEffect(() => {
@@ -9,7 +9,8 @@ export const useClickOut = (ref: React.RefObject<HTMLDivElement | null>, callbac
             }
         };
 
-        document.addEventListener("mousedown", handleClickOutside);
+        // document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("click", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [ref, callback]);
 };

@@ -2,11 +2,19 @@ import Modal from "../modal/modal.component.tsx";
 import FormBuilder, {FormItem} from "../input/form/form.input.component.tsx";
 import PrimaryButton from "../button/button.primary.component.tsx";
 import styles from "./exercise-modal-component.style.tsx";
-import {exerciseCategoryOptions, exerciseDifficultyOptions} from "../../models/exercise.model.tsx";
+import {
+    exerciseCategoryOptions,
+    exerciseDifficultyOptions,
+    exerciseEquipmentOptions, exerciseForceOptions, exerciseMechanicsOptions,
+    exerciseMuscleMovementClassificationOptions, exerciseRoleOptions, exerciseTypeOptions
+} from "../../models/exercise.model.tsx";
 import type {ExerciseReadDTO} from "../../dtos/exercise-read.dto.tsx";
 import ExerciseService from "../../services/exercise.service.tsx";
 import {useMuscles} from "../../hooks/useMuscles.tsx";
 import type {ExerciseWriteDTO} from "../../dtos/exercise-write.dto.tsx";
+import {useExerciseGroupNames} from "../../hooks/useExerciseGroupNames.tsx";
+import {useMemo} from "react";
+import type {MuscleReadDTO} from "../../dtos/muscle-read.dto.tsx";
 
 export type ExerciseModalProps = {
     isModalOpen: boolean;
@@ -19,23 +27,36 @@ const ExerciseModal = ({
                            setIsModalOpen,
                            exercise,
                        }: ExerciseModalProps) => {
-    const { muscles, loading, error } = useMuscles();
+    const { exerciseGroupNames } = useExerciseGroupNames();
+    const { muscles } = useMuscles();
 
-    const exerciseFormItems: FormItem[] = [
+    const exerciseFormItems: FormItem[] = useMemo(() => [
         {
             name: "name",
-            label: "Exercise Name",
+            label: "Name",
             type: "text",
-            placeholder: "e.g. Bench Press",
+            placeholder: "e.g. Barbell Squat",
             initialValue: exercise?.name || "",
-            colSpan: 2,
+            colSpan: 4,
+        },
+        {
+            name: "group_name",
+            label: "Group name",
+            type: "buttonselect",
+            placeholder: "e.g. Squat",
+            initialValue: exercise?.group_name || "",
+            colSpan: 4,
+            options: exerciseGroupNames?.map(name => ({
+                label: name,
+                value: name,
+            })),
         },
         {
             name: "category",
             label: "Category",
             type: "select",
             options: exerciseCategoryOptions,
-            initialValue: exercise?.category || exerciseCategoryOptions[0].value,
+            initialValue: exercise?.category,
             colSpan: 1,
         },
         {
@@ -43,26 +64,94 @@ const ExerciseModal = ({
             label: "Difficulty",
             type: "select",
             options: exerciseDifficultyOptions,
-            initialValue: exercise?.difficulty || exerciseDifficultyOptions[0].value,
+            initialValue: exercise?.difficulty,
             colSpan: 1,
         },
         {
-            name: "muscleIds",
+            name: "equipment",
+            label: "Equipment",
+            type: "select",
+            options: exerciseEquipmentOptions,
+            initialValue: exercise?.equipment,
+            colSpan: 1,
+        },
+        {
+            name: "force",
+            label: "Force",
+            type: "select",
+            options: exerciseForceOptions,
+            initialValue: exercise?.force,
+            colSpan: 1,
+        },
+        {
+            name: "mechanics",
+            label: "Mechanics",
+            type: "select",
+            options: exerciseMechanicsOptions,
+            initialValue: exercise?.mechanics,
+            colSpan: 1,
+        },
+        {
+            name: "role",
+            label: "Exercise role",
+            type: "select",
+            options: exerciseRoleOptions,
+            initialValue: exercise?.role,
+            colSpan: 1,
+        },
+        {
+            name: "type",
+            label: "Type",
+            type: "select",
+            options: exerciseTypeOptions,
+            initialValue: exercise?.type,
+            colSpan: 1,
+        },
+        {
+            name: "exercise_muscles",
             label: "Muscles",
-            type: "multiselect",
-            options: muscles.map(muscle => ({ label: muscle.name, value: muscle.id })),
-            initialValue: exercise?.muscles.map(m => m.id) || [],
+            type: "buttonmultiselect",
             colSpan: 2,
+            options: {
+                first: {
+                    label: "Muscles",
+                    options: (muscles ?? []).map(m => ({
+                        label: m.name,
+                        value: m.id,
+                    })),
+                    inputEnabled: false,
+                },
+                second: {
+                    label: "Muscle Movement Classification",
+                    options: exerciseMuscleMovementClassificationOptions,
+                    inputEnabled: false,
+                }
+            },
+            initialValue: exercise?.exercise_muscles?.map(m => ({
+                first: String(m.muscle_name),
+                second: m.role,
+            })) ?? [],
         }
-    ];
+    ], [exercise, muscles, exerciseGroupNames]);
 
     const handleSubmit = async (values: any) => {
         try {
+            const exerciseMuscles = (values.exercise_muscles ?? []).map((m: any) => ({
+                muscle_id: Number(m.first),
+                role: m.second,
+            }));
+
             const payload: ExerciseWriteDTO = {
                 name: values.name,
+                group_name: values.group_name,
                 category: values.category,
                 difficulty: values.difficulty,
-                muscle_ids: values.muscleIds,
+                equipment: values.equipment,
+                force: values.force,
+                mechanics: values.mechanics,
+                role: values.role,
+                type: values.type,
+                exercise_muscles: exerciseMuscles,
             };
 
             if (exercise?.id) {
@@ -75,7 +164,7 @@ const ExerciseModal = ({
             window.location.reload();
 
         } catch (error) {
-            console.error("Error saving exercise:", error);
+            // Todo
         }
     };
 
@@ -84,6 +173,9 @@ const ExerciseModal = ({
             open={isModalOpen}
             onClose={() => setIsModalOpen(false)}
         >
+            <div css={styles.header}>
+                {exercise ? "Edit exercise" : "Create exercise"}
+            </div>
             <FormBuilder
                 items={exerciseFormItems}
                 columns={2}

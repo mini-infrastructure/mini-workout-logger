@@ -38,7 +38,7 @@ const styles = {
             color: theme.colors.text,
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: theme.colors.border2,
                 color: invert(theme.colors.text),
                 '& button': {
@@ -60,7 +60,7 @@ const styles = {
             color: darken(0.2, baseColor),
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: transparentize(0.35, baseColor),
                 color: theme.colors.white,
 
@@ -83,7 +83,7 @@ const styles = {
             color: darken(0.2, baseColor),
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: transparentize(0.2, baseColor),
                 color: theme.colors.white,
                 '& button': {
@@ -105,7 +105,7 @@ const styles = {
             color: darken(0.1, baseColor),
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: transparentize(0.2, baseColor),
                 color: theme.colors.white,
                 '& button': {
@@ -127,7 +127,7 @@ const styles = {
             color: baseColor,
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: transparentize(0.35, baseColor),
                 color: theme.colors.white,
                 '& button': {
@@ -149,7 +149,7 @@ const styles = {
             color: baseColor,
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: transparentize(0.3, baseColor),
                 color: theme.colors.white,
                 '& button': {
@@ -171,7 +171,7 @@ const styles = {
             color: baseColor,
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: baseColor,
                 color: theme.colors.white,
                 '& button': {
@@ -193,7 +193,7 @@ const styles = {
             color: baseColor,
             transition: 'all 0.2s ease',
 
-            '&:hover': {
+            '&:hover, &[data-selected="true"]': {
                 backgroundColor: baseColor,
                 color: theme.colors.white,
                 '& button': {

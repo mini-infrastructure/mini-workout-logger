@@ -1,4 +1,4 @@
-import { css, Theme } from "@emotion/react";
+import {css, Theme} from "@emotion/react";
 
 const styles = {
     wrapper: {
@@ -33,6 +33,7 @@ const styles = {
         justifyContent: "space-between",
         alignItems: "center",
         cursor: "pointer",
+        color: theme.colors.text,
     }),
 
     inputButton: css({
@@ -66,9 +67,9 @@ const styles = {
     dropdownItem: (checked?: boolean) => (theme: Theme) => css({
         display: "flex",
         alignItems: "center",
-        padding: "8px",
+        padding: "0.5rem",
         cursor: "pointer",
-        gap: "8px",
+        gap: "0.5rem",
         background: checked ? theme.colors.container1 : "transparent",
 
         ":hover": {
@@ -76,13 +77,47 @@ const styles = {
         }
     }),
 
-    multiselectSelectedItems: (theme: Theme) => css({
-        padding: '1rem 0 0 0',
+    multiselectSelectedItems: (visible?: boolean) => css({
+        padding: visible ?  '1rem 0 0 0' : 0,
     }),
 
     badgeCustomCss: (theme: Theme) => css({
         margin: '0 0.25rem 0.5rem 0',
     }),
+
+    multiassociativeSelectBox: (disabled: boolean) => css({
+        display: 'flex',
+        justifyContent: 'stretch',
+
+        '& button': {
+            width: '20%',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+
+        '& input': {
+            width: disabled ? '100%' : '80%',
+            margin: disabled ? '0' : '0 1rem 0 0',
+        }
+    }),
+
+    buttonMultiSelectContainer: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        margin: '0 0 1rem 0'
+    }),
+
+    buttonMultiSelectAddButton: css({
+        display: 'flex',
+        justifyContent: 'center',
+        '& button': {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+        },
+    }),
+
 };
 
 export default styles;

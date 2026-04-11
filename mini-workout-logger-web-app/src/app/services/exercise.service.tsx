@@ -2,6 +2,7 @@ import type {ExerciseReadDTO} from "../dtos/exercise-read.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import axios from "axios";
 import type {ExerciseWriteDTO} from "../dtos/exercise-write.dto.tsx";
+import {handleApiError} from "../utils/throwError.tsx";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
@@ -40,8 +41,7 @@ class ExerciseService {
             );
             return response.data.data;
         } catch (error) {
-            console.error("Error creating exercise:", error);
-            throw error;
+            handleApiError(error);
         }
     }
 
@@ -53,8 +53,7 @@ class ExerciseService {
             );
             return response.data.data;
         } catch (error) {
-            console.error(`Error updating exercise with id ${id}:`, error);
-            throw error;
+            handleApiError(error);
         }
     }
 
@@ -66,6 +65,18 @@ class ExerciseService {
         } catch (error) {
             console.error(`Error deleting exercise with id ${id}:`, error);
             throw error;
+        }
+    }
+
+    async getAllExerciseGroupNames(): Promise<string[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<string[]>>(
+                `${apiUrl}/exercises/groups?lang=${lang}`
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching exercise group names:', error);
+            return [];
         }
     }
 

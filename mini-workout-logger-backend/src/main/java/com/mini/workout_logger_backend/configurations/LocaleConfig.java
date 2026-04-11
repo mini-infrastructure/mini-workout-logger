@@ -10,7 +10,7 @@ import java.util.Locale;
 @Configuration
 public class LocaleConfig {
 
-    @Value("${app.default-locale:pt_BR}")
+    @Value("${app.default-locale:en_US}")
     private String defaultLocale;
 
     /**
