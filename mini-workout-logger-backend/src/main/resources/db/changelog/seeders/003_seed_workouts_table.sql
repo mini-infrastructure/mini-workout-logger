@@ -102,29 +102,71 @@ DECLARE
     v_workout_id BIGINT;
     v_we_1 BIGINT;
     v_we_2 BIGINT;
+    v_we_3 BIGINT;
+    v_we_4 BIGINT;
 BEGIN
+
     ------------------------------------------------------------------
-    -- WORKOUT 1: Treino Peito Básico
+    -- WORKOUT 1: Treino Superiores
     ------------------------------------------------------------------
     v_workout_id := add_workout('Treino Superiores');
 
-    v_we_1 := add_workout_exercise(
-        v_workout_id,
-        'Exercise.Cable_Isolateral_Bench_Press',
-        90
-    );
+    -- 1. Cable Isolateral Bench Press
+    v_we_1 := add_workout_exercise(v_workout_id, 'Exercise.Cable_Isolateral_Bench_Press', 0, 90);
+    PERFORM add_set(v_we_1, 0, 'WARMUP', 'REPS_X_WEIGHT', 15, 30);
+    PERFORM add_set(v_we_1, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 60);
+    PERFORM add_set(v_we_1, 2, 'NORMAL', 'REPS_X_WEIGHT',  8, 70);
+    PERFORM add_set(v_we_1, 3, 'NORMAL', 'REPS_X_WEIGHT',  6, 80);
 
-    PERFORM add_set(v_we_1, 0, 'WARMUP', 'REPS_X_WEIGHT', 12, 40);
-    PERFORM add_set(v_we_1, 1, 'NORMAL',   'REPS_X_WEIGHT', 10, 60);
-    PERFORM add_set(v_we_1, 2, 'NORMAL',   'REPS_X_WEIGHT', 8,  70);
+    -- 2. Cable Isolateral Standing Fly
+    v_we_2 := add_workout_exercise(v_workout_id, 'Exercise.Cable_Isolateral_Standing_Fly', 1, 60);
+    PERFORM add_set(v_we_2, 0, 'WARMUP', 'REPS_X_WEIGHT', 15, 20);
+    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 12, 30);
+    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, 35);
 
---    PERFORM add_set(v_we_2, 0, 'NORMAL', 'REPS_X_WEIGHT', 15, NULL);
---    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 12, NULL);
---    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, NULL);
+    -- 3. Barbell Military Press
+    v_we_3 := add_workout_exercise(v_workout_id, 'Exercise.Barbell_Military_Press', 2, 90);
+    PERFORM add_set(v_we_3, 0, 'WARMUP', 'REPS_X_WEIGHT', 15, 20);
+    PERFORM add_set(v_we_3, 1, 'NORMAL', 'REPS_X_WEIGHT',  8, 50);
+    PERFORM add_set(v_we_3, 2, 'NORMAL', 'REPS_X_WEIGHT',  8, 50);
+    PERFORM add_set(v_we_3, 3, 'NORMAL', 'REPS_X_WEIGHT',  6, 55);
+
+    -- 4. Barbell Curl
+    v_we_4 := add_workout_exercise(v_workout_id, 'Exercise.Barbell_Curl', 3, 60);
+    PERFORM add_set(v_we_4, 0, 'NORMAL', 'REPS_X_WEIGHT', 12, 30);
+    PERFORM add_set(v_we_4, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 35);
+    PERFORM add_set(v_we_4, 2, 'NORMAL', 'REPS_X_WEIGHT',  8, 40);
 
     ------------------------------------------------------------------
     -- WORKOUT 2: Treino Inferiores
     ------------------------------------------------------------------
+    v_workout_id := add_workout('Treino Inferiores');
+
+    -- 1. Barbell Squat
+    v_we_1 := add_workout_exercise(v_workout_id, 'Exercise.Barbell_Squat', 0, 120);
+    PERFORM add_set(v_we_1, 0, 'WARMUP', 'REPS_X_WEIGHT', 15,  60);
+    PERFORM add_set(v_we_1, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 100);
+    PERFORM add_set(v_we_1, 2, 'NORMAL', 'REPS_X_WEIGHT',  8, 110);
+    PERFORM add_set(v_we_1, 3, 'NORMAL', 'REPS_X_WEIGHT',  6, 120);
+
+    -- 2. Machine Leg Press 45°
+    v_we_2 := add_workout_exercise(v_workout_id, 'Exercise.Machine_Leg_Press_45_Degree', 1, 90);
+    PERFORM add_set(v_we_2, 0, 'WARMUP', 'REPS_X_WEIGHT', 15,  80);
+    PERFORM add_set(v_we_2, 1, 'NORMAL', 'REPS_X_WEIGHT', 12, 120);
+    PERFORM add_set(v_we_2, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, 140);
+    PERFORM add_set(v_we_2, 3, 'NORMAL', 'REPS_X_WEIGHT',  8, 160);
+
+    -- 3. Dumbbell Forward Lunge
+    v_we_3 := add_workout_exercise(v_workout_id, 'Exercise.Dumbbell_Forward_Lunge', 2, 60);
+    PERFORM add_set(v_we_3, 0, 'NORMAL', 'REPS_X_WEIGHT', 12, 20);
+    PERFORM add_set(v_we_3, 1, 'NORMAL', 'REPS_X_WEIGHT', 10, 25);
+    PERFORM add_set(v_we_3, 2, 'NORMAL', 'REPS_X_WEIGHT', 10, 25);
+
+    -- 4. Barbell Standing Calf Raise
+    v_we_4 := add_workout_exercise(v_workout_id, 'Exercise.Barbell_Standing_Leg_Calf_Raise', 3, 60);
+    PERFORM add_set(v_we_4, 0, 'NORMAL', 'REPS_X_WEIGHT', 15, 60);
+    PERFORM add_set(v_we_4, 1, 'NORMAL', 'REPS_X_WEIGHT', 15, 60);
+    PERFORM add_set(v_we_4, 2, 'NORMAL', 'REPS_X_WEIGHT', 12, 70);
 
 END;
 $$;
