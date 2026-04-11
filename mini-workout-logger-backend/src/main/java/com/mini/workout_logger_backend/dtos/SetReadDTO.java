@@ -21,11 +21,13 @@ public class SetReadDTO extends ReadDTO {
 
     private SetType type;
 
-    private Integer repetitions;
+    @JsonProperty("planned_repetitions")
+    private Integer plannedRepetitions;
 
-    private Double weight;
+    @JsonProperty("planned_weight")
+    private Double plannedWeight;
 
-    @JsonProperty("duration_seconds")
-    private Integer durationSeconds;
+    @JsonProperty("planned_duration_seconds")
+    private Integer plannedDurationSeconds;
 
 }

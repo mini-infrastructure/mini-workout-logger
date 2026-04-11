@@ -42,14 +42,14 @@ public class Set extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private SetType type;
 
-    @Column(name = "repetitions")
-    private Integer repetitions;
+    @Column(name = "planned_repetitions")
+    private Integer plannedRepetitions;
 
-    @Column(name = "weight")
-    private Double weight;
+    @Column(name = "planned_weight")
+    private Double plannedWeight;
 
-    @Column(name = "duration_seconds")
-    private Integer durationSeconds;
+    @Column(name = "planned_duration_seconds")
+    private Integer plannedDurationSeconds;
 
     public int getPosition() {
         if (workoutExercise == null) return -1;

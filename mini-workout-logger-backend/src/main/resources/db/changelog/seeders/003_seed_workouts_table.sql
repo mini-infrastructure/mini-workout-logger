@@ -75,9 +75,10 @@ BEGIN
         workout_exercise_id,
         position,
         category,
-        repetitions,
-        weight,
-        duration_seconds,
+        type,
+        planned_repetitions,
+        planned_weight,
+        planned_duration_seconds,
         created_at,
         updated_at
     )
@@ -85,6 +86,7 @@ BEGIN
         p_workout_exercise_id,
         p_position,
         p_category,
+        p_type,
         p_repetitions,
         p_weight,
         p_duration_seconds,
