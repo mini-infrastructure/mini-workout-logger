@@ -114,6 +114,7 @@ const styles = {
 
         width: '100%',
         padding: 'var(--control-medium-paddingBlock)',
+        margin: 'var(--stack-gap-nano) 0 0 0',
         borderRadius: 'var(--borderRadius-large)',
         border: 'none',
 
