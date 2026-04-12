@@ -9,7 +9,7 @@ const colors = {
     white:        '#FFFFFF',
     black:        '#010409',
 
-    blue:         '#0969DA',
+    blue:         '#3291FF',
     blueBorder:   darken(0.25, '#0D5EC0'),
     red:          '#F35841',
     redBorder:    darken(0.4, '#F35841'),

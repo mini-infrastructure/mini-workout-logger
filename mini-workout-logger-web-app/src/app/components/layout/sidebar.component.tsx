@@ -1,19 +1,28 @@
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
-import {FiDatabase, FiHome, FiSettings} from "react-icons/fi";
-import {IoAnalyticsSharp} from "react-icons/io5";
-import {FaRegCalendarAlt, FaRegFolder, FaRegFolderOpen} from "react-icons/fa";
-import {GiHelp} from "react-icons/gi";
+import { FiDatabase, FiHome, FiSettings } from "react-icons/fi";
+import { IoAnalyticsSharp } from "react-icons/io5";
+import { FaRegCalendarAlt } from "react-icons/fa";
+import { GiHelp } from "react-icons/gi";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
-import {useWorkouts} from "../../hooks/useWorkouts.tsx";
 import Divider from "../divider/divider.component.tsx";
 import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
+import { routes, type RouteSection } from "../../routes.ts";
+import type { ReactNode } from "react";
 
-export type SidebarProps = {};
+const routeIcons: Record<string, ReactNode> = {
+    '/':          <FiHome />,
+    '/exercises': <FiDatabase />,
+    '/workouts':  <FiDatabase />,
+    '/calendar':  <FaRegCalendarAlt />,
+    '/analysis':  <IoAnalyticsSharp />,
+    '/settings':  <FiSettings />,
+    '/help':      <GiHelp />,
+};
 
-const Sidebar = ({}: SidebarProps) => {
-    const { workouts } = useWorkouts();
+const sections: RouteSection[] = ['Main', 'Support'];
 
+const Sidebar = () => {
     return (
         <aside css={styles.sidebar}>
             <div css={styles.sidebarTopDivider}>
@@ -22,60 +31,24 @@ const Sidebar = ({}: SidebarProps) => {
             </div>
 
             <div css={styles.sidebarContent}>
-
-                <div css={styles.sidebarHeader}>
-                    Main
-                </div>
-
-                <SidebarButton
-                    path={"/"}
-                    icon={<FiHome />}>
-                    Dashboard
-                </SidebarButton>
-
-                <SidebarButton
-                    path={"/exercises"}
-                    icon={<FiDatabase />}>
-                    Exercises
-                </SidebarButton>
-
-                {/* Workouts */}
-                <SidebarButton
-                    icon={<FaRegFolder />}
-                    path={"/workouts"}>
-                    Workouts
-                </SidebarButton>
-
-                <SidebarButton
-                    path={"/calendar"}
-                    icon={<FaRegCalendarAlt />}>
-                    Calendar
-                </SidebarButton>
-
-                <SidebarButton
-                    path={"/analysis"}
-                    icon={<IoAnalyticsSharp />}>
-                    Analysis
-                </SidebarButton>
-
-                <Divider />
-
-                <div css={styles.sidebarHeader}>
-                    Support
-                </div>
-
-                <SidebarButton
-                    path={"/settings"}
-                    icon={<FiSettings />}>
-                    Settings
-                </SidebarButton>
-
-                <SidebarButton
-                    path={"/help"}
-                    icon={<GiHelp />}>
-                    Help
-                </SidebarButton>
-
+                {sections.map((section, i) => {
+                    const sectionRoutes = routes.filter(r => r.section === section);
+                    return (
+                        <div key={section}>
+                            {i > 0 && <Divider />}
+                            <div css={styles.sidebarHeader}>{section}</div>
+                            {sectionRoutes.map(route => (
+                                <SidebarButton
+                                    key={route.path}
+                                    path={route.path}
+                                    icon={routeIcons[route.path]}
+                                >
+                                    {route.label}
+                                </SidebarButton>
+                            ))}
+                        </div>
+                    );
+                })}
             </div>
         </aside>
     );
