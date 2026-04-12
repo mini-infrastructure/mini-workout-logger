@@ -9,15 +9,16 @@ const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 
 class ExerciseService {
 
-    async getAll(): Promise<ExerciseReadDTO[]> {
+    async getAll(params?: Record<string, string | number>): Promise<ApiResponseDTO<ExerciseReadDTO[]>> {
         try {
             const response = await axios.get<ApiResponseDTO<ExerciseReadDTO[]>>(
-                `${apiUrl}/exercises?lang=${lang}`
+                `${apiUrl}/exercises`,
+                { params: { lang, ...params } }
             );
-            return response.data.data;
+            return response.data;
         } catch (error) {
             console.error('Error fetching exercises:', error);
-            return [];
+            return { status: 500, message: '', data: [], pagination: null, errors: null };
         }
     }
 

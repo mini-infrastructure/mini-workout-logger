@@ -9,14 +9,6 @@ const styles = {
         flexDirection: 'column',
         gap: 'var(--stack-gap-nano)',
     }),
-
-    resultItem: css({
-        padding: `var(--base-size-8) var(--base-size-12)`,
-        borderRadius: 'var(--borderRadius-small)',
-        fontSize: 'var(--size-input-text)',
-        color: 'var(--color-text)',
-        backgroundColor: 'var(--color-container1)',
-    }),
 };
 
 export default styles;
