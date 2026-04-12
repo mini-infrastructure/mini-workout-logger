@@ -1,5 +1,11 @@
 import {css} from "@emotion/react";
 
+const iconColorMap: Record<string, string> = {
+    primary: 'var(--color-blue)',
+    danger:  'var(--color-red)',
+    info:    'var(--color-gray)',
+};
+
 const styles = {
     container: css({
         position: 'relative',
@@ -31,6 +37,10 @@ const styles = {
         listStyle: 'none',
         margin: 0,
         padding: 0,
+    }),
+
+    iconColor: (color: string = 'info') => css({
+        color: iconColorMap[color] ?? iconColorMap['info'],
     }),
 
     menuButton: css({

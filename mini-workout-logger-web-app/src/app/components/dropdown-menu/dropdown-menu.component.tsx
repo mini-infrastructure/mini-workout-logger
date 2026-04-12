@@ -1,7 +1,6 @@
 import type {ReactNode} from "react";
 import {useRef, useState} from "react";
 import type {Interpolation, Theme} from "@emotion/react";
-import {css} from "@emotion/react";
 import Button from "../button/button.component.tsx";
 import ActionSwitch from "../input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
@@ -23,17 +22,6 @@ export type DropdownMenuItem = {
     dividerBefore?: boolean;
 };
 
-const getIconColor = (color: MenuItemColor = "info") => {
-    const map: Record<MenuItemColor, string> = {
-        primary: "var(--color-blue)",
-        danger:  "var(--color-red)",
-        info:    "var(--color-gray)",
-    };
-
-    return css({
-        color: map[color],
-    });
-};
 
 type DropdownTrigger = "button" | "action-switch";
 
@@ -115,7 +103,7 @@ const DropdownMenu = ({
                                     disabled={item.disabled}
                                     customCss={styles.menuButton}
                                     icon={item.icon}
-                                    customIconCss={item.iconColor && getIconColor(item.iconColor)}
+                                    customIconCss={item.iconColor && styles.iconColor(item.iconColor)}
                                 >
                                     {item.label}
                                 </Button>

@@ -108,6 +108,10 @@ const styles = {
         margin: `0 0 var(--stack-gap-normal) 0`,
     }),
 
+    submitRow: css({
+        marginTop: 'var(--base-size-8)',
+    }),
+
     buttonMultiSelectAddButton: css({
         display: 'flex',
         justifyContent: 'center',

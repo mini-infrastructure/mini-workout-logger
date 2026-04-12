@@ -24,6 +24,13 @@ export type FormOption = {
     value: string;
 };
 
+export type ButtonMultiSelectValue = {
+    first: string;
+    second: string;
+};
+
+export type FormFieldValue = string | string[] | ButtonMultiSelectValue[];
+
 export type ButtonMultiSelectFieldOptions = {
     first: {
         label?: string;
@@ -46,20 +53,20 @@ export type FormItem = {
     placeholder?: string;
     options?: FormOption[] | ButtonMultiSelectFieldOptions;
     colSpan?: number;
-    initialValue?: any;
+    initialValue?: FormFieldValue;
     inputEnabled?: boolean;
 };
 
 export type FormBuilderProps = {
     items: FormItem[];
     columns: number;
-    onSubmit: (values: Record<string, any>) => void;
+    onSubmit: (values: Record<string, FormFieldValue>) => void;
     submitButton?: ReactNode;
     disabled?: boolean;
 };
 
 const buildInitialValues = (items: FormItem[]) => {
-    const values: Record<string, any> = {};
+    const values: Record<string, FormFieldValue> = {};
 
     items.forEach((item) => {
         if (item.initialValue !== undefined) {
@@ -90,9 +97,9 @@ const FormBuilder = ({
                          submitButton,
                          disabled = false,
                      }: FormBuilderProps) => {
-    const [values, setValues] = useState<Record<string, any>>(() => buildInitialValues(items));
+    const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
 
-    const handleChange = (name: string, value: any) => {
+    const handleChange = (name: string, value: FormFieldValue) => {
         setValues((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -171,7 +178,7 @@ const FormBuilder = ({
             })}
 
             {!disabled ? (
-                <div css={styles.fieldWrapper(columns)} style={{ marginTop: "0.5rem" }}>
+                <div css={[styles.fieldWrapper(columns), styles.submitRow]}>
                     {submitButton ?? <Button type="submit">Submit</Button>}
                 </div>
             ) : (

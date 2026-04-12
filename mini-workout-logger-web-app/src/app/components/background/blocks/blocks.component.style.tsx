@@ -9,7 +9,6 @@ const styles = {
         gap: 'var(--stack-gap-spacious)',
         padding: 'var(--base-size-32)',
         zIndex: -1,
-        margin: 'var(--base-size-64)',
     }),
 
     /* LEFT SIDE */
