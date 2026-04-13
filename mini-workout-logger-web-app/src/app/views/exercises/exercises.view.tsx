@@ -16,25 +16,6 @@ const ExercisesView = () => {
         setPage(0);
     };
 
-    const results = (
-        <>
-            <ul css={styles.resultList}>
-                {exercises.map(e => (
-                    <li key={e.id}>
-                        <ExerciseCard exercise={e} />
-                    </li>
-                ))}
-            </ul>
-            {pagination && pagination.total_pages > 1 && (
-                <Pagination
-                    page={page}
-                    totalPages={pagination.total_pages}
-                    onPageChange={setPage}
-                />
-            )}
-        </>
-    );
-
     return (
         <Layout>
             {error && <p>{error}</p>}
@@ -42,7 +23,24 @@ const ExercisesView = () => {
                 value={query}
                 onChange={handleQueryChange}
                 placeholder="Search exercises..."
-                results={loading ? null : results}
+                results={loading ? null : (
+                    <>
+                        <ul css={styles.resultList}>
+                            {exercises.map(e => (
+                                <li key={e.id}>
+                                    <ExerciseCard exercise={e} />
+                                </li>
+                            ))}
+                        </ul>
+                        {pagination && pagination.total_pages > 1 && (
+                            <Pagination
+                                page={page}
+                                totalPages={pagination.total_pages}
+                                onPageChange={setPage}
+                            />
+                        )}
+                    </>
+                )}
             />
         </Layout>
     );

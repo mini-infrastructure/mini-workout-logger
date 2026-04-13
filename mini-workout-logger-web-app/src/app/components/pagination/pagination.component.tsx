@@ -1,5 +1,5 @@
 import type { Interpolation, Theme } from '@emotion/react';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 import styles from './pagination.component.style.tsx';
 
 export type PaginationProps = {
@@ -18,6 +18,12 @@ const Pagination = ({ page, totalPages, onPageChange, customCss }: PaginationPro
         <div css={[styles.container, ...customCssArray]}>
             <button
                 css={styles.button(page === 0)}
+                onClick={() => onPageChange(0)}
+            >
+                <FaAngleDoubleLeft />
+            </button>
+            <button
+                css={styles.button(page === 0)}
                 onClick={() => onPageChange(page - 1)}
             >
                 <FaChevronLeft />
@@ -28,6 +34,12 @@ const Pagination = ({ page, totalPages, onPageChange, customCss }: PaginationPro
                 onClick={() => onPageChange(page + 1)}
             >
                 <FaChevronRight />
+            </button>
+            <button
+                css={styles.button(page >= totalPages - 1)}
+                onClick={() => onPageChange(totalPages - 1)}
+            >
+                <FaAngleDoubleRight />
             </button>
         </div>
     );
