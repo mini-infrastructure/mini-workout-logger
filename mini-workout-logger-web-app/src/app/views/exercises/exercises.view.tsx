@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
-import Card from '../../components/card/card.component.tsx';
+import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
 import { useExercises } from '../../hooks/useExercises.tsx';
 import styles from './exercises.view.style.tsx';
@@ -21,7 +21,7 @@ const ExercisesView = () => {
             <ul css={styles.resultList}>
                 {exercises.map(e => (
                     <li key={e.id}>
-                        <Card>{e.name}</Card>
+                        <ExerciseCard exercise={e} />
                     </li>
                 ))}
             </ul>

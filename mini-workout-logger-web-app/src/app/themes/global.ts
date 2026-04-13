@@ -54,6 +54,7 @@ const globalStyles = (theme: AppTheme) => css({
         '--base-size-8':  theme.baseSize[8],
         '--base-size-12': theme.baseSize[12],
         '--base-size-16': theme.baseSize[16],
+        '--base-size-18': theme.baseSize[18],
         '--base-size-24': theme.baseSize[24],
         '--base-size-32': theme.baseSize[32],
         '--base-size-64': theme.baseSize[64],

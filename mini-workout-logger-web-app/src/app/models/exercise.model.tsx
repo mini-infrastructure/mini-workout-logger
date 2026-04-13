@@ -1,16 +1,18 @@
-import {ExerciseMuscleMovementClassification, Muscle} from './muscle.model';
-import type {WorkoutExercise} from "./workout-exercise.model.tsx";
-import type {IconType} from "react-icons";
-import {FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
-import {MdFitnessCenter, MdSelfImprovement, MdTrendingUp} from "react-icons/md";
-import {GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp} from "react-icons/gi";
-import type {ReactNode} from "react";
-import {TbBallBasketball, TbBandage, TbJumpRope} from "react-icons/tb";
-import type {ColorVariant} from "../utils/colorsVariants.tsx";
-import {LiaDumbbellSolid} from "react-icons/lia";
-import {BiBody} from "react-icons/bi";
-import {RiWeightFill} from "react-icons/ri";
-import {GrYoga} from "react-icons/gr";
+import { ExerciseMuscleMovementClassification, Muscle } from './muscle.model';
+import type { WorkoutExercise } from "./workout-exercise.model.tsx";
+import type { IconType } from "react-icons";
+import { FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling } from "react-icons/fa";
+import { MdFitnessCenter, MdSelfImprovement, MdTrendingUp } from "react-icons/md";
+import { GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp } from "react-icons/gi";
+import type { ReactNode } from "react";
+import { TbBallBasketball, TbBandage, TbJumpRope, TbYoga } from "react-icons/tb";
+import type { ColorVariant } from "../utils/colorsVariants.tsx";
+import { LiaDumbbellSolid } from "react-icons/lia";
+import { BiBody } from "react-icons/bi";
+import { RiWeightFill } from "react-icons/ri";
+import { GrYoga } from "react-icons/gr";
+import { MdOutlineSportsGymnastics } from "react-icons/md";
+import { GiRopeCoil } from "react-icons/gi";
 
 export interface Exercise {
     id: number;
@@ -103,21 +105,23 @@ export type ExerciseType =
     | 'UNILATERAL'
     ;
 
+// --- Icons ---
+
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
     STRENGTH: FaFire,
     CARDIO: FaRunning,
     STRETCHING: MdSelfImprovement,
     POWERLIFTING: GiWeightLiftingUp,
-    OLYMPIC_WEIGHTLIFTING: GiWeightLiftingUp,
+    OLYMPIC_WEIGHTLIFTING: RiWeightFill,
     STRONGMAN: GiMuscleUp,
     CALISTHENICS: GiBodyBalance,
     PLYOMETRICS: FaBolt,
-    RECOVERY: MdSelfImprovement,
+    RECOVERY: TbBandage,
     HIT: FaFire,
-    MOBILITY: MdSelfImprovement,
-    PILATES: MdSelfImprovement,
+    MOBILITY: MdOutlineSportsGymnastics,
+    PILATES: TbYoga,
     YOGA: GrYoga,
-    WARM_UP: FaBolt,
+    WARM_UP: FaRunning,
 };
 
 export const ExerciseDifficultyIcons: Record<ExerciseDifficulty, IconType> = {
@@ -132,10 +136,10 @@ export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
     DUMBBELL: LiaDumbbellSolid,
     BODYWEIGHT: BiBody,
     BOSU_BALL: TbBallBasketball,
-    CABLE: TbJumpRope,
+    CABLE: GiRopeCoil,
     EXERCISE_BALL: TbBallBasketball,
     MACHINE: MdFitnessCenter,
-    SMITH_MACHINE: MdFitnessCenter,
+    SMITH_MACHINE: GiWeightLiftingUp,
     MEDICINE_BALL: TbBallBasketball,
     PLATE: FaDotCircle,
     RESISTANCE_BAND: TbBandage,
@@ -143,34 +147,49 @@ export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
     KETTLEBELL: RiWeightFill,
 };
 
-export const ExerciseDifficultyVariants: Record<
-    ExerciseDifficulty,
-    ColorVariant
-> = {
-    NOVICE: "success",
-    BEGINNER: "success",
-    INTERMEDIATE: "warning",
-    ADVANCED: "danger",
+// --- Color variants ---
+
+export const ExerciseCategoryVariants: Record<ExerciseCategory, ColorVariant> = {
+    STRENGTH: 'danger',
+    CARDIO: 'warning',
+    STRETCHING: 'success',
+    POWERLIFTING: 'orange',
+    OLYMPIC_WEIGHTLIFTING: 'orange',
+    STRONGMAN: 'danger',
+    CALISTHENICS: 'primary',
+    PLYOMETRICS: 'warning',
+    RECOVERY: 'success',
+    HIT: 'danger',
+    MOBILITY: 'success',
+    PILATES: 'pink',
+    YOGA: 'purple',
+    WARM_UP: 'warning',
 };
 
-export const ExerciseEquipmentVariants: Record<
-    ExerciseEquipment,
-    ColorVariant
-> = {
-    BARBELL: "gray",
-    DUMBBELL: "gray",
-    BODYWEIGHT: "success",
-    BOSU_BALL: "warning",
-    CABLE: "gray",
-    EXERCISE_BALL: "warning",
-    MACHINE: "gray",
-    SMITH_MACHINE: "gray",
-    MEDICINE_BALL: "warning",
-    PLATE: "gray",
-    RESISTANCE_BAND: "success",
-    TRX: "warning",
-    KETTLEBELL: "gray",
+export const ExerciseDifficultyVariants: Record<ExerciseDifficulty, ColorVariant> = {
+    NOVICE: 'success',
+    BEGINNER: 'success',
+    INTERMEDIATE: 'warning',
+    ADVANCED: 'danger',
 };
+
+export const ExerciseEquipmentVariants: Record<ExerciseEquipment, ColorVariant> = {
+    BARBELL: 'gray',
+    DUMBBELL: 'gray',
+    BODYWEIGHT: 'success',
+    BOSU_BALL: 'warning',
+    CABLE: 'gray',
+    EXERCISE_BALL: 'warning',
+    MACHINE: 'gray',
+    SMITH_MACHINE: 'gray',
+    MEDICINE_BALL: 'warning',
+    PLATE: 'gray',
+    RESISTANCE_BAND: 'success',
+    TRX: 'warning',
+    KETTLEBELL: 'gray',
+};
+
+// --- Generic helpers ---
 
 export function getIconFromMap<T extends string>(
     map: Record<T, IconType>,
@@ -178,97 +197,103 @@ export function getIconFromMap<T extends string>(
     size = 14
 ): ReactNode {
     if (!key) return undefined;
-
     const Icon = map[key];
     return Icon ? <Icon size={size} /> : undefined;
 }
 
-export function getExerciseDifficultyVariant(
-    difficulty?: ExerciseDifficulty,
+export function getVariantFromMap<T extends string>(
+    map: Record<T, ColorVariant>,
+    key?: T,
 ): ColorVariant | undefined {
-    if (!difficulty) return undefined;
-
-    return ExerciseDifficultyVariants[difficulty];
+    if (!key) return undefined;
+    return map[key];
 }
 
-export function getExerciseEquipmentVariant(
-    equipment?: ExerciseEquipment,
-): ColorVariant | undefined {
-    if (!equipment) return undefined;
+// --- Select options (derived from type records to stay in sync) ---
 
-    return ExerciseEquipmentVariants[equipment];
+const ExerciseCategoryLabels: Record<ExerciseCategory, string> = {
+    STRENGTH: 'Strength',
+    CARDIO: 'Cardio',
+    STRETCHING: 'Stretching',
+    POWERLIFTING: 'Powerlifting',
+    OLYMPIC_WEIGHTLIFTING: 'Olympic Weightlifting',
+    STRONGMAN: 'Strongman',
+    CALISTHENICS: 'Calisthenics',
+    PLYOMETRICS: 'Plyometrics',
+    RECOVERY: 'Recovery',
+    HIT: 'HIT',
+    MOBILITY: 'Mobility',
+    PILATES: 'Pilates',
+    YOGA: 'Yoga',
+    WARM_UP: 'Warm Up',
+};
+
+const ExerciseDifficultyLabels: Record<ExerciseDifficulty, string> = {
+    NOVICE: 'Novice',
+    BEGINNER: 'Beginner',
+    INTERMEDIATE: 'Intermediate',
+    ADVANCED: 'Advanced',
+};
+
+const ExerciseEquipmentLabels: Record<ExerciseEquipment, string> = {
+    BARBELL: 'Barbell',
+    DUMBBELL: 'Dumbbell',
+    BODYWEIGHT: 'Bodyweight',
+    BOSU_BALL: 'BOSU Ball',
+    CABLE: 'Cable',
+    EXERCISE_BALL: 'Exercise Ball',
+    MACHINE: 'Machine',
+    SMITH_MACHINE: 'Smith Machine',
+    MEDICINE_BALL: 'Medicine Ball',
+    PLATE: 'Plate',
+    RESISTANCE_BAND: 'Resistance Band',
+    TRX: 'TRX',
+    KETTLEBELL: 'Kettlebell',
+};
+
+const ExerciseForceLabels: Record<ExerciseForceDirection, string> = {
+    PUSH: 'Push',
+    PULL: 'Pull',
+    SLIDE: 'Slide',
+    ROTATE_OR_TWIST: 'Rotate or Twist',
+};
+
+const ExerciseMechanicsLabels: Record<ExerciseMechanics, string> = {
+    ISOLATED: 'Isolated',
+    COMPOUND: 'Compound',
+};
+
+const ExerciseRoleLabels: Record<ExerciseRole, string> = {
+    BASIC: 'Basic',
+    AUXILIARY: 'Auxiliary',
+    BASIC_OR_AUXILIARY: 'Basic or Auxiliary',
+};
+
+const ExerciseTypeLabels: Record<ExerciseType, string> = {
+    BILATERAL: 'Bilateral',
+    ISOLATERAL: 'Isolateral',
+    UNILATERAL: 'Unilateral',
+};
+
+const ExerciseMuscleMovementLabels: Record<ExerciseMuscleMovementClassification, string> = {
+    AGONIST: 'Agonist',
+    ANTAGONIST: 'Antagonist',
+    TARGET: 'Target',
+    SYNERGIST: 'Synergist',
+    STABILIZER: 'Stabilizer',
+    DYNAMIC_STABILIZER: 'Dynamic Stabilizer',
+    ANTAGONIST_STABILIZER: 'Antagonist Stabilizer',
+};
+
+function toOptions<T extends string>(labels: Record<T, string>) {
+    return (Object.keys(labels) as T[]).map(value => ({ label: labels[value], value }));
 }
 
-export const exerciseCategoryOptions = [
-    { label: "Strength", value: "STRENGTH" },
-    { label: "Cardio", value: "CARDIO" },
-    { label: "Stretching", value: "STRETCHING" },
-    { label: "Powerlifting", value: "POWERLIFTING" },
-    { label: "Olympic Weightlifting", value: "OLYMPIC_WEIGHTLIFTING" },
-    { label: "Strongman", value: "STRONGMAN" },
-    { label: "Calisthenics", value: "CALISTHENICS" },
-    { label: "Plyometrics", value: "PLYOMETRICS" },
-    { label: "Recovery", value: "RECOVERY" },
-    { label: "HIT", value: "HIT" },
-    { label: "Mobility", value: "MOBILITY" },
-    { label: "Pilates", value: "PILATES" },
-    { label: "Yoga", value: "YOGA" },
-    { label: "Warm Up", value: "WARM_UP" },
-];
-
-export const exerciseDifficultyOptions = [
-    { label: "Novice", value: "NOVICE" },
-    { label: "Beginner", value: "BEGINNER" },
-    { label: "Intermediate", value: "INTERMEDIATE" },
-    { label: "Advanced", value: "ADVANCED" },
-];
-
-export const exerciseEquipmentOptions = [
-    { label: "Barbell", value: "BARBELL" },
-    { label: "Dumbbell", value: "DUMBBELL" },
-    { label: "Bodyweight", value: "BODYWEIGHT" },
-    { label: "BOSU Ball", value: "BOSU_BALL" },
-    { label: "Cable", value: "CABLE" },
-    { label: "Exercise Ball", value: "EXERCISE_BALL" },
-    { label: "Machine", value: "MACHINE" },
-    { label: "Smith Machine", value: "SMITH_MACHINE" },
-    { label: "Medicine Ball", value: "MEDICINE_BALL" },
-    { label: "Plate", value: "PLATE" },
-    { label: "Resistance Band", value: "RESISTANCE_BAND" },
-    { label: "TRX", value: "TRX" },
-    { label: "Kettlebell", value: "KETTLEBELL" },
-];
-
-export const exerciseForceOptions = [
-    { label: "Push", value: "PUSH" },
-    { label: "Pull", value: "PULL" },
-    { label: "Slide", value: "SLIDE" },
-    { label: "Rotate or Twist", value: "ROTATE_OR_TWIST" },
-];
-
-export const exerciseMechanicsOptions = [
-    { label: "Isolated", value: "ISOLATED" },
-    { label: "Compound", value: "COMPOUND" },
-];
-
-export const exerciseRoleOptions = [
-    { label: "Basic", value: "BASIC" },
-    { label: "Auxiliary", value: "AUXILIARY" },
-    { label: "Basic or Auxiliary", value: "BASIC_OR_AUXILIARY" },
-];
-
-export const exerciseTypeOptions = [
-    { label: "Bilateral", value: "BILATERAL" },
-    { label: "Isolateral", value: "ISOLATERAL" },
-    { label: "Unilateral", value: "UNILATERAL" },
-];
-
-export const exerciseMuscleMovementClassificationOptions = [
-    { label: "Agonist", value: "AGONIST" },
-    { label: "Antagonist", value: "ANTAGONIST" },
-    { label: "Target", value: "TARGET" },
-    { label: "Synergist", value: "SYNERGIST" },
-    { label: "Stabilizer", value: "STABILIZER" },
-    { label: "Dynamic Stabilizer", value: "DYNAMIC_STABILIZER" },
-    { label: "Antagonist Stabilizer", value: "ANTAGONIST_STABILIZER" },
-];
+export const exerciseCategoryOptions = toOptions(ExerciseCategoryLabels);
+export const exerciseDifficultyOptions = toOptions(ExerciseDifficultyLabels);
+export const exerciseEquipmentOptions = toOptions(ExerciseEquipmentLabels);
+export const exerciseForceOptions = toOptions(ExerciseForceLabels);
+export const exerciseMechanicsOptions = toOptions(ExerciseMechanicsLabels);
+export const exerciseRoleOptions = toOptions(ExerciseRoleLabels);
+export const exerciseTypeOptions = toOptions(ExerciseTypeLabels);
+export const exerciseMuscleMovementClassificationOptions = toOptions(ExerciseMuscleMovementLabels);

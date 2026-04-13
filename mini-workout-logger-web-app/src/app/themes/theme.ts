@@ -50,6 +50,7 @@ const baseSize = {
     8:  '0.5rem',
     12: '0.75rem',
     16: '1rem',
+    18: '1.3rem',
     24: '1.5rem',
     32: '2rem',
     64: '4rem',

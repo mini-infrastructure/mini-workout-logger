@@ -7,7 +7,7 @@ const styles = {
         margin: `var(--stack-gap-condensed) 0 0 0`,
         display: 'flex',
         flexDirection: 'column',
-        gap: 'var(--stack-gap-nano)',
+        gap: 'var(--stack-gap-tiny)',
     }),
 };
 
