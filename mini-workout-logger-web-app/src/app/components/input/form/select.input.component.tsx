@@ -1,8 +1,10 @@
-import {useState} from "react";
+import { useRef, useState } from "react";
 import styles from "./form.input.component.style.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import Button from "../../button/button.component.tsx";
 import type {FormOption} from "./form.input.component.tsx";
+import { useClickOut } from "../../../hooks/useClickOut.tsx";
+import { useEscapeKey } from "../../../hooks/useEscapeKey.tsx";
 
 export type SelectProps = {
     options: FormOption[];
@@ -20,6 +22,12 @@ const Select = ({
                     disabled,
                 }: SelectProps) => {
     const [open, setOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const close = () => setOpen(false);
+    useClickOut(containerRef, close);
+    useEscapeKey(close);
+
     const toggleDropdown = () => {
         if (disabled) return;
         setOpen((prev) => !prev);
@@ -34,7 +42,7 @@ const Select = ({
     const selectedOption = options.find((opt) => opt.value === value);
 
     return (
-        <div css={styles.wrapper}>
+        <div css={styles.wrapper} ref={containerRef}>
             {/* SELECT BOX */}
             <div
                 onClick={() => {

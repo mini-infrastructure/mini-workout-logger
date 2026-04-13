@@ -25,7 +25,7 @@ const styles = {
     input: css({
         padding: "0.6rem 0.8rem",
         borderRadius: "var(--borderRadius-small)",
-        backgroundColor: `var(--color-container1)`,
+        backgroundColor: `var(--color-container2)`,
         border: 'none',
         fontSize: "var(--size-input-text)",
         minWidth: 'var(--control-minWidth)',

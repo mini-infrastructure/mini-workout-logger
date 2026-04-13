@@ -6,6 +6,7 @@ import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";
 import ButtonMultiSelect from "./button.multiselect.form.input.component.tsx";
+import PrimaryButton from "../../button/button.primary.component.tsx";
 
 export type FormFieldType =
     | "text"
@@ -126,7 +127,7 @@ const FormBuilder = ({
                         {item.type === "select" ? (
                             <Select
                                 options={item.options as FormOption[]}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
@@ -135,14 +136,14 @@ const FormBuilder = ({
                             <textarea
                                 css={styles.input}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
                         ) : item.type === "multiselect" ? (
                             <MultiSelect
                                 options={item.options as FormOption[]}
-                                value={values[item.name] ?? []}
+                                value={values[item.name] as string[] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
@@ -151,7 +152,7 @@ const FormBuilder = ({
                             <ButtonSelect
                                 options={item.options as FormOption[]}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 inputEnabled={item.inputEnabled}
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
@@ -159,7 +160,7 @@ const FormBuilder = ({
                         ) : item.type === "buttonmultiselect" ? (
                             <ButtonMultiSelect
                                 options={item.options as ButtonMultiSelectFieldOptions}
-                                value={values[item.name] ?? []}
+                                value={values[item.name] as ButtonMultiSelectValue[] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
                             />
@@ -168,7 +169,7 @@ const FormBuilder = ({
                                 css={styles.input}
                                 type={item.type}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
@@ -179,7 +180,7 @@ const FormBuilder = ({
 
             {!disabled ? (
                 <div css={[styles.fieldWrapper(columns), styles.submitRow]}>
-                    {submitButton ?? <Button type="submit">Submit</Button>}
+                    {submitButton ?? <PrimaryButton type="submit">Submit</PrimaryButton>}
                 </div>
             ) : (
                 <></>

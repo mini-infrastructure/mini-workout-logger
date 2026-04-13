@@ -18,7 +18,7 @@ const styles = {
         fontSize: 'var(--size-medium)',
         fontFamily: 'inherit',
 
-        backgroundColor: 'var(--color-bg)',
+        backgroundColor: 'var(--color-container1)',
         color: 'var(--color-text)',
 
         transition: 'background-color 0.2s ease, color 0.2s ease',

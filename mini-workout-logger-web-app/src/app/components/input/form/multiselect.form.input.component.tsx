@@ -1,9 +1,11 @@
-import {useState} from "react";
+import { useRef, useState } from "react";
 import styles from "./form.input.component.style.tsx";
 import Badge from "../../badge/badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import type {FormOption} from "./form.input.component.tsx";
+import { useClickOut } from "../../../hooks/useClickOut.tsx";
+import { useEscapeKey } from "../../../hooks/useEscapeKey.tsx";
 
 type MultiSelectProps = {
     options: FormOption[];
@@ -21,7 +23,15 @@ const MultiSelect = ({
                          disabled = false,
                      }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    const close = () => setOpen(false);
+    useClickOut(containerRef, close);
+    useEscapeKey(close);
+
     const toggleDropdown = () => setOpen((prev) => !prev);
+
+    const allSelected = options.length > 0 && options.every((opt) => value.includes(opt.value));
 
     const toggleValue = (val: string) => {
         if (value.includes(val)) {
@@ -31,10 +41,18 @@ const MultiSelect = ({
         }
     };
 
+    const toggleAll = () => {
+        if (allSelected) {
+            onChange([]);
+        } else {
+            onChange(options.map((opt) => opt.value));
+        }
+    };
+
     const selectedOptions = options.filter((opt) => value.includes(opt.value));
 
     return (
-        <div css={styles.wrapper}>
+        <div css={styles.wrapper} ref={containerRef}>
 
             {/* SELECT BOX */}
             <div
@@ -59,6 +77,13 @@ const MultiSelect = ({
             {/* DROPDOWN */}
             {open && (
                 <div css={[styles.dropdown, styles.dropdownContainer]}>
+                    <div
+                        css={styles.dropdownItem(allSelected)}
+                        onClick={toggleAll}
+                    >
+                        <input type="checkbox" checked={allSelected} readOnly />
+                        <span>Select all</span>
+                    </div>
                     {options.map((opt) => {
                         const checked = value.includes(opt.value);
 
@@ -86,7 +111,7 @@ const MultiSelect = ({
                 {selectedOptions.map((opt) => (
                     <Badge
                         key={opt.value}
-                        onRemove={() => toggleValue(opt.value)}
+                        onRemove={disabled ? undefined : () => toggleValue(opt.value)}
                         customCss={styles.badgeCustomCss}
                     >
                         {opt.label}

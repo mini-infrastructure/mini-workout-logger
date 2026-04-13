@@ -12,6 +12,12 @@ const styles = {
         color: 'var(--color-text)',
     }),
 
+    header: css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    }),
+
     divider: css({
         width: '100%',
     }),
