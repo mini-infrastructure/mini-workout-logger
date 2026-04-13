@@ -94,6 +94,35 @@ public class ExerciseService extends AbstractService<Exercise,
                 groupNames);
     }
 
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> getFavoritedExercises() {
+        List<ExerciseReadDTO> exercises = repository.findAll()
+                .stream()
+                .filter(Exercise::isFavorited)
+                .map(mapper::toDTO)
+                .toList();
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITIES_FOUND.getMessage(),
+                exercises);
+    }
+
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> favoriteExercise(Long id) {
+        Exercise exercise = repository.safeFindById(id);
+        exercise.setFavorited(true);
+        repository.save(exercise);
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITY_UPDATED.getMessage(),
+                List.of(mapper.toDTO(exercise)));
+    }
+
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> unfavoriteExercise(Long id) {
+        Exercise exercise = repository.safeFindById(id);
+        exercise.setFavorited(false);
+        repository.save(exercise);
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITY_UPDATED.getMessage(),
+                List.of(mapper.toDTO(exercise)));
+    }
+
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> listExercisesByMuscleGroup(String muscleGroupName) {
         List<ExerciseReadDTO> exercises = repository.findAll()
                 .stream()

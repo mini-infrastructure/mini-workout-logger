@@ -36,6 +36,9 @@ public class Exercise extends AbstractEntity {
     @Convert(converter = TextConverter.class)
     private Text name;
 
+    @Column(name = "favorited", nullable = false)
+    private boolean favorited = false;
+
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;

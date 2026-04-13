@@ -74,6 +74,7 @@ public class TestHelper {
         return List.of(
                 new ExerciseWriteDTO(
                         "Cable Isolateral Lying Fly",
+                        false,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.BEGINNER,
                         ExerciseEquipment.CABLE,
@@ -92,6 +93,7 @@ public class TestHelper {
                 ),
                 new ExerciseWriteDTO(
                         "Barbell Bent-over Row",
+                        false,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.INTERMEDIATE,
                         ExerciseEquipment.BARBELL,
@@ -110,6 +112,7 @@ public class TestHelper {
                 ),
                 new ExerciseWriteDTO(
                         "Barbell Squat",
+                        false,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.INTERMEDIATE,
                         ExerciseEquipment.BARBELL,
