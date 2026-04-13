@@ -10,6 +10,7 @@ import type { ExerciseWriteDTO } from '../../dtos/exercise-write.dto.tsx';
 import type { ExerciseMuscleWriteDTO } from '../../dtos/exercise-muscle-write.dto.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import { useMuscles } from '../../hooks/useMuscles.tsx';
+import { useAlert } from '../../context/alert.context.tsx';
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
@@ -82,7 +83,6 @@ const buildFormItems = (exercise: ExerciseReadDTO, muscleOptions: { label: strin
         type: 'select',
         options: exerciseRoleOptions,
         initialValue: exercise.role ?? '',
-        colSpan: 2,
     },
     {
         name: 'group_name',
@@ -104,6 +104,7 @@ const buildFormItems = (exercise: ExerciseReadDTO, muscleOptions: { label: strin
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
     const { muscles } = useMuscles();
+    const pushAlert = useAlert();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
 
@@ -134,8 +135,13 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             exercise_muscles,
         };
 
-        await ExerciseService.update(exercise.id, payload);
-        setEditMode(false);
+        try {
+            await ExerciseService.update(exercise.id, payload);
+            pushAlert('Exercise updated successfully.', 'success');
+            setEditMode(false);
+        } catch (error) {
+            pushAlert(error instanceof Error ? error.message : 'An error occurred.', 'error');
+        }
     };
 
     const editButton = (
