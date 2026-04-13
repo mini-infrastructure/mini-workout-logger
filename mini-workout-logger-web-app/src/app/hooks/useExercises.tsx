@@ -3,7 +3,7 @@ import type { ExerciseReadDTO } from '../dtos/exercise-read.dto.tsx';
 import type { PaginationDTO } from '../dtos/api-response.dto.tsx';
 import ExerciseService from '../services/exercise.service.tsx';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 export function useExercises(query?: string, page: number = 0) {
     const [exercises, setExercises] = useState<ExerciseReadDTO[]>([]);
