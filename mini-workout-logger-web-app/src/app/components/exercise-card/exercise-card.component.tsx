@@ -7,6 +7,7 @@ import Badge from '../badge/badge.component.tsx';
 import Divider from '../divider/divider.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
+import { capitalize } from '../badge/badge.component.tsx';
 import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import {
@@ -59,7 +60,7 @@ const ExerciseCard = ({ exercise, onClick, customCss }: ExerciseCardProps) => {
                     <div css={styles.footer}>
                         {exercise.category && (
                             <Badge icon={categoryIcon} variant={categoryVariant}>
-                                {exercise.category}
+                                {capitalize(exercise.category)}
                             </Badge>
                         )}
                         {exercise.difficulty && (

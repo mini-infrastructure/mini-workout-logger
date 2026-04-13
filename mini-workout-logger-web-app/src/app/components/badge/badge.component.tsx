@@ -1,4 +1,9 @@
 import type {ReactNode} from "react";
+
+export function capitalize(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
 import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./badge.component.style.tsx";
 import Button from "../button/button.component.tsx";
