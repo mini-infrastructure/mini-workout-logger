@@ -57,7 +57,6 @@ const ExerciseCard = ({
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
     const categoryIcon      = getIconFromMap(ExerciseCategoryIcons, exercise.category);
     const equipmentIcon     = getIconFromMap(ExerciseEquipmentIcons, exercise.equipment);
-    const equipmentVariant  = getVariantFromMap(ExerciseEquipmentVariants, exercise.equipment);
 
     const isFilterActive = (key: string, value: string): boolean =>
         (activeFilters as Record<string, string | undefined>)[key] === value;
@@ -115,7 +114,6 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Equipment</span>
                                 <Badge
                                     icon={equipmentIcon}
-                                    variant={equipmentVariant}
                                     selected={isFilterActive('equipment', exercise.equipment)}
                                     onClick={handleFilterClick('equipment', exercise.equipment)}
                                     onRemove={isFilterActive('equipment', exercise.equipment) ? handleFilterRemove('equipment') : undefined}
@@ -175,7 +173,13 @@ const ExerciseCard = ({
                         {exercise.group_name && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Group</span>
-                                <Badge>{exercise.group_name}</Badge>
+                                <Badge
+                                    selected={isFilterActive('groupName', exercise.group_name)}
+                                    onClick={handleFilterClick('groupName', exercise.group_name)}
+                                    onRemove={isFilterActive('groupName', exercise.group_name) ? handleFilterRemove('groupName') : undefined}
+                                >
+                                    {exercise.group_name}
+                                </Badge>
                             </div>
                         )}
                         {exercise.root_muscles && exercise.root_muscles.length > 0 && (
@@ -183,7 +187,14 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Muscles</span>
                                 <div css={styles.attributeBadges}>
                                     {exercise.root_muscles.map(muscle => (
-                                        <Badge key={muscle}>{muscle}</Badge>
+                                        <Badge
+                                            key={muscle}
+                                            selected={isFilterActive('muscle', muscle)}
+                                            onClick={handleFilterClick('muscle', muscle)}
+                                            onRemove={isFilterActive('muscle', muscle) ? handleFilterRemove('muscle') : undefined}
+                                        >
+                                            {muscle}
+                                        </Badge>
                                     ))}
                                 </div>
                             </div>
