@@ -5,13 +5,17 @@ const styles = {
         listStyle: 'none',
         padding: 0,
         margin: `var(--stack-gap-condensed) 0 0 0`,
-        display: 'flex',
-        flexWrap: 'wrap',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
         gap: 'var(--stack-gap-tiny)',
 
         '& > li': {
-            flex: '1 1 calc(50% - var(--stack-gap-tiny))',
-            minWidth: '280px',
+            display: 'flex',
+            minWidth: 0,
+        },
+
+        '& > li > *': {
+            flex: 1,
         },
     }),
 

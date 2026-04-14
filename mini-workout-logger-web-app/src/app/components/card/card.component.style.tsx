@@ -24,6 +24,8 @@ const styles = {
         backgroundColor: 'var(--color-container1)',
         border: 'var(--borderWidth-thin) solid color-mix(in srgb, var(--color-border) 20%, transparent)',
         cursor: clicked ? 'pointer' : 'default',
+        width: '100%',
+        boxSizing: 'border-box',
     }),
 
     /**
