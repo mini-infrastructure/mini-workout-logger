@@ -87,10 +87,58 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
                             <DropdownMenu items={dropdownItems} />
                         </div>
                     </div>
+                    <div css={styles.attributes}>
+                        {exercise.equipment && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Equipment</span>
+                                <Badge>{capitalize(exercise.equipment)}</Badge>
+                            </div>
+                        )}
+                        {exercise.mechanics && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Mechanics</span>
+                                <Badge>{capitalize(exercise.mechanics)}</Badge>
+                            </div>
+                        )}
+                        {exercise.force && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Force</span>
+                                <Badge>{capitalize(exercise.force)}</Badge>
+                            </div>
+                        )}
+                        {exercise.role && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Role</span>
+                                <Badge>{capitalize(exercise.role)}</Badge>
+                            </div>
+                        )}
+                        {exercise.type && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Type</span>
+                                <Badge>{capitalize(exercise.type)}</Badge>
+                            </div>
+                        )}
+                        {exercise.group_name && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Group</span>
+                                <Badge>{exercise.group_name}</Badge>
+                            </div>
+                        )}
+                        {exercise.root_muscles && exercise.root_muscles.length > 0 && (
+                            <div css={styles.attributeRow}>
+                                <span css={styles.attributeLabel}>Muscles</span>
+                                <div css={styles.attributeBadges}>
+                                    {exercise.root_muscles.map(muscle => (
+                                        <Badge key={muscle}>{muscle}</Badge>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <Divider customCss={styles.divider} />
                     <div css={styles.footer}>
                         {exercise.category && (
-                            <Badge icon={categoryIcon} variant={categoryVariant}>
+                            <Badge icon={categoryIcon}>
                                 {capitalize(exercise.category)}
                             </Badge>
                         )}
