@@ -27,8 +27,6 @@ const ExercisesView = () => {
         });
     };
 
-    console.log(favoritedIds);
-
     const handleQueryChange = (value: string) => {
         setQuery(value);
         setPage(0);

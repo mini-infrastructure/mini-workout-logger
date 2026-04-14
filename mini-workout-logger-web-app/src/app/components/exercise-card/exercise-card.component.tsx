@@ -21,6 +21,7 @@ import {
     getVariantFromMap,
 } from '../../models/exercise.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
+import { useAlert } from '../../context/alert.context.tsx';
 import styles from './exercise-card.component.style.tsx';
 
 const DIFFICULTY_LEVELS = [
@@ -40,6 +41,7 @@ export type ExerciseCardProps = {
 
 const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick, customCss }: ExerciseCardProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const pushAlert = useAlert();
 
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
     const categoryVariant = getVariantFromMap(ExerciseCategoryVariants, exercise.category);
@@ -48,8 +50,10 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
     const handleFavorite = async () => {
         if (isFavorited) {
             await ExerciseService.unfavorite(exercise.id);
+            pushAlert(`${exercise.name} removed from favorites.`, 'info');
         } else {
             await ExerciseService.favorite(exercise.id);
+            pushAlert(`${exercise.name} added to favorites.`, 'success');
         }
         onFavoriteToggle?.(exercise.id, !isFavorited);
     };

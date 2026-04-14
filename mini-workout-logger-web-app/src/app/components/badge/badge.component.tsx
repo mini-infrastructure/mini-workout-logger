@@ -53,7 +53,6 @@ const Badge = ({
                }: BadgeProps) => {
 
     const handleClick = () => {
-        console.log(selected);
         if (onClick) onClick();
     };
 
