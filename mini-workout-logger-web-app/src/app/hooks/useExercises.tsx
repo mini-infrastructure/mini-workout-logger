@@ -14,7 +14,7 @@ export function useExercises(query?: string, page: number = 0) {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setLoading(true);
-            const params: Record<string, string | number> = { page, size: PAGE_SIZE };
+            const params: Record<string, string | number> = { page, size: PAGE_SIZE, sort: 'name,asc' };
             if (query) params.name = query;
 
             ExerciseService.getAll(params)
