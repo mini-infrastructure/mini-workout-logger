@@ -15,8 +15,9 @@ import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import {
     ExerciseCategoryIcons,
-    ExerciseCategoryVariants,
     ExerciseDifficultyVariants,
+    ExerciseEquipmentIcons,
+    ExerciseEquipmentVariants,
     getIconFromMap,
     getVariantFromMap,
 } from '../../models/exercise.model.tsx';
@@ -44,8 +45,9 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
     const pushAlert = useAlert();
 
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
-    const categoryVariant = getVariantFromMap(ExerciseCategoryVariants, exercise.category);
     const categoryIcon = getIconFromMap(ExerciseCategoryIcons, exercise.category);
+    const equipmentIcon = getIconFromMap(ExerciseEquipmentIcons, exercise.equipment);
+    const equipmentVariant = getVariantFromMap(ExerciseEquipmentVariants, exercise.equipment);
 
     const handleFavorite = async () => {
         if (isFavorited) {
@@ -91,7 +93,7 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
                         {exercise.equipment && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Equipment</span>
-                                <Badge>{capitalize(exercise.equipment)}</Badge>
+                                <Badge icon={equipmentIcon} variant={equipmentVariant}>{capitalize(exercise.equipment)}</Badge>
                             </div>
                         )}
                         {exercise.mechanics && (
