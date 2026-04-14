@@ -4,6 +4,10 @@ import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
 
+type SidebarButtonProps = ButtonProps & {
+    exact?: boolean;
+};
+
 const SidebarButton = ({
                            onClick,
                            path,
@@ -12,11 +16,12 @@ const SidebarButton = ({
                            icon,
                            clickedIcon,
                            customIconCss,
+                           exact = false,
                            children
-                       }: PropsWithChildren<ButtonProps>) => {
+                       }: PropsWithChildren<SidebarButtonProps>) => {
     const { pathname } = useLocation();
     const isActive = path !== undefined && (
-        path === "/" ? pathname === "/" : pathname.startsWith(path)
+        exact || path === "/" ? pathname === path : pathname.startsWith(path)
     );
 
     return (

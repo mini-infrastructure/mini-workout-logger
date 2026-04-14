@@ -1,17 +1,29 @@
 import type { ReactNode } from 'react';
+import { FiDatabase } from 'react-icons/fi';
+import { FaStar } from 'react-icons/fa';
 
 export type RouteSection = 'Main' | 'Support';
+
+export type AppRouteChild = {
+    path: string;
+    label: string;
+    icon?: ReactNode;
+};
 
 export type AppRoute = {
     path: string;
     label: string;
     section: RouteSection;
     icon?: ReactNode;
+    children?: AppRouteChild[];
 };
 
 export const routes: AppRoute[] = [
     { path: '/',          label: 'Dashboard', section: 'Main'    },
-    { path: '/exercises', label: 'Exercises', section: 'Main'    },
+    { path: '/exercises', label: 'Exercises', section: 'Main', children: [
+        { path: '/exercises',           label: 'Database',  icon: <FiDatabase /> },
+        { path: '/exercises/favorites', label: 'Favorites', icon: <FaStar />     },
+    ]},
     { path: '/workouts',  label: 'Workouts',  section: 'Main'    },
     { path: '/calendar',  label: 'Calendar',  section: 'Main'    },
     { path: '/analysis',  label: 'Analysis',  section: 'Main'    },
