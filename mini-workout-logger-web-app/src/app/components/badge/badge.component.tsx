@@ -78,11 +78,13 @@ const Badge = ({
             {children}
 
             {onRemove && (
-                <Button
-                    icon={<IoMdClose />}
-                    onClick={onRemove}
-                    customCss={styles.removeButton}
-                />
+                <span onClick={(e) => e.stopPropagation()}>
+                    <Button
+                        icon={<IoMdClose />}
+                        onClick={onRemove}
+                        customCss={styles.removeButton}
+                    />
+                </span>
             )}
         </span>
     );

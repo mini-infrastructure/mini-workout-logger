@@ -14,6 +14,10 @@ const styles = {
             minWidth: '280px',
         },
     }),
+
+    clearFiltersButton: css({
+        marginTop: 'var(--stack-gap-condensed)',
+    }),
 };
 
 export default styles;

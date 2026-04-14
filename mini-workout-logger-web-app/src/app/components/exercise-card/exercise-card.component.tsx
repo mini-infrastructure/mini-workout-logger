@@ -36,18 +36,37 @@ export type ExerciseCardProps = {
     exercise: ExerciseReadDTO;
     isFavorited?: boolean;
     onFavoriteToggle?: (id: number, favorited: boolean) => void;
+    activeFilters?: Record<string, string>;
+    onFilterChange?: (key: string, value: string | null) => void;
     onClick?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick, customCss }: ExerciseCardProps) => {
+const ExerciseCard = ({
+    exercise,
+    isFavorited = false,
+    onFavoriteToggle,
+    activeFilters = {},
+    onFilterChange,
+    onClick,
+    customCss,
+}: ExerciseCardProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const pushAlert = useAlert();
 
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
-    const categoryIcon = getIconFromMap(ExerciseCategoryIcons, exercise.category);
-    const equipmentIcon = getIconFromMap(ExerciseEquipmentIcons, exercise.equipment);
-    const equipmentVariant = getVariantFromMap(ExerciseEquipmentVariants, exercise.equipment);
+    const categoryIcon      = getIconFromMap(ExerciseCategoryIcons, exercise.category);
+    const equipmentIcon     = getIconFromMap(ExerciseEquipmentIcons, exercise.equipment);
+    const equipmentVariant  = getVariantFromMap(ExerciseEquipmentVariants, exercise.equipment);
+
+    const isFilterActive = (key: string, value: string): boolean =>
+        (activeFilters as Record<string, string | undefined>)[key] === value;
+
+    const handleFilterClick = (key: string, value: string) => () =>
+        onFilterChange?.(key, value);
+
+    const handleFilterRemove = (key: string) => () =>
+        onFilterChange?.(key, null);
 
     const handleFavorite = async () => {
         if (isFavorited) {
@@ -89,35 +108,68 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
                             <DropdownMenu items={dropdownItems} />
                         </div>
                     </div>
+
                     <div css={styles.attributes}>
                         {exercise.equipment && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Equipment</span>
-                                <Badge icon={equipmentIcon} variant={equipmentVariant}>{capitalize(exercise.equipment)}</Badge>
+                                <Badge
+                                    icon={equipmentIcon}
+                                    variant={equipmentVariant}
+                                    selected={isFilterActive('equipment', exercise.equipment)}
+                                    onClick={handleFilterClick('equipment', exercise.equipment)}
+                                    onRemove={isFilterActive('equipment', exercise.equipment) ? handleFilterRemove('equipment') : undefined}
+                                >
+                                    {capitalize(exercise.equipment)}
+                                </Badge>
                             </div>
                         )}
                         {exercise.mechanics && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Mechanics</span>
-                                <Badge>{capitalize(exercise.mechanics)}</Badge>
+                                <Badge
+                                    selected={isFilterActive('mechanics', exercise.mechanics)}
+                                    onClick={handleFilterClick('mechanics', exercise.mechanics)}
+                                    onRemove={isFilterActive('mechanics', exercise.mechanics) ? handleFilterRemove('mechanics') : undefined}
+                                >
+                                    {capitalize(exercise.mechanics)}
+                                </Badge>
                             </div>
                         )}
                         {exercise.force && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Force</span>
-                                <Badge>{capitalize(exercise.force)}</Badge>
+                                <Badge
+                                    selected={isFilterActive('force', exercise.force)}
+                                    onClick={handleFilterClick('force', exercise.force)}
+                                    onRemove={isFilterActive('force', exercise.force) ? handleFilterRemove('force') : undefined}
+                                >
+                                    {capitalize(exercise.force)}
+                                </Badge>
                             </div>
                         )}
                         {exercise.role && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Role</span>
-                                <Badge>{capitalize(exercise.role)}</Badge>
+                                <Badge
+                                    selected={isFilterActive('role', exercise.role)}
+                                    onClick={handleFilterClick('role', exercise.role)}
+                                    onRemove={isFilterActive('role', exercise.role) ? handleFilterRemove('role') : undefined}
+                                >
+                                    {capitalize(exercise.role)}
+                                </Badge>
                             </div>
                         )}
                         {exercise.type && (
                             <div css={styles.attributeRow}>
                                 <span css={styles.attributeLabel}>Type</span>
-                                <Badge>{capitalize(exercise.type)}</Badge>
+                                <Badge
+                                    selected={isFilterActive('type', exercise.type)}
+                                    onClick={handleFilterClick('type', exercise.type)}
+                                    onRemove={isFilterActive('type', exercise.type) ? handleFilterRemove('type') : undefined}
+                                >
+                                    {capitalize(exercise.type)}
+                                </Badge>
                             </div>
                         )}
                         {exercise.group_name && (
@@ -137,10 +189,17 @@ const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick
                             </div>
                         )}
                     </div>
+
                     <Divider customCss={styles.divider} />
+
                     <div css={styles.footer}>
                         {exercise.category && (
-                            <Badge icon={categoryIcon}>
+                            <Badge
+                                icon={categoryIcon}
+                                selected={isFilterActive('category', exercise.category)}
+                                onClick={handleFilterClick('category', exercise.category)}
+                                onRemove={isFilterActive('category', exercise.category) ? handleFilterRemove('category') : undefined}
+                            >
                                 {capitalize(exercise.category)}
                             </Badge>
                         )}
