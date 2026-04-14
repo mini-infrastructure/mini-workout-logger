@@ -1,15 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
 import { useExercises } from '../../hooks/useExercises.tsx';
+import ExerciseService from '../../services/exercise.service.tsx';
 import styles from './exercises.view.style.tsx';
 
 const ExercisesView = () => {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(0);
     const { exercises, pagination, loading, error } = useExercises(query, page);
+    const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
+
+    useEffect(() => {
+        ExerciseService.getFavorites().then(favorites => {
+            setFavoritedIds(new Set(favorites.map(e => e.id)));
+        });
+    }, []);
+
+    const handleFavoriteToggle = (id: number, favorited: boolean) => {
+        setFavoritedIds(prev => {
+            const next = new Set(prev);
+            favorited ? next.add(id) : next.delete(id);
+            return next;
+        });
+    };
+
+    console.log(favoritedIds);
 
     const handleQueryChange = (value: string) => {
         setQuery(value);
@@ -28,7 +46,11 @@ const ExercisesView = () => {
                         <ul css={styles.resultList}>
                             {exercises.map(e => (
                                 <li key={e.id}>
-                                    <ExerciseCard exercise={e} />
+                                    <ExerciseCard
+                                        exercise={e}
+                                        isFavorited={favoritedIds.has(e.id)}
+                                        onFavoriteToggle={handleFavoriteToggle}
+                                    />
                                 </li>
                             ))}
                         </ul>

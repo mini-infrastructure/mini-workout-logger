@@ -18,6 +18,19 @@ const styles = {
         justifyContent: 'space-between',
     }),
 
+    actions: css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-nano)',
+    }),
+
+    favoriteIcon: css({
+        color: 'var(--color-yellow)',
+    }),
+
+    favoriteButton: css({
+    }),
+
     divider: css({
         width: '100%',
     }),

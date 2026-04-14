@@ -55,6 +55,7 @@ public class ExerciseMapper
                     Exercise entity = ctx.getSource();
                     ExerciseReadDTO dto = ctx.getDestination();
 
+                    dto.setFavorited(entity.isFavorited());
                     dto.setMuscles(muscleMapper.toDTO(entity.getMuscles()));
                     dto.setTargetMuscles(
                             muscleMapper.toDTO(entity.getMusclesByRole(ExerciseMuscleMovementClassification.TARGET)));

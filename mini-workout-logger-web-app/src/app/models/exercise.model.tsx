@@ -17,6 +17,7 @@ import { GiRopeCoil } from "react-icons/gi";
 export interface Exercise {
     id: number;
     name: string;
+    favorited?: boolean;
     category?: ExerciseCategory;
     difficulty?: ExerciseDifficulty;
     equipment?: ExerciseEquipment;

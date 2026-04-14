@@ -69,6 +69,40 @@ class ExerciseService {
         }
     }
 
+    async favorite(id: number): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.patch<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/favorite?lang=${lang}`
+            );
+            return response.data.data[0];
+        } catch (error) {
+            handleApiError(error);
+        }
+    }
+
+    async unfavorite(id: number): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.patch<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/unfavorite?lang=${lang}`
+            );
+            return response.data.data[0];
+        } catch (error) {
+            handleApiError(error);
+        }
+    }
+
+    async getFavorites(): Promise<ExerciseReadDTO[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/favorites?lang=${lang}`
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching favorited exercises:', error);
+            return [];
+        }
+    }
+
     async getAllExerciseGroupNames(): Promise<string[]> {
         try {
             const response = await axios.get<ApiResponseDTO<string[]>>(

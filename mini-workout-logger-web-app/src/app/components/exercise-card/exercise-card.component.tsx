@@ -1,12 +1,15 @@
 import { useState } from 'react';
+
 import type { Interpolation, Theme } from '@emotion/react';
 import { MdOpenInNew } from 'react-icons/md';
+import { FaRegStar, FaStar } from 'react-icons/fa';
 import Card from '../card/card.component.tsx';
 import Rating from '../rating/rating.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Divider from '../divider/divider.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
+import Button from '../button/button.component.tsx';
 import { capitalize } from '../badge/badge.component.tsx';
 import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
@@ -17,6 +20,7 @@ import {
     getIconFromMap,
     getVariantFromMap,
 } from '../../models/exercise.model.tsx';
+import ExerciseService from '../../services/exercise.service.tsx';
 import styles from './exercise-card.component.style.tsx';
 
 const DIFFICULTY_LEVELS = [
@@ -28,16 +32,27 @@ const DIFFICULTY_LEVELS = [
 
 export type ExerciseCardProps = {
     exercise: ExerciseReadDTO;
+    isFavorited?: boolean;
+    onFavoriteToggle?: (id: number, favorited: boolean) => void;
     onClick?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const ExerciseCard = ({ exercise, onClick, customCss }: ExerciseCardProps) => {
+const ExerciseCard = ({ exercise, isFavorited = false, onFavoriteToggle, onClick, customCss }: ExerciseCardProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
     const categoryVariant = getVariantFromMap(ExerciseCategoryVariants, exercise.category);
     const categoryIcon = getIconFromMap(ExerciseCategoryIcons, exercise.category);
+
+    const handleFavorite = async () => {
+        if (isFavorited) {
+            await ExerciseService.unfavorite(exercise.id);
+        } else {
+            await ExerciseService.favorite(exercise.id);
+        }
+        onFavoriteToggle?.(exercise.id, !isFavorited);
+    };
 
     const dropdownItems: DropdownMenuItem[] = [
         {
@@ -54,7 +69,19 @@ const ExerciseCard = ({ exercise, onClick, customCss }: ExerciseCardProps) => {
                 <div css={styles.container}>
                     <div css={styles.header}>
                         <span css={styles.name}>{exercise.name}</span>
-                        <DropdownMenu items={dropdownItems} />
+                        <div css={styles.actions}>
+                            <span onClick={(e) => e.stopPropagation()}>
+                                <Button
+                                    icon={<FaRegStar />}
+                                    clickedIcon={<FaStar />}
+                                    isClicked={isFavorited}
+                                    customIconCss={styles.favoriteIcon}
+                                    onClick={handleFavorite}
+                                    customCss={styles.favoriteButton}
+                                />
+                            </span>
+                            <DropdownMenu items={dropdownItems} />
+                        </div>
                     </div>
                     <Divider customCss={styles.divider} />
                     <div css={styles.footer}>
