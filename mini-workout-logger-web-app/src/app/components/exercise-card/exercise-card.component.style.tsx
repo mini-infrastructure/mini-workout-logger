@@ -57,6 +57,9 @@ const styles = {
         fontSize: 'var(--size-label)',
         color: 'var(--color-text-subtle)',
         whiteSpace: 'nowrap',
+        '&::after': {
+            content: '":"',
+        },
     }),
 
     attributeBadges: css({
