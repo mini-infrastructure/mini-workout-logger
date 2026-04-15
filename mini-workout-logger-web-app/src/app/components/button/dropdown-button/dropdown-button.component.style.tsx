@@ -11,7 +11,7 @@ const styles = {
     }),
 
     triggerActive: css({
-        borderColor: 'var(--color-blue)',
+        border: `var(--borderWidth-thin) solid var(--color-blue)`,
     }),
 
     dropdown: css({

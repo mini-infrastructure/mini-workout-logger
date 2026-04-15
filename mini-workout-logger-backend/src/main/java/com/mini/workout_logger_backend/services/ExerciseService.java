@@ -16,8 +16,8 @@ import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,21 +58,24 @@ public class ExerciseService extends AbstractService<Exercise,
         int size = parseIntParam(filteredParams.get("size"), 20);
         Pageable pageable = buildPageable(page, size, filteredParams.get("sort"));
 
-        // Extract multi-value (comma-separated) enum params and build OR specs for them
-        Specification<Exercise> spec = null;
+        // Extract multi-value (comma-separated) enum params and build IN specs for them
+        List<Specification<Exercise>> specs = new ArrayList<>();
         for (String field : new String[]{"category", "equipment", "force", "mechanics", "role", "type", "difficulty"}) {
             String value = filteredParams.get(field);
             if (value != null && value.contains(",")) {
                 filteredParams.remove(field);
-                String[] values = value.split(",");
-                Specification<Exercise> orSpec = buildEnumOrSpec(field, values);
-                spec = spec == null ? orSpec : spec.and(orSpec);
+                specs.add(buildEnumInSpec(field, value.split(",")));
             }
         }
 
-        SpecificationBuilder<Exercise> builder = new SpecificationBuilder<>();
-        Specification<Exercise> baseSpec = builder.build(filteredParams, Exercise.class);
-        spec = spec == null ? baseSpec : (baseSpec == null ? spec : spec.and(baseSpec));
+        // Only use SpecificationBuilder for remaining single-value params that aren't infrastructure keys
+        List<String> infraKeys = List.of("lang", "page", "size", "sort");
+        boolean hasSingleValueFilters = filteredParams.keySet().stream().anyMatch(k -> !infraKeys.contains(k));
+        if (hasSingleValueFilters) {
+            specs.add(new SpecificationBuilder<Exercise>().build(filteredParams, Exercise.class));
+        }
+
+        Specification<Exercise> spec = specs.stream().reduce(Specification::and).orElse(null);
 
         if (StringUtils.hasText(groupName)) {
             Optional<Long> groupId = exerciseGroupRepository.findAll().stream()
@@ -115,25 +118,21 @@ public class ExerciseService extends AbstractService<Exercise,
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private Specification<Exercise> buildEnumOrSpec(String field, String[] values) {
+    private Specification<Exercise> buildEnumInSpec(String field, String[] values) {
         return (root, query, cb) -> {
-            Class<?> fieldType;
-            try {
-                java.lang.reflect.Field f = findField(Exercise.class, field);
-                if (f == null) return cb.conjunction();
-                fieldType = f.getType();
-                if (!fieldType.isEnum()) return cb.conjunction();
-            } catch (Exception e) {
-                return cb.conjunction();
-            }
-            List<Predicate> predicates = new ArrayList<>();
+            java.lang.reflect.Field f = findField(Exercise.class, field);
+            if (f == null || !f.getType().isEnum()) return cb.conjunction();
+            Class<Enum> enumType = (Class<Enum>) f.getType();
+
+            CriteriaBuilder.In<Object> inClause = cb.in(root.get(field));
+            boolean added = false;
             for (String v : values) {
                 try {
-                    Enum<?> enumValue = Enum.valueOf((Class<Enum>) fieldType, v.toUpperCase().trim());
-                    predicates.add(cb.equal(root.get(field), enumValue));
+                    inClause.value(Enum.valueOf(enumType, v.trim().toUpperCase()));
+                    added = true;
                 } catch (IllegalArgumentException ignored) {}
             }
-            return predicates.isEmpty() ? cb.conjunction() : cb.or(predicates.toArray(new Predicate[0]));
+            return added ? inClause : cb.conjunction();
         };
     }
 
