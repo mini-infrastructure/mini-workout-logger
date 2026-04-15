@@ -19,8 +19,16 @@ const styles = {
         },
     }),
 
+    filterBar: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
+        margin: `var(--stack-gap-condensed) 0 0 0`,
+    }),
+
     clearFiltersButton: css({
-        marginTop: 'var(--stack-gap-condensed)',
+        marginLeft: 'auto',
     }),
 };
 

@@ -36,8 +36,8 @@ export type ExerciseCardProps = {
     exercise: ExerciseReadDTO;
     isFavorited?: boolean;
     onFavoriteToggle?: (id: number, favorited: boolean) => void;
-    activeFilters?: Record<string, string>;
-    onFilterChange?: (key: string, value: string | null) => void;
+    activeFilters?: Record<string, string[]>;
+    onFilterChange?: (key: string, value: string) => void;
     onClick?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
@@ -46,7 +46,7 @@ const ExerciseCard = ({
     exercise,
     isFavorited = false,
     onFavoriteToggle,
-    activeFilters = {},
+    activeFilters = {} as Record<string, string[]>,
     onFilterChange,
     onClick,
     customCss,
@@ -59,13 +59,10 @@ const ExerciseCard = ({
     const equipmentIcon     = getIconFromMap(ExerciseEquipmentIcons, exercise.equipment);
 
     const isFilterActive = (key: string, value: string): boolean =>
-        (activeFilters as Record<string, string | undefined>)[key] === value;
+        activeFilters[key]?.includes(value) ?? false;
 
-    const handleFilterClick = (key: string, value: string) => () =>
+    const handleFilterToggle = (key: string, value: string) => () =>
         onFilterChange?.(key, value);
-
-    const handleFilterRemove = (key: string) => () =>
-        onFilterChange?.(key, null);
 
     const handleFavorite = async () => {
         if (isFavorited) {
@@ -115,8 +112,8 @@ const ExerciseCard = ({
                                 <Badge
                                     icon={equipmentIcon}
                                     selected={isFilterActive('equipment', exercise.equipment)}
-                                    onClick={handleFilterClick('equipment', exercise.equipment)}
-                                    onRemove={isFilterActive('equipment', exercise.equipment) ? handleFilterRemove('equipment') : undefined}
+                                    onClick={handleFilterToggle('equipment', exercise.equipment)}
+                                    onRemove={isFilterActive('equipment', exercise.equipment) ? handleFilterToggle('equipment', exercise.equipment) : undefined}
                                 >
                                     {capitalize(exercise.equipment)}
                                 </Badge>
@@ -127,8 +124,8 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Mechanics</span>
                                 <Badge
                                     selected={isFilterActive('mechanics', exercise.mechanics)}
-                                    onClick={handleFilterClick('mechanics', exercise.mechanics)}
-                                    onRemove={isFilterActive('mechanics', exercise.mechanics) ? handleFilterRemove('mechanics') : undefined}
+                                    onClick={handleFilterToggle('mechanics', exercise.mechanics)}
+                                    onRemove={isFilterActive('mechanics', exercise.mechanics) ? handleFilterToggle('mechanics', exercise.mechanics) : undefined}
                                 >
                                     {capitalize(exercise.mechanics)}
                                 </Badge>
@@ -139,8 +136,8 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Force</span>
                                 <Badge
                                     selected={isFilterActive('force', exercise.force)}
-                                    onClick={handleFilterClick('force', exercise.force)}
-                                    onRemove={isFilterActive('force', exercise.force) ? handleFilterRemove('force') : undefined}
+                                    onClick={handleFilterToggle('force', exercise.force)}
+                                    onRemove={isFilterActive('force', exercise.force) ? handleFilterToggle('force', exercise.force) : undefined}
                                 >
                                     {capitalize(exercise.force)}
                                 </Badge>
@@ -151,8 +148,8 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Role</span>
                                 <Badge
                                     selected={isFilterActive('role', exercise.role)}
-                                    onClick={handleFilterClick('role', exercise.role)}
-                                    onRemove={isFilterActive('role', exercise.role) ? handleFilterRemove('role') : undefined}
+                                    onClick={handleFilterToggle('role', exercise.role)}
+                                    onRemove={isFilterActive('role', exercise.role) ? handleFilterToggle('role', exercise.role) : undefined}
                                 >
                                     {capitalize(exercise.role)}
                                 </Badge>
@@ -163,8 +160,8 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Type</span>
                                 <Badge
                                     selected={isFilterActive('type', exercise.type)}
-                                    onClick={handleFilterClick('type', exercise.type)}
-                                    onRemove={isFilterActive('type', exercise.type) ? handleFilterRemove('type') : undefined}
+                                    onClick={handleFilterToggle('type', exercise.type)}
+                                    onRemove={isFilterActive('type', exercise.type) ? handleFilterToggle('type', exercise.type) : undefined}
                                 >
                                     {capitalize(exercise.type)}
                                 </Badge>
@@ -175,8 +172,8 @@ const ExerciseCard = ({
                                 <span css={styles.attributeLabel}>Group</span>
                                 <Badge
                                     selected={isFilterActive('groupName', exercise.group_name)}
-                                    onClick={handleFilterClick('groupName', exercise.group_name)}
-                                    onRemove={isFilterActive('groupName', exercise.group_name) ? handleFilterRemove('groupName') : undefined}
+                                    onClick={handleFilterToggle('groupName', exercise.group_name)}
+                                    onRemove={isFilterActive('groupName', exercise.group_name) ? handleFilterToggle('groupName', exercise.group_name) : undefined}
                                 >
                                     {exercise.group_name}
                                 </Badge>
@@ -190,8 +187,8 @@ const ExerciseCard = ({
                                         <Badge
                                             key={muscle}
                                             selected={isFilterActive('muscle', muscle)}
-                                            onClick={handleFilterClick('muscle', muscle)}
-                                            onRemove={isFilterActive('muscle', muscle) ? handleFilterRemove('muscle') : undefined}
+                                            onClick={handleFilterToggle('muscle', muscle)}
+                                            onRemove={isFilterActive('muscle', muscle) ? handleFilterToggle('muscle', muscle) : undefined}
                                         >
                                             {muscle}
                                         </Badge>
@@ -208,8 +205,8 @@ const ExerciseCard = ({
                             <Badge
                                 icon={categoryIcon}
                                 selected={isFilterActive('category', exercise.category)}
-                                onClick={handleFilterClick('category', exercise.category)}
-                                onRemove={isFilterActive('category', exercise.category) ? handleFilterRemove('category') : undefined}
+                                onClick={handleFilterToggle('category', exercise.category)}
+                                onRemove={isFilterActive('category', exercise.category) ? handleFilterToggle('category', exercise.category) : undefined}
                             >
                                 {capitalize(exercise.category)}
                             </Badge>

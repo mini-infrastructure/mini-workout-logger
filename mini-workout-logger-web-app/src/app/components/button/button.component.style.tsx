@@ -58,6 +58,10 @@ const styles = {
         padding: '0',
     }),
 
+    iconEnd: css({
+        margin: '0 0 0 var(--control-small-gap)',
+    }),
+
     /**
      * Primary Button.
      */

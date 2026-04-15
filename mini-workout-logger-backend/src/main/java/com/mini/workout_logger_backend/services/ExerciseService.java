@@ -17,6 +17,7 @@ import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,8 +58,21 @@ public class ExerciseService extends AbstractService<Exercise,
         int size = parseIntParam(filteredParams.get("size"), 20);
         Pageable pageable = buildPageable(page, size, filteredParams.get("sort"));
 
+        // Extract multi-value (comma-separated) enum params and build OR specs for them
+        Specification<Exercise> spec = null;
+        for (String field : new String[]{"category", "equipment", "force", "mechanics", "role", "type", "difficulty"}) {
+            String value = filteredParams.get(field);
+            if (value != null && value.contains(",")) {
+                filteredParams.remove(field);
+                String[] values = value.split(",");
+                Specification<Exercise> orSpec = buildEnumOrSpec(field, values);
+                spec = spec == null ? orSpec : spec.and(orSpec);
+            }
+        }
+
         SpecificationBuilder<Exercise> builder = new SpecificationBuilder<>();
-        Specification<Exercise> spec = builder.build(filteredParams, Exercise.class);
+        Specification<Exercise> baseSpec = builder.build(filteredParams, Exercise.class);
+        spec = spec == null ? baseSpec : (baseSpec == null ? spec : spec.and(baseSpec));
 
         if (StringUtils.hasText(groupName)) {
             Optional<Long> groupId = exerciseGroupRepository.findAll().stream()
@@ -98,6 +112,38 @@ public class ExerciseService extends AbstractService<Exercise,
                         ResponseMessage.ENTITIES_EMPTY.getMessage() :
                         ResponseMessage.ENTITIES_FOUND.getMessage()),
                 result);
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private Specification<Exercise> buildEnumOrSpec(String field, String[] values) {
+        return (root, query, cb) -> {
+            Class<?> fieldType;
+            try {
+                java.lang.reflect.Field f = findField(Exercise.class, field);
+                if (f == null) return cb.conjunction();
+                fieldType = f.getType();
+                if (!fieldType.isEnum()) return cb.conjunction();
+            } catch (Exception e) {
+                return cb.conjunction();
+            }
+            List<Predicate> predicates = new ArrayList<>();
+            for (String v : values) {
+                try {
+                    Enum<?> enumValue = Enum.valueOf((Class<Enum>) fieldType, v.toUpperCase().trim());
+                    predicates.add(cb.equal(root.get(field), enumValue));
+                } catch (IllegalArgumentException ignored) {}
+            }
+            return predicates.isEmpty() ? cb.conjunction() : cb.or(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private java.lang.reflect.Field findField(Class<?> clazz, String fieldName) {
+        Class<?> current = clazz;
+        while (current != null && current != Object.class) {
+            try { return current.getDeclaredField(fieldName); }
+            catch (NoSuchFieldException e) { current = current.getSuperclass(); }
+        }
+        return null;
     }
 
     private int parseIntParam(String value, int defaultValue) {
