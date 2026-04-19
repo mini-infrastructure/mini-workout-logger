@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MdEdit, MdEditOff } from 'react-icons/md';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
 import type { FormItem, FormFieldValue } from '../input/form/form.input.component.tsx';
 import Divider from '../divider/divider.component.tsx';
 import Button from '../button/button.component.tsx';
+import MultiSelect from '../input/form/multiselect.form.input.component.tsx';
+import HumanBody from '../human-body/human-body.component.tsx';
+import type { ColoredMuscle } from '../human-body/human-body.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { ExerciseWriteDTO } from '../../dtos/exercise-write.dto.tsx';
 import type { ExerciseMuscleWriteDTO } from '../../dtos/exercise-muscle-write.dto.tsx';
+import type { ExerciseMuscleMovementClassification } from '../../models/muscle.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import { useMuscles } from '../../hooks/useMuscles.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
@@ -22,13 +26,33 @@ import {
 } from '../../models/exercise.model.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
+const classificationColors: Record<ExerciseMuscleMovementClassification, string> = {
+    TARGET:                 'var(--color-red)',
+    AGONIST:                'var(--color-orange)',
+    SYNERGIST:              'var(--color-yellow)',
+    DYNAMIC_STABILIZER:     'var(--color-green)',
+    STABILIZER:             'var(--color-blue)',
+    ANTAGONIST_STABILIZER:  'var(--color-purple)',
+    ANTAGONIST:             'var(--color-pink)',
+};
+
+const classificationLabels: Record<ExerciseMuscleMovementClassification, string> = {
+    TARGET:                 'Target',
+    AGONIST:                'Agonist',
+    SYNERGIST:              'Synergist',
+    STABILIZER:             'Stabilizer',
+    DYNAMIC_STABILIZER:     'Dynamic Stabilizer',
+    ANTAGONIST:             'Antagonist',
+    ANTAGONIST_STABILIZER:  'Antagonist Stabilizer',
+};
+
 export type ExerciseDrawerProps = {
     exercise: ExerciseReadDTO;
     open: boolean;
     onClose: () => void;
 };
 
-const buildFormItems = (exercise: ExerciseReadDTO, muscleOptions: { label: string; value: string }[]): FormItem[] => [
+const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
     {
         name: 'name',
         label: 'Name',
@@ -91,22 +115,36 @@ const buildFormItems = (exercise: ExerciseReadDTO, muscleOptions: { label: strin
         initialValue: exercise.group_name ?? '',
         colSpan: 2,
     },
-    {
-        name: 'muscles',
-        label: 'Muscles',
-        type: 'multiselect',
-        options: muscleOptions,
-        initialValue: exercise.exercise_muscles?.map((m) => m.muscle_name) ?? [],
-        colSpan: 2,
-    },
 ];
 
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
+    const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
+        exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
+    );
     const { muscles } = useMuscles();
     const pushAlert = useAlert();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
+
+    // Build coloredMuscles from exercise_muscles using muscle_code + classification color.
+    const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
+        if (!exercise.exercise_muscles) return [];
+        return exercise.exercise_muscles.flatMap((em) => {
+            const code = em.muscle_code;
+            if (!code) return [];
+            return [{ code, color: classificationColors[em.role] }];
+        });
+    }, [exercise.exercise_muscles]);
+
+    // Classifications present in this exercise, for the legend.
+    const activeClassifications = useMemo(() => {
+        if (!exercise.exercise_muscles) return [];
+        const seen = new Set<ExerciseMuscleMovementClassification>();
+        exercise.exercise_muscles.forEach((em) => seen.add(em.role));
+        return (Object.keys(classificationColors) as ExerciseMuscleMovementClassification[])
+            .filter((c) => seen.has(c));
+    }, [exercise.exercise_muscles]);
 
     const handleClose = () => {
         setEditMode(false);
@@ -114,8 +152,6 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     };
 
     const handleSubmit = async (values: Record<string, FormFieldValue>) => {
-        const selectedMuscleNames = values.muscles as string[];
-
         const exercise_muscles: ExerciseMuscleWriteDTO[] = selectedMuscleNames
             .flatMap((name) => {
                 const muscle = muscles.find((m) => m.name === name);
@@ -164,8 +200,58 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
 
                 <Divider />
 
+                {/* Muscles row: multiselect on left, front + back body maps on right */}
+                <div css={styles.musclesRow}>
+                    <div css={styles.musclesLeft}>
+                        <span css={styles.fieldLabel}>Muscles</span>
+                        <MultiSelect
+                            options={muscleOptions}
+                            value={selectedMuscleNames}
+                            onChange={setSelectedMuscleNames}
+                            disabled={!editMode}
+                        />
+                    </div>
+
+                    <div css={styles.bodyMapsColumn}>
+                        <div css={styles.bodyMaps}>
+                            <div css={styles.bodyMapItem}>
+                                <HumanBody
+                                    coloredMuscles={coloredMuscles}
+                                    initialView="front"
+                                    showFlipButton={false}
+                                />
+                            </div>
+                            <div css={styles.bodyMapItem}>
+                                <HumanBody
+                                    coloredMuscles={coloredMuscles}
+                                    initialView="back"
+                                    showFlipButton={false}
+                                />
+                            </div>
+                        </div>
+
+                        {activeClassifications.length > 0 && (
+                            <div css={styles.legend}>
+                                {activeClassifications.map((c) => (
+                                    <div key={c} css={styles.legendItem}>
+                                        <span
+                                            css={styles.legendDot}
+                                            style={{ backgroundColor: classificationColors[c] }}
+                                        />
+                                        <span css={styles.legendLabel}>
+                                            {classificationLabels[c]}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <Divider />
+
                 <FormBuilder
-                    items={buildFormItems(exercise, muscleOptions)}
+                    items={buildFormItems(exercise)}
                     columns={2}
                     disabled={!editMode}
                     onSubmit={handleSubmit}

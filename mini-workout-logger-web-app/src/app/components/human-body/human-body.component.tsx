@@ -5,10 +5,18 @@ import styles, { globalMuscleStyles } from './human-body.component.style.tsx';
 import Button from '../button/button.component.tsx';
 import MuscleService from '../../services/muscle.service.tsx';
 
+export interface ColoredMuscle {
+    code: string;
+    color: string; // CSS color value, e.g. 'var(--color-red)'
+}
+
 interface HumanBodyProps {
     selectedMuscles?: string[];
     onSelectionChange?: (muscles: string[]) => void;
     highlightedMuscles?: string[];
+    coloredMuscles?: ColoredMuscle[];
+    initialView?: BodyView;
+    showFlipButton?: boolean;
 }
 
 interface MuscleInfo {
@@ -22,6 +30,9 @@ const HumanBody = ({
     selectedMuscles = [],
     onSelectionChange,
     highlightedMuscles = [],
+    coloredMuscles = [],
+    initialView = 'front',
+    showFlipButton = true,
 }: HumanBodyProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const tooltipRef   = useRef<HTMLDivElement>(null);
@@ -32,7 +43,7 @@ const HumanBody = ({
 
     const [frontSvg, setFrontSvg] = useState('');
     const [backSvg,  setBackSvg]  = useState('');
-    const [view, setView] = useState<BodyView>('front');
+    const [view, setView] = useState<BodyView>(initialView);
 
     const interactive  = !!onSelectionChange;
     const svgContent   = view === 'front' ? frontSvg : backSvg;
@@ -74,6 +85,26 @@ const HumanBody = ({
             el.classList.toggle('muscle--highlighted', highlightedMuscles.includes(el.id));
         });
     }, [svgContent, selectedMuscles, highlightedMuscles]);
+
+    // Apply per-muscle colors (coloredMuscles prop). Uses inline fill so each
+    // muscle can have its own color. Cleared on every sync to avoid stale colors.
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container || !svgContent) return;
+
+        // Clear all inline fills first.
+        container.querySelectorAll('[id^="Muscle."]').forEach(el => {
+            (el as HTMLElement).style.removeProperty('fill');
+            el.querySelectorAll('path').forEach(p => p.style.removeProperty('fill'));
+        });
+
+        coloredMuscles.forEach(({ code, color }) => {
+            const el = container.querySelector(`[id="${code}"]`) as HTMLElement | null;
+            if (!el) return;
+            el.style.setProperty('fill', color);
+            el.querySelectorAll('path').forEach(p => p.style.setProperty('fill', color));
+        });
+    }, [svgContent, coloredMuscles]);
 
     // Click delegation.
     useEffect(() => {
@@ -171,11 +202,13 @@ const HumanBody = ({
                     className={interactive ? 'muscle--interactive' : undefined}
                     dangerouslySetInnerHTML={{ __html: svgContent }}
                 />
-                <Button
-                    icon={<FaArrowsRotate />}
-                    onClick={() => setView(v => v === 'front' ? 'back' : 'front')}
-                    customCss={styles.flipButton}
-                />
+                {showFlipButton && (
+                    <Button
+                        icon={<FaArrowsRotate />}
+                        onClick={() => setView(v => v === 'front' ? 'back' : 'front')}
+                        customCss={styles.flipButton}
+                    />
+                )}
             </div>
             <div ref={tooltipRef} css={styles.tooltip} style={{ display: 'none' }}>
                 <span ref={nameRef} css={styles.tooltipPrimary} />
