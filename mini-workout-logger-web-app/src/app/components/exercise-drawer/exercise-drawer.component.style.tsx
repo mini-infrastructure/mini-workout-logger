@@ -77,10 +77,14 @@ const styles = {
         gap: 'var(--stack-gap-tiny)',
     }),
 
-    legendItem: css({
+    legendItem: (active: boolean) => css({
         display: 'flex',
         alignItems: 'center',
         gap: '0.3rem',
+        cursor: 'pointer',
+        opacity: active ? 1 : 0.5,
+        transition: 'opacity 0.15s ease',
+        '&:hover': { opacity: 1 },
     }),
 
     legendDot: css({

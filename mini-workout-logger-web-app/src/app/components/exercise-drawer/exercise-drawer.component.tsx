@@ -122,20 +122,23 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
     );
+    const [selectedClassifications, setSelectedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(
+        new Set(Object.keys(classificationColors) as ExerciseMuscleMovementClassification[])
+    );
     const { muscles } = useMuscles();
     const pushAlert = useAlert();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
 
-    // Build coloredMuscles from exercise_muscles using muscle_code + classification color.
+    // Build coloredMuscles filtered by selectedClassifications.
     const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
         if (!exercise.exercise_muscles) return [];
         return exercise.exercise_muscles.flatMap((em) => {
             const code = em.muscle_code;
-            if (!code) return [];
+            if (!code || !selectedClassifications.has(em.role)) return [];
             return [{ code, color: classificationColors[em.role] }];
         });
-    }, [exercise.exercise_muscles]);
+    }, [exercise.exercise_muscles, selectedClassifications]);
 
     // Classifications present in this exercise, for the legend.
     const activeClassifications = useMemo(() => {
@@ -145,6 +148,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
         return (Object.keys(classificationColors) as ExerciseMuscleMovementClassification[])
             .filter((c) => seen.has(c));
     }, [exercise.exercise_muscles]);
+
+    const handleLegendClick = (classification: ExerciseMuscleMovementClassification) => {
+        setSelectedClassifications((prev) => {
+            const next = new Set(prev);
+            if (next.has(classification)) next.delete(classification);
+            else next.add(classification);
+            return next;
+        });
+    };
 
     const handleClose = () => {
         setEditMode(false);
@@ -200,6 +212,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
 
                 <Divider />
 
+                <FormBuilder
+                    items={buildFormItems(exercise)}
+                    columns={2}
+                    disabled={!editMode}
+                    onSubmit={handleSubmit}
+                />
+
+                <Divider />
+
                 {/* Muscles row: multiselect on left, front + back body maps on right */}
                 <div css={styles.musclesRow}>
                     <div css={styles.musclesLeft}>
@@ -232,30 +253,28 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
 
                         {activeClassifications.length > 0 && (
                             <div css={styles.legend}>
-                                {activeClassifications.map((c) => (
-                                    <div key={c} css={styles.legendItem}>
-                                        <span
-                                            css={styles.legendDot}
-                                            style={{ backgroundColor: classificationColors[c] }}
-                                        />
-                                        <span css={styles.legendLabel}>
-                                            {classificationLabels[c]}
-                                        </span>
-                                    </div>
-                                ))}
+                                {activeClassifications.map((c) => {
+                                    const active = selectedClassifications.has(c);
+                                    return (
+                                        <div
+                                            key={c}
+                                            css={styles.legendItem(active)}
+                                            onClick={() => handleLegendClick(c)}
+                                        >
+                                            <span
+                                                css={styles.legendDot}
+                                                style={{ backgroundColor: classificationColors[c] }}
+                                            />
+                                            <span css={styles.legendLabel}>
+                                                {classificationLabels[c]}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
                 </div>
-
-                <Divider />
-
-                <FormBuilder
-                    items={buildFormItems(exercise)}
-                    columns={2}
-                    disabled={!editMode}
-                    onSubmit={handleSubmit}
-                />
             </div>
         </DrawerModal>
     );
