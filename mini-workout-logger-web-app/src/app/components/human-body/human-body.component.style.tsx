@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 const styles = {
     container: css({
+        position: 'relative',
         height: '100%',
 
         '& svg': {
@@ -10,6 +11,33 @@ const styles = {
             display: 'block',
         },
     }),
+
+    tooltip: css({
+        position: 'fixed',
+        pointerEvents: 'none',
+        backgroundColor: 'var(--color-container2)',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--borderRadius-medium)',
+        padding: '0.4rem 0.65rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.1rem',
+        zIndex: 9999,
+        boxShadow: '0 4px 6px -1px rgba(1, 4, 9, 0.8)',
+    }),
+
+    tooltipPrimary: css({
+        fontSize: 'var(--size-medium)',
+        color: 'var(--color-text)',
+        fontWeight: 500,
+        whiteSpace: 'nowrap',
+    }),
+
+    tooltipSecondary: css({
+        fontSize: 'var(--size-small)',
+        color: 'var(--color-gray)',
+        whiteSpace: 'nowrap',
+    }),
 };
 
 export const globalMuscleStyles = css`
@@ -17,8 +45,8 @@ export const globalMuscleStyles = css`
         transition: filter 0.15s ease;
     }
 
-    [id^="Muscle."]:hover,
-    [id^="Muscle."]:hover path {
+    .muscle--hovered,
+    .muscle--hovered path {
         filter: brightness(1.5);
     }
 

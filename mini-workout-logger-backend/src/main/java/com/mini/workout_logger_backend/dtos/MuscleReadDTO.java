@@ -17,7 +17,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class MuscleReadDTO extends ReadDTO {
 
+    private String code;
+
     private String name;
+
+    @JsonProperty("parent_code")
+    private String parentCode;
 
     @JsonIgnore
     @JsonProperty("muscle_groups")
