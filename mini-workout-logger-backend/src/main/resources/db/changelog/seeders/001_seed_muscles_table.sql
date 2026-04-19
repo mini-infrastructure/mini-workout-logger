@@ -40,6 +40,7 @@ $_$ LANGUAGE plpgsql;
 SELECT add_muscle('Muscle.Neck', NULL);
 SELECT add_muscle('Muscle.Neck_Flexors', 'Muscle.Neck');
 SELECT add_muscle('Muscle.Neck_Extensors', 'Muscle.Neck');
+SELECT add_muscle('Muscle.Sternocleidomastoid', 'Muscle.Neck');
 
 -- Shoulders
 SELECT add_muscle('Muscle.Shoulders', NULL);
@@ -61,6 +62,7 @@ SELECT add_muscle('Muscle.Coracobrachialis', 'Muscle.Upper_Arms');
 -- Arms/Forearms
 SELECT add_muscle('Muscle.Forearms', 'Muscle.Arms');
 SELECT add_muscle('Muscle.Brachioradialis', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Flexor_Carpi_Radialis', 'Muscle.Forearms');
 SELECT add_muscle('Muscle.Wrist', 'Muscle.Forearms');
 SELECT add_muscle('Muscle.Wrist_Flexors', 'Muscle.Wrist');
 SELECT add_muscle('Muscle.Wrist_Extensors', 'Muscle.Wrist');
@@ -127,9 +129,10 @@ SELECT add_muscle('Muscle.Deep_External_Rotators', 'Muscle.Hips');
 SELECT add_muscle('Muscle.Thighs', 'Muscle.Legs');
 SELECT add_muscle('Muscle.Quadriceps', 'Muscle.Thighs');
 SELECT add_muscle('Muscle.Rectus_Femoris', 'Muscle.Quadriceps');
-SELECT add_muscle('Muscle.Vastus_Lateralis', 'Muscle.Quadriceps');
-SELECT add_muscle('Muscle.Vastus_Medialis', 'Muscle.Quadriceps');
-SELECT add_muscle('Muscle.Vastus_Intermedius', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Vastus', 'Muscle.Quadriceps');
+SELECT add_muscle('Muscle.Vastus_Lateralis', 'Muscle.Vastus');
+SELECT add_muscle('Muscle.Vastus_Medialis', 'Muscle.Vastus');
+SELECT add_muscle('Muscle.Vastus_Intermedius', 'Muscle.Vastus');
 SELECT add_muscle('Muscle.Hamstrings', 'Muscle.Thighs');
 SELECT add_muscle('Muscle.Biceps_Femoris', 'Muscle.Hamstrings');
 SELECT add_muscle('Muscle.Semitendinosus', 'Muscle.Hamstrings');
@@ -147,3 +150,6 @@ SELECT add_muscle('Muscle.Tibialis_Anterior', 'Muscle.Calves');
 SELECT add_muscle('Muscle.Fibularis_Longus', 'Muscle.Calves');
 SELECT add_muscle('Muscle.Fibularis_Brevis', 'Muscle.Calves');
 SELECT add_muscle('Muscle.Popliteus', 'Muscle.Calves');
+SELECT add_muscle('Muscle.Achilles_Tendon', 'Muscle.Calves');
+-- Legs/Ankle
+SELECT add_muscle('Muscle.Ankle', 'Muscle.Legs');
