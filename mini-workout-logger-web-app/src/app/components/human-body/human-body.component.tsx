@@ -31,13 +31,8 @@ const HumanBody = ({
         if (!container || !svgContent) return;
 
         container.querySelectorAll('[id^="Muscle."]').forEach(el => {
-            el.classList.remove('muscle--selected', 'muscle--highlighted');
-        });
-        selectedMuscles.forEach(id => {
-            container.querySelector(`[id="${id}"]`)?.classList.add('muscle--selected');
-        });
-        highlightedMuscles.forEach(id => {
-            container.querySelector(`[id="${id}"]`)?.classList.add('muscle--highlighted');
+            el.classList.toggle('muscle--selected', selectedMuscles.includes(el.id));
+            el.classList.toggle('muscle--highlighted', highlightedMuscles.includes(el.id));
         });
     }, [svgContent, selectedMuscles, highlightedMuscles]);
 

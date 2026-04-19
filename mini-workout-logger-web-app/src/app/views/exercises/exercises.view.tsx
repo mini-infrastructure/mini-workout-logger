@@ -58,6 +58,13 @@ const ExercisesView = () => {
     };
 
     const handleFilterChange = (key: string, value: string) => {
+        if (key === 'muscle') {
+            setSelectedMuscles(prev =>
+                prev.includes(value) ? prev.filter(m => m !== value) : [...prev, value]
+            );
+            setPage(0);
+            return;
+        }
         setFilters(prev => {
             const current = prev[key] ?? [];
             const next = { ...prev };

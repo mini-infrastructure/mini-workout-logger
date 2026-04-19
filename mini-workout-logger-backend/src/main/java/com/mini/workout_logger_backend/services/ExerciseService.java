@@ -113,7 +113,7 @@ public class ExerciseService extends AbstractService<Exercise,
             Set<Long> allMuscleIds = new HashSet<>();
             for (String muscleName : muscles.split(",")) {
                 allMuscles.stream()
-                        .filter(m -> muscleName.trim().equalsIgnoreCase(m.getName().getValue()))
+                        .filter(m -> muscleName.trim().equalsIgnoreCase(m.getName().getCode()))
                         .findFirst()
                         .ifPresent(m -> {
                             allMuscleIds.add(m.getId());
@@ -228,7 +228,7 @@ public class ExerciseService extends AbstractService<Exercise,
                         Long.compare(e2.getValue(), e1.getValue()))
                 .map(entry -> entry.getKey()
                         .getName()
-                        .getValue())
+                        .getCode())
                 .collect(toCollection(LinkedHashSet::new));
     }
 

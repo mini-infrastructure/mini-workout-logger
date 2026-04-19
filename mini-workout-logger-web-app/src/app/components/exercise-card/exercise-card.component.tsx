@@ -25,6 +25,9 @@ import ExerciseService from '../../services/exercise.service.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
 import styles from './exercise-card.component.style.tsx';
 
+const formatMuscle = (code: string): string =>
+    code.replace(/^Muscle\./, '').replace(/_/g, ' ');
+
 const DIFFICULTY_LEVELS = [
     { label: 'NOVICE', level: 1 },
     { label: 'BEGINNER', level: 2 },
@@ -190,7 +193,7 @@ const ExerciseCard = ({
                                             onClick={handleFilterToggle('muscle', muscle)}
                                             onRemove={isFilterActive('muscle', muscle) ? handleFilterToggle('muscle', muscle) : undefined}
                                         >
-                                            {muscle}
+                                            {formatMuscle(muscle)}
                                         </Badge>
                                     ))}
                                 </div>
