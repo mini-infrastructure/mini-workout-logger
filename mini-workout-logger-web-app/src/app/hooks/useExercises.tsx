@@ -5,7 +5,7 @@ import ExerciseService from '../services/exercise.service.tsx';
 
 const PAGE_SIZE = 20;
 
-export function useExercises(query?: string, page: number = 0, filters: Record<string, string[]> = {}) {
+export function useExercises(query?: string, page: number = 0, filters: Record<string, string[]> = {}, muscles: string[] = []) {
     const [exercises, setExercises] = useState<ExerciseReadDTO[]>([]);
     const [pagination, setPagination] = useState<PaginationDTO | null>(null);
     const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
             }
             const params: Record<string, string | number> = { page, size: PAGE_SIZE, sort: 'name,asc', ...flatFilters };
             if (query) params.name = query;
+            if (muscles.length > 0) params.muscles = muscles.join(',');
 
             ExerciseService.getAll(params)
                 .then((response) => {
@@ -35,7 +36,7 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [query, page, JSON.stringify(filters)]);
+    }, [query, page, JSON.stringify(filters), JSON.stringify(muscles)]);
 
     return { exercises, pagination, loading, error };
 }

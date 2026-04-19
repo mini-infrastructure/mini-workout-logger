@@ -6,6 +6,7 @@ import ExerciseCard from '../../components/exercise-card/exercise-card.component
 import Pagination from '../../components/pagination/pagination.component.tsx';
 import Button from '../../components/button/button.component.tsx';
 import DropdownButton from '../../components/button/dropdown-button/dropdown-button.component.tsx';
+import HumanBody from '../../components/human-body/human-body.component.tsx';
 import { useExercises } from '../../hooks/useExercises.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import {
@@ -33,7 +34,8 @@ const ExercisesView = () => {
     const [query, setQuery] = useState('');
     const [page, setPage] = useState(0);
     const [filters, setFilters] = useState<Record<string, string[]>>({});
-    const { exercises, pagination, loading, error } = useExercises(query, page, filters);
+    const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
+    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
 
     useEffect(() => {
@@ -87,37 +89,50 @@ const ExercisesView = () => {
         setPage(0);
     };
 
-    const hasFilters = Object.values(filters).some(v => v.length > 0);
+    const hasFilters = Object.values(filters).some(v => v.length > 0) || selectedMuscles.length > 0;
+
+    const handleMuscleSelection = (muscles: string[]) => {
+        setSelectedMuscles(muscles);
+        setPage(0);
+    };
+
+    const handleClearAll = () => {
+        setFilters({});
+        setSelectedMuscles([]);
+        setPage(0);
+    };
 
     return (
         <Layout>
-            {error && <p>{error}</p>}
-            <Search
-                value={query}
-                onChange={handleQueryChange}
-                placeholder="Search exercises..."
-                results={(
-                    <>
-                        <div css={styles.filterBar}>
-                            {FILTER_CONFIG.map(({ key, label, options }) => (
-                                <DropdownButton
-                                    key={key}
-                                    label={label}
-                                    options={options}
-                                    selected={filters[key] ?? []}
-                                    onChange={(values) => handleFilterSet(key, values)}
-                                />
-                            ))}
-                            {hasFilters && (
-                                <Button
-                                    icon={<IoMdClose />}
-                                    onClick={() => { setFilters({}); setPage(0); }}
-                                    customCss={styles.clearFiltersButton}
-                                >
-                                    Clear filters
-                                </Button>
-                            )}
-                        </div>
+            <div css={styles.pageWrapper}>
+                <Search
+                    value={query}
+                    onChange={handleQueryChange}
+                    placeholder="Search exercises..."
+                />
+                <div css={styles.filterBar}>
+                    {FILTER_CONFIG.map(({ key, label, options }) => (
+                        <DropdownButton
+                            key={key}
+                            label={label}
+                            options={options}
+                            selected={filters[key] ?? []}
+                            onChange={(values) => handleFilterSet(key, values)}
+                        />
+                    ))}
+                    {hasFilters && (
+                        <Button
+                            icon={<IoMdClose />}
+                            onClick={handleClearAll}
+                            customCss={styles.clearFiltersButton}
+                        >
+                            Clear filters
+                        </Button>
+                    )}
+                </div>
+                <div css={styles.contentRow}>
+                    <div css={styles.leftColumn}>
+                        {error && <p>{error}</p>}
                         <ul css={styles.resultList}>
                             {exercises.map(e => (
                                 <li key={e.id}>
@@ -138,9 +153,15 @@ const ExercisesView = () => {
                                 onPageChange={setPage}
                             />
                         )}
-                    </>
-                )}
-            />
+                    </div>
+                    <div css={styles.rightPanel}>
+                        <HumanBody
+                            selectedMuscles={selectedMuscles}
+                            onSelectionChange={handleMuscleSelection}
+                        />
+                    </div>
+                </div>
+            </div>
         </Layout>
     );
 };

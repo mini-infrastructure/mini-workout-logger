@@ -1,10 +1,52 @@
 import { css } from '@emotion/react';
 
 const styles = {
+    pageWrapper: css({
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    filterBar: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
+        flexShrink: 0,
+    }),
+
+    clearFiltersButton: css({
+        marginLeft: 'auto',
+    }),
+
+    contentRow: css({
+        flex: 1,
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 'var(--stack-gap-normal)',
+        overflow: 'hidden',
+    }),
+
+    leftColumn: css({
+        flex: 1,
+        minWidth: 0,
+        overflowY: 'auto',
+    }),
+
+    rightPanel: css({
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'flex-start',
+        overflowY: 'auto',
+    }),
+
     resultList: css({
         listStyle: 'none',
         padding: 0,
-        margin: `var(--stack-gap-condensed) 0 0 0`,
+        margin: 0,
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
         gap: 'var(--stack-gap-tiny)',
@@ -17,18 +59,6 @@ const styles = {
         '& > li > *': {
             flex: 1,
         },
-    }),
-
-    filterBar: css({
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        gap: 'var(--stack-gap-condensed)',
-        margin: `var(--stack-gap-condensed) 0 0 0`,
-    }),
-
-    clearFiltersButton: css({
-        marginLeft: 'auto',
     }),
 };
 

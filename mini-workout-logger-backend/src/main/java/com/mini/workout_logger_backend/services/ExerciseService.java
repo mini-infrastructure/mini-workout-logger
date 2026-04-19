@@ -53,6 +53,7 @@ public class ExerciseService extends AbstractService<Exercise,
         Map<String, String> filteredParams = new HashMap<>(params);
         String groupName = filteredParams.remove("groupName");
         String muscle    = filteredParams.remove("muscle");
+        String muscles   = filteredParams.remove("muscles");
 
         int page = parseIntParam(filteredParams.get("page"), 0);
         int size = parseIntParam(filteredParams.get("size"), 20);
@@ -105,6 +106,34 @@ public class ExerciseService extends AbstractService<Exercise,
                     })
                     .orElse((root, query, cb) -> cb.disjunction());
             spec = spec == null ? muscleSpec : spec.and(muscleSpec);
+        }
+
+        if (StringUtils.hasText(muscles)) {
+            List<Muscle> allMuscles = muscleService.repository.findAll();
+            Set<Long> allMuscleIds = new HashSet<>();
+            for (String muscleName : muscles.split(",")) {
+                allMuscles.stream()
+                        .filter(m -> muscleName.trim().equalsIgnoreCase(m.getName().getValue()))
+                        .findFirst()
+                        .ifPresent(m -> {
+                            allMuscleIds.add(m.getId());
+                            muscleService.findParentMusclesRecursive(m, new HashSet<>())
+                                    .forEach(parent -> allMuscleIds.add(parent.getId()));
+                        });
+            }
+            if (!allMuscleIds.isEmpty()) {
+                Specification<Exercise> musclesSpec = (root, query, cb) -> {
+                    query.distinct(true);
+                    jakarta.persistence.criteria.Path<Object> muscleIdPath =
+                            root.join("exerciseMuscles", JoinType.LEFT)
+                                .join("muscle", JoinType.LEFT)
+                                .get("id");
+                    CriteriaBuilder.In<Object> inClause = cb.in(muscleIdPath);
+                    allMuscleIds.forEach(inClause::value);
+                    return inClause;
+                };
+                spec = spec == null ? musclesSpec : spec.and(musclesSpec);
+            }
         }
 
         Page<ExerciseReadDTO> result = repository.findAll(spec, pageable)
