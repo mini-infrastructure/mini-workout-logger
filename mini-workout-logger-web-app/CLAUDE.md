@@ -1,0 +1,170 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Commands
+
+```bash
+npm run dev        # Start dev server (http://localhost:5173)
+npm run build      # Type-check + production build
+npm run lint       # ESLint
+npm run preview    # Preview production build
+```
+
+No test runner is configured.
+
+## Environment
+
+Copy `.env.example` to `.env`. Default values:
+
+```
+VITE_API_URL=/api
+VITE_API_LANGUAGE=en_US
+```
+
+The Vite dev server proxies `/api/*` → `http://localhost:9090/*` (see `vite.config.ts`). The Spring Boot backend must be running separately.
+
+---
+
+## Architecture
+
+### Data flow
+
+```
+View → custom hook (useXxx) → Service (axios) → Spring Boot backend
+```
+
+- **Services** (`src/app/services/`) are singleton class instances. They prepend `VITE_API_URL` and pass `lang` as a query param for i18n. All responses follow `ApiResponseDTO<T>` (`data`, `pagination`, `errors`).
+- **Hooks** (`src/app/hooks/`) own fetch lifecycle (loading/error state, debounce). Array/object deps use `JSON.stringify(...)` in `useEffect`.
+- **DTOs** (`src/app/dtos/`) are plain TypeScript interfaces. Read DTOs and Write DTOs are separate files.
+- **Models** (`src/app/models/`) hold enum types and option/icon/variant maps used in UI.
+
+### Styling — Emotion CSS-in-JS
+
+All styles use `@emotion/react` with the `css` prop (enabled via `jsxImportSource` in `vite.config.ts`). The theme object (`src/app/themes/theme.ts`) is mapped to CSS custom properties in `src/app/themes/global.ts`. Always use CSS variables (e.g. `var(--color-blue)`, `var(--stack-gap-normal)`) — never raw values.
+
+### Muscle codes
+
+Muscles in the backend are stored as i18n keys (`Muscle.Chest`, `Muscle.Adductor_Magnus`, etc.). `Text.getCode()` returns the key; `Text.getValue()` returns the translated display name. **Always filter and match by code**, never by translated value. The `root_muscles` field on exercises and the `code` field on muscles both contain raw codes.
+
+---
+
+## Component conventions
+
+Every component follows this structure:
+
+```
+src/app/components/<name>/
+    <name>.component.tsx        ← component logic
+    <name>.component.style.tsx  ← all styles, exported as default `styles` object
+```
+
+No barrel `index.ts` files. Import directly from the `.tsx` file.
+
+**Props type:**
+
+```tsx
+export type MyComponentProps = {
+    value: string;
+    onChange?: (value: string) => void;
+    customCss?: Interpolation<Theme> | Interpolation<Theme>[];  // always include for overridability
+};
+```
+
+**Component signature:**
+
+```tsx
+const MyComponent = ({ value, onChange, customCss }: MyComponentProps) => { ... };
+export default MyComponent;
+```
+
+Rules:
+- Function components only. No class components.
+- No prop spreading.
+- Custom hooks for any stateful or async logic.
+- **Never put margin or spacing on a component's root element.** Spacing is always the parent's responsibility, applied via `customCss` from the parent or layout styles.
+- The `customCss` prop is applied at the root element and accepts a single value or an array.
+
+**Style file pattern:**
+
+```tsx
+import { css } from '@emotion/react';
+
+const styles = {
+    container: css({ ... }),
+    header: css({ ... }),
+};
+
+export default styles;
+```
+
+Use only CSS variables from the design system. No hardcoded colors, sizes, or spacing. The available variables are defined in `src/app/themes/global.ts`.
+
+---
+
+## HumanBody component
+
+`src/app/components/human-body/`
+
+### What it does
+
+Renders an interactive SVG of the human muscular system. Muscles can be:
+- **Selected** (blue fill) — chosen by the user as a filter
+- **Highlighted** (orange fill) — shown as worked muscles in read-only contexts
+- **Hovered** — brightness increased via a JS-managed CSS class
+
+### SVG contract
+
+The SVG file lives at `public/front.svg`. To replace it, drop in a new file at the same path. The component discovers muscles by querying `[id^="Muscle."]` — any SVG element whose `id` starts with `Muscle.` is treated as a muscle. The ID must match a muscle `code` in the database exactly (e.g. `id="Muscle.Pectoralis_Major"`).
+
+Elements without a `Muscle.*` ID (outlines, decorative shapes) are inert — no special treatment needed. Nesting is supported: a path inside `<g id="Muscle.Quadriceps">` inside `<g id="Muscle.Thighs">` will correctly identify `Muscle.Quadriceps` as the hovered/clicked element via `.closest('[id^="Muscle."]')`.
+
+### Why the SVG is loaded imperatively
+
+The SVG is fetched with `fetch('/front.svg')` and inserted via `containerRef.current.innerHTML = svgText` — **not** through `dangerouslySetInnerHTML` or React state. This is intentional and must not be changed.
+
+React reconciles `dangerouslySetInnerHTML` on every re-render. Even when the string hasn't changed, the reconciliation resets the inner DOM, wiping manually-managed CSS classes (`muscle--selected`, `muscle--hovered`, etc.) and causing visible flashing. By inserting the SVG imperatively once on mount and never touching it again through React, the SVG DOM is fully owned by the event handlers and the class-sync effect.
+
+A `svgLoaded: boolean` state flag signals to other effects that the SVG is in the DOM and ready to be queried.
+
+### Why tooltip updates bypass React state
+
+Mouse position and tooltip content are written directly to DOM refs (`tooltipRef`, `nameRef`, `rootRef`) via `.style` and `.textContent`. There is no `setTooltip` state call. This means `mousemove` produces zero React re-renders, which is essential — re-renders from `setTooltip` would have the same destructive reconciliation effect described above.
+
+### CSS classes and the global stylesheet
+
+Muscle state is communicated entirely through CSS classes on SVG elements. These classes are defined in `globalMuscleStyles` (exported from the style file and injected with Emotion's `<Global>`):
+
+| Class | Applied to | Effect |
+|---|---|---|
+| `muscle--selected` | SVG group element | Blue fill (`var(--color-blue)`) |
+| `muscle--highlighted` | SVG group element | Orange fill (`var(--color-orange)`) |
+| `muscle--hovered` | SVG group element | `filter: brightness(1.5)` |
+| `muscle--interactive` | Container div | `cursor: pointer` on all muscle elements |
+
+**Do not use CSS `:hover` for the hover brightness effect.** CSS `:hover` propagates to all DOM ancestors, so hovering a child muscle would incorrectly highlight its parent group too. The `muscle--hovered` class is managed by the `mousemove` handler via `hoveredRef`, which removes the class from the previous element before adding it to the new one.
+
+### Tooltip content
+
+The tooltip shows two lines:
+1. **Primary** — the muscle's English display name (from the `/muscles` API with `lang=en_US`)
+2. **Secondary** — the root ancestor's name (resolved by walking `parent_code` up the chain until a muscle with no parent is found). Hidden when the hovered muscle is itself a root.
+
+The name map (`nameMapRef`) is populated once on mount via `MuscleService.getAll('en_US')` with `size=500` to ensure all muscles are returned (the default page size is 20, which excludes leg muscles and others beyond the first page).
+
+### Props
+
+| Prop | Type | Description |
+|---|---|---|
+| `selectedMuscles` | `string[]` | Codes of currently selected muscles. Drives `muscle--selected` class. |
+| `onSelectionChange` | `(muscles: string[]) => void` | If provided, the component is interactive. Click toggles the clicked muscle in the array. |
+| `highlightedMuscles` | `string[]` | Codes of muscles to highlight (read-only, e.g. in workout visualization). |
+
+Omitting `onSelectionChange` renders the component in read-only mode (no cursor pointer, no click handling).
+
+### Adding a new muscle to the system
+
+1. Add the muscle to the backend seeder SQL (`001_seed_muscles_table.sql`) with `add_muscle('Muscle.NewName', 'Muscle.ParentName')`.
+2. Add translations to `messages_en_US.properties` and `messages_pt_BR.properties`.
+3. In the SVG, add a group with `id="Muscle.NewName"` containing the relevant paths.
+4. No frontend code changes are needed — the component discovers muscles from the SVG and the API dynamically.

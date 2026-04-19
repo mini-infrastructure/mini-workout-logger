@@ -51,9 +51,7 @@ const styles = {
 
     rightPanel: css({
         flexShrink: 0,
-        display: 'flex',
-        alignItems: 'flex-start',
-        overflowY: 'auto',
+        height: '100%',
     }),
 
     resultList: css({

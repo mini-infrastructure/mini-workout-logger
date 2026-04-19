@@ -41,6 +41,7 @@ SELECT add_muscle('Muscle.Neck', NULL);
 SELECT add_muscle('Muscle.Neck_Flexors', 'Muscle.Neck');
 SELECT add_muscle('Muscle.Neck_Extensors', 'Muscle.Neck');
 SELECT add_muscle('Muscle.Sternocleidomastoid', 'Muscle.Neck');
+SELECT add_muscle('Muscle.Splenius', 'Muscle.Neck');
 
 -- Shoulders
 SELECT add_muscle('Muscle.Shoulders', NULL);
@@ -63,6 +64,10 @@ SELECT add_muscle('Muscle.Coracobrachialis', 'Muscle.Upper_Arms');
 SELECT add_muscle('Muscle.Forearms', 'Muscle.Arms');
 SELECT add_muscle('Muscle.Brachioradialis', 'Muscle.Forearms');
 SELECT add_muscle('Muscle.Flexor_Carpi_Radialis', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Extensor_Carpi_Radialis_Longus', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Flexor_Carpi_Ulnaris', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Extensor_Digitorum', 'Muscle.Forearms');
+SELECT add_muscle('Muscle.Anconeus', 'Muscle.Forearms');
 SELECT add_muscle('Muscle.Wrist', 'Muscle.Forearms');
 SELECT add_muscle('Muscle.Wrist_Flexors', 'Muscle.Wrist');
 SELECT add_muscle('Muscle.Wrist_Extensors', 'Muscle.Wrist');
@@ -72,9 +77,9 @@ SELECT add_muscle('Muscle.Supinators', 'Muscle.Forearms');
 -- Back
 SELECT add_muscle('Muscle.Back', NULL);
 
-SELECT add_muscle('Muscle.Lats', 'Muscle.Back');
-SELECT add_muscle('Muscle.Latissimus_Dorsi', 'Muscle.Lats');
-SELECT add_muscle('Muscle.Teres_Major', 'Muscle.Lats');
+SELECT add_muscle('Muscle.Latissimus_Dorsi', 'Muscle.Back');
+SELECT add_muscle('Muscle.Thoracolumbar_Fascia', 'Muscle.Back');
+SELECT add_muscle('Muscle.Teres_Major', 'Muscle.Back');
 SELECT add_muscle('Muscle.Trapezius', 'Muscle.Back');
 SELECT add_muscle('Muscle.Upper_Trapezius', 'Muscle.Trapezius');
 SELECT add_muscle('Muscle.Middle_Trapezius', 'Muscle.Trapezius');
@@ -135,6 +140,7 @@ SELECT add_muscle('Muscle.Vastus_Medialis', 'Muscle.Vastus');
 SELECT add_muscle('Muscle.Vastus_Intermedius', 'Muscle.Vastus');
 SELECT add_muscle('Muscle.Hamstrings', 'Muscle.Thighs');
 SELECT add_muscle('Muscle.Biceps_Femoris', 'Muscle.Hamstrings');
+SELECT add_muscle('Muscle.liotibial_Tract', 'Muscle.Hamstrings');
 SELECT add_muscle('Muscle.Semitendinosus', 'Muscle.Hamstrings');
 SELECT add_muscle('Muscle.Semimembranosus', 'Muscle.Hamstrings');
 SELECT add_muscle('Muscle.Hip_Adductors', 'Muscle.Thighs');
@@ -153,3 +159,4 @@ SELECT add_muscle('Muscle.Popliteus', 'Muscle.Calves');
 SELECT add_muscle('Muscle.Achilles_Tendon', 'Muscle.Calves');
 -- Legs/Ankle
 SELECT add_muscle('Muscle.Ankle', 'Muscle.Legs');
+SELECT add_muscle('Muscle.Feet', 'Muscle.Legs');

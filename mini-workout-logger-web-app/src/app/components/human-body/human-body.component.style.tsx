@@ -1,8 +1,12 @@
 import { css } from '@emotion/react';
 
 const styles = {
-    container: css({
+    wrapper: css({
         position: 'relative',
+        height: '100%',
+    }),
+
+    container: css({
         height: '100%',
 
         '& svg': {
@@ -10,6 +14,12 @@ const styles = {
             width: 'auto',
             display: 'block',
         },
+    }),
+
+    flipButton: css({
+        position: 'absolute',
+        bottom: 'var(--stack-gap-normal)',
+        right: 'var(--stack-gap-normal)',
     }),
 
     tooltip: css({
@@ -51,6 +61,10 @@ export const globalMuscleStyles = css`
     }
 
     .muscle--interactive [id^="Muscle."] {
+        cursor: pointer;
+    }
+
+    .muscle--interactive button {
         cursor: pointer;
     }
 

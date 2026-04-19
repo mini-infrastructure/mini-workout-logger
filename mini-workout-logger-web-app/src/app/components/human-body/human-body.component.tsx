@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Global } from '@emotion/react';
+import { FaArrowsRotate } from 'react-icons/fa6';
 import styles, { globalMuscleStyles } from './human-body.component.style.tsx';
+import Button from '../button/button.component.tsx';
 import MuscleService from '../../services/muscle.service.tsx';
 
 interface HumanBodyProps {
@@ -14,65 +16,69 @@ interface MuscleInfo {
     parentCode: string | null;
 }
 
+type BodyView = 'front' | 'back';
+
 const HumanBody = ({
     selectedMuscles = [],
     onSelectionChange,
     highlightedMuscles = [],
 }: HumanBodyProps) => {
-    const containerRef  = useRef<HTMLDivElement>(null);
-    const tooltipRef    = useRef<HTMLDivElement>(null);
-    const nameRef       = useRef<HTMLSpanElement>(null);
-    const rootRef       = useRef<HTMLSpanElement>(null);
-    const hoveredRef    = useRef<Element | null>(null);
-    const nameMapRef    = useRef<Record<string, MuscleInfo>>({});
+    const containerRef = useRef<HTMLDivElement>(null);
+    const tooltipRef   = useRef<HTMLDivElement>(null);
+    const nameRef      = useRef<HTMLSpanElement>(null);
+    const rootRef      = useRef<HTMLSpanElement>(null);
+    const hoveredRef   = useRef<Element | null>(null);
+    const nameMapRef   = useRef<Record<string, MuscleInfo>>({});
 
-    const [svgLoaded, setSvgLoaded] = useState(false);
-    const interactive = !!onSelectionChange;
+    const [frontSvg, setFrontSvg] = useState('');
+    const [backSvg,  setBackSvg]  = useState('');
+    const [view, setView] = useState<BodyView>('front');
+
+    const interactive  = !!onSelectionChange;
+    const svgContent   = view === 'front' ? frontSvg : backSvg;
 
     const selectedMusclesRef = useRef(selectedMuscles);
     selectedMusclesRef.current = selectedMuscles;
 
-    // Load SVG directly into the DOM — never through React state so React
-    // never reconciles innerHTML and wipes manually-managed CSS classes.
+    // Fetch both SVGs once on mount. Storing as state so React knows to
+    // update dangerouslySetInnerHTML when they arrive.
     useEffect(() => {
-        fetch('/front.svg')
-            .then(r => r.text())
-            .then(svgText => {
-                if (containerRef.current) {
-                    containerRef.current.innerHTML = svgText;
-                    setSvgLoaded(true);
-                }
-            });
+        fetch('/front.svg').then(r => r.text()).then(setFrontSvg);
     }, []);
 
-    // Fetch muscle names and build code → { name, parentCode } map.
+    useEffect(() => {
+        fetch('/back.svg').then(r => r.text()).then(setBackSvg);
+    }, []);
+
+    // Fetch muscle names — stored in a ref so the hover handler always reads
+    // the latest map without needing it as an effect dependency.
     useEffect(() => {
         MuscleService.getAll('en_US').then(muscles => {
             const map: Record<string, MuscleInfo> = {};
             muscles.forEach(m => {
-                if (m.code) {
-                    map[m.code] = { name: m.name, parentCode: m.parent_code ?? null };
-                }
+                if (m.code) map[m.code] = { name: m.name, parentCode: m.parent_code ?? null };
             });
             nameMapRef.current = map;
         });
     }, []);
 
-    // Sync CSS classes with selection / highlight state.
+    // Sync selected / highlighted CSS classes.
+    // key={view} on the container means React remounts it when the view changes,
+    // so this effect re-runs after each SVG swap with a clean DOM.
     useEffect(() => {
         const container = containerRef.current;
-        if (!container || !svgLoaded) return;
+        if (!container || !svgContent) return;
 
         container.querySelectorAll('[id^="Muscle."]').forEach(el => {
             el.classList.toggle('muscle--selected',    selectedMuscles.includes(el.id));
             el.classList.toggle('muscle--highlighted', highlightedMuscles.includes(el.id));
         });
-    }, [svgLoaded, selectedMuscles, highlightedMuscles]);
+    }, [svgContent, selectedMuscles, highlightedMuscles]);
 
     // Click delegation.
     useEffect(() => {
         const container = containerRef.current;
-        if (!container || !interactive || !svgLoaded) return;
+        if (!container || !interactive || !svgContent) return;
 
         const handleClick = (e: MouseEvent) => {
             const target = (e.target as Element).closest('[id^="Muscle."]');
@@ -87,12 +93,12 @@ const HumanBody = ({
 
         container.addEventListener('click', handleClick);
         return () => container.removeEventListener('click', handleClick);
-    }, [svgLoaded, interactive, onSelectionChange]);
+    }, [svgContent, interactive, onSelectionChange]);
 
-    // Hover + tooltip delegation — all DOM-direct, no setState, no re-renders.
+    // Hover + tooltip — DOM-direct so mouse movement never triggers re-renders.
     useEffect(() => {
         const container = containerRef.current;
-        if (!container || !svgLoaded) return;
+        if (!container || !svgContent) return;
 
         const findRoot = (code: string): string => {
             const info = nameMapRef.current[code];
@@ -124,12 +130,7 @@ const HumanBody = ({
 
         const handleMouseMove = (e: MouseEvent) => {
             const target = (e.target as Element).closest('[id^="Muscle."]');
-
-            if (!target) {
-                clearHover();
-                hideTooltip();
-                return;
-            }
+            if (!target) { clearHover(); hideTooltip(); return; }
 
             if (target !== hoveredRef.current) {
                 clearHover();
@@ -145,10 +146,7 @@ const HumanBody = ({
             showTooltip(e.clientX, e.clientY, info.name, rootName);
         };
 
-        const handleMouseLeave = () => {
-            clearHover();
-            hideTooltip();
-        };
+        const handleMouseLeave = () => { clearHover(); hideTooltip(); };
 
         container.addEventListener('mousemove',  handleMouseMove);
         container.addEventListener('mouseleave', handleMouseLeave);
@@ -158,16 +156,27 @@ const HumanBody = ({
             clearHover();
             hideTooltip();
         };
-    }, [svgLoaded]);
+    }, [svgContent]);
 
     return (
         <>
             <Global styles={globalMuscleStyles} />
-            <div
-                ref={containerRef}
-                css={styles.container}
-                className={interactive ? 'muscle--interactive' : undefined}
-            />
+            <div css={styles.wrapper}>
+                {/* key={view} forces a full remount when the view switches,
+                    so React never reconciles innerHTML across different SVGs. */}
+                <div
+                    key={view}
+                    ref={containerRef}
+                    css={styles.container}
+                    className={interactive ? 'muscle--interactive' : undefined}
+                    dangerouslySetInnerHTML={{ __html: svgContent }}
+                />
+                <Button
+                    icon={<FaArrowsRotate />}
+                    onClick={() => setView(v => v === 'front' ? 'back' : 'front')}
+                    customCss={styles.flipButton}
+                />
+            </div>
             <div ref={tooltipRef} css={styles.tooltip} style={{ display: 'none' }}>
                 <span ref={nameRef} css={styles.tooltipPrimary} />
                 <span ref={rootRef} css={styles.tooltipSecondary} />
