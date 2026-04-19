@@ -9,22 +9,23 @@ interface HumanBodyProps {
 }
 
 const HumanBody = ({
-    selectedMuscles,
+    selectedMuscles = [],
     onSelectionChange,
-    highlightedMuscles,
+    highlightedMuscles = [],
 }: HumanBodyProps) => {
-    const resolved = {
-        selectedMuscles: selectedMuscles ?? [],
-        highlightedMuscles: highlightedMuscles ?? [],
-    };
     const containerRef = useRef<HTMLDivElement>(null);
     const [svgContent, setSvgContent] = useState('');
     const interactive = !!onSelectionChange;
+
+    // Always-current ref — updated synchronously during render, before any effect runs.
+    const selectedMusclesRef = useRef(selectedMuscles);
+    selectedMusclesRef.current = selectedMuscles;
 
     useEffect(() => {
         fetch('/front.svg').then(r => r.text()).then(setSvgContent);
     }, []);
 
+    // Sync CSS classes with selection state.
     useEffect(() => {
         const container = containerRef.current;
         if (!container || !svgContent) return;
@@ -32,16 +33,15 @@ const HumanBody = ({
         container.querySelectorAll('[id^="Muscle."]').forEach(el => {
             el.classList.remove('muscle--selected', 'muscle--highlighted');
         });
-
-        resolved.selectedMuscles.forEach(id => {
+        selectedMuscles.forEach(id => {
             container.querySelector(`[id="${id}"]`)?.classList.add('muscle--selected');
         });
-
-        resolved.highlightedMuscles.forEach(id => {
+        highlightedMuscles.forEach(id => {
             container.querySelector(`[id="${id}"]`)?.classList.add('muscle--highlighted');
         });
     }, [svgContent, selectedMuscles, highlightedMuscles]);
 
+    // Click delegation — registered once per SVG load, reads current selection via ref.
     useEffect(() => {
         const container = containerRef.current;
         if (!container || !interactive || !svgContent) return;
@@ -50,7 +50,7 @@ const HumanBody = ({
             const target = (e.target as Element).closest('[id^="Muscle."]');
             if (!target) return;
             const id = target.id;
-            const current = resolved.selectedMuscles;
+            const current = selectedMusclesRef.current;
             const next = current.includes(id)
                 ? current.filter(m => m !== id)
                 : [...current, id];
@@ -59,7 +59,7 @@ const HumanBody = ({
 
         container.addEventListener('click', handleClick);
         return () => container.removeEventListener('click', handleClick);
-    }, [svgContent, interactive, selectedMuscles, onSelectionChange]);
+    }, [svgContent, interactive, onSelectionChange]);
 
     return (
         <>

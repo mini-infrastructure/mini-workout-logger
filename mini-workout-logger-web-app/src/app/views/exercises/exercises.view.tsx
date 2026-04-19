@@ -140,7 +140,9 @@ const ExercisesView = () => {
                                         exercise={e}
                                         isFavorited={favoritedIds.has(e.id)}
                                         onFavoriteToggle={handleFavoriteToggle}
-                                        activeFilters={filters}
+                                        activeFilters={selectedMuscles.length > 0
+                                            ? { ...filters, muscle: selectedMuscles }
+                                            : filters}
                                         onFilterChange={handleFilterChange}
                                     />
                                 </li>
