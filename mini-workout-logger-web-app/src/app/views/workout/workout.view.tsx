@@ -27,6 +27,7 @@ const WorkoutView = () => {
     // Timer state
     const [isPlaying, setIsPlaying] = useState(searchParams.get('mode') === 'play');
     const [elapsed, setElapsed] = useState(0);
+    const [stopKey, setStopKey] = useState(0);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     // Exercises local state (mutable copy for editing/reordering)
@@ -67,6 +68,8 @@ const WorkoutView = () => {
     const handleStop = () => {
         setIsPlaying(false);
         setElapsed(0);
+        setStopKey((k) => k + 1);
+        setCompletedCounts({});
     };
 
     const formatTime = (seconds: number) => {
@@ -234,6 +237,7 @@ const WorkoutView = () => {
                             iconColor="--color-white"
                             legend="Stop"
                             onToggle={handleStop}
+                            customCss={!isPlaying && elapsed === 0 && { opacity: 0.3, pointerEvents: 'none' }}
                         />
                     </Card>
 
@@ -253,6 +257,8 @@ const WorkoutView = () => {
                             onSetChange={(setId, field, value) =>
                                 handleSetChange(we.id, setId, field, value)
                             }
+                            isPlaying={isPlaying}
+                            resetKey={stopKey}
                             onSetRemove={(setId) => handleSetRemove(we.id, setId)}
                             onSetAdd={() => handleSetAdd(we.id)}
                             onCompletedChange={handleCompletedChange}

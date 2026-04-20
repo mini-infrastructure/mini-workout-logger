@@ -17,6 +17,8 @@ export type WorkoutExerciseCardProps = {
     onDragStart: () => void;
     onDragOver: (e: DragEvent<HTMLDivElement>) => void;
     onDrop: () => void;
+    isPlaying?: boolean;
+    resetKey?: number;
     onSetChange: (setId: number, field: string, value: number) => void;
     onSetRemove: (setId: number) => void;
     onSetAdd: () => void;
@@ -31,6 +33,8 @@ const WorkoutExerciseCard = ({
     onDragOver,
     onDrop,
     onSetChange,
+    isPlaying = false,
+    resetKey,
     onSetRemove,
     onSetAdd,
     onCompletedChange,
@@ -91,6 +95,8 @@ const WorkoutExerciseCard = ({
                     <SetList
                         sets={workoutExercise.sets}
                         onChange={(setId, field, value) => onSetChange(setId, field, value)}
+                        isPlaying={isPlaying}
+                        resetKey={resetKey}
                         onRemove={onSetRemove}
                         onAdd={onSetAdd}
                         onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}

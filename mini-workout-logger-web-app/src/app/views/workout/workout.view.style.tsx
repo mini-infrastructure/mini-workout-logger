@@ -31,7 +31,7 @@ const styles = {
 
     setsCounter: css({
         fontSize: 'var(--size-small)',
-        color: 'var(--color-border)',
+        color: 'var(--color-white)',
     }),
 
     timerCard: css({

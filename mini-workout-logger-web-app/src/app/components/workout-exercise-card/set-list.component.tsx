@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { css } from '@emotion/react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -46,14 +46,22 @@ const completedHoverOverrideCss = css({
 
 export type SetListProps = {
     sets: SetReadDTO[];
+    isPlaying?: boolean;
+    resetKey?: number;
     onChange: (setId: number, field: SetField, value: number) => void;
     onRemove: (setId: number) => void;
     onAdd: () => void;
     onCompletedChange?: (completedCount: number) => void;
 };
 
-const SetList = ({ sets, onChange, onRemove, onAdd, onCompletedChange }: SetListProps) => {
+const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onAdd, onCompletedChange }: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+
+    useEffect(() => {
+        if (resetKey === undefined) return;
+        setCompletedIds(new Set());
+        onCompletedChange?.(0);
+    }, [resetKey]);
 
     if (!sets || sets.length === 0) return null;
 
@@ -61,13 +69,11 @@ const SetList = ({ sets, onChange, onRemove, onAdd, onCompletedChange }: SetList
     const colCount = cols.length;
 
     const toggleCompleted = (id: number) => {
-        setCompletedIds((prev) => {
-            const next = new Set(prev);
-            if (next.has(id)) next.delete(id);
-            else next.add(id);
-            onCompletedChange?.(next.size);
-            return next;
-        });
+        const next = new Set(completedIds);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        setCompletedIds(next);
+        onCompletedChange?.(next.size);
     };
 
     const getValue = (set: SetReadDTO, field: SetField): number => set[field] ?? 0;
@@ -120,7 +126,10 @@ const SetList = ({ sets, onChange, onRemove, onAdd, onCompletedChange }: SetList
                             legend="Completed"
                             selectedLegend="Not completed"
                             customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                            customCss={completed ? completedHoverOverrideCss : undefined}
+                            customCss={[
+                                !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
+                                completed ? completedHoverOverrideCss : undefined,
+                            ]}
                         />
                         <OnlyIconButton
                             icon={<FaTrashAlt />}
