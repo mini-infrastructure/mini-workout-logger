@@ -213,23 +213,7 @@ public class ExerciseService extends AbstractService<Exercise,
 
     public Set<String> getExerciseRootMusclesOrderedByRelevance(Long exerciseId) {
         Exercise exercise = this.repository.safeFindById(exerciseId);
-        Set<Muscle> muscles = exercise.getMuscles();
-        Set<Muscle> rootMuscles = muscleService.findRootMuscles(muscles);
-
-        Map<Muscle, Long> scores = new HashMap<>();
-        for (Muscle rootMuscle : rootMuscles) {
-            Set<Muscle> children = muscleService.findChildMusclesRecursive(rootMuscle, new java.util.HashSet<>());
-            long score = children.stream().filter(muscles::contains).count();
-            scores.put(rootMuscle, score);
-        }
-        return scores.entrySet()
-                .stream()
-                .sorted((e1, e2) ->
-                        Long.compare(e2.getValue(), e1.getValue()))
-                .map(entry -> entry.getKey()
-                        .getName()
-                        .getCode())
-                .collect(toCollection(LinkedHashSet::new));
+        return muscleService.findRootMuscleCodesOrderedByRelevance(exercise.getMuscles());
     }
 
     public ResponseEntity<ResponseDTO<String>> getAllExerciseGroupNames() {

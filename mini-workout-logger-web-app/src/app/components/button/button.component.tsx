@@ -17,6 +17,8 @@ export type ButtonProps = {
     iconEnd?: boolean;
     type?: "button" | "submit" | "reset";
     title?: string;
+    onMouseDown?: () => void;
+    onMouseUp?: () => void;
 };
 
 const Button = ({
@@ -31,6 +33,8 @@ const Button = ({
                     iconEnd = false,
                     type = "button",
                     title,
+                    onMouseDown,
+                    onMouseUp,
                     children
                 }: PropsWithChildren<ButtonProps>) => {
     const navigate = useNavigate();
@@ -56,6 +60,8 @@ const Button = ({
             disabled={disabled}
             type={type}
             title={title}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp}
         >
             {!iconEnd && (icon || clickedIcon) && (
                 <span

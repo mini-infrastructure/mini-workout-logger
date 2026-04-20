@@ -63,6 +63,7 @@ public class ExerciseMapper
                             muscleMapper.toDTO(entity.getMusclesByRole(ExerciseMuscleMovementClassification.SYNERGIST)));
                     dto.setStabilizerMuscles(
                             muscleMapper.toDTO(entity.getMusclesByRole(ExerciseMuscleMovementClassification.STABILIZER)));
+                    dto.setRootMuscles(muscleService.findRootMuscleCodesOrderedByRelevance(entity.getMuscles()));
 
                     if (entity.getGroup() != null) {
                         dto.setGroupName(entity.getGroup().getName().getValue());

@@ -24,6 +24,9 @@ public class WorkoutMapper extends AbstractMapper<Workout, WorkoutReadDTO, Worko
     @Autowired
     private TagMapper tagMapper;
 
+    @Autowired
+    private WorkoutExerciseMapper workoutExerciseMapper;
+
     @Override
     protected void configure(ModelMapper mapper) {
 
@@ -37,6 +40,9 @@ public class WorkoutMapper extends AbstractMapper<Workout, WorkoutReadDTO, Worko
                                 .map(tagMapper::toDTO)
                                 .toList();
                         dest.setTags(tagDtos);
+                    }
+                    if (src.getWorkoutExercises() != null) {
+                        dest.setWorkoutExercises(workoutExerciseMapper.toDTO(src.getWorkoutExercises()));
                     }
                     return dest;
                 });

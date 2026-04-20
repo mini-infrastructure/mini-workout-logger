@@ -9,10 +9,12 @@ export type OnlyIconButtonProps = {
     iconColor?: string;
     selectedIconColor?: string;
     selected?: boolean;
+    selectedBg?: string;
     onToggle?: (selected: boolean) => void;
     legend?: string;
     selectedLegend?: string;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
+    customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
 const OnlyIconButton = ({
@@ -21,10 +23,12 @@ const OnlyIconButton = ({
     iconColor = '--color-blue',
     selectedIconColor = '--color-white',
     selected = false,
+    selectedBg,
     onToggle,
     legend,
     selectedLegend,
     customCss,
+    customIconCss,
 }: OnlyIconButtonProps) => {
     const currentIcon = selected && selectedIcon ? selectedIcon : icon;
     const tooltip = selected && selectedLegend ? selectedLegend : legend;
@@ -32,13 +36,16 @@ const OnlyIconButton = ({
     // Icon color is driven by the button's `color` property, which cascades
     // to react-icons SVGs via `currentColor`.
     const buttonColor = selected ? `var(${selectedIconColor})` : `var(${iconColor})`;
-    const buttonBg = selected ? `var(${iconColor})` : 'transparent';
+    const buttonBg = selected
+        ? (selectedBg ?? `var(${iconColor})`)
+        : 'transparent';
 
     return (
         <Button
             onClick={() => onToggle?.(!selected)}
             icon={currentIcon}
             title={tooltip}
+            customIconCss={customIconCss}
             customCss={[
                 css({
                     backgroundColor: buttonBg,

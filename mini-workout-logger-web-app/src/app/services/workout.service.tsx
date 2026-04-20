@@ -1,7 +1,7 @@
-import type {WorkoutReadDTO} from "../dtos/workout-read.dto.tsx";
-import axios from "axios";
-import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
-import type {MuscleReadDTO} from "../dtos/muscle-read.dto.tsx";
+import type { WorkoutReadDTO } from '../dtos/workout-read.dto.tsx';
+import type { WorkoutWriteDTO } from '../dtos/workout-write.dto.tsx';
+import axios from 'axios';
+import type { ApiResponseDTO } from '../dtos/api-response.dto.tsx';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
@@ -10,7 +10,7 @@ class WorkoutService {
 
     async getAll(): Promise<WorkoutReadDTO[]> {
         try {
-            const response = await axios.get<ApiResponseDTO<MuscleReadDTO[]>>(
+            const response = await axios.get<ApiResponseDTO<WorkoutReadDTO[]>>(
                 `${apiUrl}/workouts?lang=${lang}`
             );
             return response.data.data;
@@ -21,20 +21,31 @@ class WorkoutService {
     }
 
     async getById(id: string): Promise<WorkoutReadDTO> {
-        try {
-            const response = await axios.get<ApiResponseDTO<WorkoutReadDTO[]>>(
-                `${apiUrl}/workouts/${id}?lang=${lang}`
-            );
-            return response.data.data[0];
-        } catch (error) {
-            console.error(`Error fetching workout with id ${id}:`, error);
-            throw error;
-        }
+        const response = await axios.get<ApiResponseDTO<WorkoutReadDTO[]>>(
+            `${apiUrl}/workouts/${id}?lang=${lang}`
+        );
+        return response.data.data[0];
     }
 
-    async create(workout: WorkoutReadDTO): Promise<WorkoutReadDTO> {}
-    async update(id: string, workout: WorkoutReadDTO): Promise<WorkoutReadDTO> {}
-    async delete(id: string): Promise<void> {}
+    async update(id: string, payload: WorkoutWriteDTO): Promise<WorkoutReadDTO> {
+        const response = await axios.put<ApiResponseDTO<WorkoutReadDTO[]>>(
+            `${apiUrl}/workouts/${id}?lang=${lang}`,
+            payload
+        );
+        return response.data.data[0];
+    }
+
+    async reorderExercise(workoutId: string, exerciseId: number, newPosition: number): Promise<void> {
+        await axios.put(
+            `${apiUrl}/workouts/${workoutId}/exercises/reorder/${exerciseId}`,
+            null,
+            { params: { newPosition, lang } }
+        );
+    }
+
+    async delete(id: string): Promise<void> {
+        await axios.delete(`${apiUrl}/workouts/${id}?lang=${lang}`);
+    }
 
 }
 

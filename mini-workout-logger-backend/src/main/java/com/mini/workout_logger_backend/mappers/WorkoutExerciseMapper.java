@@ -21,11 +21,20 @@ public class WorkoutExerciseMapper extends AbstractMapper<WorkoutExercise,
     @Autowired
     SetRepository setRepository;
 
+    @Autowired
+    ExerciseMapper exerciseMapper;
+
     @Override
     protected void configure(ModelMapper mapper) {
 
         // Entity -> DTO (GET)
-        mapper.createTypeMap(WorkoutExercise.class, WorkoutExerciseReadDTO.class);
+        mapper.createTypeMap(WorkoutExercise.class, WorkoutExerciseReadDTO.class)
+                .setPostConverter(ctx -> {
+                    WorkoutExercise entity = ctx.getSource();
+                    WorkoutExerciseReadDTO dto = ctx.getDestination();
+                    dto.setExercise(exerciseMapper.toDTO(entity.getExercise()));
+                    return dto;
+                });
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(WorkoutExerciseWriteDTO.class, WorkoutExercise.class)

@@ -44,6 +44,27 @@ const styles = {
         fontSize: 'var(--size-medium)',
         minWidth: '3.5ch',
     }),
+
+    content: css({
+        flex: 1,
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-normal)',
+        paddingRight: 'var(--base-size-4)',
+
+        '&::-webkit-scrollbar-track': { background: 'transparent' },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'var(--color-border)',
+            borderRadius: 'var(--borderRadius-full)',
+        },
+        scrollbarWidth: 'auto',
+        scrollbarColor: 'var(--color-border) transparent',
+    }),
+
+    saveClearButton: css({
+        flexShrink: 0,
+    }),
 };
 
 export default styles;
