@@ -8,9 +8,9 @@ export interface Set {
     setExecutions: SetExecution[];
     category: SetCategory;
     type: SetType;
-    repetitions: number;
-    weight: number;
-    durationSeconds: number;
+    plannedRepetitions: number;
+    plannedWeight: number;
+    plannedDurationSeconds: number;
 }
 
 export type SetCategory =

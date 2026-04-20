@@ -1,32 +1,30 @@
 package com.mini.workout_logger_backend.entities;
 
 import com.mini.java_core.entity.AbstractEntity;
-import jakarta.persistence.MappedSuperclass;
+import com.mini.java_core.entity.Interval;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-
-import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @MappedSuperclass
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Execution extends AbstractEntity {
 
-    public void setUpdatedAtToNow() {
-        this.setUpdatedAt(new Date());
-    }
-
-    public Date getStartTime() {
-        return this.getCreatedAt();
-    }
-
-    public Date getEndTime() {
-        if (this.getUpdatedAt() == null || !this.getUpdatedAt().after(this.getCreatedAt())) {
-            return null;
-        }
-        return this.getUpdatedAt();
-    }
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "start",    column = @Column(name = "start_time")),
+            @AttributeOverride(name = "end",      column = @Column(name = "end_time")),
+            @AttributeOverride(name = "duration", column = @Column(name = "duration"))
+    })
+    private Interval interval = new Interval();
 
     public boolean getCompleted() {
-        return getEndTime() != null;
+        return interval != null && interval.getEnd() != null;
     }
 
 }

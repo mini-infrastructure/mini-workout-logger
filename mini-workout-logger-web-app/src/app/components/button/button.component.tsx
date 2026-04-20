@@ -5,6 +5,7 @@ import type {Interpolation, Theme} from "@emotion/react";
 import {css} from "@emotion/react";
 
 export type ButtonProps = {
+    key?: any;
     onClick?: () => void;
     path?: string;
     disabled?: boolean;
@@ -13,6 +14,7 @@ export type ButtonProps = {
     clickedIcon?: ReactNode;
     customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
     isClicked?: boolean;
+    iconEnd?: boolean;
     type?: "button" | "submit" | "reset";
 };
 
@@ -25,6 +27,7 @@ const Button = ({
                     clickedIcon,
                     customIconCss,
                     isClicked = false,
+                    iconEnd = false,
                     type = "button",
                     children
                 }: PropsWithChildren<ButtonProps>) => {
@@ -51,7 +54,7 @@ const Button = ({
             disabled={disabled}
             type={type}
         >
-            {(icon || clickedIcon) && (
+            {!iconEnd && (icon || clickedIcon) && (
                 <span
                     css={[
                         styles.icon,
@@ -67,6 +70,22 @@ const Button = ({
                 </span>
             )}
             {children}
+            {iconEnd && (icon || clickedIcon) && (
+                <span
+                    css={[
+                        styles.icon,
+                        !children && css(styles.onlyIcon),
+                        styles.iconEnd,
+                        ...(customIconCss ?
+                            (Array.isArray(customIconCss)
+                                ? customIconCss
+                                : [customIconCss])
+                            : []),
+                    ]}
+                >
+                    {isClicked && clickedIcon ? clickedIcon : icon}
+                </span>
+            )}
         </button>
     );
 };

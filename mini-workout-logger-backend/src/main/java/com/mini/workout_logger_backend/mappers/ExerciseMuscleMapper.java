@@ -27,6 +27,8 @@ public class ExerciseMuscleMapper
                 .addMappings(m -> {
                     m.map(src -> src.getMuscle().getName().getValue(),
                             ExerciseMuscleReadDTO::setMuscleName);
+                    m.map(src -> src.getMuscle().getName().getCode(),
+                            ExerciseMuscleReadDTO::setMuscleCode);
                 });
 
         // DTO -> Entity (POST/PUT)

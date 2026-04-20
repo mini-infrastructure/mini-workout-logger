@@ -8,10 +8,10 @@ const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 
 class MuscleService {
 
-    async getAll(): Promise<MuscleReadDTO[]> {
+    async getAll(overrideLang?: string): Promise<MuscleReadDTO[]> {
         try {
             const response = await axios.get<ApiResponseDTO<MuscleReadDTO[]>>(
-                `${apiUrl}/muscles?lang=${lang}`
+                `${apiUrl}/muscles?lang=${overrideLang ?? lang}&size=500`
             );
             return response.data.data;
         } catch (error) {

@@ -22,7 +22,20 @@ public class MuscleMapper extends AbstractMapper<Muscle, MuscleReadDTO, MuscleWr
     protected void configure(ModelMapper mapper) {
 
         // Entity -> DTO (GET)
-        mapper.createTypeMap(Muscle.class, MuscleReadDTO.class);
+        mapper.createTypeMap(Muscle.class, MuscleReadDTO.class)
+                .setPostConverter(ctx -> {
+                    Muscle source = ctx.getSource();
+                    MuscleReadDTO dest = ctx.getDestination();
+                    if (source.getName() != null) {
+                        dest.setCode(source.getName().getCode());
+                    }
+                    if (source.getMuscleGroups() != null && !source.getMuscleGroups().isEmpty()) {
+                        source.getMuscleGroups().stream()
+                                .findFirst()
+                                .ifPresent(parent -> dest.setParentCode(parent.getName().getCode()));
+                    }
+                    return dest;
+                });
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(MuscleWriteDTO.class, Muscle.class)

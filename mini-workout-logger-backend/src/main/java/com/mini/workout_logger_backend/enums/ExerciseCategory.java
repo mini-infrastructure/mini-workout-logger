@@ -10,6 +10,9 @@ public enum ExerciseCategory implements TranslatableEnum<ExerciseCategory> {
 
     STRENGTH,
     CARDIO,
+    WALK,
+    RUN,
+    BIKE,
     STRETCHING,
     POWERLIFTING,
     OLYMPIC_WEIGHTLIFTING,
