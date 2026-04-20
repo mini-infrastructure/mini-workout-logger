@@ -1,19 +1,36 @@
-import {css} from "@emotion/react";
+import { css } from '@emotion/react';
 
 const styles = {
-    badgeContainer: css({
+    pageWrapper: css({
         display: 'flex',
         flexDirection: 'column',
-        gap: 'var(--stack-gap-normal)',
-        padding: 'var(--base-size-16)',
-        backgroundColor: 'var(--color-container1)',
+        height: '100%',
+        overflow: 'hidden',
+        gap: 'var(--stack-gap-condensed)',
     }),
 
-    badgeGroup: css({
+    toolbar: css({
         display: 'flex',
-        flexWrap: 'wrap',
-        gap: 'var(--stack-gap-condensed)',
         alignItems: 'center',
+        flexShrink: 0,
+    }),
+
+    grid: css({
+        flex: 1,
+        overflowY: 'auto',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gap: 'var(--stack-gap-normal)',
+        alignContent: 'start',
+
+        '&::-webkit-scrollbar-track': { background: 'transparent' },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'var(--color-border)',
+            borderRadius: 'var(--borderRadius-full)',
+        },
+        '&::-webkit-scrollbar-thumb:hover': { backgroundColor: 'var(--color-gray)' },
+        scrollbarWidth: 'auto',
+        scrollbarColor: 'var(--color-border) transparent',
     }),
 };
 
