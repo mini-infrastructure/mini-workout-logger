@@ -2,7 +2,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import NotFoundView from "./app/views/error/not-found.view.tsx";
 import DashboardView from "./app/views/dashboard/dashboard.view.tsx";
 import WorkoutsView from "./app/views/workouts/workouts.view.tsx";
-import WorkoutDetailView from "./app/views/workouts/workout-detail.view.tsx";
+import WorkoutView from "./app/views/workout/workout.view.tsx";
 import ExercisesView from "./app/views/exercises/exercises.view.tsx";
 import ExercisesFavoritesView from "./app/views/exercises/exercises-favorites.view.tsx";
 import { AlertProvider } from "./app/context/alert.context.tsx";
@@ -17,7 +17,7 @@ function App() {
                         <Route path="/exercises" element={<ExercisesView />} />
                         <Route path="/exercises/favorites" element={<ExercisesFavoritesView />} />
                         <Route path="/workouts" element={<WorkoutsView />} />
-                        <Route path="/workouts/:id" element={<WorkoutDetailView />} />
+                        <Route path="/workouts/:id" element={<WorkoutView />} />
                         <Route path="*" element={<NotFoundView />} />
                     </Route>
                 </Routes>

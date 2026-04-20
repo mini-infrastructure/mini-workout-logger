@@ -1,24 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { FaRegClock } from 'react-icons/fa';
-import {IoPlayOutline, IoPause, IoStop, IoPlay} from 'react-icons/io5';
-import { MdEdit, MdOutlineCancel } from 'react-icons/md';
+import { IoPlay, IoPause, IoStop } from 'react-icons/io5';
 import Layout from '../../components/layout/layout.component.tsx';
 import Card from '../../components/card/card.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
-import styles from './workout-detail.view.style.tsx';
-import {IoMdClose} from "react-icons/io";
+import styles from './workout.view.style.tsx';
 
-const WorkoutDetailView = () => {
+const WorkoutView = () => {
     const { id } = useParams<{ id: string }>();
     const [searchParams] = useSearchParams();
     const { workout } = useWorkout(id);
 
-    const initialMode = searchParams.get('mode');
-    const [isPlaying, setIsPlaying] = useState(initialMode === 'play');
-    const [isEditing, setIsEditing] = useState(initialMode === 'edit');
-
+    const [isPlaying, setIsPlaying] = useState(searchParams.get('mode') === 'play');
     const [elapsed, setElapsed] = useState(0);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -74,20 +69,10 @@ const WorkoutDetailView = () => {
                             onToggle={handleStop}
                         />
                     </Card>
-
-                    <OnlyIconButton
-                        icon={<MdEdit />}
-                        selectedIcon={<IoMdClose />}
-                        iconColor="--color-blue"
-                        selected={isEditing}
-                        onToggle={(val) => setIsEditing(val)}
-                        legend="Edit"
-                        selectedLegend="Cancel"
-                    />
                 </div>
             </div>
         </Layout>
     );
 };
 
-export default WorkoutDetailView;
+export default WorkoutView;

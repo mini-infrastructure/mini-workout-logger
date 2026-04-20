@@ -10,7 +10,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--stack-gap-condensed)',
-        backgroundColor: 'var(--color-container2)',
+        backgroundColor: 'var(--color-container1)',
         borderRadius: 'var(--borderRadius-medium)',
         padding: 'var(--base-size-12)',
     }),

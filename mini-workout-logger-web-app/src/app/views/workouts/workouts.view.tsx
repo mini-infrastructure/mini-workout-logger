@@ -38,7 +38,7 @@ const WorkoutsView = () => {
                             key={workout.id}
                             workout={workout}
                             onStart={() => navigate(`/workouts/${workout.id}?mode=play`)}
-                            onEdit={() => navigate(`/workouts/${workout.id}?mode=edit`)}
+                            onOpen={() => navigate(`/workouts/${workout.id}`)}
                         />
                     ))}
                 </div>
