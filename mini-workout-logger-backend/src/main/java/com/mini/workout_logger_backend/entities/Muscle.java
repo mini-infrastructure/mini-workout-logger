@@ -38,7 +38,7 @@ public class Muscle extends AbstractEntity {
     @ManyToMany(mappedBy = "muscleGroups")
     private Set<Muscle> muscles = new HashSet<>();
 
-    @JsonBackReference
+    @JsonBackReference("exercisemuscle-muscle")
     @OneToMany(mappedBy = "muscle")
     private Set<ExerciseMuscle> exerciseMuscles = new HashSet<>();
 
@@ -53,9 +53,11 @@ public class Muscle extends AbstractEntity {
     }
 
     public void setMuscleGroups(Set<Muscle> muscleGroups) {
-        this.muscleGroups.clear();
+        for (Muscle group : new HashSet<>(this.muscleGroups)) {
+            removeMuscleGroup(group);
+        }
         if (muscleGroups != null) {
-            this.muscleGroups.addAll(muscleGroups);
+            muscleGroups.forEach(this::addMuscleGroup);
         }
     }
 

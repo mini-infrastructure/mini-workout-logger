@@ -23,6 +23,8 @@ public class ExerciseWriteDTO extends WriteDTO {
     @NotNull(groups = RestMethod.OnCreate.class)
     private String name;
 
+    private Boolean favorited;
+
     private ExerciseCategory category;
 
     private ExerciseDifficulty difficulty;

@@ -24,4 +24,5 @@ export interface ExerciseReadDTO {
     synergist_muscles?: MuscleReadDTO[];
     stabilizer_muscles?: MuscleReadDTO[];
     root_muscles?: string[];
+    favorited?: boolean;
 }

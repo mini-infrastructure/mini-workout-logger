@@ -7,7 +7,8 @@ export interface WorkoutExerciseExecution {
     workoutExecution: WorkoutExecution;
     workoutExercise: WorkoutExercise;
     setExecutions: SetExecution[];
-    startTime: Date;
-    endTime: Date;
+    skipped: boolean;
+    startTime: string;
+    endTime: string;
     completed: boolean;
 }

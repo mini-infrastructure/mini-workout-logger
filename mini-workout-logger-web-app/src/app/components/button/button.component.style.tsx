@@ -1,39 +1,31 @@
-import {css, Theme} from '@emotion/react';
-import {transparentize} from "polished";
+import {css} from '@emotion/react';
 
 const styles = {
-
     /**
      * Default Button.
      */
-
-    button: (theme: Theme) => css({
+    button: css({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
 
-        padding: '0.5rem 1rem',
-        borderRadius: 15,
+        padding: `var(--control-medium-paddingBlock) var(--control-medium-paddingInline)`,
+        borderRadius: 'var(--borderRadius-large)',
         border: 'none',
         cursor: 'pointer',
         width: 'auto',
-        lineHeight: '1rem',
-        fontSize: theme.fontSizes.medium,
+        lineHeight: 'var(--base-size-16)',
+        fontSize: 'var(--size-medium)',
         fontFamily: 'inherit',
 
-        backgroundColor: theme.colors.background,
-        color: theme.colors.text,
+        backgroundColor: 'var(--color-container1)',
+        color: 'var(--color-text)',
 
         transition: 'background-color 0.2s ease, color 0.2s ease',
 
         ':hover': {
-            backgroundColor: theme.colors.container1,
+            backgroundColor: 'var(--color-container2)',
         },
-
-        // ':focus': {
-        //     backgroundColor: theme.colors.container2,
-        //     outline: 'none',
-        // },
 
         ':disabled': {
             opacity: 0.5,
@@ -42,7 +34,7 @@ const styles = {
         },
 
         '&[data-active="true"]': {
-            backgroundColor: theme.colors.container1 + '80',
+            backgroundColor: 'color-mix(in srgb, var(--color-container1) 50%, transparent)',
         },
     }),
 
@@ -50,15 +42,15 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: '0 0.3rem 0 0',
-        width: '0.8rem',
-        height: '0.8rem',
+        margin: `0 var(--control-small-gap) 0 0`,
+        width: 'var(--control-small-iconSize)',
+        height: 'var(--control-small-iconSize)',
         pointerEvents: 'none',
     }),
 
     onlyIconButton: css({
-        padding: '0.6rem',
-        borderRadius: 8,
+        padding: 'var(--control-small-size)',
+        borderRadius: 'var(--borderRadius-medium)',
     }),
 
     onlyIcon: css({
@@ -66,127 +58,135 @@ const styles = {
         padding: '0',
     }),
 
+    iconEnd: css({
+        margin: '0 0 0 var(--control-small-gap)',
+    }),
+
     /**
      * Primary Button.
      */
-
-    buttonPrimary: (theme: Theme) => css({
+    buttonPrimary: css({
         padding: '0.8rem 1.3rem',
         fontWeight: 700,
-        backgroundColor: theme.colors.primary,
-        border: `1px solid ${transparentize(0.7, theme.colors.primary)}`,
-        color: theme.colors.white,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.7, theme.colors.primary)}, transparent)`,
+        backgroundColor: 'var(--color-blue)',
+        border: `var(--borderWidth-thin) solid var(--color-blue-border)`,
+        color: 'var(--color-white)',
+        backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-blue) 30%, transparent), transparent)',
 
         ':hover': {
             opacity: 0.9,
-            backgroundColor: theme.colors.primary,
-            backgroundImage: `linear-gradient(to top, ${transparentize(0.9, theme.colors.secondary)}, transparent)`,
+            backgroundColor: 'var(--color-blue)',
+            backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-blue-border) 10%, transparent), transparent)',
         },
     }),
 
-    iconPrimary: (theme: Theme) => css({
+    iconPrimary: css({
         width: 'auto',
         height: 'auto',
-        fontSize: theme.fontSizes.large,
+        fontSize: 'var(--size-large)',
     }),
 
     /**
      * Secondary Button.
      */
-
-    buttonSecondary: (theme: Theme) => css({
-        display: "flex",
-        justifyContent: "flex-start",
-        backgroundColor: theme.colors.container2,
-        border: `1px solid ${theme.colors.border2}`,
-        backgroundImage: `linear-gradient(to top, ${transparentize(0.5, theme.colors.container2)}, transparent)`,
+    buttonSecondary: css({
+        display: 'flex',
+        justifyContent: 'flex-start',
+        backgroundColor: 'var(--color-container2)',
+        border: `var(--borderWidth-thin) solid var(--color-border)`,
+        backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-container2) 50%, transparent), transparent)',
 
         ':hover': {
-            backgroundImage: `linear-gradient(to top, ${theme.colors.container2}, transparent)`,
+            backgroundImage: 'linear-gradient(to top, var(--color-container2), transparent)',
         },
     }),
 
-    iconSecondary: (theme: Theme) => css({
+    iconSecondary: css({
         width: 'auto',
         height: 'auto',
-        fontSize: theme.fontSizes.large,
+        fontSize: 'var(--size-large)',
     }),
 
     /**
      * Sidebar Button.
      */
+    buttonSidebar: css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        gap: 'var(--control-small-gap)',
 
-    buttonSidebar: (theme: Theme) => css({
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        gap: "0.3rem",
+        width: '100%',
+        padding: 'var(--control-medium-paddingBlock)',
+        margin: 'var(--stack-gap-nano) 0 0 0',
+        borderRadius: 'var(--borderRadius-large)',
+        border: 'none',
 
-        width: "100%",
-        padding: "0.5rem",
-        borderRadius: 15,
-        border: "none",
+        backgroundColor: 'transparent',
+        color: 'var(--color-text)',
 
-        backgroundColor: "transparent",
-        color: theme.colors.text3,
+        fontSize: 'var(--size-medium)',
+        textAlign: 'left',
 
-        fontSize: theme.fontSizes.medium,
-        textAlign: "left",
+        cursor: 'pointer',
+        outline: 'none',
 
-        cursor: "pointer",
-        outline: "none",
+        transition: 'background-color 0.2s ease, color 0.2s ease',
 
-        transition: "background-color 0.2s ease, color 0.2s ease",
+        ':hover': {
+            backgroundColor: 'var(--color-container2)',
+        },
 
-        ":active": {
-            backgroundColor: theme.colors.container2,
+        ':active': {
+            backgroundColor: 'var(--color-container2)',
             fontWeight: 600,
         },
 
-        ":disabled": {
+        ':disabled': {
             opacity: 0.5,
-            pointerEvents: "none",
-            cursor: "not-allowed",
+            pointerEvents: 'none',
+            cursor: 'not-allowed',
         },
     }),
 
-    iconSidebar: css({
+    buttonSidebarActive: css({
+        backgroundColor: 'var(--color-container2)',
+        fontWeight: 600,
     }),
+
+    iconSidebar: css({}),
 
     /**
      * Sidebar Collapse Button.
      */
 
-    buttonSidebarCollapse: css({
-    }),
+    buttonSidebarCollapse: css({}),
 
-    iconSidebarCollapse: css({
-    }),
+    iconSidebarCollapse: css({}),
 
-    collapseContainer: (theme: Theme) => css({
-        color: theme.colors.text2,
+    collapseContainer: css({
+        color: 'var(--color-text)',
     }),
 
     collapsableButton: css({
-        width: "100%",
+        width: '100%',
     }),
 
-    seeMoreButton: (theme: Theme) => css({
+    seeMoreButton: css({
         ':hover': {
-            backgroundColor: transparentize(0.8, theme.colors.secondary),
+            backgroundColor: 'color-mix(in srgb, var(--color-blue) 20%, transparent)',
         },
     }),
 
-    verticalLine: (theme: Theme) => css({
-        width: '1px',
-        marginRight: '0.75rem',
-        backgroundColor: transparentize(0.7, theme.colors.text2),
+    verticalLine: css({
+        width: 'var(--borderWidth-thin)',
+        marginRight: 'var(--overlay-padding-condensed)',
+        backgroundColor: 'color-mix(in srgb, var(--color-border) 30%, transparent)',
     }),
 
     collapseItem: css({
-        margin: "0 0.75rem 0",
-        display: "flex",
+        margin: `0 var(--overlay-padding-condensed) 0`,
+        display: 'flex',
         flexDirection: 'row',
         alignItems: 'stretch',
     }),

@@ -5,9 +5,9 @@ CREATE TABLE sets (
     position INTEGER,
     category VARCHAR(50) NOT NULL,
     type VARCHAR(50) NOT NULL,
-    repetitions INTEGER,
-    weight DOUBLE PRECISION,
-    duration_seconds INTEGER,
+    planned_repetitions INTEGER,
+    planned_weight DOUBLE PRECISION,
+    planned_duration_seconds INTEGER,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

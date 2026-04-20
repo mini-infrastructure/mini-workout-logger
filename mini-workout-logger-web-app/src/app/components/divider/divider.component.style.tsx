@@ -1,10 +1,9 @@
 import {css} from '@emotion/react';
 
 const styles = {
-    divider: (theme: any) => css({
-        width: '90%',
+    divider: css({
         border: 'none',
-        borderBottom: `1px solid ${theme.colors.border1}`,
+        borderBottom: `var(--borderWidth-thin) solid color-mix(in srgb, var(--color-border) 20%, transparent)`,
     }),
 };
 

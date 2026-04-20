@@ -9,11 +9,11 @@ import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import com.mini.workout_logger_backend.services.ExerciseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+
 
 @RestController
 @RequestMapping("/exercises")
@@ -39,6 +39,30 @@ public class ExerciseController extends AbstractController<Exercise,
     @GetMapping("/groups/{groupName}")
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> getExercisesByGroupName(@PathVariable("groupName") String groupName) {
         return service.listExercisesByMuscleGroup(groupName);
+    }
+
+    /**
+     * Favorited Exercises API.
+     */
+
+    @Tag(name = "Exercise Favorites", description = "Exercise Favorites API")
+    @GetMapping("/favorites")
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> getFavoritedExercises() {
+        return service.getFavoritedExercises();
+    }
+
+    @Tag(name = "Exercise Favorites")
+    @PatchMapping("/{id}/favorite")
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> favoriteExercise(
+            @NotNull @PathVariable("id") Long id) {
+        return service.favoriteExercise(id);
+    }
+
+    @Tag(name = "Exercise Favorites")
+    @PatchMapping("/{id}/unfavorite")
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> unfavoriteExercise(
+            @NotNull @PathVariable("id") Long id) {
+        return service.unfavoriteExercise(id);
     }
 
 }

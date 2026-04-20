@@ -1,34 +1,32 @@
-import {css, Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 
 const styles = {
-
-    ratesContainer: (color: string) => (theme: any) => css({
+    ratesContainer: (color: string) => css({
         display: 'flex',
-        gap: '0.2rem',
+        gap: 'var(--stack-gap-nano)',
         alignItems: 'center',
         textTransform: 'lowercase',
-        fontFamily: theme.fonts.number,
-        color: theme.colors[color],
+        fontFamily: 'var(--font-number)',
+        color: `var(--color-${color})`,
 
         '.selected-level-label::first-letter': {
             textTransform: 'uppercase',
-            marginLeft: '0.5rem',
+            marginLeft: 'var(--base-size-8)',
         }
     }),
 
-    rate: (theme: Theme) => css({
+    rate: css({
         display: 'inline-block',
-        width: '0.6rem',
-        height: '0.6rem',
-        backgroundColor: theme.colors.border1,
+        width: 'var(--control-small-size)',
+        height: 'var(--control-small-size)',
+        backgroundColor: 'var(--color-border)',
         borderRadius: '50%',
     }),
 
-    rateFilled: (color: string) => (theme: any) => css({
-        backgroundColor: theme.colors[color],
-        color: theme.colors[color],
+    rateFilled: (color: string) => css({
+        backgroundColor: `var(--color-${color})`,
+        color: `var(--color-${color})`,
     }),
-
 };
 
 export default styles;

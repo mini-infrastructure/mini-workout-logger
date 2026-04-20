@@ -1,16 +1,16 @@
 import axios from "axios";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 
-export function handleApiError(error: unknown): never {
+export function handleApiError(error: unknown, pushAlert?: (message: string, variant: 'error') => void): never {
     let message;
 
     if (axios.isAxiosError(error)) {
         const response = error.response?.data;
 
-        if (response?.errors?.length) {
-            message = response.errors.join("\n");
-        } else if (response?.message) {
+        if (response?.message) {
             message = response.message;
+        } else if (response?.errors?.length) {
+            message = response.errors.join("\n");
         } else if (error.message) {
             message = error.message;
         }
@@ -22,7 +22,7 @@ export function handleApiError(error: unknown): never {
         message = "An unknown error occurred";
     }
 
-    alert(message);
+    pushAlert?.(message ?? "An unknown error occurred", 'error');
     throw new Error(message);
 }
 

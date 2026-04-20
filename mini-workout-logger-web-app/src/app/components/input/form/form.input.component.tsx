@@ -6,6 +6,7 @@ import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";
 import ButtonMultiSelect from "./button.multiselect.form.input.component.tsx";
+import PrimaryButton from "../../button/button.primary.component.tsx";
 
 export type FormFieldType =
     | "text"
@@ -23,6 +24,13 @@ export type FormOption = {
     label: string;
     value: string;
 };
+
+export type ButtonMultiSelectValue = {
+    first: string;
+    second: string;
+};
+
+export type FormFieldValue = string | string[] | ButtonMultiSelectValue[];
 
 export type ButtonMultiSelectFieldOptions = {
     first: {
@@ -46,20 +54,20 @@ export type FormItem = {
     placeholder?: string;
     options?: FormOption[] | ButtonMultiSelectFieldOptions;
     colSpan?: number;
-    initialValue?: any;
+    initialValue?: FormFieldValue;
     inputEnabled?: boolean;
 };
 
 export type FormBuilderProps = {
     items: FormItem[];
     columns: number;
-    onSubmit: (values: Record<string, any>) => void;
+    onSubmit: (values: Record<string, FormFieldValue>) => void;
     submitButton?: ReactNode;
     disabled?: boolean;
 };
 
 const buildInitialValues = (items: FormItem[]) => {
-    const values: Record<string, any> = {};
+    const values: Record<string, FormFieldValue> = {};
 
     items.forEach((item) => {
         if (item.initialValue !== undefined) {
@@ -90,9 +98,9 @@ const FormBuilder = ({
                          submitButton,
                          disabled = false,
                      }: FormBuilderProps) => {
-    const [values, setValues] = useState<Record<string, any>>(() => buildInitialValues(items));
+    const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
 
-    const handleChange = (name: string, value: any) => {
+    const handleChange = (name: string, value: FormFieldValue) => {
         setValues((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -119,7 +127,7 @@ const FormBuilder = ({
                         {item.type === "select" ? (
                             <Select
                                 options={item.options as FormOption[]}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
@@ -128,14 +136,14 @@ const FormBuilder = ({
                             <textarea
                                 css={styles.input}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
                         ) : item.type === "multiselect" ? (
                             <MultiSelect
                                 options={item.options as FormOption[]}
-                                value={values[item.name] ?? []}
+                                value={values[item.name] as string[] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
@@ -144,7 +152,7 @@ const FormBuilder = ({
                             <ButtonSelect
                                 options={item.options as FormOption[]}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 inputEnabled={item.inputEnabled}
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
@@ -152,7 +160,7 @@ const FormBuilder = ({
                         ) : item.type === "buttonmultiselect" ? (
                             <ButtonMultiSelect
                                 options={item.options as ButtonMultiSelectFieldOptions}
-                                value={values[item.name] ?? []}
+                                value={values[item.name] as ButtonMultiSelectValue[] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
                             />
@@ -161,7 +169,7 @@ const FormBuilder = ({
                                 css={styles.input}
                                 type={item.type}
                                 placeholder={item.placeholder}
-                                value={values[item.name] ?? ""}
+                                value={values[item.name] as string ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
@@ -171,8 +179,8 @@ const FormBuilder = ({
             })}
 
             {!disabled ? (
-                <div css={styles.fieldWrapper(columns)} style={{ marginTop: "0.5rem" }}>
-                    {submitButton ?? <Button type="submit">Submit</Button>}
+                <div css={[styles.fieldWrapper(columns), styles.submitRow]}>
+                    {submitButton ?? <PrimaryButton type="submit">Submit</PrimaryButton>}
                 </div>
             ) : (
                 <></>

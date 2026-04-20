@@ -4,7 +4,6 @@ import SecondaryButton from "../../button/button.secondary.component.tsx";
 import {useState} from "react";
 
 type ButtonSelectProps = {
-    key?: any;
     inputEnabled?: boolean;
     options: FormOption[];
     placeholder?: string;

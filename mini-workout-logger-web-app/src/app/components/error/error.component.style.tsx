@@ -1,4 +1,4 @@
-import {css, Theme} from '@emotion/react';
+import {css} from '@emotion/react';
 
 const styles = {
     wrapper: css({
@@ -12,7 +12,7 @@ const styles = {
     }),
 
     content: css({
-        margin: '0 2rem',
+        margin: `0 var(--base-size-32)`,
     }),
 
     left: css({
@@ -23,19 +23,19 @@ const styles = {
         textAlign: 'left',
     }),
 
-    status: (theme: Theme) => css({
-        fontSize: theme.fontSizes.xxx_large,
-        fontFamily: theme.fonts.number,
+    status: css({
+        fontSize: "var(--size-xxxl)",
+        fontFamily: "var(--font-number)",
     }),
 
-    title: (theme: Theme) => css({
-        fontSize: theme.fontSizes.x_large,
+    title: css({
+        fontSize: "var(--size-xl)",
         marginBottom: '-1rem',
-        fontFamily: theme.fonts.secondary,
+        fontFamily: "var(--font-secondary)",
     }),
 
-    message: (theme: Theme) => css({
-        fontSize: theme.fontSizes.large,
+    message: css({
+        fontSize: "var(--size-large)",
         wordWrap: 'break-word',
         textOverflow: 'ellipsis',
     }),

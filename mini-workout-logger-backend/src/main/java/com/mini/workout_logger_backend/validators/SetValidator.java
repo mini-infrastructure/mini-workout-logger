@@ -32,28 +32,28 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
             switch (value.getType()) {
 
                 case REPS -> {
-                    if (value.getRepetitions() == null) {
+                    if (value.getPlannedRepetitions() == null) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_reps"));
                         hasError = true;
-                    } else if (value.getRepetitions() <= 0) {
+                    } else if (value.getPlannedRepetitions() <= 0) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getWeight() != null) {
+                    if (value.getPlannedWeight() != null) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.set.must_be_null_for_reps"));
                         hasError = true;
                     }
 
-                    if (value.getDurationSeconds() != null) {
+                    if (value.getPlannedDurationSeconds() != null) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_null_for_reps"));
                         hasError = true;
                     }
@@ -61,33 +61,33 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
 
                 case REPS_X_WEIGHT -> {
 
-                    if (value.getRepetitions() == null) {
+                    if (value.getPlannedRepetitions() == null) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
                         hasError = true;
-                    } else if (value.getRepetitions() <= 0) {
+                    } else if (value.getPlannedRepetitions() <= 0) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getWeight() == null) {
+                    if (value.getPlannedWeight() == null) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_reps_x_weight"));
                         hasError = true;
-                    } else if (value.getWeight() <= 0) {
+                    } else if (value.getPlannedWeight() <= 0) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getDurationSeconds() != null) {
+                    if (value.getPlannedDurationSeconds() != null) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_null_for_reps_x_weight"));
                         hasError = true;
                     }
@@ -95,33 +95,33 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
 
                 case TIME_X_WEIGHT -> {
 
-                    if (value.getDurationSeconds() == null) {
+                    if (value.getPlannedDurationSeconds() == null) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
                         hasError = true;
-                    } else if (value.getDurationSeconds() <= 0) {
+                    } else if (value.getPlannedDurationSeconds() <= 0) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getWeight() == null) {
+                    if (value.getPlannedWeight() == null) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time_x_weight"));
                         hasError = true;
-                    } else if (value.getWeight() <= 0) {
+                    } else if (value.getPlannedWeight() <= 0) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getRepetitions() != null) {
+                    if (value.getPlannedRepetitions() != null) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_null_for_time_x_weight"));
                         hasError = true;
                     }
@@ -129,33 +129,33 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
 
                 case TIME -> {
 
-                    if (value.getDurationSeconds() == null) {
+                    if (value.getPlannedDurationSeconds() == null) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
                         hasError = true;
-                    } else if (value.getDurationSeconds() <= 0) {
+                    } else if (value.getPlannedDurationSeconds() <= 0) {
                         addViolation(context,
-                                "durationSeconds",
+                                "plannedDurationSeconds",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getRepetitions() == null) {
+                    if (value.getPlannedRepetitions() == null) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
                         hasError = true;
-                    } else if (value.getRepetitions() <= 0) {
+                    } else if (value.getPlannedRepetitions() <= 0) {
                         addViolation(context,
-                                "repetitions",
+                                "plannedRepetitions",
                                 messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
                         hasError = true;
                     }
 
-                    if (value.getWeight() != null) {
+                    if (value.getPlannedWeight() != null) {
                         addViolation(context,
-                                "weight",
+                                "plannedWeight",
                                 messageService.getLocalizedMessage("error.set.must_be_null_for_time"));
                         hasError = true;
                     }

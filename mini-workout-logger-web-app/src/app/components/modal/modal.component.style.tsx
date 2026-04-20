@@ -1,49 +1,48 @@
-import {css, keyframes, Theme} from "@emotion/react";
-import {transparentize} from "polished";
+import {css, keyframes} from "@emotion/react";
 
 const styles = {
-    overlayStyle: (theme: Theme) => css({
+    overlayStyle: css({
         position: 'fixed',
         inset: 0,
-        backgroundColor: transparentize(0.4, theme.colors.black),
+        backgroundColor: 'color-mix(in srgb, var(--color-black) 60%, transparent)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         justifySelf: 'center',
-        zIndex: 9999,
+        zIndex: 'var(--base-zIndex-overlay)' as any,
         width: '100%',
     }),
 
-    modalStyle: (theme: Theme) => css({
+    modalStyle: css({
         position: 'relative',
-        backgroundColor: theme.colors.background,
-        borderRadius: '0.75rem',
-        padding: '4rem',
+        backgroundColor: 'var(--color-container1)',
+        borderRadius: 'var(--overlay-borderRadius)',
+        padding: 'var(--base-size-64)',
         width: 'fit-content',
         minWidth: '30vw',
         maxWidth: '35vw',
         maxHeight: '70vh',
         overflowY: 'auto',
         height: 'fit-content',
-        boxShadow: theme.shadow.normal,
+        boxShadow: 'var(--shadow-normal)',
     }),
 
-    closeButton: (theme: Theme) => css({
+    closeButton: css({
         position: 'absolute',
         top: 0,
         right: 0,
-        color: theme.colors.red,
-        borderRadius: '0 0.5rem 0 0.5rem',
-        margin: '1rem 1rem 0 0',
+        color: 'var(--color-red)',
+        borderRadius: `0 var(--borderRadius-medium) 0 var(--borderRadius-medium)`,
+        margin: `var(--base-size-16) var(--base-size-16) 0 0`,
     }),
 
     closeButtonIcon: css({
         width: 'auto',
         height: 'auto',
-        fontSize: '1.2rem',
+        fontSize: 'var(--size-icon-sm)',
     }),
 
-    modalOpenEffect: (theme: Theme) => {
+    modalOpenEffect: () => {
         const modalOpen = keyframes`
             from {
                 opacity: 0;

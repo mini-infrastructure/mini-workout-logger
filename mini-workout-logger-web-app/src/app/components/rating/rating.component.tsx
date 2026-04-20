@@ -10,12 +10,11 @@ export type RatingLevelItem = {
 
 export type RatingProps = {
     levelsInfo: RatingLevelItem[];
-    selectedLevelLabel: any;
+    selectedLevelLabel: string;
     variant?: ColorVariant;
 };
 
 export type RateProps = {
-    key: any;
     isFilled: boolean;
     variant: ColorVariant;
 };

@@ -1,17 +1,23 @@
 import {PropsWithChildren, useState} from "react";
+import type { ReactNode } from "react";
+import {useLocation} from "react-router-dom";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
 import styles from "./button.component.style.tsx";
 import SidebarButton from "./button.sidebar.component.tsx";
-import {IoIosArrowRoundForward} from "react-icons/io";
+
+type CollapseMenuItem = {
+    label: string;
+    path: string;
+    icon?: ReactNode;
+};
 
 type SidebarCollapseButtonProps = ButtonProps & {
-    menuItems: string[];
+    menuItems: CollapseMenuItem[];
 };
 
 const SidebarCollapseButton = ({
                                    onClick,
-                                   path,
                                    disabled,
                                    customCss,
                                    icon,
@@ -20,7 +26,9 @@ const SidebarCollapseButton = ({
                                    menuItems = [],
                                    children
                        }: PropsWithChildren<SidebarCollapseButtonProps>) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const { pathname } = useLocation();
+    const hasActiveChild = menuItems.some(item => item.path === pathname);
+    const [isOpen, setIsOpen] = useState(hasActiveChild);
 
     const handleClick = () => {
         if (disabled) return;
@@ -44,7 +52,7 @@ const SidebarCollapseButton = ({
                 ]}
                 icon={icon}
                 clickedIcon={clickedIcon}
-                isClicked={isOpen}
+                isClicked={hasActiveChild}
                 customIconCss={[
                     styles.iconSidebar,
                     styles.iconSidebarCollapse,
@@ -59,24 +67,14 @@ const SidebarCollapseButton = ({
 
             {isOpen && (
                 <div css={styles.collapseContainer}>
-                    {menuItems.slice(0, 4).map((item, index) => (
-                        <div
-                            key={index}
-                            css={styles.collapseItem}
-                        >
+                    {menuItems.map((item, index) => (
+                        <div key={index} css={styles.collapseItem}>
                             <div css={styles.verticalLine} />
-                            <SidebarButton customCss={styles.collapsableButton}>
-                                {item}
+                            <SidebarButton path={item.path} exact icon={item.icon} customCss={styles.collapsableButton}>
+                                {item.label}
                             </SidebarButton>
                         </div>
                     ))}
-                    <div css={[styles.collapseItem, { margin: 0 }]}>
-                        <SidebarButton
-                            customCss={[styles.collapsableButton, styles.seeMoreButton]}
-                            path={path}>
-                            Ver mais <IoIosArrowRoundForward />
-                        </SidebarButton>
-                    </div>
                 </div>
             )}
         </>

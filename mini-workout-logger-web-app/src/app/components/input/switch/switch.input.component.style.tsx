@@ -1,8 +1,8 @@
-import {css, Theme} from "@emotion/react";
+import {css} from "@emotion/react";
 import {lighten, rgba} from "polished";
 
 const styles = {
-    switch: (theme: Theme) => css({
+    switch: css({
         "--toggle-width": "3.5rem",
         "--toggle-height": "1.8rem",
         "--button-size": "1.4rem",
@@ -23,7 +23,7 @@ const styles = {
         },
 
         "& input:checked + span": {
-            backgroundColor: theme.colors.container2,
+            backgroundColor: "var(--color-container2)",
         },
 
         "& input:checked + span > span:last-of-type": {
@@ -44,16 +44,16 @@ const styles = {
         },
     }),
 
-    slider: (theme: Theme) => css({
+    slider: css({
         position: "absolute",
         inset: 0,
 
-        borderRadius: "999rem",
-        backgroundColor: theme.colors.container2,
+        borderRadius: "var(--borderRadius-full)",
+        backgroundColor: "var(--color-container2)",
         transition: "background-color 0.3s ease",
     }),
 
-    icon: (theme: Theme) => css({
+    icon: css({
         position: "absolute",
         top: "58%",
         transform: "translateY(-50%)",
@@ -61,12 +61,12 @@ const styles = {
         right: "var(--icon-offset)",
 
         fontSize: "var(--icon-size)",
-        zIndex: 1,
+        zIndex: 'var(--base-zIndex-1)' as any,
         pointerEvents: "none",
-        color: theme.colors.text,
+        color: "var(--color-text)",
     }),
 
-    button: (theme: Theme) => css({
+    button: css({
         position: "absolute",
 
         height: "var(--button-size)",
@@ -76,28 +76,27 @@ const styles = {
         bottom: "var(--button-offset)",
 
         borderRadius: "50%",
-        backgroundColor: theme.colors.white,
+        backgroundColor: "var(--color-white)",
 
         transition: "transform 0.3s ease",
-        zIndex: 2,
+        zIndex: 'var(--base-zIndex-2)' as any,
     }),
 
     /**
      * Theme toggle.
      */
 
-    iconOnCustom: (theme: Theme) => css({
-        color: theme.colors.secondary,
-        filter: `drop-shadow(0 0 4px ${rgba(theme.colors.white, 0.3)})`,
+    iconOnCustom: css({
+        color: "var(--color-border)",
+        filter: `drop-shadow(0 0 4px ${rgba('#FFFFFF', 0.3)})`,
     }),
 
-    offIconCustomCss: (theme: Theme) => css({
-        color: lighten(0.2, theme.colors.yellow),
-        // filter: `drop-shadow(0 0 4px ${rgba(theme.colors.white, 0.3)})`,
+    offIconCustomCss: css({
+        color: lighten(0.2, '#FFCD50'),
     }),
 
-    sliderOffCustom: (theme: Theme) => css({
-        backgroundColor: theme.colors.secondary,
+    sliderOffCustom: css({
+        backgroundColor: "var(--color-border)",
     }),
 
 };

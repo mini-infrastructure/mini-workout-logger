@@ -27,7 +27,7 @@ public class ExerciseGroup extends AbstractEntity {
     @Convert(converter = TextConverter.class)
     private Text name;
 
-    @JsonBackReference
+    @JsonBackReference("exercise-group")
     @OneToMany(mappedBy = "group")
     private Set<Exercise> exercises = new HashSet<>();
 
