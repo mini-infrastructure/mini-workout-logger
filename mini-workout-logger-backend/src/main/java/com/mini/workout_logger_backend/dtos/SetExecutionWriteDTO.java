@@ -34,4 +34,6 @@ public class SetExecutionWriteDTO extends WriteDTO {
     @NotNull(groups = RestMethod.OnCreate.class)
     private boolean completed;
 
+    private boolean skipped;
+
 }

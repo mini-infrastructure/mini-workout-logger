@@ -24,6 +24,8 @@ public class WorkoutExerciseExecutionWriteDTO extends WriteDTO {
     @Schema(hidden = true)
     private Long workoutExerciseId;
 
+    private boolean skipped;
+
     @Valid
     @JsonProperty("set_executions")
     private List<SetExecutionWriteDTO> setExecutions;

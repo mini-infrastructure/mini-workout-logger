@@ -20,16 +20,20 @@ export const colorVariants: ColorVariant[] = [
     "orange",
 ];
 
-export function convertColorVariantToThemeColor(variant: ColorVariant) {
+/**
+ * Maps a semantic color variant to its CSS custom property name (without the `--color-` prefix).
+ * Used to build `var(--color-${key})` references in style files.
+ */
+export function convertColorVariantToThemeColor(variant: ColorVariant): string {
     const map: Record<ColorVariant, string> = {
-        gray: "border1",
+        gray:    "border",
         success: "green",
         primary: "primary",
-        danger: "red",
+        danger:  "red",
         warning: "yellow",
-        pink: "pink",
-        purple: "purple",
-        orange: "orange",
+        pink:    "pink",
+        purple:  "purple",
+        orange:  "orange",
     };
 
     return map[variant];

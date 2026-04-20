@@ -1,39 +1,63 @@
 import Layout from "../../components/layout/layout.component.tsx";
-import PrimaryButton from "../../components/button/button.primary.component.tsx";
-import {MdAdd} from "react-icons/md";
 import * as React from "react";
 import styles from "./workouts.view.style.tsx";
-import {useWorkouts} from "../../hooks/useWorkouts.tsx";
-import {useState} from "react";
-import ExerciseModal from "../../components/exercise/exercise-modal-component.tsx";
-import Modal from "../../components/modal/modal.component.tsx";
+import Badge from "../../components/badge/badge.component.tsx";
+import {FaRunning} from "react-icons/fa";
 
 const WorkoutsView = () => {
-    const { workouts } = useWorkouts();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
     return (
-            <Layout>
-                <div css={styles.actionsWrapper}>
-                    <div css={styles.headerWrapper}>
-                        <div css={styles.header}>Workouts</div>
-                        <div>{workouts.length} {workouts.length === 1 ? 'workout' : 'workouts'}</div>
-                    </div>
+        <Layout>
+            <div css={styles.badgeContainer}>
+                <h2>Badge Examples</h2>
 
-                    <PrimaryButton
-                        icon={<MdAdd/>}
-                        onClick={() => setIsModalOpen(true)}
-                    >
-                        Add Workout
-                    </PrimaryButton>
+                {/* Badges Simples */}
+                <div css={styles.badgeGroup}>
+                    <Badge variant="gray">Gray Badge</Badge>
+                    <Badge variant="primary">Primary Badge</Badge>
+                    <Badge variant="success">Success Badge</Badge>
+                    <Badge variant="danger">Danger Badge</Badge>
+                    <Badge variant="warning">Warning Badge</Badge>
+                    <Badge variant="pink">Pink Badge</Badge>
+                    <Badge variant="purple">Purple Badge</Badge>
+                    <Badge variant="orange">Orange Badge</Badge>
                 </div>
 
-                <Modal
-                    open={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                />
+                {/* Badges com Ícones */}
+                <div css={styles.badgeGroup}>
+                    <Badge
+                        icon={<FaRunning />}
+                        variant="primary"
+                    >
+                        Strength Training
+                    </Badge>
+                    <Badge
+                        icon={<FaRunning />}
+                        variant="success"
+                    >
+                        Cardio
+                    </Badge>
 
-            </Layout>
+                    {/* Badge com botão de remover */}
+                    <Badge
+                        icon={<FaRunning />}
+                        variant="danger"
+                        onRemove={() => console.log('Removed')}
+                    >
+                        Removable Badge
+                    </Badge>
+                </div>
+
+                {/* Badges selecionáveis */}
+                <div css={styles.badgeGroup}>
+                    <Badge
+                        variant="purple"
+                        selected
+                    >
+                        Selected Badge
+                    </Badge>
+                </div>
+            </div>
+        </Layout>
     );
 };
 

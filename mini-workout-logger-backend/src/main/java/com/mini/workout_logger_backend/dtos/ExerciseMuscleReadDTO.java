@@ -18,6 +18,9 @@ public class ExerciseMuscleReadDTO extends ReadDTO {
     @JsonProperty("muscle_name")
     private String muscleName;
 
+    @JsonProperty("muscle_code")
+    private String muscleCode;
+
     private ExerciseMuscleMovementClassification role;
 
 }

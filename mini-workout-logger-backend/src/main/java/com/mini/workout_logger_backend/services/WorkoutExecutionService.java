@@ -203,7 +203,7 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
     }
 
     @Override
-    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAll() {
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> getAll(Map<String, String> params) {
         throw new UnsupportedOperationException(
                 "Use getAll(Long workoutId) to get workout executions for a specific workout."
         );

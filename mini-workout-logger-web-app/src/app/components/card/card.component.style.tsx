@@ -1,5 +1,4 @@
-import {css, keyframes, Theme} from "@emotion/react";
-import {transparentize} from "polished";
+import {css, keyframes} from "@emotion/react";
 
 export type RandomValues = {
     top: number;
@@ -15,57 +14,59 @@ const float = keyframes`
 `;
 
 const styles = {
-    baseCard: (clicked: boolean) => (theme: Theme) => css({
-        position: "relative",
-        overflow: "hidden",
-        borderRadius: 15,
-        padding: "2rem",
-        backdropFilter: "blur(30px)",
-        WebkitBackdropFilter: "blur(30px)",
-        backgroundColor: transparentize(0.6, theme.colors.container1),
-        border: `1px solid ${transparentize(0.8, theme.colors.border1)}`,
-        cursor: clicked ? "pointer" : "default",
+    baseCard: (clicked: boolean) => css({
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 'var(--borderRadius-medium)',
+        padding: 'var(--base-size-16)',
+        backdropFilter: 'blur(30px)',
+        WebkitBackdropFilter: 'blur(30px)',
+        backgroundColor: 'var(--color-container1)',
+        border: 'var(--borderWidth-thin) solid color-mix(in srgb, var(--color-border) 20%, transparent)',
+        cursor: clicked ? 'pointer' : 'default',
+        width: '100%',
+        boxSizing: 'border-box',
     }),
 
     /**
      * Blob card.
      */
 
-    blobCard: (random: RandomValues) => (theme: Theme) => {
+    blobCard: (random: RandomValues) => {
         const second = {
             top: 100 - random.top,
             left: 100 - random.left,
         };
 
         return css({
-            "&::before": {
+            '&::before': {
                 content: '""',
-                position: "absolute",
+                position: 'absolute',
                 width: random.size1,
                 height: random.size1,
-                borderRadius: "50%",
-                background: `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
-                filter: "blur(70px)",
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--color-blue), var(--color-blue-border))',
+                filter: 'blur(70px)',
                 top: `${random.top}%`,
                 left: `${random.left}%`,
-                transform: "translate(-50%, -50%)",
+                transform: 'translate(-50%, -50%)',
                 animation: `${float} 8s ease-in-out infinite`,
                 zIndex: -1,
             },
 
-            "&::after": {
+            '&::after': {
                 content: '""',
-                position: "absolute",
+                position: 'absolute',
                 width: random.size2,
                 height: random.size2,
-                borderRadius: "50%",
-                background: `linear-gradient(135deg, ${theme.colors.secondary}, ${theme.colors.primary})`,
-                filter: "blur(60px)",
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--color-blue-border), var(--color-blue))',
+                filter: 'blur(60px)',
                 top: `${second.top}%`,
                 left: `${second.left}%`,
-                transform: "translate(-50%, -50%)",
+                transform: 'translate(-50%, -50%)',
                 animation: `${float} 10s ease-in-out infinite`,
-                animationDelay: "2s",
+                animationDelay: '2s',
                 zIndex: -1,
             },
         });

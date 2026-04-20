@@ -9,15 +9,16 @@ const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 
 class ExerciseService {
 
-    async getAll(): Promise<ExerciseReadDTO[]> {
+    async getAll(params?: Record<string, string | number>): Promise<ApiResponseDTO<ExerciseReadDTO[]>> {
         try {
             const response = await axios.get<ApiResponseDTO<ExerciseReadDTO[]>>(
-                `${apiUrl}/exercises?lang=${lang}`
+                `${apiUrl}/exercises`,
+                { params: { lang, ...params } }
             );
-            return response.data.data;
+            return response.data;
         } catch (error) {
             console.error('Error fetching exercises:', error);
-            return [];
+            return { status: 500, message: '', data: [], pagination: null, errors: null };
         }
     }
 
@@ -65,6 +66,40 @@ class ExerciseService {
         } catch (error) {
             console.error(`Error deleting exercise with id ${id}:`, error);
             throw error;
+        }
+    }
+
+    async favorite(id: number): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.patch<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/favorite?lang=${lang}`
+            );
+            return response.data.data[0];
+        } catch (error) {
+            handleApiError(error);
+        }
+    }
+
+    async unfavorite(id: number): Promise<ExerciseReadDTO> {
+        try {
+            const response = await axios.patch<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/unfavorite?lang=${lang}`
+            );
+            return response.data.data[0];
+        } catch (error) {
+            handleApiError(error);
+        }
+    }
+
+    async getFavorites(): Promise<ExerciseReadDTO[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<ExerciseReadDTO[]>>(
+                `${apiUrl}/exercises/favorites?lang=${lang}`
+            );
+            return response.data.data;
+        } catch (error) {
+            console.error('Error fetching favorited exercises:', error);
+            return [];
         }
     }
 

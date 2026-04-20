@@ -1,121 +1,138 @@
-import {darken, lighten, saturate, transparentize} from "polished";
+import {darken} from "polished";
 
-const baseColors = {
-    white: '#FFFFFF',
+const colors = {
+    bg:           '#010409',
+    container1:   '#0D1117',
+    container2:   '#151B23',
+    border:       '#3D444D',
+    text:         '#FFFFFF',
+    white:        '#FFFFFF',
+    black:        '#010409',
 
-    gray100: '#F3F5F7',
-    gray200: '#EAEAEC',
-    gray300: '#8D8D8D',
-    gray500: '#80786B',
-    gray700: '#4B4B53',
-
-    black700: '#0D1117',
-    black500: '#151B23',
-    black400: '#1A2028',
-    black100: '#3D444D',
-
-    blue500: '#3b82f6',
-    blue700: '#014e8e',
-    blue200: '#6495ed',
-    blue100: '#A7D7FF',
-};
-
-const additionalColors = {
-    yellow100: '#fdfd96',
-    yellow500: '#ffff00',
-    yellow700: '#eab308',
-    red100: '#fb9d8e',
-    red500: '#dc2828',
-    green500: '#22c55e',
-    green100: '#c3edc8',
-    pink500: '#dd3aa1',
-    purple500: '#a626a6',
-    orange500: '#ff8800',
+    blue:         '#3291FF',
+    blueBorder:   darken(0.25, '#0D5EC0'),
+    red:          '#F35841',
+    redBorder:    darken(0.4, '#F35841'),
+    yellow:       '#FFCD50',
+    yellowBorder: darken(0.4, '#FFCD50'),
+    green:        '#48B86E',
+    greenBorder:  darken(0.25, '#48B86E'),
+    pink:         '#FEA6B4',
+    pinkBorder:   darken(0.4, '#FEA6B4'),
+    purple:       '#A980FF',
+    purpleBorder: darken(0.3, '#A980FF'),
+    orange:       '#FFA14A',
+    orangeBorder: darken(0.3, '#FFA14A'),
+    gray:         '#6E7681',
+    grayBorder:   darken(0.4, '#6E7681'),
 };
 
 const fonts = {
-    primary: "sans-serif",
-    secondary: "\"EB Garamond\", serif",
-    number: "'Sometype Mono', monospace",
+    primary:   '"Mona Sans", sans-serif',
+    secondary: '"Mona Sans", sans-serif',
+    number:    '"Mona Sans", sans-serif',
 };
 
 const fontSizes = {
-    small:  '0.75rem',
-    medium: '0.875rem',
-    large: '1.1rem',
-    larger:  '1.3rem',
-    x_large: '2rem',
-    xx_large: '3rem',
-    xxx_large: '18rem',
+    small:      '0.75rem',
+    medium:     '0.875rem',
+    inputText:  '0.9rem',
+    large:      '1.1rem',
+    iconSm:     '1.2rem',
+    larger:     '1.3rem',
+    x_large:    '2rem',
+    xx_large:   '3rem',
+    xxx_large:  '18rem',
 };
 
-export const lightTheme = {
-    mode: 'light',
-    colors: {
-        white: baseColors.white,
-        black: baseColors.black700,
-        background: baseColors.white,
-        text: baseColors.black700,
-        container1: baseColors.gray100,
-        border1: darken(0.05, baseColors.gray100),
-        container2: baseColors.gray200,
-        border2: darken(0.5, baseColors.gray200),
-        text2: baseColors.gray500,
-        text3: baseColors.black500,
-        primary: baseColors.blue500,
-        primaryHover: baseColors.blue700,
-        secondary: baseColors.blue200,
+const baseSize = {
+    4:  '0.25rem',
+    8:  '0.5rem',
+    12: '0.75rem',
+    16: '1rem',
+    18: '1.3rem',
+    24: '1.5rem',
+    32: '2rem',
+    64: '4rem',
+};
 
-        red: additionalColors.red500,
-        yellow: additionalColors.yellow700,
-        green: darken(0.1, additionalColors.green500),
-        pink: additionalColors.pink500,
-        purple: additionalColors.purple500,
-        orange: additionalColors.orange500,
-        pastelBlue: baseColors.blue100,
-        pastelGreen: additionalColors.green100,
-        pastelPink: lighten(0.2, additionalColors.pink500),
-        pastelPurple: lighten(0.2, additionalColors.purple500),
-        pastelOrange: lighten(0.2, additionalColors.orange500),
-        pastelYellow: lighten(0.2, additionalColors.yellow700),
-        pastelRed: lighten(0.2, additionalColors.red500),
+const borderRadius = {
+    small:  '0.375rem',
+    medium: '0.5rem',
+    large:  '0.9375rem',
+    xlarge: '1.5rem',
+    full:   '999rem',
+};
+
+const borderWidth = {
+    thin: '0.0625rem',
+};
+
+const zIndex = {
+    1:       1,
+    2:       2,
+    10:      10,
+    overlay: 9999,
+};
+
+const stack = {
+    gap: {
+        micro:     '0.1rem',
+        nano:      '0.2rem',
+        tiny:      '0.4rem',
+        condensed: '0.5rem',
+        normal:    '1rem',
+        spacious:  '1.5rem',
     },
-    fonts: fonts,
-    fontSizes: fontSizes,
-    shadow: {
-        normal: `0 4px 6px -1px ${transparentize(0.8, baseColors.black700)}`,
-    }
 };
 
-export const darkTheme = {
-    mode: 'dark',
-    colors: {
-        white: baseColors.white,
-        black: baseColors.black700,
-        background: baseColors.black700,
-        text: baseColors.white,
-        container1: baseColors.black500,
-        border1: darken(0.1, baseColors.gray700),
-        container2: lighten(0.05, baseColors.black400),
-        border2: baseColors.gray700,
-        text2: baseColors.gray300,
-        text3: baseColors.gray100,
-        primary: baseColors.blue500,
-        primaryHover: baseColors.blue700,
-        secondary: baseColors.blue200,
-
-        red: lighten(0.2, saturate(0.4, additionalColors.red500)),
-        yellow: additionalColors.yellow700,
-        green: darken(0.1, additionalColors.green500),
-        pink: additionalColors.pink500,
-        purple: additionalColors.purple500,
-        orange: additionalColors.orange500,
+const overlay = {
+    padding: {
+        condensed: '0.75rem',
+        normal:    '1rem',
     },
-    fonts: fonts,
-    fontSizes: fontSizes,
-    shadow: {
-        normal: `0 4px 6px -1px ${transparentize(0.9, baseColors.gray700)}`,
-    }
+    borderRadius: '0.75rem',
+    minWidth:     '9rem',
+    maxHeight:    '200px',
 };
 
-export type AppTheme = typeof lightTheme;
+const control = {
+    small: {
+        paddingBlock:  '0.25rem',
+        paddingInline: '0.5rem',
+        gap:           '0.3rem',
+        size:          '0.6rem',
+        iconSize:      '0.8rem',
+    },
+    medium: {
+        paddingBlock:  '0.5rem',
+        paddingInline: '1rem',
+        gap:           '0.5rem',
+    },
+    minWidth: '10rem',
+};
+
+const layout = {
+    sidebar: {
+        minWidth: '16rem',
+    },
+};
+
+export const theme = {
+    colors,
+    fonts,
+    fontSizes,
+    baseSize,
+    borderRadius,
+    borderWidth,
+    zIndex,
+    stack,
+    overlay,
+    control,
+    layout,
+    shadow: {
+        normal: '0 4px 6px -1px rgba(1, 4, 9, 0.8)',
+    },
+};
+
+export type AppTheme = typeof theme;
