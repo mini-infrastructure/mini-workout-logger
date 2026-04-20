@@ -17,10 +17,21 @@ const styles = {
         flexShrink: 0,
     }),
 
-    title: css({
+    titleBlock: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-nano)',
         flex: 1,
+    }),
+
+    title: css({
         fontSize: 'var(--size-larger)',
         fontWeight: 700,
+    }),
+
+    setsCounter: css({
+        fontSize: 'var(--size-small)',
+        color: 'var(--color-border)',
     }),
 
     timerCard: css({

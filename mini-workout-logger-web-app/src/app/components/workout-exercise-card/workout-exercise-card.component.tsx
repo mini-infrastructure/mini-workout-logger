@@ -20,6 +20,7 @@ export type WorkoutExerciseCardProps = {
     onSetChange: (setId: number, field: string, value: number) => void;
     onSetRemove: (setId: number) => void;
     onSetAdd: () => void;
+    onCompletedChange?: (exerciseId: number, completedCount: number) => void;
     isDragOver?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
@@ -32,6 +33,7 @@ const WorkoutExerciseCard = ({
     onSetChange,
     onSetRemove,
     onSetAdd,
+    onCompletedChange,
     isDragOver = false,
     customCss,
 }: WorkoutExerciseCardProps) => {
@@ -91,6 +93,7 @@ const WorkoutExerciseCard = ({
                         onChange={(setId, field, value) => onSetChange(setId, field, value)}
                         onRemove={onSetRemove}
                         onAdd={onSetAdd}
+                        onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}
                     />
                 </div>
             </Card>

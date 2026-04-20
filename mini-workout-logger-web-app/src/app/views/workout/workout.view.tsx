@@ -10,6 +10,7 @@ import Card from '../../components/card/card.component.tsx';
 import Button from '../../components/button/button.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
+import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
@@ -36,6 +37,16 @@ const WorkoutView = () => {
     // Drag state
     const [dragFrom, setDragFrom] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
+
+    // Progress tracking
+    const [completedCounts, setCompletedCounts] = useState<Record<number, number>>({});
+    const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0);
+    const completedSets = Object.values(completedCounts).reduce((sum, n) => sum + n, 0);
+    const progressPct = totalSets > 0 ? (completedSets / totalSets) * 100 : 0;
+
+    const handleCompletedChange = (exerciseId: number, count: number) => {
+        setCompletedCounts((prev) => ({ ...prev, [exerciseId]: count }));
+    };
 
     useEffect(() => {
         if (workout?.workout_exercises) {
@@ -179,7 +190,10 @@ const WorkoutView = () => {
         <Layout>
             <div css={styles.pageWrapper}>
                 <div css={styles.header}>
-                    <span css={styles.title}>{workout?.name}</span>
+                    <div css={styles.titleBlock}>
+                        <span css={styles.title}>{workout?.name}</span>
+                        <span css={styles.setsCounter}>{completedSets}/{totalSets} sets</span>
+                    </div>
 
                     {dirty && (
                         <>
@@ -225,6 +239,8 @@ const WorkoutView = () => {
 
                 </div>
 
+                <ProgressBar percentage={progressPct} />
+
                 <div css={styles.content}>
                     {exercises.map((we, index) => (
                         <WorkoutExerciseCard
@@ -239,6 +255,7 @@ const WorkoutView = () => {
                             }
                             onSetRemove={(setId) => handleSetRemove(we.id, setId)}
                             onSetAdd={() => handleSetAdd(we.id)}
+                            onCompletedChange={handleCompletedChange}
                         />
                     ))}
                 </div>

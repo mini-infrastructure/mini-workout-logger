@@ -49,9 +49,10 @@ export type SetListProps = {
     onChange: (setId: number, field: SetField, value: number) => void;
     onRemove: (setId: number) => void;
     onAdd: () => void;
+    onCompletedChange?: (completedCount: number) => void;
 };
 
-const SetList = ({ sets, onChange, onRemove, onAdd }: SetListProps) => {
+const SetList = ({ sets, onChange, onRemove, onAdd, onCompletedChange }: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
 
     if (!sets || sets.length === 0) return null;
@@ -64,6 +65,7 @@ const SetList = ({ sets, onChange, onRemove, onAdd }: SetListProps) => {
             const next = new Set(prev);
             if (next.has(id)) next.delete(id);
             else next.add(id);
+            onCompletedChange?.(next.size);
             return next;
         });
     };
