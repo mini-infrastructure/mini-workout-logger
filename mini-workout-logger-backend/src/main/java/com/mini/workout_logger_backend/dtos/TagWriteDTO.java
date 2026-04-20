@@ -1,32 +1,20 @@
 package com.mini.workout_logger_backend.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.java_core.validation.group.RestMethod;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkoutWriteDTO extends WriteDTO {
+public class TagWriteDTO extends WriteDTO {
 
     @NotNull(groups = RestMethod.OnCreate.class)
     private String name;
-
-    @Valid
-    @NotNull(groups = RestMethod.OnCreate.class)
-    @JsonProperty("workout_exercises")
-    private List<WorkoutExerciseWriteDTO> workoutExercises;
-
-    @JsonProperty("tag_ids")
-    private List<Long> tagIds;
 
 }

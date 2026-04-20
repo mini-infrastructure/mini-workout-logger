@@ -168,7 +168,8 @@ public class TestHelper {
                                         ),
                                         45
                                 )
-                        )
+                        ),
+                        null
                 ),
                 new WorkoutWriteDTO(
                         "Leg Day",
@@ -182,7 +183,8 @@ public class TestHelper {
                                         ),
                                         60
                                 )
-                        )
+                        ),
+                        null
                 )
         );
     }

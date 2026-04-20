@@ -12,14 +12,26 @@ import com.mini.workout_logger_backend.mappers.SetMapper;
 import com.mini.workout_logger_backend.mappers.WorkoutExerciseMapper;
 import com.mini.workout_logger_backend.mappers.WorkoutMapper;
 import com.mini.workout_logger_backend.repositories.SetRepository;
+import com.mini.workout_logger_backend.repositories.TagRepository;
 import com.mini.workout_logger_backend.repositories.WorkoutExerciseRepository;
 import com.mini.workout_logger_backend.repositories.WorkoutRepository;
+import jakarta.persistence.criteria.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class WorkoutService extends AbstractService<Workout,
@@ -27,6 +39,9 @@ public class WorkoutService extends AbstractService<Workout,
                                                     WorkoutWriteDTO,
                                                     WorkoutMapper,
                                                     WorkoutRepository> {
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Autowired
     public WorkoutExerciseRepository workoutExerciseRepository;
@@ -42,6 +57,47 @@ public class WorkoutService extends AbstractService<Workout,
 
     @Autowired
     private MessageService messageService;
+
+    @Override
+    public ResponseEntity<ResponseDTO<WorkoutReadDTO>> getAll(Map<String, String> params) {
+        Map<String, String> filteredParams = new HashMap<>(params);
+        String tags = filteredParams.remove("tags");
+
+        int page = parseIntParam(filteredParams.get("page"), 0);
+        int size = parseIntParam(filteredParams.get("size"), 20);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Specification<Workout> spec = null;
+
+        if (StringUtils.hasText(tags)) {
+            Set<Long> tagIds = Arrays.stream(tags.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isBlank())
+                    .map(Long::parseLong)
+                    .collect(Collectors.toSet());
+
+            if (!tagIds.isEmpty()) {
+                spec = (root, query, cb) -> {
+                    query.distinct(true);
+                    return root.join("tags", JoinType.INNER).get("id").in(tagIds);
+                };
+            }
+        }
+
+        Page<WorkoutReadDTO> result = repository.findAll(spec, pageable)
+                .map(mapper::toDTO);
+
+        return ResponseHelper.success(HttpStatus.OK,
+                result.isEmpty() ? ResponseMessage.ENTITIES_EMPTY.getMessage()
+                                 : ResponseMessage.ENTITIES_FOUND.getMessage(),
+                result);
+    }
+
+    private int parseIntParam(String value, int defaultValue) {
+        if (value == null || value.isBlank()) return defaultValue;
+        try { return Integer.parseInt(value); }
+        catch (NumberFormatException e) { return defaultValue; }
+    }
 
     public ResponseEntity<ResponseDTO<WorkoutExerciseReadDTO>> listExercises(Long workoutId) {
         Workout workout = repository.safeFindById(workoutId);

@@ -66,6 +66,43 @@ mini-workout-logger/
 
 ---
 
+## Shared library — `mini-java-core`
+
+Located at `~/Documents/CODE/mini/mini-java-core`. This is a separate project that contains all mechanisms that are agnostic and reusable across personal projects (base entity, base repository, base service, base controller, base mapper, DTOs, response helpers, specification builder, etc.).
+
+The backend depends on it as a local Maven dependency. Changes to shared behaviour should go there, not in this project.
+
+Key classes provided by `mini-java-core`:
+- `AbstractEntity` — base JPA entity with `id`, `createdAt`, `updatedAt`
+- `AbstractRepository` — extends `JpaRepository` + `JpaSpecificationExecutor`; provides `safeFindById`, `safeFindByIds`
+- `AbstractService` — base CRUD service; override `getAll(Map<String,String> params)`, `beforeSave`, `afterLoad` as needed
+- `AbstractController` — base CRUD controller wiring service methods to HTTP endpoints
+- `AbstractMapper` — base ModelMapper wrapper; subclasses implement `configure(ModelMapper)`
+- `ReadDTO` / `WriteDTO` — base DTO types
+- `ResponseHelper` / `ResponseDTO` — standard API response envelope (`data`, `pagination`, `errors`)
+- `SpecificationBuilder` — builds JPA `Specification` from a flat param map
+- `AbstractCrudControllerTest` — base Spring Boot test class for controller integration tests
+
+---
+
+## Entity change protocol
+
+**Every time an entity is added or modified, all of the following must be updated:**
+
+1. **Backend entity** — add/edit the JPA entity in `entities/`
+2. **ReadDTO + WriteDTO** — add/edit in `dtos/`; always keep them as separate files
+3. **Mapper** — add/edit in `mappers/`
+4. **Service** — add/edit in `services/`; override `getAll` if the entity needs query param filtering
+5. **Controller** — add/edit in `controllers/`
+6. **Database** — add/edit the SQL migration file in `src/main/resources/db/changelog/migrations/`. During the testing phase, SQL files can be edited directly without creating a new migration file.
+7. **Tests** — evaluate and update controller tests in `src/test/java/com/mini/workout_logger_backend/controllers/`
+8. **Frontend DTOs** — add/edit in `src/app/dtos/`
+9. **Frontend models** — add/edit in `src/app/models/` (enum types, label maps, icon maps, color maps)
+
+**Key rule:** If a property is **changed** (renamed, retyped), fix every frontend occurrence. If a property or entity is **added**, only create the new `dtos/` and `models/` files — do not touch unrelated frontend code.
+
+---
+
 ## Backend
 
 ### Architecture
@@ -105,6 +142,7 @@ Response path:
 | `WorkoutExecution` | A dated execution of a workout plan |
 | `WorkoutExerciseExecution` | The execution of one exercise within a workout execution |
 | `SetExecution` | How a planned set was actually performed |
+| `Tag` | Free-form label (plain `String` name, no i18n). ManyToMany with `Workout` (and potentially other entities). Filterable via `?tags=id1,id2` query param on the workout endpoint. |
 
 ### Enums
 
