@@ -13,6 +13,7 @@ import { RiWeightFill } from "react-icons/ri";
 import { GrYoga } from "react-icons/gr";
 import { MdOutlineSportsGymnastics } from "react-icons/md";
 import { GiRopeCoil } from "react-icons/gi";
+import { BarbellIcon, DumbbellIcon, KettlebellIcon, MachineIcon, PlateIcon } from '../components/icons/equipment-icons.tsx';
 
 export interface Exercise {
     id: number;
@@ -133,19 +134,19 @@ export const ExerciseDifficultyIcons: Record<ExerciseDifficulty, IconType> = {
 };
 
 export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
-    BARBELL: LiaDumbbellSolid,
-    DUMBBELL: LiaDumbbellSolid,
+    BARBELL: BarbellIcon as IconType,
+    DUMBBELL: DumbbellIcon as IconType,
     BODYWEIGHT: BiBody,
     BOSU_BALL: TbBallBasketball,
     CABLE: GiRopeCoil,
     EXERCISE_BALL: TbBallBasketball,
-    MACHINE: MdFitnessCenter,
+    MACHINE: MachineIcon as IconType,
     SMITH_MACHINE: GiWeightLiftingUp,
     MEDICINE_BALL: TbBallBasketball,
-    PLATE: FaDotCircle,
+    PLATE: PlateIcon as IconType,
     RESISTANCE_BAND: TbBandage,
     TRX: TbJumpRope,
-    KETTLEBELL: RiWeightFill,
+    KETTLEBELL: KettlebellIcon as IconType,
 };
 
 // --- Color variants ---
