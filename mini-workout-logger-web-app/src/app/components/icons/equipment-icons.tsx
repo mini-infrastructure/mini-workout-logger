@@ -26,3 +26,5 @@ export const DumbbellIcon   = makeEquipmentIcon('/Icons/Dumbell.svg');
 export const KettlebellIcon = makeEquipmentIcon('/Icons/Kettlebell.svg');
 export const MachineIcon    = makeEquipmentIcon('/Icons/Machine.svg');
 export const PlateIcon      = makeEquipmentIcon('/Icons/Plate.svg');
+
+export const BackIcon      = makeEquipmentIcon('/Icons/Back.svg');

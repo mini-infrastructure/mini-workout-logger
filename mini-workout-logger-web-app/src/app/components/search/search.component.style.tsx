@@ -2,7 +2,6 @@ import { css } from '@emotion/react';
 
 const styles = {
     wrapper: css({
-        backgroundColor: 'var(--color-container2)',
         borderRadius: 'var(--borderRadius-large)',
         padding: 'var(--base-size-8)',
     }),
@@ -11,7 +10,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--stack-gap-condensed)',
-        backgroundColor: 'var(--color-container1)',
+        backgroundColor: 'var(--color-container2)',
         borderRadius: 'var(--borderRadius-medium)',
         padding: 'var(--base-size-12)',
     }),
