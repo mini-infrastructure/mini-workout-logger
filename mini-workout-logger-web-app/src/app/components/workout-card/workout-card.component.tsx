@@ -1,6 +1,6 @@
 import type { Interpolation, Theme } from '@emotion/react';
 import { FaPlay } from 'react-icons/fa';
-import { MdDelete, MdEdit, MdOpenInNew } from 'react-icons/md';
+import {MdDelete, MdEdit, MdOpenInNew} from 'react-icons/md';
 import { IoCopy } from 'react-icons/io5';
 import { IoMdArchive } from 'react-icons/io';
 import Card from '../card/card.component.tsx';
@@ -11,25 +11,24 @@ import styles from './workout-card.component.style.tsx';
 
 export type WorkoutCardProps = {
     workout: WorkoutReadDTO;
+    onStart?: () => void;
+    onEdit?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const WorkoutCard = ({ workout, customCss }: WorkoutCardProps) => {
+const WorkoutCard = ({ workout, onStart, onEdit, customCss }: WorkoutCardProps) => {
     const dropdownItems: DropdownMenuItem[] = [
         {
             label: 'Start',
             icon: <FaPlay />,
             iconColor: 'primary',
+            onClick: onStart,
         },
         {
             label: 'Open',
             icon: <MdOpenInNew />,
             iconColor: 'info',
-        },
-        {
-            label: 'Edit',
-            icon: <MdEdit />,
-            iconColor: 'info',
+            onClick: onEdit,
         },
         {
             label: 'Copy',

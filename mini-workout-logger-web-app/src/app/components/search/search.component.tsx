@@ -23,8 +23,8 @@ const Search = ({
         : [];
 
     return (
-        <div css={styles.wrapper}>
-            <div css={[styles.container, ...customCssArray]}>
+        <div css={[styles.wrapper, ...customCssArray]}>
+            <div css={styles.container}>
                 <span css={styles.icon}>
                     <FaSearch />
                 </span>

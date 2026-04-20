@@ -16,6 +16,7 @@ export type ButtonProps = {
     isClicked?: boolean;
     iconEnd?: boolean;
     type?: "button" | "submit" | "reset";
+    title?: string;
 };
 
 const Button = ({
@@ -29,6 +30,7 @@ const Button = ({
                     isClicked = false,
                     iconEnd = false,
                     type = "button",
+                    title,
                     children
                 }: PropsWithChildren<ButtonProps>) => {
     const navigate = useNavigate();
@@ -53,6 +55,7 @@ const Button = ({
             onClick={handleClick}
             disabled={disabled}
             type={type}
+            title={title}
         >
             {!iconEnd && (icon || clickedIcon) && (
                 <span

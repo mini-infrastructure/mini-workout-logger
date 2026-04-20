@@ -1,0 +1,49 @@
+import { css } from '@emotion/react';
+
+const styles = {
+    pageWrapper: css({
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        overflow: 'hidden',
+        gap: 'var(--stack-gap-normal)',
+    }),
+
+    header: css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 'var(--stack-gap-condensed)',
+        flexShrink: 0,
+    }),
+
+    title: css({
+        flex: 1,
+        fontSize: 'var(--size-larger)',
+        fontWeight: 700,
+    }),
+
+    timerCard: css({
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
+        padding: 'var(--base-size-8) var(--base-size-12)',
+        width: 'fit-content',
+        flexShrink: 0,
+    }),
+
+    clockIcon: css({
+        display: 'flex',
+        alignItems: 'center',
+        color: 'var(--color-blue)',
+        fontSize: 'var(--size-large)',
+    }),
+
+    timerDisplay: css({
+        fontVariantNumeric: 'tabular-nums',
+        fontSize: 'var(--size-medium)',
+        minWidth: '3.5ch',
+    }),
+};
+
+export default styles;

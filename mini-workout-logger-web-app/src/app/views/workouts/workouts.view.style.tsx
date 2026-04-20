@@ -13,6 +13,11 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         flexShrink: 0,
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    search: css({
+        flex: 1,
     }),
 
     grid: css({

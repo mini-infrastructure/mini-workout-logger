@@ -22,10 +22,10 @@ class WorkoutService {
 
     async getById(id: string): Promise<WorkoutReadDTO> {
         try {
-            const response = await axios.get<ApiResponseDTO<WorkoutReadDTO>>(
+            const response = await axios.get<ApiResponseDTO<WorkoutReadDTO[]>>(
                 `${apiUrl}/workouts/${id}?lang=${lang}`
             );
-            return response.data.data;
+            return response.data.data[0];
         } catch (error) {
             console.error(`Error fetching workout with id ${id}:`, error);
             throw error;
