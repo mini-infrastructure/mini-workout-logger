@@ -1,9 +1,13 @@
-import type {SetReadDTO} from "./set-read.dto.tsx";
+import type { SetReadDTO } from "./set-read.dto.tsx";
 
 export interface SetExecutionReadDTO {
+    id: number;
     set: SetReadDTO;
-    actual_repetitions: number;
-    actual_weight: number;
-    actual_duration_seconds: number;
+    actual_repetitions: number | null;
+    actual_weight: number | null;
+    actual_duration_seconds: number | null;
     completed: boolean;
+    skipped: boolean;
+    startTime: string;
+    endTime: string;
 }

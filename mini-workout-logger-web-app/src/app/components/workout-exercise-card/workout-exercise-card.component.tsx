@@ -6,7 +6,9 @@ import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
 import SetList from './set-list.component.tsx';
+import PlanSetList from './plan-set-list.component.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
+import type { SetType } from '../../models/set.model.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
 
 const formatMuscleCode = (code: string) =>
@@ -17,12 +19,16 @@ export type WorkoutExerciseCardProps = {
     onDragStart: () => void;
     onDragOver: (e: DragEvent<HTMLDivElement>) => void;
     onDrop: () => void;
+    onDragEnd: () => void;
     isPlaying?: boolean;
     resetKey?: number;
     onSetChange: (setId: number, field: string, value: number) => void;
     onSetRemove: (setId: number) => void;
+    onSetReorder: (fromIndex: number, toIndex: number) => void;
     onSetAdd: () => void;
     onCompletedChange?: (exerciseId: number, completedCount: number) => void;
+    onSetTypeChange?: (setId: number, type: SetType) => void;
+    planMode?: boolean;
     isDragOver?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
@@ -32,12 +38,16 @@ const WorkoutExerciseCard = ({
     onDragStart,
     onDragOver,
     onDrop,
+    onDragEnd,
     onSetChange,
     isPlaying = false,
     resetKey,
     onSetRemove,
+    onSetReorder,
     onSetAdd,
     onCompletedChange,
+    onSetTypeChange,
+    planMode = false,
     isDragOver = false,
     customCss,
 }: WorkoutExerciseCardProps) => {
@@ -50,16 +60,23 @@ const WorkoutExerciseCard = ({
         <div
             ref={cardRef}
             draggable={draggable}
-            onDragStart={onDragStart}
-            onDragOver={(e) => { e.preventDefault(); onDragOver(e); }}
-            onDrop={(e) => { e.preventDefault(); onDrop(); }}
-            onDragEnd={() => setDraggable(false)}
+            onDragStart={(e) => { e.dataTransfer.setData('application/exercise', ''); onDragStart(); }}
+            onDragOver={(e) => {
+                if (!e.dataTransfer.types.includes('application/exercise')) return;
+                e.preventDefault();
+                onDragOver(e);
+            }}
+            onDrop={(e) => {
+                if (!e.dataTransfer.types.includes('application/exercise')) return;
+                e.preventDefault();
+                onDrop();
+            }}
+            onDragEnd={() => { setDraggable(false); onDragEnd(); }}
         >
             <Card
                 customCss={[
                     isDragOver && {
-                        outline: `2px solid var(--color-blue)`,
-                        outlineOffset: '2px',
+                        boxShadow: `0 -3px 0 0 var(--color-blue)`,
                     },
                     ...(customCss
                         ? Array.isArray(customCss) ? customCss : [customCss]
@@ -92,15 +109,27 @@ const WorkoutExerciseCard = ({
                         </div>
                     </div>
 
-                    <SetList
-                        sets={workoutExercise.sets}
-                        onChange={(setId, field, value) => onSetChange(setId, field, value)}
-                        isPlaying={isPlaying}
-                        resetKey={resetKey}
-                        onRemove={onSetRemove}
-                        onAdd={onSetAdd}
-                        onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}
-                    />
+                    {planMode ? (
+                        <PlanSetList
+                            sets={workoutExercise.sets}
+                            onChange={(setId, field, value) => onSetChange(setId, field, value)}
+                            onTypeChange={(setId, type) => onSetTypeChange?.(setId, type)}
+                            onRemove={onSetRemove}
+                            onReorder={onSetReorder}
+                            onAdd={onSetAdd}
+                        />
+                    ) : (
+                        <SetList
+                            sets={workoutExercise.sets}
+                            onChange={(setId, field, value) => onSetChange(setId, field, value)}
+                            isPlaying={isPlaying}
+                            resetKey={resetKey}
+                            onRemove={onSetRemove}
+                            onReorder={onSetReorder}
+                            onAdd={onSetAdd}
+                            onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}
+                        />
+                    )}
                 </div>
             </Card>
         </div>

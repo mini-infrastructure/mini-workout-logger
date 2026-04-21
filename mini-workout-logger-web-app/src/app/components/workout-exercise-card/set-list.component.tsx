@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import type { DragEvent } from 'react';
 import { css } from '@emotion/react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaTrashAlt } from 'react-icons/fa';
+import { MdDragIndicator } from 'react-icons/md';
 import type { SetReadDTO } from '../../dtos/set-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
 import Button from '../button/button.component.tsx';
@@ -50,12 +52,15 @@ export type SetListProps = {
     resetKey?: number;
     onChange: (setId: number, field: SetField, value: number) => void;
     onRemove: (setId: number) => void;
+    onReorder: (fromIndex: number, toIndex: number) => void;
     onAdd: () => void;
     onCompletedChange?: (completedCount: number) => void;
 };
 
-const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onAdd, onCompletedChange }: SetListProps) => {
+const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReorder, onAdd, onCompletedChange }: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+    const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
+    const [dragOver, setDragOver] = useState<number | null>(null);
 
     useEffect(() => {
         if (resetKey === undefined) return;
@@ -66,7 +71,7 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onAdd,
     if (!sets || sets.length === 0) return null;
 
     const cols = columnDefs[sets[0].type] ?? columnDefs['REPS'];
-    const colCount = cols.length;
+    const dataCols = cols.length - 1; // exclude the "Set" number col
 
     const toggleCompleted = (id: number) => {
         const next = new Set(completedIds);
@@ -76,70 +81,127 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onAdd,
         onCompletedChange?.(next.size);
     };
 
+    const handleDrop = () => {
+        if (draggableIndex === null || dragOver === null || draggableIndex === dragOver) return;
+        onReorder(draggableIndex, dragOver);
+        setDraggableIndex(null);
+        setDragOver(null);
+    };
+
     const getValue = (set: SetReadDTO, field: SetField): number => set[field] ?? 0;
 
     return (
-        <div css={styles.table(colCount)}>
+        <div css={styles.container}>
             {/* Header */}
-            {cols.map((col) => (
-                <span key={col.label} css={styles.headerCell}>
-                    {col.label}{col.unit ? ` (${col.unit})` : ''}
-                </span>
-            ))}
-            <span css={styles.headerCell} />
+            <div css={styles.row(dataCols)}>
+                <span /> {/* drag handle col */}
+                {cols.map((col) => (
+                    <span key={col.label} css={styles.headerCell}>
+                        {col.label}{col.unit ? ` (${col.unit})` : ''}
+                    </span>
+                ))}
+                <span /> {/* actions col */}
+            </div>
 
             {/* Rows */}
-            {sets.flatMap((set, i) => {
+            {sets.map((set, i) => {
                 const completed = completedIds.has(set.id);
-                return [
-                    ...cols.map((col) =>
-                        col.field === null ? (
-                            <span
-                                key={`${set.id}-set`}
-                                css={[styles.setNumber, completed && completedCellCss]}
-                            >
-                                {i + 1}
-                            </span>
-                        ) : (
+                const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
+                return (
+                    <div
+                        key={set.id}
+                        css={[styles.row(dataCols), isOver && styles.rowDragOver]}
+                        draggable={draggableIndex === i}
+                        onDragStart={(e) => { e.stopPropagation(); e.dataTransfer.setData('application/set', ''); setDragOver(null); }}
+                        onDragOver={(e: DragEvent<HTMLDivElement>) => {
+                            if (!e.dataTransfer.types.includes('application/set')) return;
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+                            const insertAt = e.clientY < rect.top + rect.height / 2 ? i : i + 1;
+                            setDragOver(insertAt);
+                        }}
+                        onDrop={(e) => {
+                            if (!e.dataTransfer.types.includes('application/set')) return;
+                            e.stopPropagation();
+                            handleDrop();
+                        }}
+                        onDragEnd={(e) => { e.stopPropagation(); setDraggableIndex(null); setDragOver(null); }}
+                    >
+                        {/* Drag handle */}
+                        <Button
+                            icon={<MdDragIndicator />}
+                            onMouseDown={() => setDraggableIndex(i)}
+                            onMouseUp={() => setDraggableIndex(null)}
+                            customCss={styles.dragHandle}
+                            customIconCss={styles.dragHandleIcon}
+                        />
+
+                        {/* Set number */}
+                        <span css={[styles.setNumber, completed && completedCellCss]}>
+                            {i + 1}
+                        </span>
+
+                        {/* Data inputs */}
+                        {cols.filter(col => col.field !== null).map((col) => (
                             <input
                                 key={`${set.id}-${col.field}`}
                                 css={[styles.input, completed && completedCellCss]}
                                 type="number"
                                 min={0}
                                 step={col.field === 'planned_weight' ? 0.5 : 1}
-                                value={getValue(set, col.field)}
+                                value={getValue(set, col.field!)}
                                 onChange={(e) =>
                                     onChange(set.id, col.field!, parseFloat(e.target.value) || 0)
                                 }
                             />
-                        )
-                    ),
-                    <div key={`${set.id}-actions`} css={styles.rowActions}>
-                        <OnlyIconButton
-                            icon={<IoCheckmarkCircleOutline />}
-                            selectedIcon={<IoCheckmarkCircle />}
-                            iconColor="--color-border"
-                            selectedIconColor="--color-green"
-                            selectedBg="transparent"
-                            selected={completed}
-                            onToggle={() => toggleCompleted(set.id)}
-                            legend="Completed"
-                            selectedLegend="Not completed"
-                            customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                            customCss={[
-                                !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
-                                completed ? completedHoverOverrideCss : undefined,
-                            ]}
-                        />
-                        <OnlyIconButton
-                            icon={<FaTrashAlt />}
-                            iconColor="--color-border"
-                            onToggle={() => onRemove(set.id)}
-                            legend="Remove"
-                        />
-                    </div>,
-                ];
+                        ))}
+
+                        {/* Actions */}
+                        <div css={styles.rowActions}>
+                            <OnlyIconButton
+                                icon={<IoCheckmarkCircleOutline />}
+                                selectedIcon={<IoCheckmarkCircle />}
+                                iconColor="--color-border"
+                                selectedIconColor="--color-green"
+                                selectedBg="transparent"
+                                selected={completed}
+                                onToggle={() => toggleCompleted(set.id)}
+                                legend="Completed"
+                                selectedLegend="Not completed"
+                                customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                customCss={[
+                                    !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
+                                    completed ? completedHoverOverrideCss : undefined,
+                                ]}
+                            />
+                            <OnlyIconButton
+                                icon={<FaTrashAlt />}
+                                iconColor="--color-border"
+                                onToggle={() => onRemove(set.id)}
+                                legend="Remove"
+                            />
+                        </div>
+                    </div>
+                );
             })}
+
+            {/* Sentinel drop zone for end-of-list */}
+            <div
+                css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
+                onDragOver={(e: DragEvent<HTMLDivElement>) => {
+                    if (!e.dataTransfer.types.includes('application/set')) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setDragOver(sets.length);
+                }}
+                onDrop={(e) => {
+                    if (!e.dataTransfer.types.includes('application/set')) return;
+                    e.stopPropagation();
+                    handleDrop();
+                }}
+                style={{ height: '4px' }}
+            />
 
             {/* Add set */}
             <Button onClick={onAdd} customCss={styles.addSet}>
