@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react';
+import type { ReactElement } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
 import Button from './button.component.tsx';
 
 export type OnlyIconButtonProps = {
-    icon: ReactNode;
-    selectedIcon?: ReactNode;
+    icon: ReactElement;
+    selectedIcon?: ReactElement;
     iconColor?: string;
     selectedIconColor?: string;
     selected?: boolean;

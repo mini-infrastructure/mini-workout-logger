@@ -48,6 +48,9 @@ const WorkoutView = () => {
     const [dragFrom, setDragFrom] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
 
+    // Hovered exercise — drives muscle highlight on the body visualization
+    const [hoveredExerciseId, setHoveredExerciseId] = useState<number | null>(null);
+
     useEffect(() => {
         if (workout?.workout_exercises) {
             setExercises(workout.workout_exercises);
@@ -64,11 +67,20 @@ const WorkoutView = () => {
             .finally(() => setLoadingHistory(false));
     }, [id]);
 
-    // Muscles to highlight in the body visualization
-    const highlightedMuscles = useMemo(
+    // All muscles across the workout (shown when nothing is hovered)
+    const allMuscles = useMemo(
         () => [...new Set(exercises.flatMap((we) => we.exercise.root_muscles ?? []))],
         [exercises]
     );
+
+    // When hovering an exercise card, show only its muscles; otherwise show all
+    const bodyMuscles = useMemo(() => {
+        if (hoveredExerciseId !== null) {
+            const we = exercises.find((e) => e.id === hoveredExerciseId);
+            return we?.exercise.root_muscles ?? [];
+        }
+        return allMuscles;
+    }, [hoveredExerciseId, exercises, allMuscles]);
 
     // Exercise stats
     const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0);
@@ -292,6 +304,9 @@ const WorkoutView = () => {
                                     onSetRemove={(setId) => handleSetRemove(we.id, setId)}
                                     onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
                                     onSetAdd={() => handleSetAdd(we.id)}
+                                    highlighted={hoveredExerciseId === we.id}
+                                    onMouseEnter={() => setHoveredExerciseId(we.id)}
+                                    onMouseLeave={() => setHoveredExerciseId(null)}
                                     planMode
                                 />
                             ))}
@@ -339,7 +354,7 @@ const WorkoutView = () => {
                             <div css={styles.historyList}>
                                 {executions.map((ex) => (
                                     <div key={ex.id} css={styles.historyItem}>
-                                        <span css={styles.historyDate}>{formatDate(ex.startTime)}</span>
+                                        <span css={styles.historyDate}>{formatDate(ex.start_time)}</span>
                                         <Badge variant={ex.completed ? 'success' : 'gray'}>
                                             {ex.completed ? 'Completed' : 'Incomplete'}
                                         </Badge>
@@ -353,14 +368,14 @@ const WorkoutView = () => {
                     <div css={styles.rightPanel}>
                         <div css={styles.bodyWrapper}>
                             <HumanBody
-                                highlightedMuscles={highlightedMuscles}
+                                selectedMuscles={bodyMuscles}
                                 initialView="front"
                                 showFlipButton={false}
                             />
                         </div>
                         <div css={styles.bodyWrapper}>
                             <HumanBody
-                                highlightedMuscles={highlightedMuscles}
+                                selectedMuscles={bodyMuscles}
                                 initialView="back"
                                 showFlipButton={false}
                             />

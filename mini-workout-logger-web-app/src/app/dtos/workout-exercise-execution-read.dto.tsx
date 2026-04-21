@@ -6,6 +6,6 @@ export interface WorkoutExerciseExecutionReadDTO {
     set_executions: SetExecutionReadDTO[];
     completed: boolean;
     skipped: boolean;
-    startTime: string;
-    endTime: string;
+    start_time: string;
+    end_time: string;
 }

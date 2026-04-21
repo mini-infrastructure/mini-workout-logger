@@ -12,34 +12,28 @@ import styles from './set-list.component.style.tsx';
 
 type SetField = 'planned_repetitions' | 'planned_weight' | 'planned_duration_seconds';
 
-type ColDef = { label: string; field: SetField | null; unit?: string };
+const TYPE_CYCLE: SetType[] = ['REPS', 'REPS_X_WEIGHT', 'TIME_X_WEIGHT', 'TIME'];
 
-const columnDefs: Record<SetType, ColDef[]> = {
-    REPS: [
-        { label: 'Set',  field: null },
-        { label: 'Reps', field: 'planned_repetitions' },
-    ],
-    REPS_X_WEIGHT: [
-        { label: 'Set',    field: null },
-        { label: 'Reps',   field: 'planned_repetitions' },
-        { label: 'Weight', field: 'planned_weight', unit: 'kg' },
-    ],
-    TIME_X_WEIGHT: [
-        { label: 'Set',    field: null },
-        { label: 'Time',   field: 'planned_duration_seconds', unit: 's' },
-        { label: 'Weight', field: 'planned_weight', unit: 'kg' },
-    ],
-    TIME: [
-        { label: 'Set',  field: null },
-        { label: 'Time', field: 'planned_duration_seconds', unit: 's' },
-    ],
+const TYPE_LABELS: Record<SetType, string> = {
+    REPS: 'Reps',
+    REPS_X_WEIGHT: 'R×W',
+    TIME_X_WEIGHT: 'T×W',
+    TIME: 'Time',
 };
 
-const completedCellCss = css({
+const cycleType = (current: SetType): SetType =>
+    TYPE_CYCLE[(TYPE_CYCLE.indexOf(current) + 1) % TYPE_CYCLE.length];
+
+const toMmSs = (seconds: number) => ({ mm: Math.floor(seconds / 60), ss: seconds % 60 });
+
+const isTimeType = (type: SetType) => type === 'TIME' || type === 'TIME_X_WEIGHT';
+const hasWeight  = (type: SetType) => type === 'REPS_X_WEIGHT' || type === 'TIME_X_WEIGHT';
+
+const completedBg = css({
     backgroundColor: 'color-mix(in srgb, var(--color-green) 12%, transparent)',
 });
 
-const completedHoverOverrideCss = css({
+const completedHover = css({
     ':hover': {
         backgroundColor: 'color-mix(in srgb, var(--color-green) 20%, transparent)',
         color: 'var(--color-green)',
@@ -48,16 +42,36 @@ const completedHoverOverrideCss = css({
 
 export type SetListProps = {
     sets: SetReadDTO[];
-    isPlaying?: boolean;
-    resetKey?: number;
+    /** Plan mode (workout.view) — type cycling, inline units, no completion tracking.
+     *  Execution mode (workout-execution.view) — read-only type badge, completion toggle. */
+    planMode?: boolean;
     onChange: (setId: number, field: SetField, value: number) => void;
+    onTypeChange?: (setId: number, type: SetType) => void;
     onRemove: (setId: number) => void;
     onReorder: (fromIndex: number, toIndex: number) => void;
     onAdd: () => void;
+    /** Execution mode only */
+    isPlaying?: boolean;
+    resetKey?: number;
     onCompletedChange?: (completedCount: number) => void;
+    onAllCompletedChange?: (allCompleted: boolean) => void;
+    toggleAllRef?: React.MutableRefObject<(() => void) | null>;
 };
 
-const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReorder, onAdd, onCompletedChange }: SetListProps) => {
+const SetList = ({
+    sets,
+    planMode = false,
+    onChange,
+    onTypeChange,
+    onRemove,
+    onReorder,
+    onAdd,
+    isPlaying = false,
+    resetKey,
+    onCompletedChange,
+    onAllCompletedChange,
+    toggleAllRef,
+}: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
     const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
@@ -66,20 +80,39 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReor
         if (resetKey === undefined) return;
         setCompletedIds(new Set());
         onCompletedChange?.(0);
+        onAllCompletedChange?.(false);
     }, [resetKey]);
 
     if (!sets || sets.length === 0) return null;
 
-    const cols = columnDefs[sets[0].type] ?? columnDefs['REPS'];
-    const dataCols = cols.length - 1; // exclude the "Set" number col
+    // ── Completion helpers (execution mode) ──────────────────────────────────
+
+    const allCompleted = sets.length > 0 && completedIds.size === sets.length;
 
     const toggleCompleted = (id: number) => {
         const next = new Set(completedIds);
-        if (next.has(id)) next.delete(id);
-        else next.add(id);
+        next.has(id) ? next.delete(id) : next.add(id);
         setCompletedIds(next);
         onCompletedChange?.(next.size);
+        onAllCompletedChange?.(next.size === sets.length);
     };
+
+    const toggleAll = () => {
+        if (allCompleted) {
+            setCompletedIds(new Set());
+            onCompletedChange?.(0);
+            onAllCompletedChange?.(false);
+        } else {
+            const allIds = new Set(sets.map((s) => s.id));
+            setCompletedIds(allIds);
+            onCompletedChange?.(allIds.size);
+            onAllCompletedChange?.(true);
+        }
+    };
+
+    if (toggleAllRef) toggleAllRef.current = toggleAll;
+
+    // ── Drag helpers ─────────────────────────────────────────────────────────
 
     const handleDrop = () => {
         if (draggableIndex === null || dragOver === null || draggableIndex === dragOver) return;
@@ -88,45 +121,115 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReor
         setDragOver(null);
     };
 
-    const getValue = (set: SetReadDTO, field: SetField): number => set[field] ?? 0;
+    // ── Field renderers ──────────────────────────────────────────────────────
+    //
+    // Each renderer produces the same <input> in both modes; plan mode wraps it
+    // with an inline unit label, execution mode applies the completed background.
+
+    const renderReps = (set: SetReadDTO, completed: boolean) => {
+        const input = (
+            <input
+                css={[styles.input, !planMode && completed && completedBg]}
+                type="number"
+                min={0}
+                step={1}
+                value={set.planned_repetitions ?? 0}
+                onChange={(e) => onChange(set.id, 'planned_repetitions', parseFloat(e.target.value) || 0)}
+            />
+        );
+        return planMode
+            ? <div css={styles.inputWithUnit}>{input}<span css={styles.unit}>×</span></div>
+            : input;
+    };
+
+    const renderTime = (set: SetReadDTO, completed: boolean) => {
+        if (planMode) {
+            // Plan: split mm:ss inputs for ergonomic editing
+            const { mm, ss } = toMmSs(set.planned_duration_seconds ?? 0);
+            return (
+                <div css={styles.timeInput}>
+                    <input
+                        css={[styles.input, styles.timeSegment]}
+                        type="number" min={0} value={mm}
+                        onChange={(e) => onChange(set.id, 'planned_duration_seconds', (parseInt(e.target.value) || 0) * 60 + ss)}
+                    />
+                    <span css={styles.timeSeparator}>:</span>
+                    <input
+                        css={[styles.input, styles.timeSegment]}
+                        type="number" min={0} max={59} value={ss}
+                        onChange={(e) => onChange(set.id, 'planned_duration_seconds', mm * 60 + (parseInt(e.target.value) || 0))}
+                    />
+                    <span css={styles.unit}>mm:ss</span>
+                </div>
+            );
+        }
+        // Execution: single seconds input
+        return (
+            <input
+                css={[styles.input, completed && completedBg]}
+                type="number" min={0}
+                value={set.planned_duration_seconds ?? 0}
+                onChange={(e) => onChange(set.id, 'planned_duration_seconds', parseFloat(e.target.value) || 0)}
+            />
+        );
+    };
+
+    const renderWeight = (set: SetReadDTO, completed: boolean) => {
+        const input = (
+            <input
+                css={[styles.input, !planMode && completed && completedBg]}
+                type="number"
+                min={0}
+                step={0.5}
+                value={set.planned_weight ?? 0}
+                onChange={(e) => onChange(set.id, 'planned_weight', parseFloat(e.target.value) || 0)}
+            />
+        );
+        return planMode
+            ? <div css={styles.inputWithUnit}>{input}<span css={styles.unit}>kg</span></div>
+            : input;
+    };
+
+    const renderField1 = (set: SetReadDTO, completed: boolean) =>
+        isTimeType(set.type) ? renderTime(set, completed) : renderReps(set, completed);
+
+    const renderField2 = (set: SetReadDTO, completed: boolean) =>
+        hasWeight(set.type) ? renderWeight(set, completed) : <span />;
+
+    // ── Render ───────────────────────────────────────────────────────────────
 
     return (
         <div css={styles.container}>
-            {/* Header */}
-            <div css={styles.row(dataCols)}>
-                <span /> {/* drag handle col */}
-                {cols.map((col) => (
-                    <span key={col.label} css={styles.headerCell}>
-                        {col.label}{col.unit ? ` (${col.unit})` : ''}
-                    </span>
-                ))}
-                <span /> {/* actions col */}
-            </div>
-
-            {/* Rows */}
             {sets.map((set, i) => {
                 const completed = completedIds.has(set.id);
                 const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
                 return (
                     <div
                         key={set.id}
-                        css={[styles.row(dataCols), isOver && styles.rowDragOver]}
+                        css={[styles.row, isOver && styles.rowDragOver]}
                         draggable={draggableIndex === i}
-                        onDragStart={(e) => { e.stopPropagation(); e.dataTransfer.setData('application/set', ''); setDragOver(null); }}
+                        onDragStart={(e) => {
+                            e.stopPropagation();
+                            e.dataTransfer.setData('application/set', '');
+                            setDragOver(null);
+                        }}
                         onDragOver={(e: DragEvent<HTMLDivElement>) => {
                             if (!e.dataTransfer.types.includes('application/set')) return;
                             e.preventDefault();
                             e.stopPropagation();
                             const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-                            const insertAt = e.clientY < rect.top + rect.height / 2 ? i : i + 1;
-                            setDragOver(insertAt);
+                            setDragOver(e.clientY < rect.top + rect.height / 2 ? i : i + 1);
                         }}
                         onDrop={(e) => {
                             if (!e.dataTransfer.types.includes('application/set')) return;
                             e.stopPropagation();
                             handleDrop();
                         }}
-                        onDragEnd={(e) => { e.stopPropagation(); setDraggableIndex(null); setDragOver(null); }}
+                        onDragEnd={(e) => {
+                            e.stopPropagation();
+                            setDraggableIndex(null);
+                            setDragOver(null);
+                        }}
                     >
                         {/* Drag handle */}
                         <Button
@@ -138,46 +241,49 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReor
                         />
 
                         {/* Set number */}
-                        <span css={[styles.setNumber, completed && completedCellCss]}>
+                        <span css={[styles.setNumber, !planMode && completed && completedBg]}>
                             {i + 1}
                         </span>
 
-                        {/* Data inputs */}
-                        {cols.filter(col => col.field !== null).map((col) => (
-                            <input
-                                key={`${set.id}-${col.field}`}
-                                css={[styles.input, completed && completedCellCss]}
-                                type="number"
-                                min={0}
-                                step={col.field === 'planned_weight' ? 0.5 : 1}
-                                value={getValue(set, col.field!)}
-                                onChange={(e) =>
-                                    onChange(set.id, col.field!, parseFloat(e.target.value) || 0)
-                                }
-                            />
-                        ))}
+                        {/* Type: clickable cycle badge (plan) or read-only label (execution) */}
+                        {planMode ? (
+                            <Button
+                                onClick={() => onTypeChange?.(set.id, cycleType(set.type))}
+                                title="Click to change set type"
+                                customCss={styles.typeBadge}
+                            >
+                                {TYPE_LABELS[set.type]}
+                            </Button>
+                        ) : (
+                            <span css={styles.typeBadgeReadOnly}>{TYPE_LABELS[set.type]}</span>
+                        )}
+
+                        {renderField1(set, completed)}
+                        {renderField2(set, completed)}
 
                         {/* Actions */}
                         <div css={styles.rowActions}>
-                            <OnlyIconButton
-                                icon={<IoCheckmarkCircleOutline />}
-                                selectedIcon={<IoCheckmarkCircle />}
-                                iconColor="--color-border"
-                                selectedIconColor="--color-green"
-                                selectedBg="transparent"
-                                selected={completed}
-                                onToggle={() => toggleCompleted(set.id)}
-                                legend="Completed"
-                                selectedLegend="Not completed"
-                                customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                                customCss={[
-                                    !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
-                                    completed ? completedHoverOverrideCss : undefined,
-                                ]}
-                            />
+                            {!planMode && (
+                                <OnlyIconButton
+                                    icon={<IoCheckmarkCircleOutline />}
+                                    selectedIcon={<IoCheckmarkCircle />}
+                                    iconColor="--color-green"
+                                    selectedIconColor="--color-green"
+                                    selectedBg="transparent"
+                                    selected={completed}
+                                    onToggle={() => toggleCompleted(set.id)}
+                                    legend="Completed"
+                                    selectedLegend="Not completed"
+                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                    customCss={[
+                                        !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
+                                        completed ? completedHover : undefined,
+                                    ]}
+                                />
+                            )}
                             <OnlyIconButton
                                 icon={<FaTrashAlt />}
-                                iconColor="--color-border"
+                                iconColor="--color-red"
                                 onToggle={() => onRemove(set.id)}
                                 legend="Remove"
                             />
@@ -186,7 +292,7 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReor
                 );
             })}
 
-            {/* Sentinel drop zone for end-of-list */}
+            {/* Sentinel drop zone */}
             <div
                 css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
                 onDragOver={(e: DragEvent<HTMLDivElement>) => {
@@ -203,7 +309,6 @@ const SetList = ({ sets, isPlaying = false, resetKey, onChange, onRemove, onReor
                 style={{ height: '4px' }}
             />
 
-            {/* Add set */}
             <Button onClick={onAdd} customCss={styles.addSet}>
                 Add set
             </Button>

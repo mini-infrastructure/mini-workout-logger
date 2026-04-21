@@ -8,6 +8,6 @@ export interface SetExecutionReadDTO {
     actual_duration_seconds: number | null;
     completed: boolean;
     skipped: boolean;
-    startTime: string;
-    endTime: string;
+    start_time: string;
+    end_time: string;
 }

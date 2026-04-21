@@ -83,13 +83,9 @@ const styles = {
 
     addExerciseToggle: css({
         width: '100%',
-        backgroundColor: 'transparent',
-        border: '1px dashed var(--color-border)',
-        color: 'var(--color-gray)',
+        backgroundColor: 'var(--color-blue)',
         ':hover': {
-            backgroundColor: 'transparent',
-            borderColor: 'var(--color-blue)',
-            color: 'var(--color-blue)',
+            backgroundColor: 'var(--color-blue-border)',
         },
     }),
 
