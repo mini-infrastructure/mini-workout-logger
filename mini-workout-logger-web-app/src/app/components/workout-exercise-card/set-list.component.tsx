@@ -35,13 +35,6 @@ const completedBg = css({
     backgroundColor: 'color-mix(in srgb, var(--color-green) 12%, transparent)',
 });
 
-const completedHover = css({
-    ':hover': {
-        backgroundColor: 'color-mix(in srgb, var(--color-green) 20%, transparent)',
-        color: 'var(--color-green)',
-    },
-});
-
 export type SetListProps = {
     sets: SetReadDTO[];
     /** Plan mode (workout.view) — type cycling, inline units, no completion tracking.
@@ -299,16 +292,12 @@ const SetList = ({
                                     selectedIcon={<IoCheckmarkCircle />}
                                     iconColor="--color-green"
                                     selectedIconColor="--color-green"
-                                    selectedBg="transparent"
                                     selected={completed}
                                     onToggle={() => toggleCompleted(set.id)}
                                     legend="Completed"
                                     selectedLegend="Not completed"
                                     customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                                    customCss={[
-                                        (!isPlaying || skipped) && css({ opacity: 0.3, pointerEvents: 'none' }),
-                                        completed ? completedHover : undefined,
-                                    ]}
+                                    customCss={(!isPlaying || skipped) ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                                 />
                             )}
                             {!planMode && (

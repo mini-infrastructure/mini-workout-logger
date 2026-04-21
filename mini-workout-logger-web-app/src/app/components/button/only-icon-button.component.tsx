@@ -33,12 +33,21 @@ const OnlyIconButton = ({
     const currentIcon = selected && selectedIcon ? selectedIcon : icon;
     const tooltip = selected && selectedLegend ? selectedLegend : legend;
 
-    // Icon color is driven by the button's `color` property, which cascades
-    // to react-icons SVGs via `currentColor`.
-    const buttonColor = selected ? `var(${selectedIconColor})` : `var(${iconColor})`;
+    // When selected with no explicit selectedBg: soft transparent fill using iconColor.
+    // When selectedBg is provided: use it (and use selectedIconColor for the icon).
+    const hasSolidSelectedBg = selectedBg !== undefined;
     const buttonBg = selected
-        ? (selectedBg ?? `var(${iconColor})`)
+        ? (hasSolidSelectedBg ? selectedBg : `color-mix(in srgb, var(${iconColor}) 12%, transparent)`)
         : 'transparent';
+    const buttonColor = selected && hasSolidSelectedBg
+        ? `var(${selectedIconColor})`
+        : `var(${iconColor})`;
+
+    // Hover: always a soft transparent tint; selected → slightly stronger.
+    const hoverBg = selected
+        ? `color-mix(in srgb, var(${iconColor}) 24%, transparent)`
+        : `color-mix(in srgb, var(${iconColor}) 16%, transparent)`;
+    const hoverColor = `var(${iconColor})`;
 
     return (
         <Button
@@ -51,10 +60,9 @@ const OnlyIconButton = ({
                     backgroundColor: buttonBg,
                     color: buttonColor,
                     border: 'none',
-                    // On hover: fill with iconColor, icon takes container bg color
                     ':hover': {
-                        backgroundColor: `var(${iconColor})`,
-                        color: 'var(--color-container1)',
+                        backgroundColor: hoverBg,
+                        color: hoverColor,
                     },
                 }),
                 ...(customCss
