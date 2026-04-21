@@ -29,12 +29,18 @@ const WorkoutExecutionView = () => {
 
     // Progress
     const [completedCounts, setCompletedCounts] = useState<Record<number, number>>({});
-    const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0);
+    const [skippedCounts, setSkippedCounts] = useState<Record<number, number>>({});
+    const totalSkipped = Object.values(skippedCounts).reduce((sum, n) => sum + n, 0);
+    const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0) - totalSkipped;
     const completedSets = Object.values(completedCounts).reduce((sum, n) => sum + n, 0);
     const progressPct = totalSets > 0 ? (completedSets / totalSets) * 100 : 0;
 
     const handleCompletedChange = (exerciseId: number, count: number) => {
         setCompletedCounts((prev) => ({ ...prev, [exerciseId]: count }));
+    };
+
+    const handleSkippedChange = (exerciseId: number, count: number) => {
+        setSkippedCounts((prev) => ({ ...prev, [exerciseId]: count }));
     };
 
     useEffect(() => {
@@ -63,6 +69,7 @@ const WorkoutExecutionView = () => {
         setElapsed(0);
         setStopKey((k) => k + 1);
         setCompletedCounts({});
+        setSkippedCounts({});
     };
 
     const handleFinish = () => {
@@ -180,6 +187,7 @@ const WorkoutExecutionView = () => {
                             onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
                             onSetAdd={() => handleSetAdd(we.id)}
                             onCompletedChange={handleCompletedChange}
+                            onSkippedChange={handleSkippedChange}
                         />
                     ))}
                 </div>

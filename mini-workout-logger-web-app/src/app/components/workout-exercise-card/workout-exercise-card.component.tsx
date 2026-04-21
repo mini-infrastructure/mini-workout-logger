@@ -28,6 +28,7 @@ export type WorkoutExerciseCardProps = {
     onSetReorder: (fromIndex: number, toIndex: number) => void;
     onSetAdd: () => void;
     onCompletedChange?: (exerciseId: number, completedCount: number) => void;
+    onSkippedChange?: (exerciseId: number, skippedCount: number) => void;
     onSetTypeChange?: (setId: number, type: SetType) => void;
     planMode?: boolean;
     isDragOver?: boolean;
@@ -50,6 +51,7 @@ const WorkoutExerciseCard = ({
     onSetReorder,
     onSetAdd,
     onCompletedChange,
+    onSkippedChange,
     onSetTypeChange,
     planMode = false,
     isDragOver = false,
@@ -128,7 +130,7 @@ const WorkoutExerciseCard = ({
                             <OnlyIconButton
                                 icon={<MdDoneAll />}
                                 iconColor="--color-green"
-                                selectedIconColor="--color-green"
+                                selectedIconColor="--color-container2"
                                 selected={allCompleted}
                                 onToggle={() => toggleAllRef.current?.()}
                                 legend="Mark all as completed"
@@ -150,6 +152,7 @@ const WorkoutExerciseCard = ({
                         isPlaying={isPlaying}
                         resetKey={resetKey}
                         onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}
+                        onSkippedChange={(count) => onSkippedChange?.(workoutExercise.id, count)}
                         onAllCompletedChange={setAllCompleted}
                         toggleAllRef={toggleAllRef}
                     />

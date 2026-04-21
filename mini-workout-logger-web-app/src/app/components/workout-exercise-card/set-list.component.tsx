@@ -4,10 +4,12 @@ import { css } from '@emotion/react';
 import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaTrashAlt } from 'react-icons/fa';
 import { MdDragIndicator } from 'react-icons/md';
+import { BiSkipNextCircle, BiSolidSkipNextCircle } from 'react-icons/bi';
 import type { SetReadDTO } from '../../dtos/set-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
+import ProgressBar from '../progress-bar/progress-bar.component.tsx';
 import styles from './set-list.component.style.tsx';
 
 type SetField = 'planned_repetitions' | 'planned_weight' | 'planned_duration_seconds';
@@ -56,6 +58,7 @@ export type SetListProps = {
     onCompletedChange?: (completedCount: number) => void;
     onAllCompletedChange?: (allCompleted: boolean) => void;
     toggleAllRef?: React.MutableRefObject<(() => void) | null>;
+    onSkippedChange?: (skippedCount: number) => void;
 };
 
 const SetList = ({
@@ -71,30 +74,50 @@ const SetList = ({
     onCompletedChange,
     onAllCompletedChange,
     toggleAllRef,
+    onSkippedChange,
 }: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+    const [skippedIds, setSkippedIds] = useState<Set<number>>(new Set());
     const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
 
     useEffect(() => {
         if (resetKey === undefined) return;
         setCompletedIds(new Set());
+        setSkippedIds(new Set());
         onCompletedChange?.(0);
         onAllCompletedChange?.(false);
+        onSkippedChange?.(0);
     }, [resetKey]);
 
     if (!sets || sets.length === 0) return null;
 
     // ── Completion helpers (execution mode) ──────────────────────────────────
 
-    const allCompleted = sets.length > 0 && completedIds.size === sets.length;
+    const activeSetIds = sets.filter((s) => !skippedIds.has(s.id)).map((s) => s.id);
+    const allCompleted = activeSetIds.length > 0 && activeSetIds.every((id) => completedIds.has(id));
 
     const toggleCompleted = (id: number) => {
+        if (skippedIds.has(id)) return;
         const next = new Set(completedIds);
         next.has(id) ? next.delete(id) : next.add(id);
         setCompletedIds(next);
         onCompletedChange?.(next.size);
-        onAllCompletedChange?.(next.size === sets.length);
+        onAllCompletedChange?.(activeSetIds.every((aid) => next.has(aid)));
+    };
+
+    const toggleSkipped = (id: number) => {
+        const nextSkipped = new Set(skippedIds);
+        nextSkipped.has(id) ? nextSkipped.delete(id) : nextSkipped.add(id);
+        // Remove from completed if being skipped
+        const nextCompleted = new Set(completedIds);
+        if (nextSkipped.has(id)) nextCompleted.delete(id);
+        setSkippedIds(nextSkipped);
+        setCompletedIds(nextCompleted);
+        onSkippedChange?.(nextSkipped.size);
+        onCompletedChange?.(nextCompleted.size);
+        const newActiveIds = sets.filter((s) => !nextSkipped.has(s.id)).map((s) => s.id);
+        onAllCompletedChange?.(newActiveIds.length > 0 && newActiveIds.every((aid) => nextCompleted.has(aid)));
     };
 
     const toggleAll = () => {
@@ -103,10 +126,10 @@ const SetList = ({
             onCompletedChange?.(0);
             onAllCompletedChange?.(false);
         } else {
-            const allIds = new Set(sets.map((s) => s.id));
-            setCompletedIds(allIds);
-            onCompletedChange?.(allIds.size);
-            onAllCompletedChange?.(true);
+            const allActiveIds = new Set(activeSetIds);
+            setCompletedIds(allActiveIds);
+            onCompletedChange?.(allActiveIds.size);
+            onAllCompletedChange?.(allActiveIds.size > 0);
         }
     };
 
@@ -198,15 +221,22 @@ const SetList = ({
 
     // ── Render ───────────────────────────────────────────────────────────────
 
+    const activeSets = sets.length - skippedIds.size;
+    const cardProgress = activeSets > 0 ? (completedIds.size / activeSets) * 100 : 0;
+
     return (
         <div css={styles.container}>
+            {!planMode && (
+                <ProgressBar percentage={cardProgress} customCss={styles.cardProgressBar} />
+            )}
             {sets.map((set, i) => {
                 const completed = completedIds.has(set.id);
+                const skipped = skippedIds.has(set.id);
                 const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
                 return (
                     <div
                         key={set.id}
-                        css={[styles.row, isOver && styles.rowDragOver]}
+                        css={[styles.row, isOver && styles.rowDragOver, skipped && styles.rowSkipped]}
                         draggable={draggableIndex === i}
                         onDragStart={(e) => {
                             e.stopPropagation();
@@ -276,9 +306,24 @@ const SetList = ({
                                     selectedLegend="Not completed"
                                     customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
                                     customCss={[
-                                        !isPlaying && css({ opacity: 0.3, pointerEvents: 'none' }),
+                                        (!isPlaying || skipped) && css({ opacity: 0.3, pointerEvents: 'none' }),
                                         completed ? completedHover : undefined,
                                     ]}
+                                />
+                            )}
+                            {!planMode && (
+                                <OnlyIconButton
+                                    icon={<BiSkipNextCircle />}
+                                    selectedIcon={<BiSolidSkipNextCircle />}
+                                    iconColor="--color-border"
+                                    selectedIconColor="--color-border"
+                                    selectedBg="transparent"
+                                    selected={skipped}
+                                    onToggle={() => toggleSkipped(set.id)}
+                                    legend="Skip"
+                                    selectedLegend="Unskip"
+                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                    customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                                 />
                             )}
                             <OnlyIconButton

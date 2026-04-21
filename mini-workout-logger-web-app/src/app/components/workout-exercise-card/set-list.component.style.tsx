@@ -27,6 +27,16 @@ const styles = {
         boxShadow: '0 -2px 0 0 var(--color-blue)',
     }),
 
+    rowSkipped: css({
+        '& > *:not(:last-child)': {
+            opacity: 0.3,
+        },
+    }),
+
+    cardProgressBar: css({
+        marginBottom: 'var(--stack-gap-condensed)',
+    }),
+
     headerCell: css({
         fontSize: 'var(--size-small)',
         color: 'var(--color-border)',
