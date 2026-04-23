@@ -8,6 +8,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        boxSizing: 'border-box',
 
         padding: `var(--control-medium-paddingBlock) var(--control-medium-paddingInline)`,
         borderRadius: 'var(--borderRadius-large)',
