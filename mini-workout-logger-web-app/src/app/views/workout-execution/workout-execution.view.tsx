@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegClock } from 'react-icons/fa';
 import { IoPlay, IoPause, IoStop } from 'react-icons/io5';
-import { MdChecklistRtl } from 'react-icons/md';
+import { MdChecklistRtl, MdClose } from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import Card from '../../components/card/card.component.tsx';
 import Button from '../../components/button/button.component.tsx';
@@ -77,6 +77,11 @@ const WorkoutExecutionView = () => {
         navigate(`/workouts/${id}`);
     };
 
+    const handleCancel = () => {
+        handleStop();
+        navigate(`/workouts/${id}`);
+    };
+
     // Set interactions (local only — actual tracking is future work)
     const handleSetChange = (exerciseId: number, setId: number, field: string, value: number) => {
         setExercises((prev) =>
@@ -137,6 +142,14 @@ const WorkoutExecutionView = () => {
                         <span css={styles.title}>{workout?.name}</span>
                         <span css={styles.setsCounter}>{completedSets}/{totalSets} sets</span>
                     </div>
+
+                    <Button
+                        icon={<MdClose />}
+                        onClick={handleCancel}
+                        customCss={styles.cancelButton}
+                    >
+                        Cancel
+                    </Button>
 
                     <Button
                         icon={<MdChecklistRtl />}
