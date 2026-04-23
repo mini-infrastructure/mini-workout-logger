@@ -37,6 +37,7 @@ const DIFFICULTY_LEVELS = [
 ];
 
 export type ExerciseCardProps = {
+    key?: any;
     exercise: ExerciseReadDTO;
     isFavorited?: boolean;
     onFavoriteToggle?: (id: number, favorited: boolean) => void;

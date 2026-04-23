@@ -147,16 +147,22 @@ const styles = {
 
     rightPanel: css({
         flexShrink: 0,
-        width: '260px',
+        width: '18vw',
+        minWidth: 'var(--base-size-200)',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
         gap: 'var(--stack-gap-normal)',
         ...scrollable,
     }),
 
     bodyWrapper: css({
+        width: '100%',
         flex: 1,
-        minHeight: '240px',
+        minHeight: '20vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     }),
 };
 

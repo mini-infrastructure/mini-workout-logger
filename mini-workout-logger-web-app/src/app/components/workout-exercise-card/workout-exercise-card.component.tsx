@@ -16,6 +16,7 @@ const formatMuscleCode = (code: string) =>
     code.replace('Muscle.', '').replace(/_/g, ' ');
 
 export type WorkoutExerciseCardProps = {
+    key?: any;
     workoutExercise: WorkoutExerciseReadDTO;
     onDragStart: () => void;
     onDragOver: (e: DragEvent<HTMLDivElement>) => void;
