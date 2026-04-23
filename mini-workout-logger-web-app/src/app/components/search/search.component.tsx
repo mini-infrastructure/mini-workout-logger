@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { FaSearch } from 'react-icons/fa';
+import { MdClose } from 'react-icons/md';
+import Button from '../button/button.component.tsx';
 import styles from './search.component.style.tsx';
 
 export type SearchProps = {
@@ -35,6 +37,14 @@ const Search = ({
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                 />
+                {value && (
+                    <Button
+                        icon={<MdClose />}
+                        onClick={() => onChange('')}
+                        customCss={styles.clearButton}
+                        customIconCss={styles.clearIcon}
+                    />
+                )}
             </div>
             {results}
         </div>

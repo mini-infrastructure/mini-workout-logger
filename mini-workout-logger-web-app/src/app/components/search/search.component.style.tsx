@@ -23,6 +23,26 @@ const styles = {
         alignItems: 'center',
     }),
 
+    clearButton: css({
+        flexShrink: 0,
+        padding: '2px',
+        borderRadius: 'var(--borderRadius-small)',
+        background: 'transparent',
+        border: 'none',
+        color: 'var(--color-border)',
+        ':hover': {
+            background: 'transparent',
+            color: 'var(--color-text)',
+        },
+    }),
+
+    clearIcon: css({
+        width: '14px',
+        height: '14px',
+        fontSize: '14px',
+        margin: 0,
+    }),
+
     input: css({
         background: 'transparent',
         border: 'none',
