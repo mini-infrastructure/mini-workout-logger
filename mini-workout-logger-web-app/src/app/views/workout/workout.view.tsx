@@ -184,7 +184,7 @@ const WorkoutView = () => {
 
     // Add exercise from search
     const handleAddExercise = (exercise: ExerciseReadDTO) => {
-        const newEntry = {
+        const newEntry: WorkoutExerciseReadDTO = {
             id: -Date.now(),
             position: exercises.length,
             exercise,
@@ -200,7 +200,7 @@ const WorkoutView = () => {
             equipment: exercise.equipment ?? 'BODYWEIGHT',
             rest_time_seconds: 60,
         };
-        setExercises((prev) => [...prev, newEntry as WorkoutExerciseReadDTO]);
+        setExercises((prev) => [...prev, newEntry]);
         setDirty(true);
         setAddOpen(false);
         setExerciseQuery('');

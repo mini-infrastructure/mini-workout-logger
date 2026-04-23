@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import { FiDatabase, FiHome, FiSettings } from "react-icons/fi";
@@ -11,18 +11,14 @@ import NavigationButtons from "../button/navigation/navigation.button.component.
 import { routes, type RouteSection } from "../../routes.tsx";
 import { PiSneakerMoveLight, PiSneakerMoveFill } from "react-icons/pi";
 
-// Icons are cast to ReactElement to bridge the EmotionJSX.Element / React.ReactElement
-// namespace gap introduced by jsxImportSource: "@emotion/react".
-const r = (el: JSX.Element) => el as unknown as ReactElement;
-
-const routeIcons: Record<string, { icon: ReactElement; clickedIcon?: ReactElement }> = {
-    '/':          { icon: r(<FiHome />) },
-    '/exercises': { icon: r(<PiSneakerMoveLight />), clickedIcon: r(<PiSneakerMoveFill />) },
-    '/workouts':  { icon: r(<FiDatabase />) },
-    '/calendar':  { icon: r(<FaRegCalendarAlt />) },
-    '/analysis':  { icon: r(<IoAnalyticsSharp />) },
-    '/settings':  { icon: r(<FiSettings />) },
-    '/help':      { icon: r(<GiHelp />) },
+const routeIcons: Record<string, { icon: JSX.Element; clickedIcon?: JSX.Element }> = {
+    '/':          { icon: <FiHome /> },
+    '/exercises': { icon: <PiSneakerMoveLight />, clickedIcon: <PiSneakerMoveFill /> },
+    '/workouts':  { icon: <FiDatabase /> },
+    '/calendar':  { icon: <FaRegCalendarAlt /> },
+    '/analysis':  { icon: <IoAnalyticsSharp /> },
+    '/settings':  { icon: <FiSettings /> },
+    '/help':      { icon: <GiHelp /> },
 };
 
 const sections: RouteSection[] = ['Main', 'Support'];

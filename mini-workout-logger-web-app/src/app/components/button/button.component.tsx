@@ -1,4 +1,5 @@
-import { type PropsWithChildren, type ReactElement } from 'react';
+import { type PropsWithChildren } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import { Link } from 'react-router-dom';
 import styles from './button.component.style';
 import type { Interpolation, Theme } from '@emotion/react';
@@ -10,8 +11,8 @@ export type ButtonProps = {
     path?: string;
     disabled?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
-    icon?: ReactElement;
-    clickedIcon?: ReactElement;
+    icon?: JSX.Element;
+    clickedIcon?: JSX.Element;
     customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
     isClicked?: boolean;
     iconEnd?: boolean;
