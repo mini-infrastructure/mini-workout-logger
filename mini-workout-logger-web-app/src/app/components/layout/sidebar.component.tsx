@@ -29,7 +29,7 @@ const Sidebar = () => {
     return (
         <aside css={styles.sidebar}>
             <div css={styles.sidebarTopDivider}>
-                <p>Fitracker</p>
+                <p>Movit</p>
                 <NavigationButtons />
             </div>
 

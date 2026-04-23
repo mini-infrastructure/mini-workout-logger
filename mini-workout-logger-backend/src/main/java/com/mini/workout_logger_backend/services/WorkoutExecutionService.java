@@ -165,6 +165,7 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         // Convert execution DTO to entity.
         WorkoutExecution workoutExecution = mapper.toEntity(merged);
         workoutExecution.setWorkout(workout);
+        workoutExecution.getInterval().setStart();
 
         // Set bidirectional relationships.
         for (WorkoutExerciseExecution wee : workoutExecution.getWorkoutExerciseExecutions()) {
