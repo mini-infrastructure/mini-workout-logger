@@ -83,6 +83,9 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseType type;
 
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseMedia> media = new ArrayList<>();
+
     public Set<Muscle> getMuscles() {
         return exerciseMuscles
                 .stream()

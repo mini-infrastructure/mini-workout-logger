@@ -99,6 +99,83 @@ const styles = {
         color: 'var(--color-gray)',
         whiteSpace: 'nowrap',
     }),
+
+    mediaArea: css({
+        position: 'relative',
+        width: '100%',
+        height: 200,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 'var(--borderRadius-medium)',
+        overflow: 'hidden',
+        backgroundColor: 'var(--color-container2)',
+    }),
+
+    carousel: css({
+        width: '100%',
+        height: '100%',
+    }),
+
+    mediaSlide: css({
+        position: 'relative',
+        width: '100%',
+        height: 200,
+    }),
+
+    mediaImg: css({
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        display: 'block',
+    }),
+
+    mediaPlaceholder: css({
+        width: '100%',
+        height: '100%',
+    }),
+
+    mediaRemoveBtn: css({
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
+        border: 'none',
+        borderRadius: '50%',
+        width: 24,
+        height: 24,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        color: 'var(--color-red)',
+        padding: 0,
+    }),
+
+    mediaAddBtn: css({
+        position: 'absolute',
+        bottom: 8,
+        right: 8,
+        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
+        border: '1px solid var(--color-border)',
+        borderRadius: '50%',
+        width: 28,
+        height: 28,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        color: 'var(--color-text)',
+        padding: 0,
+        '&:hover': {
+            borderColor: 'var(--color-blue)',
+            color: 'var(--color-blue)',
+        },
+        '&:disabled': {
+            opacity: 0.5,
+            cursor: 'default',
+        },
+    }),
 };
 
 export default styles;

@@ -6,6 +6,7 @@ import type {
 } from "../models/exercise.model.tsx";
 import type {MuscleReadDTO} from "./muscle-read.dto.tsx";
 import type {ExerciseMuscleReadDTO} from "./exercise-muscle-read.dto.tsx";
+import type {MediaReadDTO} from "./media-read.dto.tsx";
 
 export interface ExerciseReadDTO {
     id: number;
@@ -25,4 +26,5 @@ export interface ExerciseReadDTO {
     stabilizer_muscles?: MuscleReadDTO[];
     root_muscles?: string[];
     favorited?: boolean;
+    media?: MediaReadDTO[];
 }

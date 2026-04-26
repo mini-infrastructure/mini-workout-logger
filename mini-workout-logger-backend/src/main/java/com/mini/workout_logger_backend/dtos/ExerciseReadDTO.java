@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mini.java_core.dto.MediaReadDTO;
 import com.mini.java_core.dto.ReadDTO;
 import com.mini.workout_logger_backend.enums.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 // TODO: Criar parâmetro que indica possíveis substituições para o exercício baseado nos mesmos músculos envolvidos,
@@ -57,6 +60,8 @@ public class ExerciseReadDTO extends ReadDTO {
 
     @JsonProperty("root_muscles")
     private Set<String> rootMuscles = new HashSet<>();
+
+    private List<MediaReadDTO> media = new ArrayList<>();
 
     public ExerciseReadDTO(String name) {
         this.name = name;

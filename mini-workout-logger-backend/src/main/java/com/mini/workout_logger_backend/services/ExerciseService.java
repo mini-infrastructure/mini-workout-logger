@@ -3,7 +3,7 @@ package com.mini.workout_logger_backend.services;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
-import com.mini.java_core.service.AbstractService;
+import com.mini.java_core.service.AbstractMediaService;
 import com.mini.java_core.specification.SpecificationBuilder;
 import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
@@ -11,10 +11,12 @@ import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
 import com.mini.workout_logger_backend.entities.ExerciseGroup;
 import com.mini.workout_logger_backend.entities.ExerciseMuscle;
+import com.mini.workout_logger_backend.entities.ExerciseMedia;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
+import com.mini.workout_logger_backend.repositories.ExerciseMediaRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.JoinType;
@@ -35,11 +37,20 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toCollection;
 
 @Service
-public class ExerciseService extends AbstractService<Exercise,
+public class ExerciseService extends AbstractMediaService<Exercise,
+        ExerciseMedia,
         ExerciseReadDTO,
         ExerciseWriteDTO,
         ExerciseMapper,
-        ExerciseRepository> {
+        ExerciseRepository,
+        ExerciseMediaRepository> {
+
+    @Override
+    protected ExerciseMedia createMediaEntity(Exercise owner) {
+        ExerciseMedia media = new ExerciseMedia();
+        media.setOwner(owner);
+        return media;
+    }
 
     @Autowired
     MuscleService muscleService;
@@ -208,6 +219,9 @@ public class ExerciseService extends AbstractService<Exercise,
 
     public ExerciseReadDTO afterLoad(ExerciseReadDTO dto) {
         dto.setRootMuscles(getExerciseRootMusclesOrderedByRelevance(dto.getId()));
+        dto.setMedia(mediaRepository.findAllByOwnerId(dto.getId()).stream()
+                .map(this::toMediaReadDTO)
+                .toList());
         return super.afterLoad(dto);
     }
 

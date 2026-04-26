@@ -1,35 +1,55 @@
 import { css } from '@emotion/react';
 
+const COVER_SIZE = 56;
+
 const styles = {
+    coverSize: COVER_SIZE,
+
     container: css({
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--stack-gap-nano)',
     }),
 
+    body: css({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    info: css({
+        flex: 1,
+        minWidth: 0,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 'var(--stack-gap-nano)',
+    }),
+
     name: css({
         fontSize: 'var(--size-input-text)',
         color: 'var(--color-text)',
-    }),
-
-    header: css({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        flex: 1,
+        minWidth: 0,
     }),
 
     actions: css({
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--stack-gap-nano)',
+        flexShrink: 0,
     }),
 
     favoriteIcon: css({
         color: 'var(--color-yellow)',
     }),
 
-    favoriteButton: css({
-    }),
+    favoriteButton: css({}),
 
     divider: css({
         width: '100%',
@@ -39,33 +59,6 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-    }),
-
-    attributes: css({
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--stack-gap-nano)',
-    }),
-
-    attributeRow: css({
-        display: 'flex',
-        alignItems: 'center',
-        gap: 'var(--stack-gap-tiny)',
-    }),
-
-    attributeLabel: css({
-        fontSize: 'var(--size-label)',
-        color: 'var(--color-text-subtle)',
-        whiteSpace: 'nowrap',
-        '&::after': {
-            content: '":"',
-        },
-    }),
-
-    attributeBadges: css({
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 'var(--stack-gap-nano)',
     }),
 };
 

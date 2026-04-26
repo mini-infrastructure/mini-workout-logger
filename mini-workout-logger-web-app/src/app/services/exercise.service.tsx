@@ -1,4 +1,5 @@
 import type {ExerciseReadDTO} from "../dtos/exercise-read.dto.tsx";
+import type {MediaReadDTO} from "../dtos/media-read.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import axios from "axios";
 import type {ExerciseWriteDTO} from "../dtos/exercise-write.dto.tsx";
@@ -101,6 +102,21 @@ class ExerciseService {
             console.error('Error fetching favorited exercises:', error);
             return [];
         }
+    }
+
+    async uploadMedia(id: number, file: File): Promise<MediaReadDTO> {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axios.post<ApiResponseDTO<MediaReadDTO>>(
+            `${apiUrl}/exercises/${id}/media?lang=${lang}`,
+            formData,
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        return response.data.data[0];
+    }
+
+    async deleteMedia(exerciseId: number, mediaId: number): Promise<void> {
+        await axios.delete(`${apiUrl}/exercises/${exerciseId}/media/${mediaId}?lang=${lang}`);
     }
 
     async getAllExerciseGroupNames(): Promise<string[]> {

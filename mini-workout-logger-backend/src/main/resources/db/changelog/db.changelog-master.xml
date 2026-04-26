@@ -28,6 +28,7 @@
     <changeSet id="3" author="carolina">
         <sqlFile path="db/changelog/migrations/011_create_tags_table.sql"/>
         <sqlFile path="db/changelog/migrations/012_create_workout_tags_table.sql"/>
+        <sqlFile path="db/changelog/migrations/013_create_exercise_media_table.sql"/>
     </changeSet>
 
     <changeSet id="2" author="carolina">
