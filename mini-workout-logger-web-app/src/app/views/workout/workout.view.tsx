@@ -12,6 +12,7 @@ import Button from '../../components/button/button.component.tsx';
 import SecondaryButton from '../../components/button/button.secondary.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import Badge from '../../components/badge/badge.component.tsx';
+import EditableBadge from '../../components/badge/editable-badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
@@ -301,6 +302,33 @@ const WorkoutView = () => {
         setNameEditMode(false);
     };
 
+    // Edit existing tag
+    const handleTagEdit = async (tag: TagReadDTO, newName: string) => {
+        try {
+            const updated = await TagService.update(tag.id, newName);
+            const newTags = localTags.map((t) => (t.id === tag.id ? updated : t));
+            setLocalTags(newTags);
+            const payload = buildPayload(displayName, newTags);
+            await WorkoutService.update(id!, payload);
+            pushAlert(`Tag renamed to "${newName}".`, 'success');
+        } catch {
+            pushAlert('Failed to rename tag.', 'error');
+        }
+    };
+
+    // Remove existing tag
+    const handleTagRemove = async (tagId: number) => {
+        const newTags = localTags.filter((t) => t.id !== tagId);
+        setLocalTags(newTags);
+        try {
+            const payload = buildPayload(displayName, newTags);
+            await WorkoutService.update(id!, payload);
+            pushAlert('Tag removed.', 'info');
+        } catch {
+            pushAlert('Failed to remove tag.', 'error');
+        }
+    };
+
     // Add tag inline
     const handleTagCommit = async () => {
         const trimmed = tagInput.trim();
@@ -385,7 +413,14 @@ const WorkoutView = () => {
                                         legend="Edit name"
                                     />
                                     {localTags.map((tag) => (
-                                        <Badge key={tag.id}>{tag.name}</Badge>
+                                        <EditableBadge
+                                            key={tag.id}
+                                            variant="primary"
+                                            onEdit={(newName) => handleTagEdit(tag, newName)}
+                                            onRemove={() => handleTagRemove(tag.id)}
+                                        >
+                                            {tag.name}
+                                        </EditableBadge>
                                     ))}
                                     {addingTag ? (
                                         <input
@@ -398,7 +433,7 @@ const WorkoutView = () => {
                                             placeholder="Tag name..."
                                         />
                                     ) : (
-                                        <Badge icon={<FaPlusCircle />} onClick={() => setAddingTag(true)}>
+                                        <Badge variant="primary" icon={<FaPlusCircle />} onClick={() => setAddingTag(true)}>
                                             Add tag
                                         </Badge>
                                     )}

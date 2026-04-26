@@ -15,6 +15,15 @@ class TagService {
         );
         return response.data.data[0];
     }
+
+    async update(id: number, name: string): Promise<TagReadDTO> {
+        const payload: TagWriteDTO = { name };
+        const response = await axios.put<ApiResponseDTO<TagReadDTO[]>>(
+            `${apiUrl}/tags/${id}?lang=${lang}`,
+            payload
+        );
+        return response.data.data[0];
+    }
 }
 
 export default new TagService();

@@ -79,6 +79,7 @@ const WorkoutCard = ({ workout, onStart, onOpen, selectedTagIds = [], onTagClick
                         {tags.map((tag) => (
                             <Badge
                                 key={tag.id}
+                                variant="primary"
                                 selected={selectedTagIds.includes(tag.id)}
                                 onClick={() => onTagClick?.(tag.id)}
                             >

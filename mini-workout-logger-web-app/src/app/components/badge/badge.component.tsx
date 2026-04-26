@@ -18,6 +18,7 @@ export type BadgeProps = {
     icon?: ReactNode;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     variant?: ColorVariant;
+    ghost?: boolean;
     onRemove?: () => void;
     onClick?: (() => void);
     selected?: boolean;
@@ -46,6 +47,7 @@ const Badge = ({
                    icon,
                    customCss,
                    variant = "gray",
+                   ghost = true,
                    onRemove,
                    onClick,
                    selected = false,
@@ -56,13 +58,17 @@ const Badge = ({
         if (onClick) onClick();
     };
 
+    const variantStyle = variant === 'primary' && !ghost
+        ? styles.primarySolidBadge
+        : badgeVariantStyles[variant];
+
     return (
         <span
             onClick={handleClick}
             data-selected={selected}
             css={[
                 styles.badge,
-                badgeVariantStyles[variant],
+                variantStyle,
                 ...(customCss
                     ? Array.isArray(customCss)
                         ? customCss

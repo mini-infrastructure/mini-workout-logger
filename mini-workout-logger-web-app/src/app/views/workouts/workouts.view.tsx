@@ -56,6 +56,7 @@ const WorkoutsView = () => {
                         {allTags.map((tag) => (
                             <Badge
                                 key={tag.id}
+                                variant="primary"
                                 selected={selectedTagIds.includes(tag.id)}
                                 onClick={() => handleTagToggle(tag.id)}
                             >

@@ -56,7 +56,37 @@ const styles = {
     }),
 
     grayBadge:   createColoredBadge('--color-container2', '--color-text'),
-    primaryBadge: createColoredBadge('--color-blue',  '--color-blue-border'),
+    primaryBadge: css({
+        backgroundColor: 'color-mix(in srgb, var(--color-blue) 40%, transparent)',
+        color: 'var(--color-white)',
+        transition: 'none',
+        '& button': {
+            color: 'var(--color-white)',
+        },
+        '&:hover, &[data-selected="true"]': {
+            backgroundColor: 'color-mix(in srgb, var(--color-blue) 85%, var(--color-black))',
+            color: 'var(--color-white)',
+            '& button': {
+                color: 'var(--color-white)',
+            },
+        },
+    }),
+
+    primarySolidBadge: css({
+        backgroundColor: 'var(--color-blue)',
+        color: 'var(--color-white)',
+        transition: 'none',
+        '& button': {
+            color: 'var(--color-white)',
+        },
+        '&:hover, &[data-selected="true"]': {
+            backgroundColor: 'color-mix(in srgb, var(--color-blue) 85%, var(--color-black))',
+            color: 'var(--color-white)',
+            '& button': {
+                color: 'var(--color-white)',
+            },
+        },
+    }),
     dangerBadge:  createColoredBadge('--color-red',   '--color-red-border'),
     warningBadge: createColoredBadge('--color-yellow','--color-yellow-border'),
     successBadge: createColoredBadge('--color-green', '--color-green-border'),
