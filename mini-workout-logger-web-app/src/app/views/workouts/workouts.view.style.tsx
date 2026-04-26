@@ -20,6 +20,13 @@ const styles = {
         flex: 1,
     }),
 
+    tagFilterBar: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 'var(--stack-gap-condensed)',
+        flexShrink: 0,
+    }),
+
     grid: css({
         flex: 1,
         overflowY: 'auto',

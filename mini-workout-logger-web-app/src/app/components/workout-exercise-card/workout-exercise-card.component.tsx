@@ -62,7 +62,6 @@ const WorkoutExerciseCard = ({
     onMouseLeave,
     customCss,
 }: WorkoutExerciseCardProps) => {
-    const cardRef = useRef<HTMLDivElement>(null);
     const toggleAllRef = useRef<(() => void) | null>(null);
     const [draggable, setDraggable] = useState(false);
     const [allCompleted, setAllCompleted] = useState(false);
@@ -73,7 +72,6 @@ const WorkoutExerciseCard = ({
 
     return (
         <div
-            ref={cardRef}
             draggable={draggable}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

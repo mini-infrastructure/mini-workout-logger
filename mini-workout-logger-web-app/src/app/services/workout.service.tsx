@@ -8,10 +8,13 @@ const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
 
 class WorkoutService {
 
-    async getAll(): Promise<WorkoutReadDTO[]> {
+    async getAll(tagIds?: number[]): Promise<WorkoutReadDTO[]> {
         try {
+            const params: Record<string, string> = { lang };
+            if (tagIds && tagIds.length > 0) params.tags = tagIds.join(',');
             const response = await axios.get<ApiResponseDTO<WorkoutReadDTO[]>>(
-                `${apiUrl}/workouts?lang=${lang}`
+                `${apiUrl}/workouts`,
+                { params }
             );
             return response.data.data;
         } catch (error) {

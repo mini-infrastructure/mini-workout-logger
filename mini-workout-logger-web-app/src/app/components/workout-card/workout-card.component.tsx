@@ -4,6 +4,7 @@ import { MdDelete, MdOpenInNew } from 'react-icons/md';
 import { IoCopy } from 'react-icons/io5';
 import { IoMdArchive } from 'react-icons/io';
 import Card from '../card/card.component.tsx';
+import Badge from '../badge/badge.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { WorkoutReadDTO } from '../../dtos/workout-read.dto.tsx';
@@ -13,10 +14,12 @@ export type WorkoutCardProps = {
     workout: WorkoutReadDTO;
     onStart?: () => void;
     onOpen?: () => void;
+    selectedTagIds?: number[];
+    onTagClick?: (tagId: number) => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const WorkoutCard = ({ workout, onStart, onOpen, customCss }: WorkoutCardProps) => {
+const WorkoutCard = ({ workout, onStart, onOpen, selectedTagIds = [], onTagClick, customCss }: WorkoutCardProps) => {
     const dropdownItems: DropdownMenuItem[] = [
         {
             label: 'Open',
@@ -48,6 +51,8 @@ const WorkoutCard = ({ workout, onStart, onOpen, customCss }: WorkoutCardProps) 
         },
     ];
 
+    const tags = workout.tags ?? [];
+
     return (
         <Card customCss={customCss}>
             <div css={styles.container}>
@@ -67,6 +72,20 @@ const WorkoutCard = ({ workout, onStart, onOpen, customCss }: WorkoutCardProps) 
                             </li>
                         ))}
                     </ul>
+                )}
+
+                {tags.length > 0 && (
+                    <div css={styles.tags} onClick={(e) => e.stopPropagation()}>
+                        {tags.map((tag) => (
+                            <Badge
+                                key={tag.id}
+                                selected={selectedTagIds.includes(tag.id)}
+                                onClick={() => onTagClick?.(tag.id)}
+                            >
+                                {tag.name}
+                            </Badge>
+                        ))}
+                    </div>
                 )}
             </div>
         </Card>

@@ -32,16 +32,50 @@ const styles = {
         flexDirection: 'column',
         gap: 'var(--stack-gap-nano)',
         flex: 1,
+        minWidth: 0,
+    }),
+
+    nameRow: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
     }),
 
     title: css({
         fontSize: 'var(--size-larger)',
         fontWeight: 700,
+        whiteSpace: 'nowrap',
+    }),
+
+    nameInput: css({
+        fontSize: 'var(--size-larger)',
+        fontWeight: 700,
+        background: 'transparent',
+        border: 'none',
+        borderBottom: '2px solid var(--color-blue)',
+        color: 'var(--color-text)',
+        outline: 'none',
+        padding: '0 var(--base-size-4)',
+        minWidth: 0,
+        flex: '1 1 200px',
     }),
 
     subtitle: css({
         fontSize: 'var(--size-small)',
         color: 'var(--color-gray)',
+    }),
+
+    tagInput: css({
+        fontSize: 'var(--size-small)',
+        background: 'transparent',
+        border: '1px solid var(--color-border)',
+        borderRadius: 'var(--borderRadius-full)',
+        color: 'var(--color-text)',
+        outline: 'none',
+        padding: '2px var(--base-size-8)',
+        minWidth: 80,
+        maxWidth: 160,
     }),
 
     actionButton: css({

@@ -55,6 +55,13 @@ const styles = {
         fontWeight: 500,
         flexShrink: 0,
     }),
+
+    tags: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 'var(--stack-gap-nano)',
+        paddingTop: 'var(--stack-gap-nano)',
+    }),
 };
 
 export default styles;

@@ -1,27 +1,33 @@
-import { useEffect, useMemo, useState } from 'react';
-import type { DragEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { DragEvent, KeyboardEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoPlay } from 'react-icons/io5';
 import { IoMdSave } from 'react-icons/io';
 import { MdClear, MdAdd, MdExpandLess } from 'react-icons/md';
+import { RiEdit2Fill } from 'react-icons/ri';
+import { FaCheck, FaPlusCircle } from 'react-icons/fa';
+import { IoClose } from 'react-icons/io5';
 import Layout from '../../components/layout/layout.component.tsx';
 import Button from '../../components/button/button.component.tsx';
 import SecondaryButton from '../../components/button/button.secondary.component.tsx';
+import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
+import Badge from '../../components/badge/badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Divider from '../../components/divider/divider.component.tsx';
-import Badge from '../../components/badge/badge.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useExercises } from '../../hooks/useExercises.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
 import WorkoutExecutionService from '../../services/workout-execution.service.tsx';
+import TagService from '../../services/tag.service.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
 import type { WorkoutWriteDTO } from '../../dtos/workout-write.dto.tsx';
 import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
+import type { TagReadDTO } from '../../dtos/tag-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
 import styles from './workout.view.style.tsx';
 
@@ -35,6 +41,18 @@ const WorkoutView = () => {
     const [exercises, setExercises] = useState<WorkoutExerciseReadDTO[]>([]);
     const [originalExercises, setOriginalExercises] = useState<WorkoutExerciseReadDTO[]>([]);
     const [dirty, setDirty] = useState(false);
+
+    // Name editing
+    const [nameEditMode, setNameEditMode] = useState(false);
+    const [displayName, setDisplayName] = useState('');
+    const [editedName, setEditedName] = useState('');
+    const nameInputRef = useRef<HTMLInputElement>(null);
+
+    // Tags
+    const [localTags, setLocalTags] = useState<TagReadDTO[]>([]);
+    const [addingTag, setAddingTag] = useState(false);
+    const [tagInput, setTagInput] = useState('');
+    const tagInputRef = useRef<HTMLInputElement>(null);
 
     // Execution history
     const [executions, setExecutions] = useState<WorkoutExecutionReadDTO[]>([]);
@@ -57,7 +75,22 @@ const WorkoutView = () => {
             setExercises(workout.workout_exercises);
             setOriginalExercises(workout.workout_exercises);
         }
+        if (workout?.name) {
+            setDisplayName(workout.name);
+            setEditedName(workout.name);
+        }
+        if (workout?.tags) {
+            setLocalTags(workout.tags);
+        }
     }, [workout]);
+
+    useEffect(() => {
+        if (nameEditMode) nameInputRef.current?.focus();
+    }, [nameEditMode]);
+
+    useEffect(() => {
+        if (addingTag) tagInputRef.current?.focus();
+    }, [addingTag]);
 
     useEffect(() => {
         if (!id) return;
@@ -85,6 +118,24 @@ const WorkoutView = () => {
 
     // Exercise stats
     const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0);
+
+    // Build the full payload from current state
+    const buildPayload = (name: string, tags: TagReadDTO[]): WorkoutWriteDTO => ({
+        name,
+        workout_exercises: exercises.map((we) => ({
+            exercise_id: we.exercise.id,
+            sets: we.sets.map((s) => ({
+                category: s.category,
+                type: s.type,
+                planned_repetitions: (s.type === 'TIME' || s.type === 'TIME_X_WEIGHT') ? null : (s.planned_repetitions ?? 0),
+                planned_weight: (s.type === 'REPS' || s.type === 'TIME') ? null : (s.planned_weight ?? 0),
+                planned_duration_seconds: (s.type === 'REPS' || s.type === 'REPS_X_WEIGHT') ? null : (s.planned_duration_seconds ?? 0),
+            })),
+            equipment: we.equipment,
+            rest_time_seconds: we.rest_time_seconds,
+        })),
+        tag_ids: tags.map((t) => t.id),
+    });
 
     // Drag-to-reorder exercises
     const handleDragStart = (index: number) => setDragFrom(index);
@@ -216,24 +267,10 @@ const WorkoutView = () => {
     // Clear edits
     const handleClear = () => { setExercises(originalExercises); setDirty(false); };
 
-    // Save workout
+    // Save workout (exercises + tags, current name)
     const handleSave = async () => {
         if (!workout) return;
-        const payload: WorkoutWriteDTO = {
-            name: workout.name,
-            workout_exercises: exercises.map((we) => ({
-                exercise_id: we.exercise.id,
-                sets: we.sets.map((s) => ({
-                    category: s.category,
-                    type: s.type,
-                    planned_repetitions: (s.type === 'TIME' || s.type === 'TIME_X_WEIGHT') ? null : (s.planned_repetitions ?? 0),
-                    planned_weight: (s.type === 'REPS' || s.type === 'TIME') ? null : (s.planned_weight ?? 0),
-                    planned_duration_seconds: (s.type === 'REPS' || s.type === 'REPS_X_WEIGHT') ? null : (s.planned_duration_seconds ?? 0),
-                })),
-                equipment: we.equipment,
-                rest_time_seconds: we.rest_time_seconds,
-            })),
-        };
+        const payload = buildPayload(editedName || workout.name, localTags);
         try {
             await WorkoutService.update(id!, payload);
             setDirty(false);
@@ -242,6 +279,49 @@ const WorkoutView = () => {
         } catch {
             pushAlert('Failed to save workout.', 'error');
         }
+    };
+
+    // Save name only
+    const handleSaveName = async () => {
+        const trimmed = editedName.trim();
+        if (!trimmed || !workout) return;
+        const payload = buildPayload(trimmed, localTags);
+        try {
+            await WorkoutService.update(id!, payload);
+            setDisplayName(trimmed);
+            setNameEditMode(false);
+            pushAlert('Workout name updated.', 'success');
+        } catch {
+            pushAlert('Failed to update name.', 'error');
+        }
+    };
+
+    const handleCancelNameEdit = () => {
+        setEditedName(displayName);
+        setNameEditMode(false);
+    };
+
+    // Add tag inline
+    const handleTagCommit = async () => {
+        const trimmed = tagInput.trim();
+        setTagInput('');
+        setAddingTag(false);
+        if (!trimmed || !workout) return;
+        try {
+            const tag = await TagService.create(trimmed);
+            const newTags = [...localTags, tag];
+            setLocalTags(newTags);
+            const payload = buildPayload(editedName || workout.name, newTags);
+            await WorkoutService.update(id!, payload);
+            pushAlert(`Tag "${trimmed}" added.`, 'success');
+        } catch {
+            pushAlert('Failed to add tag.', 'error');
+        }
+    };
+
+    const handleTagKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') handleTagCommit();
+        if (e.key === 'Escape') { setTagInput(''); setAddingTag(false); }
     };
 
     // Start execution
@@ -268,7 +348,63 @@ const WorkoutView = () => {
                 {/* Header */}
                 <div css={styles.header}>
                     <div css={styles.titleBlock}>
-                        <span css={styles.title}>{workout?.name}</span>
+                        <div css={styles.nameRow}>
+                            {nameEditMode ? (
+                                <>
+                                    <input
+                                        ref={nameInputRef}
+                                        css={styles.nameInput}
+                                        value={editedName}
+                                        onChange={(e) => setEditedName(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') handleSaveName();
+                                            if (e.key === 'Escape') handleCancelNameEdit();
+                                        }}
+                                    />
+                                    <OnlyIconButton
+                                        icon={<FaCheck />}
+                                        iconColor="--color-green"
+                                        onToggle={handleSaveName}
+                                        legend="Save name"
+                                    />
+                                    <OnlyIconButton
+                                        icon={<IoClose />}
+                                        iconColor="--color-red"
+                                        onToggle={handleCancelNameEdit}
+                                        legend="Cancel"
+                                        customIconCss={{ fontSize: '20px', width: '20px', height: '20px' }}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <span css={styles.title}>{displayName}</span>
+                                    <OnlyIconButton
+                                        icon={<RiEdit2Fill />}
+                                        iconColor="--color-gray"
+                                        onToggle={() => setNameEditMode(true)}
+                                        legend="Edit name"
+                                    />
+                                    {localTags.map((tag) => (
+                                        <Badge key={tag.id}>{tag.name}</Badge>
+                                    ))}
+                                    {addingTag ? (
+                                        <input
+                                            ref={tagInputRef}
+                                            css={styles.tagInput}
+                                            value={tagInput}
+                                            onChange={(e) => setTagInput(e.target.value)}
+                                            onBlur={handleTagCommit}
+                                            onKeyDown={handleTagKeyDown}
+                                            placeholder="Tag name..."
+                                        />
+                                    ) : (
+                                        <Badge icon={<FaPlusCircle />} onClick={() => setAddingTag(true)}>
+                                            Add tag
+                                        </Badge>
+                                    )}
+                                </>
+                            )}
+                        </div>
                         <span css={styles.subtitle}>
                             {exercises.length} exercise{exercises.length !== 1 ? 's' : ''} · {totalSets} set{totalSets !== 1 ? 's' : ''}
                         </span>
