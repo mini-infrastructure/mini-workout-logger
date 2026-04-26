@@ -57,8 +57,16 @@ const styles = {
 
     footer: css({
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    footerBadges: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 'var(--stack-gap-nano)',
+        flex: 1,
+        minWidth: 0,
     }),
 };
 

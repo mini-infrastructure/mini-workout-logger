@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
-import { MdDragIndicator, MdDoneAll } from 'react-icons/md';
+import {MdDragIndicator, MdDoneAll, MdDeleteOutline, MdDelete} from 'react-icons/md';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
@@ -31,6 +31,7 @@ export type WorkoutExerciseCardProps = {
     onCompletedChange?: (exerciseId: number, completedCount: number) => void;
     onSkippedChange?: (exerciseId: number, skippedCount: number) => void;
     onSetTypeChange?: (setId: number, type: SetType) => void;
+    onRemoveExercise?: () => void;
     planMode?: boolean;
     isDragOver?: boolean;
     highlighted?: boolean;
@@ -54,6 +55,7 @@ const WorkoutExerciseCard = ({
     onCompletedChange,
     onSkippedChange,
     onSetTypeChange,
+    onRemoveExercise,
     planMode = false,
     isDragOver = false,
     highlighted = false,
@@ -127,7 +129,15 @@ const WorkoutExerciseCard = ({
                             )}
                         </div>
 
-                        {!planMode && (
+                        {planMode ? (
+                            <OnlyIconButton
+                                icon={<MdDelete />}
+                                iconColor="--color-red"
+                                onToggle={() => onRemoveExercise?.()}
+                                legend="Remove exercise"
+                                customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                            />
+                        ) : (
                             <OnlyIconButton
                                 icon={<MdDoneAll />}
                                 iconColor="--color-green"

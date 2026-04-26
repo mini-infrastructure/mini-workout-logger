@@ -149,6 +149,12 @@ const WorkoutView = () => {
         setDirty(true);
     };
 
+    // Exercise remove
+    const handleRemoveExercise = (exerciseId: number) => {
+        setExercises((prev) => prev.filter((we) => we.id !== exerciseId));
+        setDirty(true);
+    };
+
     // Set remove
     const handleSetRemove = (exerciseId: number, setId: number) => {
         setExercises((prev) =>
@@ -304,6 +310,7 @@ const WorkoutView = () => {
                                     onSetRemove={(setId) => handleSetRemove(we.id, setId)}
                                     onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
                                     onSetAdd={() => handleSetAdd(we.id)}
+                                    onRemoveExercise={() => handleRemoveExercise(we.id)}
                                     highlighted={hoveredExerciseId === we.id}
                                     onMouseEnter={() => setHoveredExerciseId(we.id)}
                                     onMouseLeave={() => setHoveredExerciseId(null)}
@@ -330,7 +337,9 @@ const WorkoutView = () => {
                                     placeholder="Search exercises..."
                                 />
                                 <div css={styles.exerciseSearchResults}>
-                                    {searchResults.map((ex) => (
+                                    {searchResults
+                                        .filter((ex) => !exercises.some((we) => we.exercise.id === ex.id))
+                                        .map((ex) => (
                                         <ExerciseCard
                                             key={ex.id}
                                             exercise={ex}

@@ -14,9 +14,7 @@ import MediaItem from '../media-item/media-item.component.tsx';
 import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import {
-    ExerciseCategoryIcons,
     ExerciseDifficultyVariants,
-    getIconFromMap,
     getVariantFromMap,
 } from '../../models/exercise.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
@@ -54,7 +52,6 @@ const ExerciseCard = ({
     const pushAlert = useAlert();
 
     const difficultyVariant = getVariantFromMap(ExerciseDifficultyVariants, exercise.difficulty);
-    const categoryIcon      = getIconFromMap(ExerciseCategoryIcons, exercise.category);
 
     const isFilterActive = (key: string, value: string): boolean =>
         activeFilters[key]?.includes(value) ?? false;
@@ -113,16 +110,71 @@ const ExerciseCard = ({
                     <Divider customCss={styles.divider} />
 
                     <div css={styles.footer}>
-                        {exercise.category && (
-                            <Badge
-                                icon={categoryIcon}
-                                selected={isFilterActive('category', exercise.category)}
-                                onClick={handleFilterToggle('category', exercise.category)}
-                                onRemove={isFilterActive('category', exercise.category) ? handleFilterToggle('category', exercise.category) : undefined}
-                            >
-                                {capitalize(exercise.category)}
-                            </Badge>
-                        )}
+                        <div css={styles.footerBadges}>
+                            {exercise.category && (
+                                <Badge
+                                    selected={isFilterActive('category', exercise.category)}
+                                    onClick={handleFilterToggle('category', exercise.category)}
+                                    onRemove={isFilterActive('category', exercise.category) ? handleFilterToggle('category', exercise.category) : undefined}
+                                >
+                                    {capitalize(exercise.category)}
+                                </Badge>
+                            )}
+                            {exercise.equipment && (
+                                <Badge
+                                    selected={isFilterActive('equipment', exercise.equipment)}
+                                    onClick={handleFilterToggle('equipment', exercise.equipment)}
+                                    onRemove={isFilterActive('equipment', exercise.equipment) ? handleFilterToggle('equipment', exercise.equipment) : undefined}
+                                >
+                                    {capitalize(exercise.equipment)}
+                                </Badge>
+                            )}
+                            {exercise.mechanics && (
+                                <Badge
+                                    selected={isFilterActive('mechanics', exercise.mechanics)}
+                                    onClick={handleFilterToggle('mechanics', exercise.mechanics)}
+                                    onRemove={isFilterActive('mechanics', exercise.mechanics) ? handleFilterToggle('mechanics', exercise.mechanics) : undefined}
+                                >
+                                    {capitalize(exercise.mechanics)}
+                                </Badge>
+                            )}
+                            {exercise.force && (
+                                <Badge
+                                    selected={isFilterActive('force', exercise.force)}
+                                    onClick={handleFilterToggle('force', exercise.force)}
+                                    onRemove={isFilterActive('force', exercise.force) ? handleFilterToggle('force', exercise.force) : undefined}
+                                >
+                                    {capitalize(exercise.force)}
+                                </Badge>
+                            )}
+                            {exercise.role && (
+                                <Badge
+                                    selected={isFilterActive('role', exercise.role)}
+                                    onClick={handleFilterToggle('role', exercise.role)}
+                                    onRemove={isFilterActive('role', exercise.role) ? handleFilterToggle('role', exercise.role) : undefined}
+                                >
+                                    {capitalize(exercise.role)}
+                                </Badge>
+                            )}
+                            {exercise.type && (
+                                <Badge
+                                    selected={isFilterActive('type', exercise.type)}
+                                    onClick={handleFilterToggle('type', exercise.type)}
+                                    onRemove={isFilterActive('type', exercise.type) ? handleFilterToggle('type', exercise.type) : undefined}
+                                >
+                                    {capitalize(exercise.type)}
+                                </Badge>
+                            )}
+                            {/*{exercise.group_name && (*/}
+                            {/*    <Badge*/}
+                            {/*        selected={isFilterActive('groupName', exercise.group_name)}*/}
+                            {/*        onClick={handleFilterToggle('groupName', exercise.group_name)}*/}
+                            {/*        onRemove={isFilterActive('groupName', exercise.group_name) ? handleFilterToggle('groupName', exercise.group_name) : undefined}*/}
+                            {/*    >*/}
+                            {/*        {exercise.group_name}*/}
+                            {/*    </Badge>*/}
+                            {/*)}*/}
+                        </div>
                         {exercise.difficulty && (
                             <Rating
                                 levelsInfo={DIFFICULTY_LEVELS}
