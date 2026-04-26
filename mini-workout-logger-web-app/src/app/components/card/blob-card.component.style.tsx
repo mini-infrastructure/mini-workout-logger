@@ -6,9 +6,6 @@ const styles = {
      * BlobGlassBackground can own the glass effect completely.
      */
     blobCard: css({
-        backdropFilter: 'none',
-        WebkitBackdropFilter: 'none',
-        backgroundColor: 'transparent',
         isolation: 'isolate',
     }),
 };
