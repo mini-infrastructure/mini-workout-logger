@@ -2,18 +2,17 @@ import { useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
-import {MdDragIndicator, MdDoneAll, MdDeleteOutline, MdDelete} from 'react-icons/md';
+import { MdDragIndicator, MdDoneAll, MdDelete } from 'react-icons/md';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
+import MediaItem from '../media-item/media-item.component.tsx';
 import SetList from './set-list.component.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
 
-const formatMuscleCode = (code: string) =>
-    code.replace('Muscle.', '').replace(/_/g, ' ');
 
 export type WorkoutExerciseCardProps = {
     key?: any;
@@ -69,6 +68,8 @@ const WorkoutExerciseCard = ({
     const [allCompleted, setAllCompleted] = useState(false);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
+    const cover = workoutExercise.exercise.media?.[0];
+    const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
 
     return (
         <div
@@ -114,6 +115,8 @@ const WorkoutExerciseCard = ({
                             customIconCss={styles.dragHandleIcon}
                         />
 
+                        <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.cover} />
+
                         <div css={styles.exerciseInfo}>
                             <span css={styles.exerciseName}>
                                 {workoutExercise.exercise.name}
@@ -122,7 +125,7 @@ const WorkoutExerciseCard = ({
                                 <div css={styles.muscles}>
                                     {rootMuscles.map((code) => (
                                         <Badge key={code} variant="gray">
-                                            {formatMuscleCode(code)}
+                                            {code.replace('Muscle.', '').replace(/_/g, ' ')}
                                         </Badge>
                                     ))}
                                 </div>

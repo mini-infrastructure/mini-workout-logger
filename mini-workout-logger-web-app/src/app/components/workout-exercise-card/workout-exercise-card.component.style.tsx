@@ -1,6 +1,17 @@
 import { css } from '@emotion/react';
 
+const COVER_SIZE = 96;
+
 const styles = {
+    coverSize: COVER_SIZE,
+
+    cover: css({
+        height: COVER_SIZE,
+        width: COVER_SIZE,
+        flexShrink: 0,
+        alignSelf: 'flex-start',
+    }),
+
     container: css({
         display: 'flex',
         flexDirection: 'column',
@@ -11,6 +22,7 @@ const styles = {
         display: 'flex',
         alignItems: 'flex-start',
         gap: 'var(--stack-gap-condensed)',
+        minHeight: COVER_SIZE,
     }),
 
     dragHandle: css({

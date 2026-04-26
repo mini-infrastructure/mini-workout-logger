@@ -1,26 +1,35 @@
 import { css } from '@emotion/react';
 
-const COVER_SIZE = 56;
+const COVER_SIZE = 88;
 
 const styles = {
     coverSize: COVER_SIZE,
 
-    container: css({
+    outer: css({
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 'var(--stack-gap-condensed)',
+        alignItems: 'stretch',
+        height: 100,
+    }),
+
+    coverMedia: css({
+        height: '100%',
+        width: 'auto',
+        aspectRatio: '1 / 1',
+        flexShrink: 0,
+    }),
+
+    content: css({
+        flex: 1,
+        minWidth: 0,
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--stack-gap-nano)',
+        overflow: 'hidden',
     }),
 
-    body: css({
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 'var(--stack-gap-condensed)',
-    }),
-
-    info: css({
-        flex: 1,
-        minWidth: 0,
+    header: css({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -57,15 +66,18 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         isolation: 'isolate',
-        // Glass background: hidden by default, fades in on hover
+        // Hidden by default — visibility:hidden fully suppresses backdrop-filter rendering,
+        // unlike opacity:0 which can leave a subtle compositing artifact.
         '& > div': {
+            visibility: 'hidden',
             opacity: 0,
-            transition: 'opacity 0.25s ease',
+            transition: 'opacity 0.25s ease, visibility 0s linear 0.25s',
         },
         '&:hover > div': {
+            visibility: 'visible',
             opacity: 1,
+            transition: 'opacity 0.25s ease, visibility 0s linear 0s',
         },
-        // Button solid background: visible by default, fades out on hover
         '&:hover button': {
             backgroundColor: 'transparent',
         },
@@ -81,17 +93,21 @@ const styles = {
     }),
 
     footer: css({
+        flex: 1,
         display: 'flex',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         gap: 'var(--stack-gap-condensed)',
+        overflow: 'hidden',
     }),
 
     footerBadges: css({
         display: 'flex',
         flexWrap: 'wrap',
+        alignContent: 'center',
         gap: 'var(--stack-gap-nano)',
         flex: 1,
         minWidth: 0,
+        overflow: 'hidden',
     }),
 };
 

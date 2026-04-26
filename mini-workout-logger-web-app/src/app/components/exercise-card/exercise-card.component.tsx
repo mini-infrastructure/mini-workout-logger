@@ -86,11 +86,11 @@ const ExerciseCard = ({
     return (
         <>
             <Card onClick={onClick} customCss={customCss}>
-                <div css={styles.container}>
-                    <div css={styles.body}>
-                        <MediaItem src={coverSrc} size={styles.coverSize} />
+                <div css={styles.outer}>
+                    <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.coverMedia} />
 
-                        <div css={styles.info}>
+                    <div css={styles.content}>
+                        <div css={styles.header}>
                             <span css={styles.name}>{exercise.name}</span>
                             <div css={styles.actions}>
                                 <span
@@ -115,12 +115,11 @@ const ExerciseCard = ({
                                 <DropdownMenu items={dropdownItems} />
                             </div>
                         </div>
-                    </div>
 
-                    <Divider customCss={styles.divider} />
+                        <Divider customCss={styles.divider} />
 
-                    <div css={styles.footer}>
-                        <div css={styles.footerBadges}>
+                        <div css={styles.footer}>
+                            <div css={styles.footerBadges}>
                             {exercise.category && (
                                 <Badge
                                     selected={isFilterActive('category', exercise.category)}
@@ -192,6 +191,7 @@ const ExerciseCard = ({
                                 variant={difficultyVariant}
                             />
                         )}
+                    </div>
                     </div>
                 </div>
             </Card>

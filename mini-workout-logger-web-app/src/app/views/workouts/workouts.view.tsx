@@ -34,7 +34,7 @@ const WorkoutsView = () => {
 
                 <div css={styles.grid}>
                     {filtered.map((workout) => (
-                        <WorkoutCard
+                            <WorkoutCard
                             key={workout.id}
                             workout={workout}
                             onStart={() => navigate(`/workouts/${workout.id}?mode=play`)}
