@@ -102,7 +102,7 @@ const control = {
         paddingInline: '0.5rem',
         gap:           '0.3rem',
         size:          '0.6rem',
-        iconSize:      '0.8rem',
+        iconSize:      '1rem',
     },
     medium: {
         paddingBlock:  '0.5rem',

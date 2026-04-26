@@ -20,6 +20,7 @@ export type ButtonProps = {
     title?: string;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
+    noBorder?: boolean;
 };
 
 const Button = ({
@@ -36,11 +37,13 @@ const Button = ({
     title,
     onMouseDown,
     onMouseUp,
+    noBorder = false,
     children,
 }: PropsWithChildren<ButtonProps>) => {
     const cssProp = [
         styles.button,
         !children && css(styles.onlyIconButton),
+        noBorder ? css({ border: 'none', ':hover': { borderColor: 'transparent' } }) : undefined,
         ...(customCss ? (Array.isArray(customCss) ? customCss : [customCss]) : []),
     ];
 

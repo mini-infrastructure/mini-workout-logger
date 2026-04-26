@@ -42,17 +42,6 @@ const styles = {
         },
     }),
 
-    cancelButton: css({
-        flexShrink: 0,
-        backgroundColor: 'transparent',
-        border: 'var(--borderWidth-thin) solid var(--color-border)',
-        color: 'var(--color-gray)',
-        ':hover': {
-            borderColor: 'var(--color-red)',
-            color: 'var(--color-red)',
-            backgroundColor: 'transparent',
-        },
-    }),
 
     timerCard: css({
         display: 'flex',

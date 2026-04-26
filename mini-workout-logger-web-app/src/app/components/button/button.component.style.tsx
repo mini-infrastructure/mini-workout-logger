@@ -1,31 +1,40 @@
-import {css} from '@emotion/react';
+import { css } from '@emotion/react';
 
 const styles = {
     /**
-     * Default Button.
+     * Default Button — GitHub-inspired: solid border, medium radius, medium weight.
      */
     button: css({
-        display: 'flex',
-        justifyContent: 'center',
+        display: 'inline-flex',
         alignItems: 'center',
+        justifyContent: 'center',
+        gap: 'var(--control-small-gap)',
         boxSizing: 'border-box',
 
         padding: `var(--control-medium-paddingBlock) var(--control-medium-paddingInline)`,
-        borderRadius: 'var(--borderRadius-large)',
-        border: 'none',
+        borderRadius: 'var(--borderRadius-medium)',
+        border: `var(--borderWidth-thin) solid var(--color-border)`,
         cursor: 'pointer',
         width: 'auto',
         lineHeight: 'var(--base-size-16)',
         fontSize: 'var(--size-medium)',
+        fontWeight: 500,
         fontFamily: 'inherit',
+        whiteSpace: 'nowrap',
+        minWidth: 'max-content',
 
-        backgroundColor: 'var(--color-container1)',
+        backgroundColor: 'var(--color-container2)',
         color: 'var(--color-text)',
 
-        transition: 'background-color 0.2s ease, color 0.2s ease',
+        transition: 'background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease',
 
         ':hover': {
-            backgroundColor: 'var(--color-container2)',
+            backgroundColor: 'color-mix(in srgb, var(--color-container2) 70%, var(--color-border))',
+            borderColor: 'color-mix(in srgb, var(--color-border) 70%, var(--color-text))',
+        },
+
+        ':active': {
+            backgroundColor: 'var(--color-container1)',
         },
 
         ':disabled': {
@@ -35,7 +44,7 @@ const styles = {
         },
 
         '&[data-active="true"]': {
-            backgroundColor: 'color-mix(in srgb, var(--color-container1) 50%, transparent)',
+            backgroundColor: 'color-mix(in srgb, var(--color-container2) 50%, transparent)',
         },
     }),
 
@@ -43,10 +52,11 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        margin: `0 var(--control-small-gap) 0 0`,
         width: 'var(--control-small-iconSize)',
         height: 'var(--control-small-iconSize)',
+        fontSize: 'var(--control-small-iconSize)',
         pointerEvents: 'none',
+        flexShrink: 0,
     }),
 
     onlyIconButton: css({
@@ -60,24 +70,25 @@ const styles = {
     }),
 
     iconEnd: css({
-        margin: '0 0 0 var(--control-small-gap)',
+        order: 1,
     }),
 
     /**
-     * Primary Button.
+     * Primary Button — blue filled, no border.
      */
     buttonPrimary: css({
-        padding: '0.8rem 1.3rem',
-        fontWeight: 700,
+        fontWeight: 600,
         backgroundColor: 'var(--color-blue)',
         border: `var(--borderWidth-thin) solid var(--color-blue-border)`,
         color: 'var(--color-white)',
-        backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-blue) 30%, transparent), transparent)',
 
         ':hover': {
-            opacity: 0.9,
-            backgroundColor: 'var(--color-blue)',
-            backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-blue-border) 10%, transparent), transparent)',
+            backgroundColor: 'color-mix(in srgb, var(--color-blue) 85%, var(--color-black))',
+            borderColor: 'var(--color-blue-border)',
+        },
+
+        ':active': {
+            backgroundColor: 'color-mix(in srgb, var(--color-blue) 75%, var(--color-black))',
         },
     }),
 
@@ -88,17 +99,17 @@ const styles = {
     }),
 
     /**
-     * Secondary Button.
+     * Secondary Button — neutral border style with an optional text color override.
+     * Matches the Clear/Save button style in the workout view header.
      */
     buttonSecondary: css({
-        display: 'flex',
-        justifyContent: 'flex-start',
+        fontWeight: 500,
         backgroundColor: 'var(--color-container2)',
         border: `var(--borderWidth-thin) solid var(--color-border)`,
-        backgroundImage: 'linear-gradient(to top, color-mix(in srgb, var(--color-container2) 50%, transparent), transparent)',
 
         ':hover': {
-            backgroundImage: 'linear-gradient(to top, var(--color-container2), transparent)',
+            backgroundColor: 'color-mix(in srgb, var(--color-container2) 70%, var(--color-border))',
+            borderColor: 'color-mix(in srgb, var(--color-border) 70%, var(--color-text))',
         },
     }),
 
@@ -132,7 +143,7 @@ const styles = {
         cursor: 'pointer',
         outline: 'none',
 
-        transition: 'background-color 0.2s ease, color 0.2s ease',
+        transition: 'background-color 0.15s ease, color 0.15s ease',
 
         ':hover': {
             backgroundColor: 'var(--color-container2)',
@@ -160,7 +171,6 @@ const styles = {
     /**
      * Sidebar Collapse Button.
      */
-
     buttonSidebarCollapse: css({}),
 
     iconSidebarCollapse: css({}),
@@ -191,7 +201,6 @@ const styles = {
         flexDirection: 'row',
         alignItems: 'stretch',
     }),
-
 };
 
 export default styles;

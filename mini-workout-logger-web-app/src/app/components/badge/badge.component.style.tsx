@@ -49,6 +49,12 @@ const styles = {
         },
     }),
 
+    removeButtonIcon: css({
+        fontSize: '0.7rem',
+        width: '0.7rem',
+        height: '0.7rem',
+    }),
+
     grayBadge:   createColoredBadge('--color-container2', '--color-text'),
     primaryBadge: createColoredBadge('--color-blue',  '--color-blue-border'),
     dangerBadge:  createColoredBadge('--color-red',   '--color-red-border'),

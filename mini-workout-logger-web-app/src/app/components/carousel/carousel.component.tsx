@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import type { Interpolation, Theme } from '@emotion/react';
 import styles from './carousel.component.style.tsx';
 
 export type CarouselProps = {
     /** Each element is one slide. */
-    children: React.ReactNode[];
+    children: JSX.Element[];
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 

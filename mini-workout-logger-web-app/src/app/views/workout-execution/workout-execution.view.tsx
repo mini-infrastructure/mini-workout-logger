@@ -6,6 +6,7 @@ import { MdChecklistRtl, MdClose } from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import Card from '../../components/card/card.component.tsx';
 import Button from '../../components/button/button.component.tsx';
+import SecondaryButton from '../../components/button/button.secondary.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
@@ -143,13 +144,13 @@ const WorkoutExecutionView = () => {
                         <span css={styles.setsCounter}>{completedSets}/{totalSets} sets</span>
                     </div>
 
-                    <Button
+                    <SecondaryButton
                         icon={<MdClose />}
                         onClick={handleCancel}
-                        customCss={styles.cancelButton}
+                        color="var(--color-red)"
                     >
                         Cancel
-                    </Button>
+                    </SecondaryButton>
 
                     <Button
                         icon={<MdChecklistRtl />}

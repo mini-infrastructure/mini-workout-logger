@@ -6,6 +6,7 @@ import { IoMdSave } from 'react-icons/io';
 import { MdClear, MdAdd, MdExpandLess } from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import Button from '../../components/button/button.component.tsx';
+import SecondaryButton from '../../components/button/button.secondary.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
@@ -275,12 +276,12 @@ const WorkoutView = () => {
 
                     {dirty && (
                         <>
-                            <Button icon={<MdClear />} onClick={handleClear} customCss={styles.actionButton}>
+                            <SecondaryButton icon={<MdClear />} onClick={handleClear} customCss={styles.actionButton}>
                                 Clear
-                            </Button>
-                            <Button icon={<IoMdSave />} onClick={handleSave} customCss={styles.actionButton}>
+                            </SecondaryButton>
+                            <SecondaryButton icon={<IoMdSave />} onClick={handleSave} color="var(--color-green)" customCss={styles.actionButton}>
                                 Save
-                            </Button>
+                            </SecondaryButton>
                         </>
                     )}
 

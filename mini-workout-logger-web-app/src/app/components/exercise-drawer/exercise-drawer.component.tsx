@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import type { MediaReadDTO } from '../../dtos/media-read.dto.tsx';
 import { MdEdit, MdEditOff, MdAdd, MdClose } from 'react-icons/md';
+import { FaImages } from 'react-icons/fa';
 import Carousel from '../carousel/carousel.component.tsx';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
@@ -122,8 +123,12 @@ const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
     const [media, setMedia] = useState<MediaReadDTO[]>(exercise.media ?? []);
+
+    useEffect(() => {
+        setMedia(exercise.media ?? []);
+    }, [exercise.id]);
     const [uploading, setUploading] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null!);
     const pushAlert = useAlert();
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
@@ -135,7 +140,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
 
-    const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleMediaUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(true);
@@ -227,6 +232,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             clickedIcon={<MdEditOff />}
             isClicked={editMode}
             onClick={() => setEditMode((prev) => !prev)}
+            noBorder
             customCss={styles.editButton}
             customIconCss={styles.editBButtonIcon}
         />
@@ -263,7 +269,9 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                             ))}
                         </Carousel>
                     ) : (
-                        <div css={styles.mediaPlaceholder} />
+                        <div css={styles.mediaPlaceholder}>
+                            <FaImages />
+                        </div>
                     )}
 
                     {editMode && (

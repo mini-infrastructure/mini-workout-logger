@@ -82,7 +82,9 @@ const Badge = ({
                     <Button
                         icon={<IoMdClose />}
                         onClick={onRemove}
+                        noBorder
                         customCss={styles.removeButton}
+                        customIconCss={styles.removeButtonIcon}
                     />
                 </span>
             )}

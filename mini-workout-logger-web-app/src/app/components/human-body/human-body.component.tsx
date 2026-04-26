@@ -206,6 +206,7 @@ const HumanBody = ({
                     <Button
                         icon={<FaArrowsRotate />}
                         onClick={() => setView(v => v === 'front' ? 'back' : 'front')}
+                        noBorder
                         customCss={styles.flipButton}
                     />
                 )}

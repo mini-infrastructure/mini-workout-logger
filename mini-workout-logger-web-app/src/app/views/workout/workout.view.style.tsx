@@ -46,6 +46,7 @@ const styles = {
 
     actionButton: css({
         flexShrink: 0,
+        minWidth: 'unset',
     }),
 
     startButton: css({

@@ -99,6 +99,7 @@ const ExerciseCard = ({
                                         isClicked={isFavorited}
                                         customIconCss={styles.favoriteIcon}
                                         onClick={handleFavorite}
+                                        noBorder
                                         customCss={styles.favoriteButton}
                                     />
                                 </span>

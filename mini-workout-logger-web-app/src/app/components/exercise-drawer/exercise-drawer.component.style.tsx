@@ -103,7 +103,7 @@ const styles = {
     mediaArea: css({
         position: 'relative',
         width: '100%',
-        height: 200,
+        height: 300,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -120,7 +120,7 @@ const styles = {
     mediaSlide: css({
         position: 'relative',
         width: '100%',
-        height: 200,
+        height: 300,
     }),
 
     mediaImg: css({
@@ -133,6 +133,11 @@ const styles = {
     mediaPlaceholder: css({
         width: '100%',
         height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '3rem',
+        color: 'var(--color-border)',
     }),
 
     mediaRemoveBtn: css({
