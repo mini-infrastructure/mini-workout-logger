@@ -49,7 +49,32 @@ const styles = {
         color: 'var(--color-yellow)',
     }),
 
-    favoriteButton: css({}),
+    favoriteWrapper: css({
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 'var(--borderRadius-medium)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        isolation: 'isolate',
+        // Glass background: hidden by default, fades in on hover
+        '& > div': {
+            opacity: 0,
+            transition: 'opacity 0.25s ease',
+        },
+        '&:hover > div': {
+            opacity: 1,
+        },
+        // Button solid background: visible by default, fades out on hover
+        '&:hover button': {
+            backgroundColor: 'transparent',
+        },
+    }),
+
+    favoriteButton: css({
+        backgroundColor: 'var(--color-container2)',
+        position: 'relative',
+    }),
 
     divider: css({
         width: '100%',

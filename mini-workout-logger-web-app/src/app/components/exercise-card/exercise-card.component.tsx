@@ -19,6 +19,7 @@ import {
 } from '../../models/exercise.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
+import BlobGlassBackground from '../background/blob-glass/blob-glass.component.tsx';
 import styles from './exercise-card.component.style.tsx';
 
 const DIFFICULTY_LEVELS = [
@@ -92,7 +93,15 @@ const ExerciseCard = ({
                         <div css={styles.info}>
                             <span css={styles.name}>{exercise.name}</span>
                             <div css={styles.actions}>
-                                <span onClick={(e) => e.stopPropagation()}>
+                                <span
+                                    css={styles.favoriteWrapper}
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <BlobGlassBackground
+                                        color="var(--color-yellow)"
+                                        single
+                                        opacity={45}
+                                    />
                                     <Button
                                         icon={<FaRegStar />}
                                         clickedIcon={<FaStar />}
