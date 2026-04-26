@@ -202,17 +202,25 @@ public class ExerciseService extends AbstractMediaService<Exercise,
     @Override
     public Exercise beforeSave(Exercise entity) {
         // Given a muscle described at `exerciseMuscles`, adds all its parent muscles as well, with the same role.
-        for (Muscle muscle : entity.getMuscles()) {
-            for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new java.util.HashSet<>())) {
-                boolean alreadyExists = entity.getMuscles()
-                        .stream()
-                        .anyMatch(m -> m.equals(parent));
+        Set<Long> existingMuscleIds = entity.getExerciseMuscles()
+                .stream()
+                .map(em -> em.getMuscle().getId())
+                .collect(toCollection(LinkedHashSet::new));
 
-                if (!alreadyExists) {
-                    entity.addMuscle(parent, entity.roleOf(muscle));
+        Set<ExerciseMuscle> toAdd = new LinkedHashSet<>();
+        for (ExerciseMuscle em : new HashSet<>(entity.getExerciseMuscles())) {
+            for (Muscle parent : muscleService.findParentMusclesRecursive(em.getMuscle(), new HashSet<>())) {
+                if (!existingMuscleIds.contains(parent.getId())) {
+                    existingMuscleIds.add(parent.getId());
+                    ExerciseMuscle parentEm = new ExerciseMuscle();
+                    parentEm.setMuscle(parent);
+                    parentEm.setRole(em.getRole());
+                    parentEm.setExercise(entity);
+                    toAdd.add(parentEm);
                 }
             }
         }
+        entity.getExerciseMuscles().addAll(toAdd);
 
         return super.beforeSave(entity);
     }

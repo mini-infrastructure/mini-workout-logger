@@ -74,6 +74,7 @@ public class ExerciseMapper
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(ExerciseWriteDTO.class, Exercise.class)
+                .addMappings(m -> m.skip(Exercise::setExerciseMuscles))
                 .setPostConverter(ctx -> {
                     ExerciseWriteDTO dto = ctx.getSource();
                     Exercise entity = ctx.getDestination();

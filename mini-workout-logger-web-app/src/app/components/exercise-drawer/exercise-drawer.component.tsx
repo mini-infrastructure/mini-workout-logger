@@ -257,13 +257,14 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                                         alt={m.filename}
                                     />
                                     {editMode && (
-                                        <button
-                                            css={styles.mediaRemoveBtn}
+                                        <Button
+                                            icon={<MdClose />}
                                             onClick={() => handleMediaRemove(m.id)}
                                             title="Remove"
-                                        >
-                                            <MdClose size={14} />
-                                        </button>
+                                            noBorder
+                                            customCss={styles.mediaRemoveBtn}
+                                            customIconCss={styles.mediaRemoveBtnIcon}
+                                        />
                                     )}
                                 </div>
                             ))}
@@ -275,14 +276,14 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                     )}
 
                     {editMode && (
-                        <button
-                            css={styles.mediaAddBtn}
+                        <Button
+                            icon={<MdAdd />}
                             onClick={() => fileInputRef.current?.click()}
                             disabled={uploading}
                             title="Add image"
-                        >
-                            <MdAdd size={18} />
-                        </button>
+                            noBorder
+                            customCss={styles.mediaAddBtn}
+                        />
                     )}
                     <input
                         ref={fileInputRef}

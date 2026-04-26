@@ -19,6 +19,7 @@ import {
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';
 import styles from './exercises.view.style.tsx';
+import SecondaryButton from "../../components/button/button.secondary.component.tsx";
 
 const FILTER_CONFIG = [
     { key: 'category',  label: 'Category',  options: exerciseCategoryOptions   },
@@ -127,13 +128,13 @@ const ExercisesView = () => {
                         />
                     ))}
                     {hasFilters && (
-                        <Button
+                        <SecondaryButton
                             icon={<IoMdClose />}
                             onClick={handleClearAll}
                             customCss={styles.clearFiltersButton}
                         >
                             Clear filters
-                        </Button>
+                        </SecondaryButton>
                     )}
                 </div>
                 <div css={styles.contentRow}>

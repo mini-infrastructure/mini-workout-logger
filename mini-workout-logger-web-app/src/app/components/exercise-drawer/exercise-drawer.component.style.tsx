@@ -144,17 +144,20 @@ const styles = {
         position: 'absolute',
         top: 8,
         right: 8,
-        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
-        border: 'none',
+        backgroundColor: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
         borderRadius: '50%',
-        width: 24,
-        height: 24,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
         color: 'var(--color-red)',
-        padding: 0,
+        padding: 'var(--stack-gap-nano)',
+        minWidth: 'unset',
+        ':hover': {
+            backgroundColor: 'color-mix(in srgb, var(--color-bg) 90%, transparent)',
+        },
+    }),
+
+    mediaRemoveBtnIcon: css({
+        fontSize: '0.8rem',
+        width: '0.8rem',
+        height: '0.8rem',
     }),
 
     mediaAddBtn: css({
