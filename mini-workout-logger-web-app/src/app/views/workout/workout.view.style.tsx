@@ -128,21 +128,21 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--stack-gap-condensed)',
+        paddingInline: 'var(--base-size-4)',
     }),
 
     exerciseSearchResults: css({
         display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateColumns: 'repeat(4, 1fr)',
         gap: 'var(--stack-gap-condensed)',
-        '& > *': {
-            cursor: 'pointer',
-        },
     }),
 
     searchResultCard: css({
-        transition: 'box-shadow 0.15s',
+        transition: 'outline-color 0.15s',
+        outline: 'var(--borderWidth-medium) solid transparent',
+        outlineOffset: 'calc(-1 * var(--borderWidth-medium))',
         ':hover': {
-            boxShadow: '0 0 0 2px var(--color-blue)',
+            outlineColor: 'var(--color-blue)',
         },
     }),
 

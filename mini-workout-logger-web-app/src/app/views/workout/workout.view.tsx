@@ -530,6 +530,7 @@ const WorkoutView = () => {
                                         <ExerciseCard
                                             key={ex.id}
                                             exercise={ex}
+                                            mini
                                             onClick={() => handleAddExercise(ex)}
                                             customCss={styles.searchResultCard}
                                         />
