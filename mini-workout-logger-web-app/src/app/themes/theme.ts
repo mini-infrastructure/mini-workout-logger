@@ -46,14 +46,17 @@ const fontSizes = {
 };
 
 const baseSize = {
-    4:  '0.25rem',
-    8:  '0.5rem',
-    12: '0.75rem',
-    16: '1rem',
-    18: '1.3rem',
-    24: '1.5rem',
-    32: '2rem',
-    64: '4rem',
+    4:   '0.25rem',
+    8:   '0.5rem',
+    12:  '0.75rem',
+    16:  '1rem',
+    18:  '1.3rem',
+    24:  '1.5rem',
+    32:  '2rem',
+    64:  '4rem',
+    48:  '3rem',
+    96:  '6rem',
+    260: '16.25rem',
 };
 
 const borderRadius = {
@@ -65,7 +68,8 @@ const borderRadius = {
 };
 
 const borderWidth = {
-    thin: '0.0625rem',
+    thin:   '0.0625rem',
+    medium: '0.125rem',
 };
 
 const zIndex = {

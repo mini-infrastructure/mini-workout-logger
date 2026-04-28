@@ -1,18 +1,22 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
 import { MdDragIndicator, MdDoneAll, MdDelete } from 'react-icons/md';
+import { IoMdSwap } from 'react-icons/io';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import MediaItem from '../media-item/media-item.component.tsx';
+import ExerciseCard from '../exercise-card/exercise-card.component.tsx';
 import SetList from './set-list.component.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
+import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
+import type { ExerciseRecommendationReadDTO } from '../../dtos/exercise-recommendation-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
+import ExerciseRecommendationService from '../../services/exercise-recommendation.service.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
-
 
 export type WorkoutExerciseCardProps = {
     key?: any;
@@ -31,6 +35,8 @@ export type WorkoutExerciseCardProps = {
     onSkippedChange?: (exerciseId: number, skippedCount: number) => void;
     onSetTypeChange?: (setId: number, type: SetType) => void;
     onRemoveExercise?: () => void;
+    onSwapExercise?: (newExercise: ExerciseReadDTO) => void;
+    existingExerciseIds?: number[];
     planMode?: boolean;
     isDragOver?: boolean;
     highlighted?: boolean;
@@ -55,6 +61,8 @@ const WorkoutExerciseCard = ({
     onSkippedChange,
     onSetTypeChange,
     onRemoveExercise,
+    onSwapExercise,
+    existingExerciseIds = [],
     planMode = false,
     isDragOver = false,
     highlighted = false,
@@ -63,15 +71,51 @@ const WorkoutExerciseCard = ({
     customCss,
 }: WorkoutExerciseCardProps) => {
     const toggleAllRef = useRef<(() => void) | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
     const [draggable, setDraggable] = useState(false);
     const [allCompleted, setAllCompleted] = useState(false);
+    const [swapOpen, setSwapOpen] = useState(false);
+    const [recommendations, setRecommendations] = useState<ExerciseRecommendationReadDTO[]>([]);
+    const [loadingRecs, setLoadingRecs] = useState(false);
+
+    useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const ro = new ResizeObserver(([entry]) => {
+            setContainerWidth(entry.contentRect.width);
+        });
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, []);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
     const cover = workoutExercise.exercise.media?.[0];
     const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
 
+    const handleToggleSwap = async () => {
+        if (swapOpen) {
+            setSwapOpen(false);
+            return;
+        }
+        setSwapOpen(true);
+        setLoadingRecs(true);
+        const recs = await ExerciseRecommendationService.getRecommendations(
+            workoutExercise.exercise.id,
+            { limit: 20 }
+        );
+        setRecommendations(recs.filter(r => !existingExerciseIds.includes(r.exercise.id)));
+        setLoadingRecs(false);
+    };
+
+    const exactMatches = recommendations.filter(r => r.exact_match);
+    const partialMatches = recommendations.filter(r => !r.exact_match);
+    const hasExact = exactMatches.length > 0;
+    const hasPartial = partialMatches.length > 0;
+
     return (
         <div
+            css={css({ minWidth: 0, overflow: 'hidden' })}
             draggable={draggable}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -103,7 +147,7 @@ const WorkoutExerciseCard = ({
                         : []),
                 ]}
             >
-                <div css={styles.container}>
+                <div ref={containerRef} css={styles.container}>
                     <div css={styles.header}>
                         <Button
                             icon={<MdDragIndicator />}
@@ -131,13 +175,23 @@ const WorkoutExerciseCard = ({
                         </div>
 
                         {planMode ? (
-                            <OnlyIconButton
-                                icon={<MdDelete />}
-                                iconColor="--color-red"
-                                onToggle={() => onRemoveExercise?.()}
-                                legend="Remove exercise"
-                                customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                            />
+                            <>
+                                <OnlyIconButton
+                                    icon={<IoMdSwap />}
+                                    iconColor={swapOpen ? '--color-blue' : '--color-gray'}
+                                    selected={swapOpen}
+                                    onToggle={handleToggleSwap}
+                                    legend="Swap exercise"
+                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                />
+                                <OnlyIconButton
+                                    icon={<MdDelete />}
+                                    iconColor="--color-red"
+                                    onToggle={() => onRemoveExercise?.()}
+                                    legend="Remove exercise"
+                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                />
+                            </>
                         ) : (
                             <OnlyIconButton
                                 icon={<MdDoneAll />}
@@ -147,7 +201,7 @@ const WorkoutExerciseCard = ({
                                 onToggle={() => toggleAllRef.current?.()}
                                 legend="Mark all as completed"
                                 selectedLegend="Deselect all"
-                                customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
                                 customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                             />
                         )}
@@ -168,6 +222,50 @@ const WorkoutExerciseCard = ({
                         onAllCompletedChange={setAllCompleted}
                         toggleAllRef={toggleAllRef}
                     />
+
+                    {planMode && swapOpen && (
+                        <div css={styles.swapPanel}>
+                            {loadingRecs ? (
+                                <span css={styles.swapEmpty}>Loading recommendations…</span>
+                            ) : recommendations.length === 0 ? (
+                                <span css={styles.swapEmpty}>No similar exercises found.</span>
+                            ) : (
+                                <>
+                                    <div css={styles.swapScrollArea} style={containerWidth ? { width: containerWidth } : undefined}>
+                                        <div css={styles.swapCardsRow}>
+                                            {[...exactMatches, ...partialMatches].map((rec) => (
+                                                <div key={rec.exercise.id} css={styles.swapCardWrapper(rec.exact_match)}>
+                                                    <ExerciseCard
+                                                        exercise={rec.exercise}
+                                                        mini
+                                                        onClick={() => {
+                                                            onSwapExercise?.(rec.exercise);
+                                                            setSwapOpen(false);
+                                                        }}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div css={styles.swapLegend}>
+                                        {hasExact && (
+                                            <>
+                                                <span css={styles.swapDot('var(--color-green)')} />
+                                                <span>Exact match</span>
+                                            </>
+                                        )}
+                                        {hasPartial && (
+                                            <>
+                                                <span css={styles.swapDot('var(--color-yellow)')} />
+                                                <span>Partial match</span>
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    )}
                 </div>
             </Card>
         </div>

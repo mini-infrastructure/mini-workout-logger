@@ -208,6 +208,19 @@ const WorkoutView = () => {
         setDirty(true);
     };
 
+    const handleSwapExercise = (exerciseId: number, newExercise: ExerciseReadDTO) => {
+        setExercises((prev) =>
+            prev.map((we) =>
+                we.id !== exerciseId ? we : {
+                    ...we,
+                    exercise: newExercise,
+                    equipment: newExercise.equipment ?? we.equipment,
+                }
+            )
+        );
+        setDirty(true);
+    };
+
     // Set remove
     const handleSetRemove = (exerciseId: number, setId: number) => {
         setExercises((prev) =>
@@ -483,6 +496,8 @@ const WorkoutView = () => {
                                     onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
                                     onSetAdd={() => handleSetAdd(we.id)}
                                     onRemoveExercise={() => handleRemoveExercise(we.id)}
+                                    onSwapExercise={(newExercise) => handleSwapExercise(we.id, newExercise)}
+                                    existingExerciseIds={exercises.map((e) => e.exercise.id)}
                                     highlighted={hoveredExerciseId === we.id}
                                     onMouseEnter={() => setHoveredExerciseId(we.id)}
                                     onMouseLeave={() => setHoveredExerciseId(null)}

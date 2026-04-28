@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
 
 const COVER_SIZE = 88;
+const COVER_SIZE_MINI = 48;
 
 const styles = {
     coverSize: COVER_SIZE,
+    coverSizeMini: COVER_SIZE_MINI,
 
     outer: css({
         display: 'flex',
@@ -11,6 +13,20 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
         alignItems: 'stretch',
         height: 100,
+    }),
+
+    outerMini: css({
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 'var(--stack-gap-condensed)',
+        alignItems: 'center',
+    }),
+
+    coverMediaMini: css({
+        height: 'var(--base-size-48)',
+        width: 'var(--base-size-48)',
+        flexShrink: 0,
+        borderRadius: 'var(--borderRadius-small)',
     }),
 
     coverMedia: css({

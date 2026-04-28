@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { css } from '@emotion/react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { MdOpenInNew } from 'react-icons/md';
 import { FaRegStar, FaStar } from 'react-icons/fa';
@@ -37,6 +38,7 @@ export type ExerciseCardProps = {
     activeFilters?: Record<string, string[]>;
     onFilterChange?: (key: string, value: string) => void;
     onClick?: () => void;
+    mini?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
@@ -47,6 +49,7 @@ const ExerciseCard = ({
     activeFilters = {},
     onFilterChange,
     onClick,
+    mini = false,
     customCss,
 }: ExerciseCardProps) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -82,6 +85,37 @@ const ExerciseCard = ({
 
     const cover = exercise.media?.[0];
     const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
+
+    const miniDropdownItems: DropdownMenuItem[] = [
+        {
+            label: 'Details',
+            icon: <MdOpenInNew />,
+            iconColor: 'info',
+            onClick: () => setDrawerOpen(true),
+        },
+    ];
+
+    if (mini) {
+        return (
+            <>
+                <Card onClick={onClick} customCss={customCss}>
+                    <div css={styles.outerMini}>
+                        <MediaItem src={coverSrc} size={styles.coverSizeMini} customCss={styles.coverMediaMini} />
+                        <span css={[styles.name, css({ flex: 1, minWidth: 0 })]}>{exercise.name}</span>
+                        <div css={styles.actions} onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu items={miniDropdownItems} />
+                        </div>
+                    </div>
+                </Card>
+
+                <ExerciseDrawer
+                    exercise={exercise}
+                    open={drawerOpen}
+                    onClose={() => setDrawerOpen(false)}
+                />
+            </>
+        );
+    }
 
     return (
         <>
@@ -174,15 +208,6 @@ const ExerciseCard = ({
                                     {capitalize(exercise.type)}
                                 </Badge>
                             )}
-                            {/*{exercise.group_name && (*/}
-                            {/*    <Badge*/}
-                            {/*        selected={isFilterActive('groupName', exercise.group_name)}*/}
-                            {/*        onClick={handleFilterToggle('groupName', exercise.group_name)}*/}
-                            {/*        onRemove={isFilterActive('groupName', exercise.group_name) ? handleFilterToggle('groupName', exercise.group_name) : undefined}*/}
-                            {/*    >*/}
-                            {/*        {exercise.group_name}*/}
-                            {/*    </Badge>*/}
-                            {/*)}*/}
                         </div>
                         {exercise.difficulty && (
                             <Rating
