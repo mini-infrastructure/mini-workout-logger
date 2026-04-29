@@ -1,4 +1,5 @@
 import type {ExerciseReadDTO} from "../dtos/exercise-read.dto.tsx";
+import type {ExerciseExecutionHistoryReadDTO} from "../dtos/exercise-execution-history-read.dto.tsx";
 import type {MediaReadDTO} from "../dtos/media-read.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import axios from "axios";
@@ -116,6 +117,18 @@ class ExerciseService {
 
     async deleteMedia(exerciseId: number, mediaId: number): Promise<void> {
         await axios.delete(`${apiUrl}/exercises/${exerciseId}/media/${mediaId}?lang=${lang}`);
+    }
+
+    async getHistory(id: number): Promise<ExerciseExecutionHistoryReadDTO[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<ExerciseExecutionHistoryReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/history?lang=${lang}`
+            );
+            return response.data.data ?? [];
+        } catch (error) {
+            console.error(`Error fetching history for exercise ${id}:`, error);
+            return [];
+        }
     }
 
     async getAllExerciseGroupNames(): Promise<string[]> {

@@ -5,19 +5,24 @@ import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractMediaService;
 import com.mini.java_core.specification.SpecificationBuilder;
+import com.mini.workout_logger_backend.dtos.ExerciseExecutionHistoryReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
 import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
+import com.mini.workout_logger_backend.dtos.SetExecutionReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
 import com.mini.workout_logger_backend.entities.ExerciseGroup;
 import com.mini.workout_logger_backend.entities.ExerciseMuscle;
 import com.mini.workout_logger_backend.entities.ExerciseMedia;
 import com.mini.workout_logger_backend.entities.Muscle;
+import com.mini.workout_logger_backend.entities.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
+import com.mini.workout_logger_backend.mappers.SetExecutionMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseMediaRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
+import com.mini.workout_logger_backend.repositories.WorkoutExerciseExecutionRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +62,12 @@ public class ExerciseService extends AbstractMediaService<Exercise,
 
     @Autowired
     ExerciseGroupRepository exerciseGroupRepository;
+
+    @Autowired
+    WorkoutExerciseExecutionRepository workoutExerciseExecutionRepository;
+
+    @Autowired
+    SetExecutionMapper setExecutionMapper;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -288,6 +299,35 @@ public class ExerciseService extends AbstractMediaService<Exercise,
         return ResponseHelper.success(HttpStatus.OK,
                 ResponseMessage.ENTITY_UPDATED.getMessage(),
                 List.of(mapper.toDTO(exercise)));
+    }
+
+    public ResponseEntity<ResponseDTO<ExerciseExecutionHistoryReadDTO>> getHistory(Long exerciseId) {
+        List<WorkoutExerciseExecution> records =
+                workoutExerciseExecutionRepository.findAllByExerciseIdOrderByDateDesc(exerciseId);
+
+        List<ExerciseExecutionHistoryReadDTO> history = records.stream()
+                .map(wee -> {
+                    List<SetExecutionReadDTO> setDTOs = wee.getSetExecutions().stream()
+                            .map(setExecutionMapper::toDTO)
+                            .toList();
+
+                    ExerciseExecutionHistoryReadDTO dto = new ExerciseExecutionHistoryReadDTO();
+                    dto.setId(wee.getId());
+                    dto.setWorkoutExecutionId(wee.getWorkoutExecution().getId());
+                    dto.setWorkoutName(wee.getWorkoutExecution().getWorkout().getName().getValue());
+                    dto.setExecutionDate(wee.getWorkoutExecution().getInterval().getStart());
+                    dto.setCompleted(wee.getCompleted());
+                    dto.setSetExecutions(setDTOs);
+                    return dto;
+                })
+                .toList();
+
+        return ResponseHelper.success(
+                HttpStatus.OK,
+                history.isEmpty()
+                        ? ResponseMessage.ENTITIES_EMPTY.getMessage()
+                        : ResponseMessage.ENTITIES_FOUND.getMessage(),
+                history);
     }
 
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> listExercisesByMuscleGroup(String muscleGroupName) {

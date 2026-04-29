@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.controllers;
 
 import com.mini.java_core.controller.AbstractMediaController;
 import com.mini.java_core.dto.ResponseDTO;
+import com.mini.workout_logger_backend.dtos.ExerciseExecutionHistoryReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseRecommendationReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
@@ -36,6 +37,21 @@ public class ExerciseController extends AbstractMediaController<Exercise,
 
     @Autowired
     private ExerciseRecommendationService recommendationService;
+
+    /**
+     * Exercise Execution History API.
+     */
+
+    @Tag(name = "Exercise History", description = "Exercise Execution History API")
+    @Operation(
+        summary = "Get execution history for an exercise",
+        description = "Returns all workout exercise executions for the given exercise, ordered by date descending. Each entry contains the workout name, date, completion status, and the actual set execution data."
+    )
+    @GetMapping("/{id}/history")
+    public ResponseEntity<ResponseDTO<ExerciseExecutionHistoryReadDTO>> getHistory(
+            @NotNull @PathVariable("id") Long id) {
+        return service.getHistory(id);
+    }
 
     /**
      * Exercise Recommendations API.
