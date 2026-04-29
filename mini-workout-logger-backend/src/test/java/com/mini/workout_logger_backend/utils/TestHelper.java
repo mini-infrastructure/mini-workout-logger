@@ -157,7 +157,8 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null)
                                         ),
-                                        30
+                                        30,
+                                        null
                                 ),
                                 new WorkoutExerciseWriteDTO(
                                         exercises.getLast().getId(),
@@ -166,7 +167,8 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 55.0, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 60.0, null)
                                         ),
-                                        45
+                                        45,
+                                        null
                                 )
                         ),
                         null
@@ -181,7 +183,8 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null)
                                         ),
-                                        60
+                                        60,
+                                        null
                                 )
                         ),
                         null

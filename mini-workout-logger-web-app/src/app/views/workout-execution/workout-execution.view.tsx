@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { DragEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegClock } from 'react-icons/fa';
 import { IoPlay, IoPause, IoStop } from 'react-icons/io5';
@@ -11,6 +12,8 @@ import OnlyIconButton from '../../components/button/only-icon-button.component.t
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
+import { useAlert } from '../../context/alert.context.tsx';
+import WorkoutService from '../../services/workout.service.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
 import styles from './workout-execution.view.style.tsx';
 
@@ -18,6 +21,7 @@ const WorkoutExecutionView = () => {
     const { id } = useParams<{ id: string; executionId: string }>();
     const navigate = useNavigate();
     const { workout } = useWorkout(id);
+    const pushAlert = useAlert();
 
     // Timer
     const [isPlaying, setIsPlaying] = useState(true);
@@ -27,6 +31,10 @@ const WorkoutExecutionView = () => {
 
     // Exercises (local copy for set interaction)
     const [exercises, setExercises] = useState<WorkoutExerciseReadDTO[]>([]);
+
+    // Exercise drag state
+    const [dragFrom, setDragFrom] = useState<number | null>(null);
+    const [dragOver, setDragOver] = useState<number | null>(null);
 
     // Progress
     const [completedCounts, setCompletedCounts] = useState<Record<number, number>>({});
@@ -42,6 +50,68 @@ const WorkoutExecutionView = () => {
 
     const handleSkippedChange = (exerciseId: number, count: number) => {
         setSkippedCounts((prev) => ({ ...prev, [exerciseId]: count }));
+    };
+
+    const buildPayload = (currentExercises: WorkoutExerciseReadDTO[]) => ({
+        name: workout?.name ?? '',
+        workout_exercises: currentExercises.map((we) => ({
+            exercise_id: we.exercise.id,
+            sets: we.sets.map((s) => ({
+                category: s.category,
+                type: s.type,
+                planned_repetitions: (s.type === 'TIME' || s.type === 'TIME_X_WEIGHT') ? null : (s.planned_repetitions ?? 0),
+                planned_weight: (s.type === 'REPS' || s.type === 'TIME') ? null : (s.planned_weight ?? 0),
+                planned_duration_seconds: (s.type === 'REPS' || s.type === 'REPS_X_WEIGHT') ? null : (s.planned_duration_seconds ?? 0),
+            })),
+            equipment: we.equipment,
+            rest_time_seconds: we.rest_time_seconds,
+            notes: we.notes,
+        })),
+        tag_ids: workout?.tags?.map((t) => t.id) ?? [],
+    });
+
+    const handleNotesChange = (exerciseId: number, notes: string) => {
+        setExercises((prev) =>
+            prev.map((we) => we.id !== exerciseId ? we : { ...we, notes })
+        );
+    };
+
+    const handleNotesSave = async (exerciseId: number, notes: string) => {
+        const updated = exercises.map((we) => we.id !== exerciseId ? we : { ...we, notes });
+        setExercises(updated);
+        try {
+            await WorkoutService.update(id!, buildPayload(updated));
+            pushAlert('Note saved.', 'success');
+        } catch {
+            pushAlert('Failed to save note.', 'error');
+        }
+    };
+
+    // Exercise drag-to-reorder
+    const handleExerciseDragStart = (index: number) => setDragFrom(index);
+    const handleExerciseDragOver = (index: number, e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setDragOver(index);
+    };
+    const handleExerciseDragEnd = () => { setDragFrom(null); setDragOver(null); };
+
+    const handleExerciseDrop = async (dropIndex: number) => {
+        const from = dragFrom;
+        setDragFrom(null);
+        setDragOver(null);
+        if (from === null || from === dropIndex) return;
+        const original = exercises;
+        const updated = [...exercises];
+        const [moved] = updated.splice(from, 1);
+        updated.splice(dropIndex, 0, moved);
+        setExercises(updated);
+        try {
+            await WorkoutService.reorderExercise(id!, moved.id, dropIndex);
+            pushAlert('Exercise reordered.', 'success');
+        } catch {
+            setExercises(original);
+            pushAlert('Failed to reorder exercise.', 'error');
+        }
     };
 
     useEffect(() => {
@@ -187,14 +257,15 @@ const WorkoutExecutionView = () => {
 
                 <div css={styles.content}>
                     <div css={styles.exerciseList}>
-                        {exercises.map((we) => (
+                        {exercises.map((we, index) => (
                             <WorkoutExerciseCard
                                 key={we.id}
                                 workoutExercise={we}
-                                onDragStart={() => {}}
-                                onDragOver={() => {}}
-                                onDrop={() => {}}
-                                onDragEnd={() => {}}
+                                isDragOver={dragOver === index}
+                                onDragStart={() => handleExerciseDragStart(index)}
+                                onDragOver={(e) => handleExerciseDragOver(index, e)}
+                                onDrop={() => handleExerciseDrop(index)}
+                                onDragEnd={handleExerciseDragEnd}
                                 onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
                                 isPlaying={isPlaying}
                                 resetKey={stopKey}
@@ -203,6 +274,8 @@ const WorkoutExecutionView = () => {
                                 onSetAdd={() => handleSetAdd(we.id)}
                                 onCompletedChange={handleCompletedChange}
                                 onSkippedChange={handleSkippedChange}
+                                onNotesChange={handleNotesChange}
+                                onNotesSave={handleNotesSave}
                             />
                         ))}
                     </div>

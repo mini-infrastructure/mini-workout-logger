@@ -6,4 +6,5 @@ export interface WorkoutExerciseWriteDTO {
     sets: SetWriteDTO[];
     equipment: ExerciseEquipment;
     rest_time_seconds: number;
+    notes?: string;
 }

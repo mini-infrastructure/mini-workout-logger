@@ -134,6 +134,7 @@ const WorkoutView = () => {
             })),
             equipment: we.equipment,
             rest_time_seconds: we.rest_time_seconds,
+            notes: we.notes,
         })),
         tag_ids: tags.map((t) => t.id),
     });
@@ -205,6 +206,13 @@ const WorkoutView = () => {
     // Exercise remove
     const handleRemoveExercise = (exerciseId: number) => {
         setExercises((prev) => prev.filter((we) => we.id !== exerciseId));
+        setDirty(true);
+    };
+
+    const handleNotesChange = (exerciseId: number, notes: string) => {
+        setExercises((prev) =>
+            prev.map((we) => we.id !== exerciseId ? we : { ...we, notes })
+        );
         setDirty(true);
     };
 
@@ -497,6 +505,7 @@ const WorkoutView = () => {
                                     onSetAdd={() => handleSetAdd(we.id)}
                                     onRemoveExercise={() => handleRemoveExercise(we.id)}
                                     onSwapExercise={(newExercise) => handleSwapExercise(we.id, newExercise)}
+                                    onNotesChange={handleNotesChange}
                                     existingExerciseIds={exercises.map((e) => e.exercise.id)}
                                     highlighted={hoveredExerciseId === we.id}
                                     onMouseEnter={() => setHoveredExerciseId(we.id)}

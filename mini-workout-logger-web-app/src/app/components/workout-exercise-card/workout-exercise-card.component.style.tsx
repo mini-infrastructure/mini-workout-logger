@@ -64,6 +64,28 @@ const styles = {
         minWidth: 0,
     }),
 
+    exerciseInfoTop: css({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    nameAndBadges: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-condensed)',
+        flex: 1,
+        minWidth: 0,
+    }),
+
+    exerciseButtons: css({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexShrink: 0,
+    }),
+
     exerciseName: css({
         fontWeight: 600,
         fontSize: 'var(--size-medium)',
@@ -73,6 +95,50 @@ const styles = {
         display: 'flex',
         flexWrap: 'wrap',
         gap: 'var(--stack-gap-condensed)',
+    }),
+
+    notesWrapper: css({
+        position: 'relative',
+        width: '100%',
+    }),
+
+    notesTextarea: (expanded: boolean) => css({
+        width: '100%',
+        boxSizing: 'border-box' as const,
+        padding: '0.4rem 0.6rem',
+        borderRadius: 'var(--borderRadius-small)',
+        backgroundColor: 'var(--color-container2)',
+        border: 'none',
+        fontSize: 'var(--size-input-text)',
+        color: 'var(--color-text)',
+        resize: 'none' as const,
+        outline: 'none',
+        minHeight: expanded ? 'calc(3 * 1.5em + 0.8rem)' : 'calc(1 * 1.5em + 0.8rem)',
+        maxHeight: 'calc(5 * 1.5em + 0.8rem)',
+        overflowY: 'auto' as const,
+        lineHeight: 1.5,
+        display: 'block',
+        ':focus': {
+            outline: 'var(--borderWidth-thin) solid var(--color-blue)',
+        },
+    }),
+
+    notesPlaceholder: css({
+        position: 'absolute',
+        top: '0.4rem',
+        left: '0.6rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--stack-gap-condensed)',
+        fontSize: 'var(--size-input-text)',
+        color: 'var(--color-gray)',
+        pointerEvents: 'none' as const,
+        userSelect: 'none' as const,
+    }),
+
+    notesPlaceholderIcon: css({
+        flexShrink: 0,
+        fontSize: 'var(--size-input-text)',
     }),
 
     swapPanel: css({

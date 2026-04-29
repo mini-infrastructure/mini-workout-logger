@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox, MdDelete } from 'react-icons/md';
 import { IoMdSwap } from 'react-icons/io';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { RiStickyNoteFill } from 'react-icons/ri';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
@@ -37,6 +38,8 @@ export type WorkoutExerciseCardProps = {
     onSetTypeChange?: (setId: number, type: SetType) => void;
     onRemoveExercise?: () => void;
     onSwapExercise?: (newExercise: ExerciseReadDTO) => void;
+    onNotesChange?: (exerciseId: number, notes: string) => void;
+    onNotesSave?: (exerciseId: number, notes: string) => void;
     existingExerciseIds?: number[];
     planMode?: boolean;
     isDragOver?: boolean;
@@ -63,6 +66,8 @@ const WorkoutExerciseCard = ({
     onSetTypeChange,
     onRemoveExercise,
     onSwapExercise,
+    onNotesChange,
+    onNotesSave,
     existingExerciseIds = [],
     planMode = false,
     isDragOver = false,
@@ -73,8 +78,11 @@ const WorkoutExerciseCard = ({
 }: WorkoutExerciseCardProps) => {
     const toggleAllRef = useRef<(() => void) | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    const notesRef = useRef<HTMLTextAreaElement>(null);
     const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
     const [draggable, setDraggable] = useState(false);
+    const [localNotes, setLocalNotes] = useState(workoutExercise.notes ?? '');
+    const [notesFocused, setNotesFocused] = useState(false);
     const [allCompleted, setAllCompleted] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [swapOpen, setSwapOpen] = useState(false);
@@ -90,6 +98,13 @@ const WorkoutExerciseCard = ({
         ro.observe(el);
         return () => ro.disconnect();
     }, []);
+
+    useEffect(() => {
+        const ta = notesRef.current;
+        if (!ta) return;
+        ta.style.height = 'auto';
+        ta.style.height = `${ta.scrollHeight}px`;
+    }, [localNotes, notesFocused]);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
     const cover = workoutExercise.exercise.media?.[0];
@@ -164,74 +179,110 @@ const WorkoutExerciseCard = ({
                         <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.cover} />
 
                         <div css={styles.exerciseInfo}>
-                            <span css={styles.exerciseName}>
-                                {workoutExercise.exercise.name}
-                            </span>
-                            {rootMuscles.length > 0 && (
-                                <div css={styles.muscles}>
-                                    {rootMuscles.map((code) => (
-                                        <Badge key={code} variant="gray">
-                                            {code.replace('Muscle.', '').replace(/_/g, ' ')}
-                                        </Badge>
-                                    ))}
+                            <div css={styles.exerciseInfoTop}>
+                                <div css={styles.nameAndBadges}>
+                                    <span css={styles.exerciseName}>
+                                        {workoutExercise.exercise.name}
+                                    </span>
+                                    {rootMuscles.length > 0 && (
+                                        <div css={styles.muscles}>
+                                            {rootMuscles.map((code) => (
+                                                <Badge key={code} variant="gray">
+                                                    {code.replace('Muscle.', '').replace(/_/g, ' ')}
+                                                </Badge>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                        </div>
 
-                        {planMode ? (
-                            <>
-                                <OnlyIconButton
-                                    icon={<IoMdSwap />}
-                                    iconColor={swapOpen ? '--color-blue' : '--color-gray'}
-                                    selected={swapOpen}
-                                    onToggle={handleToggleSwap}
-                                    legend="Swap exercise"
-                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                <div css={styles.exerciseButtons}>
+                                    {planMode ? (
+                                        <>
+                                            <OnlyIconButton
+                                                icon={<IoMdSwap />}
+                                                iconColor={swapOpen ? '--color-blue' : '--color-gray'}
+                                                selected={swapOpen}
+                                                onToggle={handleToggleSwap}
+                                                legend="Swap exercise"
+                                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                            />
+                                            <OnlyIconButton
+                                                icon={<MdDelete />}
+                                                iconColor="--color-red"
+                                                onToggle={() => onRemoveExercise?.()}
+                                                legend="Remove exercise"
+                                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                            />
+                                            <OnlyIconButton
+                                                icon={<IoIosArrowUp />}
+                                                selectedIcon={<IoIosArrowDown />}
+                                                iconColor="--color-gray"
+                                                selected={collapsed}
+                                                onToggle={(val) => setCollapsed(val)}
+                                                legend="Collapse"
+                                                selectedLegend="Expand"
+                                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <OnlyIconButton
+                                                icon={<MdCheckBoxOutlineBlank />}
+                                                selectedIcon={<MdCheckBox />}
+                                                iconColor="--color-green"
+                                                selectedIconColor="--color-green"
+                                                selected={allCompleted}
+                                                onToggle={() => toggleAllRef.current?.()}
+                                                legend="Mark all as completed"
+                                                selectedLegend="Deselect all"
+                                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                                customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
+                                            />
+                                            <OnlyIconButton
+                                                icon={<IoIosArrowDown />}
+                                                selectedIcon={<IoIosArrowUp />}
+                                                iconColor="--color-gray"
+                                                selected={collapsed}
+                                                onToggle={(val) => setCollapsed(val)}
+                                                legend="Collapse"
+                                                selectedLegend="Expand"
+                                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                            />
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div css={styles.notesWrapper}>
+                                <textarea
+                                    ref={notesRef}
+                                    rows={1}
+                                    css={styles.notesTextarea(notesFocused)}
+                                    value={localNotes}
+                                    onChange={(e) => {
+                                        setLocalNotes(e.target.value);
+                                        onNotesChange?.(workoutExercise.id, e.target.value);
+                                    }}
+                                    onFocus={() => setNotesFocused(true)}
+                                    onBlur={() => {
+                                        setNotesFocused(false);
+                                        onNotesSave?.(workoutExercise.id, localNotes);
+                                    }}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' && !e.shiftKey) {
+                                            e.preventDefault();
+                                            notesRef.current?.blur();
+                                        }
+                                    }}
                                 />
-                                <OnlyIconButton
-                                    icon={<MdDelete />}
-                                    iconColor="--color-red"
-                                    onToggle={() => onRemoveExercise?.()}
-                                    legend="Remove exercise"
-                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                />
-                                <OnlyIconButton
-                                    icon={<IoIosArrowUp />}
-                                    selectedIcon={<IoIosArrowDown />}
-                                    iconColor="--color-gray"
-                                    selected={collapsed}
-                                    onToggle={(val) => setCollapsed(val)}
-                                    legend="Collapse"
-                                    selectedLegend="Expand"
-                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                />
-                            </>
-                        ) : (
-                            <>
-                                <OnlyIconButton
-                                    icon={<MdCheckBoxOutlineBlank />}
-                                    selectedIcon={<MdCheckBox />}
-                                    iconColor="--color-green"
-                                    selectedIconColor="--color-green"
-                                    selected={allCompleted}
-                                    onToggle={() => toggleAllRef.current?.()}
-                                    legend="Mark all as completed"
-                                    selectedLegend="Deselect all"
-                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                    customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
-                                />
-                                <OnlyIconButton
-                                    icon={<IoIosArrowDown />}
-                                    selectedIcon={<IoIosArrowUp />}
-                                    iconColor="--color-gray"
-                                    selected={collapsed}
-                                    onToggle={(val) => setCollapsed(val)}
-                                    legend="Collapse"
-                                    selectedLegend="Expand"
-                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                />
-                            </>
-                        )}
+                                {!localNotes && (
+                                    <div css={styles.notesPlaceholder}>
+                                        <RiStickyNoteFill css={styles.notesPlaceholderIcon} />
+                                        <span>Add a note...</span>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
                     <SetList

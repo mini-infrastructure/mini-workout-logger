@@ -191,7 +191,8 @@ public class WorkoutControllerTest extends AbstractCrudControllerTest<Workout,
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 70.0, null),
                         new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 8, 75.0, null)
                 ),
-                60
+                60,
+                null
         );
 
         mockMvc.perform(MockMvcRequestBuilders.put(getBaseUrl() + "/{id}/exercises", workout.getId())

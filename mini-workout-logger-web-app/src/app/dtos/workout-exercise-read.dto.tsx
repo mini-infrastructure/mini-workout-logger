@@ -9,4 +9,5 @@ export interface WorkoutExerciseReadDTO {
     sets: SetReadDTO[];
     equipment: ExerciseEquipment;
     rest_time_seconds: number;
+    notes?: string;
 }
