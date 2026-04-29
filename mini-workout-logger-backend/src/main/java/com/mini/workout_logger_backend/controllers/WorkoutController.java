@@ -120,4 +120,13 @@ public class WorkoutController extends AbstractController<Workout,
         return executionService.delete(workoutId, workoutExecutionId);
     }
 
+    @Tag(name = "Workout Execution")
+    @PatchMapping("/{id}/executions/{workoutExecutionId}/finish")
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> finishWorkoutExecution(
+            @PathVariable("id") @NotNull @Min(1L) Long workoutId,
+            @PathVariable("workoutExecutionId") @NotNull @Min(1L) Long workoutExecutionId,
+            @RequestBody FinishWorkoutExecutionWriteDTO dto) {
+        return executionService.finish(workoutId, workoutExecutionId, dto);
+    }
+
 }

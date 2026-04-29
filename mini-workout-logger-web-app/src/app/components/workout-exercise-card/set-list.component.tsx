@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { DragEvent } from 'react';
 import { css } from '@emotion/react';
-import { IoCheckmarkCircleOutline, IoCheckmarkCircle } from 'react-icons/io5';
 import { FaTrashAlt } from 'react-icons/fa';
-import { MdDragIndicator } from 'react-icons/md';
+import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
 import { BiSkipNextCircle, BiSolidSkipNextCircle } from 'react-icons/bi';
 import type { SetReadDTO } from '../../dtos/set-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
@@ -50,10 +49,10 @@ export type SetListProps = {
     /** Execution mode only */
     isPlaying?: boolean;
     resetKey?: number;
-    onCompletedChange?: (completedCount: number) => void;
+    onCompletedChange?: (completedIds: number[]) => void;
     onAllCompletedChange?: (allCompleted: boolean) => void;
     toggleAllRef?: React.MutableRefObject<(() => void) | null>;
-    onSkippedChange?: (skippedCount: number) => void;
+    onSkippedChange?: (skippedIds: number[]) => void;
 };
 
 const SetList = ({
@@ -81,9 +80,9 @@ const SetList = ({
         if (resetKey === undefined) return;
         setCompletedIds(new Set());
         setSkippedIds(new Set());
-        onCompletedChange?.(0);
+        onCompletedChange?.([]);
         onAllCompletedChange?.(false);
-        onSkippedChange?.(0);
+        onSkippedChange?.([]);
     }, [resetKey]);
 
     if (!sets || sets.length === 0) return null;
@@ -98,7 +97,7 @@ const SetList = ({
         const next = new Set(completedIds);
         next.has(id) ? next.delete(id) : next.add(id);
         setCompletedIds(next);
-        onCompletedChange?.(next.size);
+        onCompletedChange?.([...next]);
         onAllCompletedChange?.(activeSetIds.every((aid) => next.has(aid)));
     };
 
@@ -110,8 +109,8 @@ const SetList = ({
         if (nextSkipped.has(id)) nextCompleted.delete(id);
         setSkippedIds(nextSkipped);
         setCompletedIds(nextCompleted);
-        onSkippedChange?.(nextSkipped.size);
-        onCompletedChange?.(nextCompleted.size);
+        onSkippedChange?.([...nextSkipped]);
+        onCompletedChange?.([...nextCompleted]);
         const newActiveIds = sets.filter((s) => !nextSkipped.has(s.id)).map((s) => s.id);
         onAllCompletedChange?.(newActiveIds.length > 0 && newActiveIds.every((aid) => nextCompleted.has(aid)));
     };
@@ -119,12 +118,12 @@ const SetList = ({
     const toggleAll = () => {
         if (allCompleted) {
             setCompletedIds(new Set());
-            onCompletedChange?.(0);
+            onCompletedChange?.([]);
             onAllCompletedChange?.(false);
         } else {
             const allActiveIds = new Set(activeSetIds);
             setCompletedIds(allActiveIds);
-            onCompletedChange?.(allActiveIds.size);
+            onCompletedChange?.([...allActiveIds]);
             onAllCompletedChange?.(allActiveIds.size > 0);
         }
     };
@@ -291,8 +290,8 @@ const SetList = ({
                         <div css={styles.rowActions}>
                             {!planMode && (
                                 <OnlyIconButton
-                                    icon={<IoCheckmarkCircleOutline />}
-                                    selectedIcon={<IoCheckmarkCircle />}
+                                    icon={<MdCheckBoxOutlineBlank />}
+                                    selectedIcon={<MdCheckBox />}
                                     iconColor="--color-green"
                                     selectedIconColor="--color-green"
                                     selected={completed}

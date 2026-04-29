@@ -33,8 +33,8 @@ export type WorkoutExerciseCardProps = {
     onSetRemove: (setId: number) => void;
     onSetReorder: (fromIndex: number, toIndex: number) => void;
     onSetAdd: () => void;
-    onCompletedChange?: (exerciseId: number, completedCount: number) => void;
-    onSkippedChange?: (exerciseId: number, skippedCount: number) => void;
+    onCompletedChange?: (exerciseId: number, completedIds: number[]) => void;
+    onSkippedChange?: (exerciseId: number, skippedIds: number[]) => void;
     onSetTypeChange?: (setId: number, type: SetType) => void;
     onRemoveExercise?: () => void;
     onSwapExercise?: (newExercise: ExerciseReadDTO) => void;
@@ -296,8 +296,8 @@ const WorkoutExerciseCard = ({
                         onAdd={onSetAdd}
                         isPlaying={isPlaying}
                         resetKey={resetKey}
-                        onCompletedChange={(count) => onCompletedChange?.(workoutExercise.id, count)}
-                        onSkippedChange={(count) => onSkippedChange?.(workoutExercise.id, count)}
+                        onCompletedChange={(ids) => onCompletedChange?.(workoutExercise.id, ids)}
+                        onSkippedChange={(ids) => onSkippedChange?.(workoutExercise.id, ids)}
                         onAllCompletedChange={setAllCompleted}
                         toggleAllRef={toggleAllRef}
                     />

@@ -14,7 +14,9 @@ import ProgressBar from '../../components/progress-bar/progress-bar.component.ts
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
+import WorkoutExecutionService from '../../services/workout-execution.service.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
+import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
 import {
     buildWorkoutExercisesPayload,
     applySetChange,
@@ -26,10 +28,13 @@ import {
 import styles from './workout-execution.view.style.tsx';
 
 const WorkoutExecutionView = () => {
-    const { id } = useParams<{ id: string; executionId: string }>();
+    const { id, executionId } = useParams<{ id: string; executionId: string }>();
     const navigate = useNavigate();
     const { workout } = useWorkout(id);
     const pushAlert = useAlert();
+
+    // The current execution (fetched once on mount to get set_execution IDs)
+    const [execution, setExecution] = useState<WorkoutExecutionReadDTO | null>(null);
 
     // Timer
     const [isPlaying, setIsPlaying] = useState(true);
@@ -44,20 +49,20 @@ const WorkoutExecutionView = () => {
     const [dragFrom, setDragFrom] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
 
-    // Progress
-    const [completedCounts, setCompletedCounts] = useState<Record<number, number>>({});
-    const [skippedCounts, setSkippedCounts] = useState<Record<number, number>>({});
-    const totalSkipped = Object.values(skippedCounts).reduce((sum, n) => sum + n, 0);
+    // Progress — keyed by exerciseId, values are plan set IDs
+    const [completedSetIds, setCompletedSetIds] = useState<Record<number, number[]>>({});
+    const [skippedSetIds, setSkippedSetIds] = useState<Record<number, number[]>>({});
+    const totalSkipped = Object.values(skippedSetIds).reduce((sum, ids) => sum + ids.length, 0);
     const totalSets = exercises.reduce((sum, we) => sum + we.sets.length, 0) - totalSkipped;
-    const completedSets = Object.values(completedCounts).reduce((sum, n) => sum + n, 0);
+    const completedSets = Object.values(completedSetIds).reduce((sum, ids) => sum + ids.length, 0);
     const progressPct = totalSets > 0 ? (completedSets / totalSets) * 100 : 0;
 
-    const handleCompletedChange = (exerciseId: number, count: number) => {
-        setCompletedCounts((prev) => ({ ...prev, [exerciseId]: count }));
+    const handleCompletedChange = (exerciseId: number, ids: number[]) => {
+        setCompletedSetIds((prev) => ({ ...prev, [exerciseId]: ids }));
     };
 
-    const handleSkippedChange = (exerciseId: number, count: number) => {
-        setSkippedCounts((prev) => ({ ...prev, [exerciseId]: count }));
+    const handleSkippedChange = (exerciseId: number, ids: number[]) => {
+        setSkippedSetIds((prev) => ({ ...prev, [exerciseId]: ids }));
     };
 
     const buildPayload = (currentExercises: WorkoutExerciseReadDTO[]) => ({
@@ -115,6 +120,14 @@ const WorkoutExecutionView = () => {
     }, [workout]);
 
     useEffect(() => {
+        if (!id || !executionId) return;
+        WorkoutExecutionService.getAll(id).then((all) => {
+            const found = all.find((e) => e.id === Number(executionId));
+            if (found) setExecution(found);
+        });
+    }, [id, executionId]);
+
+    useEffect(() => {
         if (isPlaying) {
             intervalRef.current = setInterval(() => setElapsed((s) => s + 1), 1000);
         } else {
@@ -133,16 +146,49 @@ const WorkoutExecutionView = () => {
         setIsPlaying(false);
         setElapsed(0);
         setStopKey((k) => k + 1);
-        setCompletedCounts({});
-        setSkippedCounts({});
+        setCompletedSetIds({});
+        setSkippedSetIds({});
     };
 
-    const handleFinish = () => {
+    const handleFinish = async () => {
+        if (!executionId || !execution) {
+            navigate(`/workouts/${id}`);
+            return;
+        }
+        try {
+            // Build set_execution_id list from plan set IDs
+            const setExecutions = execution.workout_exercise_executions.flatMap((wee) =>
+                wee.set_executions.map((se) => {
+                    const exerciseEntry = exercises.find((we) =>
+                        we.sets.some((s) => s.id === se.set.id)
+                    );
+                    const exerciseId = exerciseEntry?.id;
+                    const completedIds = exerciseId !== undefined ? (completedSetIds[exerciseId] ?? []) : [];
+                    const skippedIds = exerciseId !== undefined ? (skippedSetIds[exerciseId] ?? []) : [];
+                    return {
+                        set_execution_id: se.id,
+                        completed: completedIds.includes(se.set.id),
+                        skipped: skippedIds.includes(se.set.id),
+                    };
+                })
+            );
+            await WorkoutExecutionService.finish(id!, Number(executionId), { set_executions: setExecutions });
+            pushAlert('Workout finished!', 'success');
+        } catch {
+            pushAlert('Failed to save workout execution.', 'error');
+        }
         handleStop();
         navigate(`/workouts/${id}`);
     };
 
-    const handleCancel = () => {
+    const handleCancel = async () => {
+        if (executionId) {
+            try {
+                await WorkoutExecutionService.delete(id!, Number(executionId));
+            } catch {
+                // Ignore — navigate away regardless
+            }
+        }
         handleStop();
         navigate(`/workouts/${id}`);
     };

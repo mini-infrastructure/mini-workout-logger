@@ -118,6 +118,7 @@ const styles = {
         overflowY: 'auto' as const,
         lineHeight: 1.5,
         display: 'block',
+        transition: 'height 0.15s ease, min-height 0.15s ease',
         ':focus': {
             outline: 'var(--borderWidth-thin) solid var(--color-blue)',
         },
