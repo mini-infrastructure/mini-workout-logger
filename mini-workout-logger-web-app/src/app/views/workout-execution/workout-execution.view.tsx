@@ -186,24 +186,26 @@ const WorkoutExecutionView = () => {
                 <ProgressBar percentage={progressPct} />
 
                 <div css={styles.content}>
-                    {exercises.map((we) => (
-                        <WorkoutExerciseCard
-                            key={we.id}
-                            workoutExercise={we}
-                            onDragStart={() => {}}
-                            onDragOver={() => {}}
-                            onDrop={() => {}}
-                            onDragEnd={() => {}}
-                            onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
-                            isPlaying={isPlaying}
-                            resetKey={stopKey}
-                            onSetRemove={(setId) => handleSetRemove(we.id, setId)}
-                            onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
-                            onSetAdd={() => handleSetAdd(we.id)}
-                            onCompletedChange={handleCompletedChange}
-                            onSkippedChange={handleSkippedChange}
-                        />
-                    ))}
+                    <div css={styles.exerciseList}>
+                        {exercises.map((we) => (
+                            <WorkoutExerciseCard
+                                key={we.id}
+                                workoutExercise={we}
+                                onDragStart={() => {}}
+                                onDragOver={() => {}}
+                                onDrop={() => {}}
+                                onDragEnd={() => {}}
+                                onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
+                                isPlaying={isPlaying}
+                                resetKey={stopKey}
+                                onSetRemove={(setId) => handleSetRemove(we.id, setId)}
+                                onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
+                                onSetAdd={() => handleSetAdd(we.id)}
+                                onCompletedChange={handleCompletedChange}
+                                onSkippedChange={handleSkippedChange}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </Layout>

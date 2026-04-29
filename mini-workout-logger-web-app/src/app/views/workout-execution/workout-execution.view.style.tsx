@@ -67,10 +67,8 @@ const styles = {
 
     content: css({
         flex: 1,
+        minHeight: 0,
         overflowY: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--stack-gap-normal)',
         paddingRight: 'var(--base-size-4)',
         '&::-webkit-scrollbar-track': { background: 'transparent' },
         '&::-webkit-scrollbar-thumb': {
@@ -79,6 +77,12 @@ const styles = {
         },
         scrollbarWidth: 'auto',
         scrollbarColor: 'var(--color-border) transparent',
+    }),
+
+    exerciseList: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-normal)',
     }),
 };
 
