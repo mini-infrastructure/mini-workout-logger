@@ -83,9 +83,15 @@ const WorkoutExerciseCard = ({
     const [draggable, setDraggable] = useState(false);
     const [localNotes, setLocalNotes] = useState(workoutExercise.notes ?? '');
     const [notesFocused, setNotesFocused] = useState(false);
+    const [taHeightPx, setTaHeightPx] = useState<number | null>(null);
+    // Ref keeps the current height value accessible inside effects without
+    // adding taHeightPx to their dependency arrays (which would cause loops).
+    const taHeightRef = useRef<number | null>(null);
+    taHeightRef.current = taHeightPx;
     const [allCompleted, setAllCompleted] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [swapOpen, setSwapOpen] = useState(false);
+    const [swapAnimating, setSwapAnimating] = useState(false);
     const [recommendations, setRecommendations] = useState<ExerciseRecommendationReadDTO[]>([]);
     const [loadingRecs, setLoadingRecs] = useState(false);
 
@@ -102,14 +108,32 @@ const WorkoutExerciseCard = ({
     useEffect(() => {
         const ta = notesRef.current;
         if (!ta) return;
-        const style = getComputedStyle(ta);
-        const lineHeight = parseFloat(style.lineHeight);
-        const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-        const minLines = notesFocused ? 3 : 1;
-        const minHeight = minLines * lineHeight + paddingY;
+        const s = getComputedStyle(ta);
+        const lh = parseFloat(s.lineHeight);
+        const py = parseFloat(s.paddingTop) + parseFloat(s.paddingBottom);
+        const minH = (notesFocused ? 3 : 1) * lh + py;
+
+        // Disable transition, reset to auto, measure true content height,
+        // then restore the previous React-managed height before re-enabling.
+        // This way the DOM stays visually stable during measurement and the
+        // CSS transition fires cleanly when React applies the new height below.
+        ta.style.transition = 'none';
         ta.style.height = 'auto';
-        ta.style.height = `${Math.max(ta.scrollHeight, minHeight)}px`;
+        const contentH = ta.scrollHeight;
+        ta.style.height = taHeightRef.current !== null ? `${taHeightRef.current}px` : 'auto';
+        ta.style.transition = '';
+
+        setTaHeightPx(Math.max(contentH, minH));
     }, [localNotes, notesFocused]);
+
+    // Triggers the open animation after the wrapper has been painted at maxHeight: 0.
+    // requestAnimationFrame fires before the browser paints in React 18, so a
+    // 16 ms timeout (≈ 1 frame) is needed to guarantee a visible starting state.
+    useEffect(() => {
+        if (!swapOpen) return;
+        const id = setTimeout(() => setSwapAnimating(true), 16);
+        return () => clearTimeout(id);
+    }, [swapOpen]);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
     const cover = workoutExercise.exercise.media?.[0];
@@ -117,10 +141,13 @@ const WorkoutExerciseCard = ({
 
     const handleToggleSwap = async () => {
         if (swapOpen) {
-            setSwapOpen(false);
+            setSwapAnimating(false);
+            setTimeout(() => setSwapOpen(false), 260);
             return;
         }
         setSwapOpen(true);
+        // Open animation is triggered by the useEffect below after the element
+        // has been painted at maxHeight: 0.
         setLoadingRecs(true);
         const recs = await ExerciseRecommendationService.getRecommendations(
             workoutExercise.exercise.id,
@@ -263,6 +290,7 @@ const WorkoutExerciseCard = ({
                                     ref={notesRef}
                                     rows={1}
                                     css={styles.notesTextarea}
+                                    style={taHeightPx !== null ? { height: `${taHeightPx}px` } : undefined}
                                     value={localNotes}
                                     onChange={(e) => {
                                         setLocalNotes(e.target.value);
@@ -309,6 +337,7 @@ const WorkoutExerciseCard = ({
                     />
 
                     {planMode && swapOpen && (
+                    <div css={styles.swapPanelWrapper} style={{ maxHeight: swapAnimating ? '600px' : '0' }}>
                         <div css={styles.swapPanel}>
                             {loadingRecs ? (
                                 <span css={styles.swapEmpty}>Loading recommendations…</span>
@@ -325,7 +354,8 @@ const WorkoutExerciseCard = ({
                                                         mini
                                                         onClick={() => {
                                                             onSwapExercise?.(rec.exercise);
-                                                            setSwapOpen(false);
+                                                            setSwapAnimating(false);
+                                                            setTimeout(() => setSwapOpen(false), 260);
                                                         }}
                                                     />
                                                 </div>
@@ -350,7 +380,9 @@ const WorkoutExerciseCard = ({
                                 </>
                             )}
                         </div>
+                    </div>
                     )}
+
                 </div>
             </Card>
         </div>

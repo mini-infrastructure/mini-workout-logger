@@ -117,6 +117,7 @@ const styles = {
         overflowY: 'auto' as const,
         lineHeight: 1.5,
         display: 'block',
+        transition: 'height var(--transition-expand)',
         ':focus': {
             outline: 'var(--borderWidth-thin) solid var(--color-blue)',
         },
@@ -140,9 +141,15 @@ const styles = {
         fontSize: 'var(--size-input-text)',
     }),
 
+    swapPanelWrapper: css({
+        overflow: 'hidden',
+        transition: 'max-height var(--transition-expand)',
+    }),
+
     swapPanel: css({
         display: 'block',
         minWidth: 0,
+        paddingTop: 'var(--stack-gap-normal)',
     }),
 
     // Outer scroll container — plain block, no flex. Width = parent content

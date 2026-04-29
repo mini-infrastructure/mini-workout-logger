@@ -122,6 +122,10 @@ const layout = {
     },
 };
 
+const transition = {
+    expand: '0.25s ease',
+};
+
 export const theme = {
     colors,
     fonts,
@@ -137,6 +141,7 @@ export const theme = {
     shadow: {
         normal: '0 4px 6px -1px rgba(1, 4, 9, 0.8)',
     },
+    transition,
 };
 
 export type AppTheme = typeof theme;

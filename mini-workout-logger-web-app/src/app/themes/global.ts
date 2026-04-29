@@ -110,6 +110,9 @@ const globalStyles = (theme: AppTheme) => css({
 
         /* Shadows */
         '--shadow-normal': theme.shadow.normal,
+
+        /* Transitions */
+        '--transition-expand': theme.transition.expand,
     } as any,
 
     body: {

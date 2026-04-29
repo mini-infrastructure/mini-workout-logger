@@ -70,6 +70,7 @@ const WorkoutView = () => {
 
     // Add exercise section
     const [addOpen, setAddOpen] = useState(false);
+    const [addAnimating, setAddAnimating] = useState(false);
     const [exerciseQuery, setExerciseQuery] = useState('');
     const [searchPage, setSearchPage] = useState(0);
     const existingExerciseIds = useMemo(() => exercises.map((we) => we.exercise.id), [exercises]);
@@ -112,6 +113,22 @@ const WorkoutView = () => {
             .catch(() => setExecutions([]))
             .finally(() => setLoadingHistory(false));
     }, [id]);
+
+    useEffect(() => {
+        if (!addOpen) return;
+        const id = setTimeout(() => setAddAnimating(true), 16);
+        return () => clearTimeout(id);
+    }, [addOpen]);
+
+    const handleToggleAdd = () => {
+        if (addOpen) {
+            setAddAnimating(false);
+            setTimeout(() => setAddOpen(false), 260);
+        } else {
+            setAddOpen(true);
+            setSearchPage(0);
+        }
+    };
 
     // All muscles across the workout (shown when nothing is hovered)
     const allMuscles = useMemo(
@@ -479,13 +496,14 @@ const WorkoutView = () => {
                         <div css={styles.addContainer}>
                             <Button
                                 icon={addOpen ? <MdExpandLess /> : <MdAdd />}
-                                onClick={() => { setAddOpen((v) => !v); setSearchPage(0); }}
+                                onClick={handleToggleAdd}
                                 customCss={styles.addExerciseToggle}
                             >
                                 {addOpen ? 'Collapse' : 'Add exercise'}
                             </Button>
 
                             {addOpen && (
+                            <div css={styles.addSectionWrapper} style={{ maxHeight: addAnimating ? '500px' : '0' }}>
                                 <div css={styles.addSection}>
                                     <Search
                                         value={exerciseQuery}
@@ -523,6 +541,7 @@ const WorkoutView = () => {
                                         );
                                     })()}
                                 </div>
+                            </div>
                             )}
                         </div>
 

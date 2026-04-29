@@ -945,16 +945,119 @@ SELECT add_exercise(
 -- excluded from the exercise database listing)
 -- ─────────────────────────────────────────────────────────────────────────────
 
-SELECT add_exercise('Running',          'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Treadmill_Running','Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Walking',          'Cardio', 'CARDIO', 'NOVICE',   'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Treadmill_Walking','Cardio', 'CARDIO', 'NOVICE',   'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Cycling',          'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Stationary_Bike',  'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Rowing_Machine',   'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Jump_Rope',        'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Swimming',         'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Elliptical',       'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Hiking',           'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Yoga',             'Mind-Body', 'MOBILITY', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
-SELECT add_exercise('Pilates',          'Mind-Body', 'CALISTHENICS', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+-- Running: quads and hamstrings drive the stride; glutes, calves and tibialis assist; core stabilizes
+SELECT add_exercise(
+    'Running', 'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Quadriceps', 'Muscle.Hamstrings'],
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+SELECT add_exercise(
+    'Treadmill_Running', 'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Quadriceps', 'Muscle.Hamstrings'],
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Walking: lower-intensity gait; glutes and quads as primary movers
+SELECT add_exercise(
+    'Walking', 'Cardio', 'CARDIO', 'NOVICE', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Quadriceps'],
+    ARRAY['Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+SELECT add_exercise(
+    'Treadmill_Walking', 'Cardio', 'CARDIO', 'NOVICE', 'MACHINE', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Quadriceps'],
+    ARRAY['Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Cycling: quad-dominant push; glutes and hamstrings assist; core and calves stabilize
+SELECT add_exercise(
+    'Cycling', 'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+SELECT add_exercise(
+    'Stationary_Bike', 'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Quadriceps'],
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Rowing: full-body pull; back and legs drive; core and arms stabilize
+SELECT add_exercise(
+    'Rowing_Machine', 'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Latissimus_Dorsi', 'Muscle.Rhomboids'],
+    ARRAY['Muscle.Biceps', 'Muscle.Middle_Trapezius', 'Muscle.Lower_Trapezius',
+          'Muscle.Gluteus_Maximus', 'Muscle.Hamstrings', 'Muscle.Quadriceps'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae', 'Muscle.Gastrocnemius'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Jump rope: calves absorb impact; quads and hamstrings assist; core and shoulders stabilize
+SELECT add_exercise(
+    'Jump_Rope', 'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Quadriceps', 'Muscle.Hamstrings'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Swimming (freestyle): lat-dominant pull; chest, shoulders and arms assist; core stabilizes
+SELECT add_exercise(
+    'Swimming', 'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Latissimus_Dorsi'],
+    ARRAY['Muscle.Pectoralis_Major', 'Muscle.Anterior_Deltoid', 'Muscle.Triceps',
+          'Muscle.Biceps', 'Muscle.Middle_Trapezius', 'Muscle.Lower_Trapezius'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Elliptical: combined push-pull gait; quads and glutes as primary movers
+SELECT add_exercise(
+    'Elliptical', 'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Quadriceps', 'Muscle.Gluteus_Maximus'],
+    ARRAY['Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Tibialis_Anterior'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Hiking: like walking but with more glute and stabilizer demand from uneven terrain
+SELECT add_exercise(
+    'Hiking', 'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Quadriceps'],
+    ARRAY['Muscle.Hamstrings', 'Muscle.Gastrocnemius', 'Muscle.Soleus', 'Muscle.Adductor_Magnus'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Erector_Spinae',
+          'Muscle.Gluteus_Medius', 'Muscle.Gluteus_Minimus'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Yoga: spine and posterior chain mobility; core and hip stabilizers
+SELECT add_exercise(
+    'Yoga', 'Mind-Body', 'MOBILITY', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Erector_Spinae'],
+    ARRAY['Muscle.Gluteus_Maximus', 'Muscle.Hamstrings', 'Muscle.Quadriceps'],
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques', 'Muscle.Gluteus_Medius'],
+    '{}', '{}', '{}', '{}', TRUE
+);
+
+-- Pilates: deep core focus; spinal extensors and glutes support; hip stabilizers engage
+SELECT add_exercise(
+    'Pilates', 'Mind-Body', 'CALISTHENICS', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL,
+    ARRAY['Muscle.Abdominal', 'Muscle.Obliques'],
+    ARRAY['Muscle.Erector_Spinae', 'Muscle.Gluteus_Maximus'],
+    ARRAY['Muscle.Quadratus_Lumborum', 'Muscle.Gluteus_Medius'],
+    '{}', '{}', '{}', '{}', TRUE
+);

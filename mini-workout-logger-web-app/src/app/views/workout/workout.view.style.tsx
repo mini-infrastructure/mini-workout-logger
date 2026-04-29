@@ -130,6 +130,11 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
     }),
 
+    addSectionWrapper: css({
+        overflow: 'hidden',
+        transition: 'max-height var(--transition-expand)',
+    }),
+
     addSection: css({
         display: 'flex',
         flexDirection: 'column',
