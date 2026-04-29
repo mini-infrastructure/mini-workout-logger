@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
-import { MdDragIndicator, MdDoneAll, MdDelete } from 'react-icons/md';
+import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox, MdDelete } from 'react-icons/md';
 import { IoMdSwap } from 'react-icons/io';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
@@ -104,7 +104,9 @@ const WorkoutExerciseCard = ({
             workoutExercise.exercise.id,
             { limit: 20 }
         );
-        setRecommendations(recs.filter(r => !existingExerciseIds.includes(r.exercise.id)));
+        if (existingExerciseIds) {
+            setRecommendations(recs.filter(r => !existingExerciseIds.includes(r.exercise.id)));
+        }
         setLoadingRecs(false);
     };
 
@@ -194,9 +196,10 @@ const WorkoutExerciseCard = ({
                             </>
                         ) : (
                             <OnlyIconButton
-                                icon={<MdDoneAll />}
+                                icon={<MdCheckBoxOutlineBlank />}
+                                selectedIcon={<MdCheckBox />}
                                 iconColor="--color-green"
-                                selectedIconColor="--color-container2"
+                                selectedIconColor="--color-green"
                                 selected={allCompleted}
                                 onToggle={() => toggleAllRef.current?.()}
                                 legend="Mark all as completed"

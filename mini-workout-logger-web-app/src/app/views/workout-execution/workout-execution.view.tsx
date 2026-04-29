@@ -176,7 +176,7 @@ const WorkoutExecutionView = () => {
                         <OnlyIconButton
                             icon={<IoStop />}
                             iconColor="--color-white"
-                            legend="Stop"
+                            legend="Reset"
                             onToggle={handleStop}
                             customCss={!isPlaying && elapsed === 0 ? { opacity: 0.3, pointerEvents: 'none' } : undefined}
                         />
