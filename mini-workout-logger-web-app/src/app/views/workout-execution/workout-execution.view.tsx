@@ -15,6 +15,14 @@ import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
+import {
+    buildWorkoutExercisesPayload,
+    applySetChange,
+    applySetRemove,
+    applySetReorder,
+    applySetAdd,
+    applyNotesChange,
+} from '../../utils/workout-exercise.utils.ts';
 import styles from './workout-execution.view.style.tsx';
 
 const WorkoutExecutionView = () => {
@@ -54,26 +62,12 @@ const WorkoutExecutionView = () => {
 
     const buildPayload = (currentExercises: WorkoutExerciseReadDTO[]) => ({
         name: workout?.name ?? '',
-        workout_exercises: currentExercises.map((we) => ({
-            exercise_id: we.exercise.id,
-            sets: we.sets.map((s) => ({
-                category: s.category,
-                type: s.type,
-                planned_repetitions: (s.type === 'TIME' || s.type === 'TIME_X_WEIGHT') ? null : (s.planned_repetitions ?? 0),
-                planned_weight: (s.type === 'REPS' || s.type === 'TIME') ? null : (s.planned_weight ?? 0),
-                planned_duration_seconds: (s.type === 'REPS' || s.type === 'REPS_X_WEIGHT') ? null : (s.planned_duration_seconds ?? 0),
-            })),
-            equipment: we.equipment,
-            rest_time_seconds: we.rest_time_seconds,
-            notes: we.notes,
-        })),
+        workout_exercises: buildWorkoutExercisesPayload(currentExercises),
         tag_ids: workout?.tags?.map((t) => t.id) ?? [],
     });
 
     const handleNotesChange = (exerciseId: number, notes: string) => {
-        setExercises((prev) =>
-            prev.map((we) => we.id !== exerciseId ? we : { ...we, notes })
-        );
+        setExercises((prev) => applyNotesChange(prev, exerciseId, notes));
     };
 
     const handleNotesSave = async (exerciseId: number, notes: string) => {
@@ -155,54 +149,19 @@ const WorkoutExecutionView = () => {
 
     // Set interactions (local only — actual tracking is future work)
     const handleSetChange = (exerciseId: number, setId: number, field: string, value: number) => {
-        setExercises((prev) =>
-            prev.map((we) => {
-                if (we.id !== exerciseId) return we;
-                return { ...we, sets: we.sets.map((s) => s.id === setId ? { ...s, [field]: value } : s) };
-            })
-        );
+        setExercises((prev) => applySetChange(prev, exerciseId, setId, field, value));
     };
 
     const handleSetRemove = (exerciseId: number, setId: number) => {
-        setExercises((prev) =>
-            prev.map((we) =>
-                we.id !== exerciseId ? we : { ...we, sets: we.sets.filter((s) => s.id !== setId) }
-            )
-        );
+        setExercises((prev) => applySetRemove(prev, exerciseId, setId));
     };
 
     const handleSetReorder = (exerciseId: number, fromIndex: number, toIndex: number) => {
-        setExercises((prev) =>
-            prev.map((we) => {
-                if (we.id !== exerciseId) return we;
-                const sets = [...we.sets];
-                const [moved] = sets.splice(fromIndex, 1);
-                const adjusted = toIndex > fromIndex ? toIndex - 1 : toIndex;
-                sets.splice(adjusted, 0, moved);
-                return { ...we, sets };
-            })
-        );
+        setExercises((prev) => applySetReorder(prev, exerciseId, fromIndex, toIndex));
     };
 
     const handleSetAdd = (exerciseId: number) => {
-        setExercises((prev) =>
-            prev.map((we) => {
-                if (we.id !== exerciseId) return we;
-                const last = we.sets[we.sets.length - 1];
-                return {
-                    ...we,
-                    sets: [...we.sets, {
-                        id: -Date.now(),
-                        position: we.sets.length,
-                        category: last?.category ?? 'NORMAL',
-                        type: last?.type ?? 'REPS',
-                        planned_repetitions: last?.planned_repetitions ?? 0,
-                        planned_weight: last?.planned_weight ?? null,
-                        planned_duration_seconds: last?.planned_duration_seconds ?? null,
-                    }],
-                };
-            })
-        );
+        setExercises((prev) => applySetAdd(prev, exerciseId, true));
     };
 
     return (

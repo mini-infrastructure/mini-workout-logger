@@ -101,6 +101,8 @@ Key classes provided by `mini-java-core`:
 
 **Key rule:** If a property is **changed** (renamed, retyped), fix every frontend occurrence. If a property or entity is **added**, only create the new `dtos/` and `models/` files — do not touch unrelated frontend code.
 
+10. **Frontend payloads** — search for every place that constructs a WriteDTO payload (look for `buildPayload`, object literals assigned to WriteDTO types, or service call arguments) and add/remove the property there too. Also check that the TypeScript type of the value matches the DTO field exactly — in particular, optional fields (`field?: T`) must use a conditional spread (`...(val !== undefined ? { field: val } : {})`) rather than `field: val` when `val` may be `undefined`, to avoid type errors under strict mode.
+
 ---
 
 ## Backend

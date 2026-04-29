@@ -1,5 +1,5 @@
 import type {SetWriteDTO} from "./set-write.dto.tsx";
-import type {ExerciseEquipment} from "../models/workout-exercise.model.tsx";
+import type {ExerciseEquipment} from "../models/exercise.model.tsx";
 
 export interface WorkoutExerciseWriteDTO {
     exercise_id: number;

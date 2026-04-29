@@ -30,7 +30,15 @@ import type { WorkoutWriteDTO } from '../../dtos/workout-write.dto.tsx';
 import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { TagReadDTO } from '../../dtos/tag-read.dto.tsx';
-import type { SetType } from '../../models/set.model.tsx';
+import WorkoutExecutionHistoryCard from '../../components/workout-execution-card/workout-execution-history-card.component.tsx';
+import {
+    buildWorkoutExercisesPayload,
+    applySetChange,
+    applySetRemove,
+    applySetReorder,
+    applySetAdd,
+    applyNotesChange,
+} from '../../utils/workout-exercise.utils.ts';
 import styles from './workout.view.style.tsx';
 
 const WorkoutView = () => {
@@ -126,19 +134,7 @@ const WorkoutView = () => {
     // Build the full payload from current state
     const buildPayload = (name: string, tags: TagReadDTO[]): WorkoutWriteDTO => ({
         name,
-        workout_exercises: exercises.map((we) => ({
-            exercise_id: we.exercise.id,
-            sets: we.sets.map((s) => ({
-                category: s.category,
-                type: s.type,
-                planned_repetitions: (s.type === 'TIME' || s.type === 'TIME_X_WEIGHT') ? null : (s.planned_repetitions ?? 0),
-                planned_weight: (s.type === 'REPS' || s.type === 'TIME') ? null : (s.planned_weight ?? 0),
-                planned_duration_seconds: (s.type === 'REPS' || s.type === 'REPS_X_WEIGHT') ? null : (s.planned_duration_seconds ?? 0),
-            })),
-            equipment: we.equipment,
-            rest_time_seconds: we.rest_time_seconds,
-            notes: we.notes,
-        })),
+        workout_exercises: buildWorkoutExercisesPayload(exercises),
         tag_ids: tags.map((t) => t.id),
     });
 
@@ -167,14 +163,7 @@ const WorkoutView = () => {
 
     // Set field change
     const handleSetChange = (exerciseId: number, setId: number, field: string, value: number) => {
-        setExercises((prev) =>
-            prev.map((we) =>
-                we.id !== exerciseId ? we : {
-                    ...we,
-                    sets: we.sets.map((s) => s.id === setId ? { ...s, [field]: value } : s),
-                }
-            )
-        );
+        setExercises((prev) => applySetChange(prev, exerciseId, setId, field, value));
         setDirty(true);
     };
 
@@ -193,16 +182,7 @@ const WorkoutView = () => {
 
     // Set reorder (local only, saved with full workout save)
     const handleSetReorder = (exerciseId: number, fromIndex: number, toIndex: number) => {
-        setExercises((prev) =>
-            prev.map((we) => {
-                if (we.id !== exerciseId) return we;
-                const sets = [...we.sets];
-                const [moved] = sets.splice(fromIndex, 1);
-                const adjusted = toIndex > fromIndex ? toIndex - 1 : toIndex;
-                sets.splice(adjusted, 0, moved);
-                return { ...we, sets };
-            })
-        );
+        setExercises((prev) => applySetReorder(prev, exerciseId, fromIndex, toIndex));
         setDirty(true);
     };
 
@@ -213,9 +193,7 @@ const WorkoutView = () => {
     };
 
     const handleNotesChange = (exerciseId: number, notes: string) => {
-        setExercises((prev) =>
-            prev.map((we) => we.id !== exerciseId ? we : { ...we, notes })
-        );
+        setExercises((prev) => applyNotesChange(prev, exerciseId, notes));
         setDirty(true);
     };
 
@@ -234,34 +212,13 @@ const WorkoutView = () => {
 
     // Set remove
     const handleSetRemove = (exerciseId: number, setId: number) => {
-        setExercises((prev) =>
-            prev.map((we) =>
-                we.id !== exerciseId ? we : { ...we, sets: we.sets.filter((s) => s.id !== setId) }
-            )
-        );
+        setExercises((prev) => applySetRemove(prev, exerciseId, setId));
         setDirty(true);
     };
 
     // Set add
     const handleSetAdd = (exerciseId: number) => {
-        setExercises((prev) =>
-            prev.map((we) => {
-                if (we.id !== exerciseId) return we;
-                const last = we.sets[we.sets.length - 1];
-                return {
-                    ...we,
-                    sets: [...we.sets, {
-                        id: -Date.now(),
-                        position: we.sets.length,
-                        category: last?.category ?? 'NORMAL',
-                        type: last?.type ?? 'REPS',
-                        planned_repetitions: last?.planned_repetitions ?? 0,
-                        planned_weight: last?.planned_weight ?? 0,
-                        planned_duration_seconds: last?.planned_duration_seconds ?? 0,
-                    }],
-                };
-            })
-        );
+        setExercises((prev) => applySetAdd(prev, exerciseId));
         setDirty(true);
     };
 
@@ -387,14 +344,6 @@ const WorkoutView = () => {
         } catch {
             pushAlert('Failed to start workout.', 'error');
         }
-    };
-
-    const formatDate = (iso: string) => {
-        if (!iso) return '—';
-        return new Date(iso).toLocaleString(undefined, {
-            dateStyle: 'medium',
-            timeStyle: 'short',
-        });
     };
 
     return (
@@ -584,12 +533,7 @@ const WorkoutView = () => {
                         ) : (
                             <div css={styles.historyList}>
                                 {executions.map((ex) => (
-                                    <div key={ex.id} css={styles.historyItem}>
-                                        <span css={styles.historyDate}>{formatDate(ex.start_time)}</span>
-                                        <Badge variant={ex.completed ? 'success' : 'gray'}>
-                                            {ex.completed ? 'Completed' : 'Incomplete'}
-                                        </Badge>
-                                    </div>
+                                    <WorkoutExecutionHistoryCard key={ex.id} execution={ex} />
                                 ))}
                             </div>
                         )}
