@@ -124,17 +124,41 @@ const styles = {
         },
     }),
 
+    addContainer: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
     addSection: css({
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--stack-gap-condensed)',
-        paddingInline: 'var(--base-size-4)',
+        padding: 'var(--stack-gap-condensed)',
+        backgroundColor: 'var(--color-container2)',
+        borderRadius: 'var(--borderRadius-medium)',
+    }),
+
+    resultsArea: css({
+        height: 256,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
     }),
 
     exerciseSearchResults: css({
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
         gap: 'var(--stack-gap-condensed)',
+        alignContent: 'flex-start',
+        height: '100%',
+    }),
+
+    noResults: css({
+        fontSize: 'var(--size-small)',
+        color: 'var(--color-gray)',
+        textAlign: 'center' as const,
     }),
 
     searchResultCard: css({

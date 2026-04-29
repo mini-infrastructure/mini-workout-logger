@@ -64,7 +64,7 @@ const styles = {
         gap: 'var(--stack-gap-tiny)',
 
         '& > li': {
-            flex: '1 1 calc(50% - 4px)',
+            flex: '0 1 calc(50% - 4px)',
             minWidth: 0,
             display: 'flex',
         },

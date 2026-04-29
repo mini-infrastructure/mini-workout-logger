@@ -62,9 +62,10 @@ public class ExerciseService extends AbstractMediaService<Exercise,
     @SuppressWarnings("unchecked")
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> getAll(Map<String, String> params) {
         Map<String, String> filteredParams = new HashMap<>(params);
-        String groupName = filteredParams.remove("groupName");
-        String muscle    = filteredParams.remove("muscle");
-        String muscles   = filteredParams.remove("muscles");
+        String groupName   = filteredParams.remove("groupName");
+        String muscle      = filteredParams.remove("muscle");
+        String muscles     = filteredParams.remove("muscles");
+        String excludeIds  = filteredParams.remove("excludeIds");
 
         int page = parseIntParam(filteredParams.get("page"), 0);
         int size = parseIntParam(filteredParams.get("size"), 20);
@@ -144,6 +145,18 @@ public class ExerciseService extends AbstractMediaService<Exercise,
                     return inClause;
                 };
                 spec = spec == null ? musclesSpec : spec.and(musclesSpec);
+            }
+        }
+
+        if (StringUtils.hasText(excludeIds)) {
+            List<Long> ids = Arrays.stream(excludeIds.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Long::parseLong)
+                    .toList();
+            if (!ids.isEmpty()) {
+                Specification<Exercise> excludeSpec = (root, query, cb) -> root.get("id").in(ids).not();
+                spec = spec == null ? excludeSpec : spec.and(excludeSpec);
             }
         }
 

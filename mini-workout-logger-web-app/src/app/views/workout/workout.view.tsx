@@ -18,6 +18,7 @@ import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Divider from '../../components/divider/divider.component.tsx';
+import Pagination from '../../components/pagination/pagination.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useExercises } from '../../hooks/useExercises.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
@@ -62,7 +63,9 @@ const WorkoutView = () => {
     // Add exercise section
     const [addOpen, setAddOpen] = useState(false);
     const [exerciseQuery, setExerciseQuery] = useState('');
-    const { exercises: searchResults } = useExercises(exerciseQuery, 0, {}, []);
+    const [searchPage, setSearchPage] = useState(0);
+    const existingExerciseIds = useMemo(() => exercises.map((we) => we.exercise.id), [exercises]);
+    const { exercises: searchResults, pagination: searchPagination } = useExercises(exerciseQuery, searchPage, {}, [], 12, existingExerciseIds);
 
     // Exercise drag state
     const [dragFrom, setDragFrom] = useState<number | null>(null);
@@ -262,6 +265,8 @@ const WorkoutView = () => {
         setDirty(true);
     };
 
+    useEffect(() => { setSearchPage(0); }, [exerciseQuery]);
+
     // Add exercise from search
     const handleAddExercise = (exercise: ExerciseReadDTO) => {
         const newEntry: WorkoutExerciseReadDTO = {
@@ -284,6 +289,7 @@ const WorkoutView = () => {
         setDirty(true);
         setAddOpen(false);
         setExerciseQuery('');
+        setSearchPage(0);
     };
 
     // Clear edits
@@ -517,36 +523,55 @@ const WorkoutView = () => {
 
                         {/* Add exercise */}
                         <Divider />
-                        <Button
-                            icon={addOpen ? <MdExpandLess /> : <MdAdd />}
-                            onClick={() => setAddOpen((v) => !v)}
-                            customCss={styles.addExerciseToggle}
-                        >
-                            {addOpen ? 'Collapse' : 'Add exercise'}
-                        </Button>
+                        <div css={styles.addContainer}>
+                            <Button
+                                icon={addOpen ? <MdExpandLess /> : <MdAdd />}
+                                onClick={() => { setAddOpen((v) => !v); setSearchPage(0); }}
+                                customCss={styles.addExerciseToggle}
+                            >
+                                {addOpen ? 'Collapse' : 'Add exercise'}
+                            </Button>
 
-                        {addOpen && (
-                            <div css={styles.addSection}>
-                                <Search
-                                    value={exerciseQuery}
-                                    onChange={setExerciseQuery}
-                                    placeholder="Search exercises..."
-                                />
-                                <div css={styles.exerciseSearchResults}>
-                                    {searchResults
-                                        .filter((ex) => !exercises.some((we) => we.exercise.id === ex.id))
-                                        .map((ex) => (
-                                        <ExerciseCard
-                                            key={ex.id}
-                                            exercise={ex}
-                                            mini
-                                            onClick={() => handleAddExercise(ex)}
-                                            customCss={styles.searchResultCard}
-                                        />
-                                    ))}
+                            {addOpen && (
+                                <div css={styles.addSection}>
+                                    <Search
+                                        value={exerciseQuery}
+                                        onChange={setExerciseQuery}
+                                        placeholder="Search exercises..."
+                                    />
+                                    {(() => {
+                                        return (
+                                            <>
+                                                <div css={styles.resultsArea}>
+                                                    {searchResults.length === 0 ? (
+                                                        <span css={styles.noResults}>No exercises found.</span>
+                                                    ) : (
+                                                        <div css={styles.exerciseSearchResults}>
+                                                            {searchResults.map((ex) => (
+                                                                <ExerciseCard
+                                                                    key={ex.id}
+                                                                    exercise={ex}
+                                                                    mini
+                                                                    onClick={() => handleAddExercise(ex)}
+                                                                    customCss={styles.searchResultCard}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                {searchResults.length > 0 && searchPagination && searchPagination.total_pages > 1 && (
+                                                    <Pagination
+                                                        page={searchPage}
+                                                        totalPages={searchPagination.total_pages}
+                                                        onPageChange={setSearchPage}
+                                                    />
+                                                )}
+                                            </>
+                                        );
+                                    })()}
                                 </div>
-                            </div>
-                        )}
+                            )}
+                        </div>
 
                         {/* History */}
                         <Divider />

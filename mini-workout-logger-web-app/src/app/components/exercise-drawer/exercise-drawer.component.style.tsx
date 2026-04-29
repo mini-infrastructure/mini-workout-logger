@@ -103,7 +103,7 @@ const styles = {
     mediaArea: css({
         position: 'relative',
         width: '100%',
-        height: 300,
+        height: 420,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -120,7 +120,7 @@ const styles = {
     mediaSlide: css({
         position: 'relative',
         width: '100%',
-        height: 300,
+        height: 420,
     }),
 
     mediaImg: css({
