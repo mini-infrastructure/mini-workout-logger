@@ -4,6 +4,7 @@ import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
 import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox, MdDelete } from 'react-icons/md';
 import { IoMdSwap } from 'react-icons/io';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
@@ -75,6 +76,7 @@ const WorkoutExerciseCard = ({
     const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
     const [draggable, setDraggable] = useState(false);
     const [allCompleted, setAllCompleted] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
     const [swapOpen, setSwapOpen] = useState(false);
     const [recommendations, setRecommendations] = useState<ExerciseRecommendationReadDTO[]>([]);
     const [loadingRecs, setLoadingRecs] = useState(false);
@@ -193,26 +195,49 @@ const WorkoutExerciseCard = ({
                                     legend="Remove exercise"
                                     customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
                                 />
+                                <OnlyIconButton
+                                    icon={<IoIosArrowUp />}
+                                    selectedIcon={<IoIosArrowDown />}
+                                    iconColor="--color-gray"
+                                    selected={collapsed}
+                                    onToggle={(val) => setCollapsed(val)}
+                                    legend="Collapse"
+                                    selectedLegend="Expand"
+                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                />
                             </>
                         ) : (
-                            <OnlyIconButton
-                                icon={<MdCheckBoxOutlineBlank />}
-                                selectedIcon={<MdCheckBox />}
-                                iconColor="--color-green"
-                                selectedIconColor="--color-green"
-                                selected={allCompleted}
-                                onToggle={() => toggleAllRef.current?.()}
-                                legend="Mark all as completed"
-                                selectedLegend="Deselect all"
-                                customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
-                            />
+                            <>
+                                <OnlyIconButton
+                                    icon={<MdCheckBoxOutlineBlank />}
+                                    selectedIcon={<MdCheckBox />}
+                                    iconColor="--color-green"
+                                    selectedIconColor="--color-green"
+                                    selected={allCompleted}
+                                    onToggle={() => toggleAllRef.current?.()}
+                                    legend="Mark all as completed"
+                                    selectedLegend="Deselect all"
+                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                    customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
+                                />
+                                <OnlyIconButton
+                                    icon={<IoIosArrowDown />}
+                                    selectedIcon={<IoIosArrowUp />}
+                                    iconColor="--color-gray"
+                                    selected={collapsed}
+                                    onToggle={(val) => setCollapsed(val)}
+                                    legend="Collapse"
+                                    selectedLegend="Expand"
+                                    customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
+                                />
+                            </>
                         )}
                     </div>
 
                     <SetList
                         sets={workoutExercise.sets}
                         planMode={planMode}
+                        collapsed={collapsed}
                         onChange={(setId, field, value) => onSetChange(setId, field, value)}
                         onTypeChange={(setId, type) => onSetTypeChange?.(setId, type)}
                         onRemove={onSetRemove}

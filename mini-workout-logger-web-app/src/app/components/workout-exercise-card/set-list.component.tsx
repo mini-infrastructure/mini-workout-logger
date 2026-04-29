@@ -40,6 +40,8 @@ export type SetListProps = {
     /** Plan mode (workout.view) — type cycling, inline units, no completion tracking.
      *  Execution mode (workout-execution.view) — read-only type badge, completion toggle. */
     planMode?: boolean;
+    /** When true, hides the set rows and add button. In execution mode the progress bar remains visible. */
+    collapsed?: boolean;
     onChange: (setId: number, field: SetField, value: number) => void;
     onTypeChange?: (setId: number, type: SetType) => void;
     onRemove: (setId: number) => void;
@@ -57,6 +59,7 @@ export type SetListProps = {
 const SetList = ({
     sets,
     planMode = false,
+    collapsed = false,
     onChange,
     onTypeChange,
     onRemove,
@@ -222,7 +225,7 @@ const SetList = ({
             {!planMode && (
                 <ProgressBar percentage={cardProgress} customCss={styles.cardProgressBar} />
             )}
-            {sets.map((set, i) => {
+            {!collapsed && sets.map((set, i) => {
                 const completed = completedIds.has(set.id);
                 const skipped = skippedIds.has(set.id);
                 const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
@@ -326,26 +329,30 @@ const SetList = ({
                 );
             })}
 
-            {/* Sentinel drop zone */}
-            <div
-                css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
-                onDragOver={(e: DragEvent<HTMLDivElement>) => {
-                    if (!e.dataTransfer.types.includes('application/set')) return;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setDragOver(sets.length);
-                }}
-                onDrop={(e) => {
-                    if (!e.dataTransfer.types.includes('application/set')) return;
-                    e.stopPropagation();
-                    handleDrop();
-                }}
-                style={{ height: '4px' }}
-            />
+            {!collapsed && (
+                <>
+                    {/* Sentinel drop zone */}
+                    <div
+                        css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
+                        onDragOver={(e: DragEvent<HTMLDivElement>) => {
+                            if (!e.dataTransfer.types.includes('application/set')) return;
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setDragOver(sets.length);
+                        }}
+                        onDrop={(e) => {
+                            if (!e.dataTransfer.types.includes('application/set')) return;
+                            e.stopPropagation();
+                            handleDrop();
+                        }}
+                        style={{ height: '4px' }}
+                    />
 
-            <Button onClick={onAdd} customCss={styles.addSet}>
-                Add set
-            </Button>
+                    <Button onClick={onAdd} customCss={styles.addSet}>
+                        Add set
+                    </Button>
+                </>
+            )}
         </div>
     );
 };
