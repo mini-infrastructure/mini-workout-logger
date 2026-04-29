@@ -207,7 +207,11 @@ const WorkoutExecutionView = () => {
     };
 
     const handleSetAdd = (exerciseId: number) => {
-        setExercises((prev) => applySetAdd(prev, exerciseId, true));
+        setExercises((prev) => {
+            const exercise = prev.find((we) => we.id === exerciseId);
+            const defaultType = exercise?.exercise.category === 'CARDIO' ? 'TIME' : undefined;
+            return applySetAdd(prev, exerciseId, true, defaultType);
+        });
     };
 
     return (

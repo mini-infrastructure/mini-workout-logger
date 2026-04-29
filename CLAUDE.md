@@ -97,7 +97,7 @@ Key classes provided by `mini-java-core`:
 6. **Database** — add/edit the SQL migration file in `src/main/resources/db/changelog/migrations/`. During the testing phase, SQL files can be edited directly without creating a new migration file.
 7. **Tests** — evaluate and update controller tests in `src/test/java/com/mini/workout_logger_backend/controllers/`
 8. **Frontend DTOs** — add/edit in `src/app/dtos/`
-9. **Frontend models** — add/edit in `src/app/models/` (enum types, label maps, icon maps, color maps)
+9. **Frontend models** — add/edit in `src/app/models/` (enum types, label maps, icon maps, color maps). **If an enum value was added or removed, also update both i18n `.properties` files** — see the *Enum change protocol* table in the i18n section below.
 
 **Key rule:** If a property is **changed** (renamed, retyped), fix every frontend occurrence. If a property or entity is **added**, only create the new `dtos/` and `models/` files — do not touch unrelated frontend code.
 
@@ -150,7 +150,7 @@ Response path:
 
 | Enum | Values |
 |---|---|
-| `ExerciseCategory` | STRENGTH, CARDIO, WALK, RUN, BIKE, STRETCHING, POWERLIFTING, OLYMPIC_WEIGHTLIFTING, STRONGMAN, CALISTHENICS, PLYOMETRICS, RECOVERY, HIT, MOBILITY, PILATES, YOGA, WARM_UP |
+| `ExerciseCategory` | STRENGTH, CARDIO, STRETCHING, POWERLIFTING, OLYMPIC_WEIGHTLIFTING, STRONGMAN, CALISTHENICS, PLYOMETRICS, RECOVERY, HIT, MOBILITY, WARM_UP |
 | `ExerciseDifficulty` | NOVICE, BEGINNER, INTERMEDIATE, ADVANCED |
 | `ExerciseEquipment` | BARBELL, DUMBBELL, BODYWEIGHT, BOSU_BALL, CABLE, EXERCISE_BALL, MACHINE, SMITH_MACHINE, MEDICINE_BALL, PLATE, RESISTANCE_BAND, TRX, KETTLEBELL |
 | `ExerciseForceDirection` | PUSH, PULL, SLIDE, ROTATE_OR_TWIST |
@@ -174,7 +174,15 @@ All entity names are i18n keys (via `com.mini.java_core.entity.Text`). Translati
 - `src/main/resources/i18n/messages_en_US.properties`
 - `src/main/resources/i18n/messages_pt_BR.properties`
 
-When adding a new enum value or muscle, always add translations to **both** files.
+**Enum change protocol — always keep these three in sync:**
+
+| What changed | Backend i18n files | Frontend `exercise.model.tsx` |
+|---|---|---|
+| Value **added** | Add `EnumName.VALUE=Label` to **both** `.properties` files | Add to the type union, icon map, variant map, and label map |
+| Value **removed** | Remove the `EnumName.VALUE` line from **both** `.properties` files | Remove from the type union and all four maps; remove unused icon imports |
+| Value **renamed** | Rename the key in **both** `.properties` files | Rename in the type union and all four maps |
+
+Translation keys follow the pattern `EnumName.VALUE` (e.g. `ExerciseCategory.STRENGTH`). Every enum value that is exposed via a DTO must have a key in both files — a missing key causes a runtime translation error.
 
 ### Database seeding
 

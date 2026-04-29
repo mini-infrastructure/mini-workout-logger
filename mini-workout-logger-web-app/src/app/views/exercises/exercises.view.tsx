@@ -36,7 +36,7 @@ const ExercisesView = () => {
     const [page, setPage] = useState(0);
     const [filters, setFilters] = useState<Record<string, string[]>>({});
     const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles);
+    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
 
     useEffect(() => {

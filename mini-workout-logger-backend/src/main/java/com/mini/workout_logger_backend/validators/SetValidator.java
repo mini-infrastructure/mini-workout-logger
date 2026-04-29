@@ -141,18 +141,6 @@ public class SetValidator implements ConstraintValidator<SetValidated, SetWriteD
                         hasError = true;
                     }
 
-                    if (value.getPlannedRepetitions() == null) {
-                        addViolation(context,
-                                "plannedRepetitions",
-                                messageService.getLocalizedMessage("error.set.must_be_provided_for_time"));
-                        hasError = true;
-                    } else if (value.getPlannedRepetitions() <= 0) {
-                        addViolation(context,
-                                "plannedRepetitions",
-                                messageService.getLocalizedMessage("error.must_be_bigger_than", 0));
-                        hasError = true;
-                    }
-
                     if (value.getPlannedWeight() != null) {
                         addViolation(context,
                                 "plannedWeight",

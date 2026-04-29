@@ -14,7 +14,8 @@ CREATE OR REPLACE FUNCTION add_exercise(
     dynamic_stabilizer_muscles TEXT[] DEFAULT '{}',
     agonist_muscles TEXT[] DEFAULT '{}',
     antagonist_muscles TEXT[] DEFAULT '{}',
-    antagonist_stabilizer_muscles TEXT[] DEFAULT '{}'
+    antagonist_stabilizer_muscles TEXT[] DEFAULT '{}',
+    exercise_hidden BOOLEAN DEFAULT FALSE
 )
 RETURNS VOID AS $$
 DECLARE
@@ -43,6 +44,7 @@ BEGIN
         role,
         type,
         group_id,
+        hidden,
         created_at,
         updated_at
     )
@@ -56,6 +58,7 @@ BEGIN
         exercise_role,
         exercise_type,
         p_group_id,
+        exercise_hidden,
         NOW(),
         NOW()
     )
@@ -937,3 +940,21 @@ SELECT add_exercise(
         'Muscle.Levator_Scapulae'
    ]
 );
+-- ─────────────────────────────────────────────────────────────────────────────
+-- Aerobic / Activity exercises (hidden=true — visible in workout picker but
+-- excluded from the exercise database listing)
+-- ─────────────────────────────────────────────────────────────────────────────
+
+SELECT add_exercise('Running',          'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Treadmill_Running','Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Walking',          'Cardio', 'CARDIO', 'NOVICE',   'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Treadmill_Walking','Cardio', 'CARDIO', 'NOVICE',   'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Cycling',          'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Stationary_Bike',  'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Rowing_Machine',   'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Jump_Rope',        'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Swimming',         'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Elliptical',       'Cardio', 'CARDIO', 'BEGINNER', 'MACHINE',    NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Hiking',           'Cardio', 'CARDIO', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Yoga',             'Mind-Body', 'MOBILITY', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);
+SELECT add_exercise('Pilates',          'Mind-Body', 'CALISTHENICS', 'BEGINNER', 'BODYWEIGHT', NULL, NULL, NULL, NULL, '{}', '{}', '{}', '{}', '{}', '{}', '{}', TRUE);

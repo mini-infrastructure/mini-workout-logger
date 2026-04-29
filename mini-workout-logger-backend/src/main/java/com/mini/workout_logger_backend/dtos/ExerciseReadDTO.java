@@ -27,6 +27,8 @@ public class ExerciseReadDTO extends ReadDTO {
 
     private boolean favorited;
 
+    private boolean hidden;
+
     private ExerciseCategory category;
 
     private ExerciseDifficulty difficulty;

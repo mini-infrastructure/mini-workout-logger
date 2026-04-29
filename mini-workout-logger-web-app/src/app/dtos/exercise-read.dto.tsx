@@ -26,5 +26,6 @@ export interface ExerciseReadDTO {
     stabilizer_muscles?: MuscleReadDTO[];
     root_muscles?: string[];
     favorited?: boolean;
+    hidden?: boolean;
     media?: MediaReadDTO[];
 }

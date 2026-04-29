@@ -5,7 +5,7 @@ import ExerciseService from '../services/exercise.service.tsx';
 
 const PAGE_SIZE = 20;
 
-export function useExercises(query?: string, page: number = 0, filters: Record<string, string[]> = {}, muscles: string[] = [], pageSize: number = PAGE_SIZE, excludeIds: number[] = []) {
+export function useExercises(query?: string, page: number = 0, filters: Record<string, string[]> = {}, muscles: string[] = [], pageSize: number = PAGE_SIZE, excludeIds: number[] = [], hidden?: boolean) {
     const [exercises, setExercises] = useState<ExerciseReadDTO[]>([]);
     const [pagination, setPagination] = useState<PaginationDTO | null>(null);
     const [loading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
             if (query) params.name = query;
             if (muscles.length > 0) params.muscles = muscles.join(',');
             if (excludeIds.length > 0) params.excludeIds = excludeIds.join(',');
+            if (hidden !== undefined) params.hidden = String(hidden);
 
             ExerciseService.getAll(params)
                 .then((response) => {
@@ -37,7 +38,7 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [query, page, pageSize, JSON.stringify(filters), JSON.stringify(muscles), JSON.stringify(excludeIds)]);
+    }, [query, page, pageSize, JSON.stringify(filters), JSON.stringify(muscles), JSON.stringify(excludeIds), hidden]);
 
     return { exercises, pagination, loading, error };
 }

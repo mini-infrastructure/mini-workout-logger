@@ -102,8 +102,13 @@ const WorkoutExerciseCard = ({
     useEffect(() => {
         const ta = notesRef.current;
         if (!ta) return;
+        const style = getComputedStyle(ta);
+        const lineHeight = parseFloat(style.lineHeight);
+        const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+        const minLines = notesFocused ? 3 : 1;
+        const minHeight = minLines * lineHeight + paddingY;
         ta.style.height = 'auto';
-        ta.style.height = `${ta.scrollHeight}px`;
+        ta.style.height = `${Math.max(ta.scrollHeight, minHeight)}px`;
     }, [localNotes, notesFocused]);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
@@ -257,7 +262,7 @@ const WorkoutExerciseCard = ({
                                 <textarea
                                     ref={notesRef}
                                     rows={1}
-                                    css={styles.notesTextarea(notesFocused)}
+                                    css={styles.notesTextarea}
                                     value={localNotes}
                                     onChange={(e) => {
                                         setLocalNotes(e.target.value);
@@ -288,6 +293,7 @@ const WorkoutExerciseCard = ({
                     <SetList
                         sets={workoutExercise.sets}
                         planMode={planMode}
+                        onlyTimeSets={workoutExercise.exercise.category === 'CARDIO'}
                         collapsed={collapsed}
                         onChange={(setId, field, value) => onSetChange(setId, field, value)}
                         onTypeChange={(setId, type) => onSetTypeChange?.(setId, type)}

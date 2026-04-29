@@ -39,6 +39,9 @@ export type SetListProps = {
     /** Plan mode (workout.view) — type cycling, inline units, no completion tracking.
      *  Execution mode (workout-execution.view) — read-only type badge, completion toggle. */
     planMode?: boolean;
+    /** When true, only TIME-based set fields are shown and type cycling is disabled.
+     *  Used for aerobic/CARDIO exercises where reps are irrelevant. */
+    onlyTimeSets?: boolean;
     /** When true, hides the set rows and add button. In execution mode the progress bar remains visible. */
     collapsed?: boolean;
     onChange: (setId: number, field: SetField, value: number) => void;
@@ -58,6 +61,7 @@ export type SetListProps = {
 const SetList = ({
     sets,
     planMode = false,
+    onlyTimeSets = false,
     collapsed = false,
     onChange,
     onTypeChange,
@@ -209,10 +213,10 @@ const SetList = ({
     };
 
     const renderField1 = (set: SetReadDTO, completed: boolean) =>
-        isTimeType(set.type) ? renderTime(set, completed) : renderReps(set, completed);
+        onlyTimeSets || isTimeType(set.type) ? renderTime(set, completed) : renderReps(set, completed);
 
     const renderField2 = (set: SetReadDTO, completed: boolean) =>
-        hasWeight(set.type) ? renderWeight(set, completed) : <span />;
+        !onlyTimeSets && hasWeight(set.type) ? renderWeight(set, completed) : <span />;
 
     // ── Render ───────────────────────────────────────────────────────────────
 
@@ -270,8 +274,8 @@ const SetList = ({
                             {i + 1}
                         </span>
 
-                        {/* Type: clickable cycle badge (plan) or read-only label (execution) */}
-                        {planMode ? (
+                        {/* Type: clickable cycle badge (plan) or read-only label (execution/aerobic) */}
+                        {planMode && !onlyTimeSets ? (
                             <Button
                                 onClick={() => onTypeChange?.(set.id, cycleType(set.type))}
                                 title="Click to change set type"
@@ -280,7 +284,9 @@ const SetList = ({
                                 {TYPE_LABELS[set.type]}
                             </Button>
                         ) : (
-                            <span css={styles.typeBadgeReadOnly}>{TYPE_LABELS[set.type]}</span>
+                            <span css={styles.typeBadgeReadOnly}>
+                                {onlyTimeSets ? 'Time' : TYPE_LABELS[set.type]}
+                            </span>
                         )}
 
                         {renderField1(set, completed)}

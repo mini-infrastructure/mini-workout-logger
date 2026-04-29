@@ -39,6 +39,9 @@ public class Exercise extends AbstractEntity {
     @Column(name = "favorited", nullable = false)
     private boolean favorited = false;
 
+    @Column(name = "hidden", nullable = false)
+    private boolean hidden = false;
+
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;

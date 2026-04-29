@@ -77,6 +77,7 @@ public class ExerciseService extends AbstractMediaService<Exercise,
         String muscle      = filteredParams.remove("muscle");
         String muscles     = filteredParams.remove("muscles");
         String excludeIds  = filteredParams.remove("excludeIds");
+        String hiddenParam = filteredParams.remove("hidden");
 
         int page = parseIntParam(filteredParams.get("page"), 0);
         int size = parseIntParam(filteredParams.get("size"), 20);
@@ -157,6 +158,12 @@ public class ExerciseService extends AbstractMediaService<Exercise,
                 };
                 spec = spec == null ? musclesSpec : spec.and(musclesSpec);
             }
+        }
+
+        if (hiddenParam != null) {
+            boolean hiddenValue = Boolean.parseBoolean(hiddenParam);
+            Specification<Exercise> hiddenSpec = (root, query, cb) -> cb.equal(root.get("hidden"), hiddenValue);
+            spec = spec == null ? hiddenSpec : spec.and(hiddenSpec);
         }
 
         if (StringUtils.hasText(excludeIds)) {

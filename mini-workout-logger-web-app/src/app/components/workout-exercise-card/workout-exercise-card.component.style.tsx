@@ -102,7 +102,7 @@ const styles = {
         width: '100%',
     }),
 
-    notesTextarea: (expanded: boolean) => css({
+    notesTextarea: css({
         width: '100%',
         boxSizing: 'border-box' as const,
         padding: '0.4rem 0.6rem',
@@ -113,12 +113,10 @@ const styles = {
         color: 'var(--color-text)',
         resize: 'none' as const,
         outline: 'none',
-        minHeight: expanded ? 'calc(3 * 1.5em + 0.8rem)' : 'calc(1 * 1.5em + 0.8rem)',
         maxHeight: 'calc(5 * 1.5em + 0.8rem)',
         overflowY: 'auto' as const,
         lineHeight: 1.5,
         display: 'block',
-        transition: 'height 0.15s ease, min-height 0.15s ease',
         ':focus': {
             outline: 'var(--borderWidth-thin) solid var(--color-blue)',
         },

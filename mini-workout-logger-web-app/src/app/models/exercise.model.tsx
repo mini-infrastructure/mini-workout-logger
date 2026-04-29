@@ -1,21 +1,19 @@
 import { ExerciseMuscleMovementClassification, Muscle } from './muscle.model';
 import type { WorkoutExercise } from "./workout-exercise.model.tsx";
 import type { IconType } from "react-icons";
-import { FaBolt, FaDotCircle, FaFire, FaRunning, FaSeedling } from "react-icons/fa";
-import { MdFitnessCenter, MdSelfImprovement, MdTrendingUp } from "react-icons/md";
+import { FaBolt, FaFire, FaRunning, FaSeedling } from "react-icons/fa";
+import { MdTrendingUp } from "react-icons/md";
 import { GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp } from "react-icons/gi";
 import type { ReactNode } from "react";
-import { TbBallBasketball, TbBandage, TbJumpRope, TbYoga } from "react-icons/tb";
+import { TbBallBasketball, TbBandage, TbJumpRope } from "react-icons/tb";
 import type { ColorVariant } from "../utils/colorsVariants.tsx";
-import { LiaDumbbellSolid } from "react-icons/lia";
 import { BiBody } from "react-icons/bi";
 import { RiWeightFill } from "react-icons/ri";
-import { GrYoga } from "react-icons/gr";
 import { MdOutlineSportsGymnastics } from "react-icons/md";
 import { GiRopeCoil } from "react-icons/gi";
 import {
     BarbellIcon, DumbbellIcon, KettlebellIcon, MachineIcon, PlateIcon,
-    BikeIcon, HitIcon, PilatesIcon, StrechingIcon, WalkIcon, YogaIcon,
+    HitIcon, StrechingIcon,
     PullIcon, PushIcon, RotateIcon,
 } from '../components/icons/equipment-icons.tsx';
 
@@ -66,9 +64,6 @@ export type ExerciseEquipment =
 export type ExerciseCategory =
     | 'STRENGTH'
     | 'CARDIO'
-    | 'WALK'
-    | 'RUN'
-    | 'BIKE'
     | 'STRETCHING'
     | 'POWERLIFTING'
     | 'OLYMPIC_WEIGHTLIFTING'
@@ -78,8 +73,6 @@ export type ExerciseCategory =
     | 'RECOVERY'
     | 'HIT'
     | 'MOBILITY'
-    | 'PILATES'
-    | 'YOGA'
     | 'WARM_UP'
     ;
 
@@ -119,9 +112,6 @@ export type ExerciseType =
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
     STRENGTH: FaFire,
     CARDIO: FaRunning,
-    WALK: WalkIcon as IconType,
-    RUN: FaRunning,
-    BIKE: BikeIcon as IconType,
     STRETCHING: StrechingIcon as IconType,
     POWERLIFTING: GiWeightLiftingUp,
     OLYMPIC_WEIGHTLIFTING: RiWeightFill,
@@ -131,8 +121,6 @@ export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
     RECOVERY: TbBandage,
     HIT: HitIcon as IconType,
     MOBILITY: MdOutlineSportsGymnastics,
-    PILATES: PilatesIcon as IconType,
-    YOGA: YogaIcon as IconType,
     WARM_UP: FaRunning,
 };
 
@@ -164,9 +152,6 @@ export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
 export const ExerciseCategoryVariants: Record<ExerciseCategory, ColorVariant> = {
     STRENGTH: 'danger',
     CARDIO: 'warning',
-    WALK: 'success',
-    RUN: 'warning',
-    BIKE: 'warning',
     STRETCHING: 'success',
     POWERLIFTING: 'orange',
     OLYMPIC_WEIGHTLIFTING: 'orange',
@@ -176,8 +161,6 @@ export const ExerciseCategoryVariants: Record<ExerciseCategory, ColorVariant> = 
     RECOVERY: 'success',
     HIT: 'danger',
     MOBILITY: 'success',
-    PILATES: 'pink',
-    YOGA: 'purple',
     WARM_UP: 'warning',
 };
 
@@ -229,9 +212,6 @@ export function getVariantFromMap<T extends string>(
 const ExerciseCategoryLabels: Record<ExerciseCategory, string> = {
     STRENGTH: 'Strength',
     CARDIO: 'Cardio',
-    WALK: 'Walk',
-    RUN: 'Run',
-    BIKE: 'Bike',
     STRETCHING: 'Stretching',
     POWERLIFTING: 'Powerlifting',
     OLYMPIC_WEIGHTLIFTING: 'Olympic Weightlifting',
@@ -241,8 +221,6 @@ const ExerciseCategoryLabels: Record<ExerciseCategory, string> = {
     RECOVERY: 'Recovery',
     HIT: 'HIT',
     MOBILITY: 'Mobility',
-    PILATES: 'Pilates',
-    YOGA: 'Yoga',
     WARM_UP: 'Warm Up',
 };
 
