@@ -166,7 +166,10 @@ const WorkoutExerciseCard = ({
 
     return (
         <div
-            css={css({ minWidth: 0, overflow: 'hidden' })}
+            css={[
+                css({ minWidth: 0, overflow: 'hidden', transition: 'box-shadow 0.15s ease' }),
+                isDragOver && css({ boxShadow: '0 -3px 0 0 var(--color-blue)' }),
+            ]}
             draggable={draggable}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -189,9 +192,6 @@ const WorkoutExerciseCard = ({
                     highlighted && css({
                         borderColor: 'var(--color-blue)',
                         boxShadow: `0 0 0 1px var(--color-blue)`,
-                    }),
-                    isDragOver && css({
-                        boxShadow: `0 -3px 0 0 var(--color-blue)`,
                     }),
                     ...(customCss
                         ? Array.isArray(customCss) ? customCss : [customCss]
