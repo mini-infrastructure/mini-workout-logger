@@ -9,6 +9,7 @@ const styles = {
         justifyContent: 'center',
         boxSizing: 'border-box',
         position: 'relative',
+        isolation: 'isolate',
     }),
 
     content: css({

@@ -1,9 +1,9 @@
 import {css} from '@emotion/react';
-import {transparentize} from 'polished';
+import {transparentize} from "polished";
 
 const styles = {
     wrapper: css({
-        backgroundColor: transparentize(0.5, '#0D1117'),
+        backgroundColor: 'color-mix(in srgb, var(--color-container1) 50%, transparent)',
         borderRadius: 'var(--borderRadius-xlarge)',
     }),
 };

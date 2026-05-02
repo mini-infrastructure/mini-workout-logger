@@ -2,7 +2,7 @@ import Background, { type BackgroundProps } from '../background.component.tsx';
 import Container from '../../container/container.component.tsx';
 import styles from './blocks.component.style.tsx';
 
-const BlocksBackground = ({ childrenInFront = false }: BackgroundProps) => (
+const BlocksBackground = ({ childrenInFront = true }: BackgroundProps) => (
     <Background customCss={styles.wrapper} childrenInFront={childrenInFront}>
         {/* LEFT */}
         <div css={styles.left}>
