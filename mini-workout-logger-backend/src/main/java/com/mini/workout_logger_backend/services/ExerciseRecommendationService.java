@@ -4,6 +4,8 @@ import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.workout_logger_backend.dtos.ExerciseRecommendationReadDTO;
+import com.mini.workout_logger_backend.entities.Exercise;
+import com.mini.workout_logger_backend.enums.ExerciseCategory;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseMuscleRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
@@ -45,6 +47,15 @@ public class ExerciseRecommendationService {
             double minScore,
             int limit) {
 
+        Exercise reference = exerciseRepository.findById(referenceId).orElse(null);
+        if (reference == null) {
+            return ResponseHelper.success(HttpStatus.OK,
+                    ResponseMessage.ENTITIES_EMPTY.getMessage(),
+                    Collections.emptyList());
+        }
+
+        boolean referenceIsAerobic = isAerobic(reference.getCategory());
+
         long totalReferencePairs = exerciseMuscleRepository.countByExerciseId(referenceId);
 
         if (totalReferencePairs == 0) {
@@ -82,6 +93,7 @@ public class ExerciseRecommendationService {
                             exerciseMapper.toDTO(candidate), score, exactMatch);
                 })
                 .filter(r -> r.getScore() >= minScore)
+                .filter(r -> isAerobic(r.getExercise().getCategory()) == referenceIsAerobic)
                 .sorted(Comparator.comparingDouble(ExerciseRecommendationReadDTO::getScore).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
@@ -94,6 +106,13 @@ public class ExerciseRecommendationService {
                         ? ResponseMessage.ENTITIES_EMPTY.getMessage()
                         : ResponseMessage.ENTITIES_FOUND.getMessage(),
                 results);
+    }
+
+    private static final java.util.Set<ExerciseCategory> AEROBIC_CATEGORIES =
+            java.util.Set.of(ExerciseCategory.CARDIO, ExerciseCategory.HIT);
+
+    private boolean isAerobic(ExerciseCategory category) {
+        return category != null && AEROBIC_CATEGORIES.contains(category);
     }
 
 }
