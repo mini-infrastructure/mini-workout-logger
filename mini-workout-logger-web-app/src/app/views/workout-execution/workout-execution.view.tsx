@@ -10,6 +10,7 @@ import SecondaryButton from '../../components/button/button.secondary.component.
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import DragGrid from '../../components/drag-grid/drag-grid.component.tsx';
+import type { RenderItem } from '../../components/drag-grid/drag-grid.component.tsx';
 import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
@@ -19,12 +20,13 @@ import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dt
 import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
 import {
     buildWorkoutExercisesPayload,
+    applyExerciseReorder,
     applySetChange,
     applySetRemove,
     applySetReorder,
     applySetAdd,
     applyNotesChange,
-} from '../../utils/workout-exercise.utils.ts';
+} from '../../utils/workout-exercise.utils.tsx';
 import styles from './workout-execution.view.style.tsx';
 
 const WorkoutExecutionView = () => {
@@ -86,9 +88,7 @@ const WorkoutExecutionView = () => {
     // Exercise drag-to-reorder
     const handleReorder = async (from: number, to: number) => {
         const original = exercises;
-        const updated = [...exercises];
-        const [moved] = updated.splice(from, 1);
-        updated.splice(to, 0, moved);
+        const { updated, moved } = applyExerciseReorder(exercises, from, to);
         setExercises(updated);
         try {
             await WorkoutService.reorderExercise(id!, moved.id, to);
@@ -200,6 +200,24 @@ const WorkoutExecutionView = () => {
         });
     };
 
+    const renderExerciseCard: RenderItem<WorkoutExerciseReadDTO> = (we, provided) => (
+        <WorkoutExerciseCard
+            workoutExercise={we}
+            dragHandleProps={provided.dragHandleProps}
+            indicatorCss={provided.indicatorCss}
+            onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
+            isPlaying={isPlaying}
+            resetKey={stopKey}
+            onSetRemove={(setId) => handleSetRemove(we.id, setId)}
+            onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
+            onSetAdd={() => handleSetAdd(we.id)}
+            onCompletedChange={handleCompletedChange}
+            onSkippedChange={handleSkippedChange}
+            onNotesChange={handleNotesChange}
+            onNotesSave={handleNotesSave}
+        />
+    );
+
     return (
         <Layout>
             <div css={styles.pageWrapper}>
@@ -255,23 +273,7 @@ const WorkoutExecutionView = () => {
                         items={exercises}
                         getItemKey={(we) => we.id}
                         onReorder={handleReorder}
-                        renderItem={(we, provided) => (
-                            <WorkoutExerciseCard
-                                workoutExercise={we}
-                                dragHandleProps={provided.dragHandleProps}
-                                indicatorCss={provided.indicatorCss}
-                                onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
-                                isPlaying={isPlaying}
-                                resetKey={stopKey}
-                                onSetRemove={(setId) => handleSetRemove(we.id, setId)}
-                                onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
-                                onSetAdd={() => handleSetAdd(we.id)}
-                                onCompletedChange={handleCompletedChange}
-                                onSkippedChange={handleSkippedChange}
-                                onNotesChange={handleNotesChange}
-                                onNotesSave={handleNotesSave}
-                            />
-                        )}
+                        renderItem={renderExerciseCard}
                     />
                 </div>
             </div>

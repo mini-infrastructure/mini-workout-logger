@@ -14,11 +14,13 @@ export type DragItemProvided = {
     indicatorCss: SerializedStyles | undefined;
 };
 
+export type RenderItem<T> = (item: T, provided: DragItemProvided, index: number) => ReactNode;
+
 export type DragGridProps<T> = {
     items: T[];
     direction?: 'vertical' | 'horizontal';
     onReorder: (fromIndex: number, toIndex: number) => void;
-    renderItem: (item: T, provided: DragItemProvided, index: number) => ReactNode;
+    renderItem: RenderItem<T>;
     getItemKey: (item: T) => string | number;
     borderColor?: string;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];

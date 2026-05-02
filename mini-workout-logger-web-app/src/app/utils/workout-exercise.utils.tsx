@@ -1,5 +1,7 @@
 import type { WorkoutExerciseReadDTO } from '../dtos/workout-exercise-read.dto.tsx';
 import type { WorkoutExerciseWriteDTO } from '../dtos/workout-exercise-write.dto.tsx';
+import type { SetReadDTO } from '../dtos/set-read.dto.tsx';
+import type { ExerciseReadDTO } from '../dtos/exercise-read.dto.tsx';
 import type { SetType } from '../models/set.model.tsx';
 
 /**
@@ -61,6 +63,23 @@ export function applySetChange(
     );
 }
 
+/** Updates the type of specific set within an exercise. */
+export function applySetTypeChange(
+    exercises: WorkoutExerciseReadDTO[],
+    exerciseId: number,
+    setId: number,
+    type: SetType
+): WorkoutExerciseReadDTO[] {
+    return exercises.map((we) =>
+        we.id !== exerciseId
+            ? we
+            : {
+                  ...we,
+                  sets: we.sets.map((s) => s.id === setId ? { ...s, type } : s),
+              }
+    );
+}
+
 /** Removes a set from an exercise. */
 export function applySetRemove(
     exercises: WorkoutExerciseReadDTO[],
@@ -93,8 +112,11 @@ export function applySetReorder(
 
 /**
  * Appends a new set to an exercise, copying the last set's values as defaults.
+ * @param exercises
+ * @param exerciseId
  * @param nullFallback - when true, weight and duration default to null instead
  *   of 0 (used in execution view where nullable fields are expected).
+ * @param defaultType
  */
 export function applySetAdd(
     exercises: WorkoutExerciseReadDTO[],
@@ -106,25 +128,20 @@ export function applySetAdd(
     return exercises.map((we) => {
         if (we.id !== exerciseId) return we;
         const last = we.sets[we.sets.length - 1];
-        const type = defaultType ?? (last?.type ?? 'REPS') as SetType;
+        const type = (defaultType ?? last?.type ?? 'REPS') as SetType;
         const isTimeType = type === 'TIME' || type === 'TIME_X_WEIGHT';
-        return {
-            ...we,
-            sets: [
-                ...we.sets,
-                {
-                    id: -Date.now(),
-                    position: we.sets.length,
-                    category: last?.category ?? 'NORMAL',
-                    type,
-                    planned_repetitions: isTimeType ? 0 : (last?.planned_repetitions ?? 0),
-                    planned_weight: last?.planned_weight ?? fallback,
-                    planned_duration_seconds: isTimeType
-                        ? (last?.planned_duration_seconds ?? fallback)
-                        : fallback,
-                },
-            ],
+        const newSet: SetReadDTO = {
+            id: -Date.now(),
+            position: we.sets.length,
+            category: last?.category ?? 'NORMAL',
+            type,
+            planned_repetitions: isTimeType ? 0 : (last?.planned_repetitions ?? 0),
+            planned_weight: (last?.planned_weight ?? fallback) as number,
+            planned_duration_seconds: (isTimeType
+                ? (last?.planned_duration_seconds ?? fallback)
+                : fallback) as number,
         };
+        return { ...we, sets: [...we.sets, newSet] };
     });
 }
 
@@ -136,5 +153,42 @@ export function applyNotesChange(
 ): WorkoutExerciseReadDTO[] {
     return exercises.map((we) =>
         we.id !== exerciseId ? we : { ...we, notes }
+    );
+}
+
+/** Reorders an exercise within the list, returning the updated array and the moved item. */
+export function applyExerciseReorder(
+    exercises: WorkoutExerciseReadDTO[],
+    from: number,
+    to: number
+): { updated: WorkoutExerciseReadDTO[]; moved: WorkoutExerciseReadDTO } {
+    const updated = [...exercises];
+    const [moved] = updated.splice(from, 1);
+    updated.splice(to, 0, moved);
+    return { updated, moved };
+}
+
+/** Removes an exercise from the list. */
+export function applyExerciseRemove(
+    exercises: WorkoutExerciseReadDTO[],
+    exerciseId: number
+): WorkoutExerciseReadDTO[] {
+    return exercises.filter((we) => we.id !== exerciseId);
+}
+
+/** Replaces an exercise's definition with a new one (swap). */
+export function applyExerciseSwap(
+    exercises: WorkoutExerciseReadDTO[],
+    exerciseId: number,
+    newExercise: ExerciseReadDTO
+): WorkoutExerciseReadDTO[] {
+    return exercises.map((we) =>
+        we.id !== exerciseId
+            ? we
+            : {
+                  ...we,
+                  exercise: newExercise,
+                  equipment: newExercise.equipment ?? we.equipment,
+              }
     );
 }

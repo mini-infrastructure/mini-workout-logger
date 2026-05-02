@@ -15,6 +15,7 @@ import Badge from '../../components/badge/badge.component.tsx';
 import EditableBadge from '../../components/badge/editable-badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
 import DragGrid from '../../components/drag-grid/drag-grid.component.tsx';
+import type { RenderItem } from '../../components/drag-grid/drag-grid.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
@@ -36,11 +37,15 @@ import WorkoutExecutionHistoryCard from '../../components/workout-execution-card
 import {
     buildWorkoutExercisesPayload,
     applySetChange,
+    applySetTypeChange,
     applySetRemove,
     applySetReorder,
     applySetAdd,
     applyNotesChange,
-} from '../../utils/workout-exercise.utils.ts';
+    applyExerciseReorder,
+    applyExerciseRemove,
+    applyExerciseSwap,
+} from '../../utils/workout-exercise.utils.tsx';
 import styles from './workout.view.style.tsx';
 
 const WorkoutView = () => {
@@ -157,9 +162,7 @@ const WorkoutView = () => {
     // Drag-to-reorder exercises
     const handleReorder = async (from: number, to: number) => {
         const original = exercises;
-        const updated = [...exercises];
-        const [moved] = updated.splice(from, 1);
-        updated.splice(to, 0, moved);
+        const { updated, moved } = applyExerciseReorder(exercises, from, to);
         setExercises(updated);
         try {
             await WorkoutService.reorderExercise(id!, moved.id, to);
@@ -178,14 +181,7 @@ const WorkoutView = () => {
 
     // Set type change
     const handleSetTypeChange = (exerciseId: number, setId: number, type: SetType) => {
-        setExercises((prev) =>
-            prev.map((we) =>
-                we.id !== exerciseId ? we : {
-                    ...we,
-                    sets: we.sets.map((s) => s.id === setId ? { ...s, type } : s),
-                }
-            )
-        );
+        setExercises((prev) => applySetTypeChange(prev, exerciseId, setId, type));
         setDirty(true);
     };
 
@@ -197,7 +193,7 @@ const WorkoutView = () => {
 
     // Exercise remove
     const handleRemoveExercise = (exerciseId: number) => {
-        setExercises((prev) => prev.filter((we) => we.id !== exerciseId));
+        setExercises((prev) => applyExerciseRemove(prev, exerciseId));
         setDirty(true);
     };
 
@@ -207,15 +203,7 @@ const WorkoutView = () => {
     };
 
     const handleSwapExercise = (exerciseId: number, newExercise: ExerciseReadDTO) => {
-        setExercises((prev) =>
-            prev.map((we) =>
-                we.id !== exerciseId ? we : {
-                    ...we,
-                    exercise: newExercise,
-                    equipment: newExercise.equipment ?? we.equipment,
-                }
-            )
-        );
+        setExercises((prev) => applyExerciseSwap(prev, exerciseId, newExercise));
         setDirty(true);
     };
 
@@ -359,6 +347,27 @@ const WorkoutView = () => {
         }
     };
 
+    const renderExerciseCard: RenderItem<WorkoutExerciseReadDTO> = (we, provided) => (
+        <WorkoutExerciseCard
+            workoutExercise={we}
+            dragHandleProps={provided.dragHandleProps}
+            indicatorCss={provided.indicatorCss}
+            onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
+            onSetTypeChange={(setId, type) => handleSetTypeChange(we.id, setId, type)}
+            onSetRemove={(setId) => handleSetRemove(we.id, setId)}
+            onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
+            onSetAdd={() => handleSetAdd(we.id)}
+            onRemoveExercise={() => handleRemoveExercise(we.id)}
+            onSwapExercise={(newExercise) => handleSwapExercise(we.id, newExercise)}
+            onNotesChange={handleNotesChange}
+            existingExerciseIds={exercises.map((e) => e.exercise.id)}
+            highlighted={hoveredExerciseId === we.id}
+            onMouseEnter={() => setHoveredExerciseId(we.id)}
+            onMouseLeave={() => setHoveredExerciseId(null)}
+            planMode
+        />
+    );
+
     return (
         <Layout>
             <div css={styles.pageWrapper}>
@@ -460,26 +469,7 @@ const WorkoutView = () => {
                             items={exercises}
                             getItemKey={(we) => we.id}
                             onReorder={handleReorder}
-                            renderItem={(we, provided) => (
-                                <WorkoutExerciseCard
-                                    workoutExercise={we}
-                                    dragHandleProps={provided.dragHandleProps}
-                                    indicatorCss={provided.indicatorCss}
-                                    onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
-                                    onSetTypeChange={(setId, type) => handleSetTypeChange(we.id, setId, type)}
-                                    onSetRemove={(setId) => handleSetRemove(we.id, setId)}
-                                    onSetReorder={(from, to) => handleSetReorder(we.id, from, to)}
-                                    onSetAdd={() => handleSetAdd(we.id)}
-                                    onRemoveExercise={() => handleRemoveExercise(we.id)}
-                                    onSwapExercise={(newExercise) => handleSwapExercise(we.id, newExercise)}
-                                    onNotesChange={handleNotesChange}
-                                    existingExerciseIds={exercises.map((e) => e.exercise.id)}
-                                    highlighted={hoveredExerciseId === we.id}
-                                    onMouseEnter={() => setHoveredExerciseId(we.id)}
-                                    onMouseLeave={() => setHoveredExerciseId(null)}
-                                    planMode
-                                />
-                            )}
+                            renderItem={renderExerciseCard}
                         />
 
                         {/* Add exercise */}
