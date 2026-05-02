@@ -23,7 +23,6 @@ import type { LegendItem } from '../legends/legends.component.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
 
 export type WorkoutExerciseCardProps = {
-    key?: any;
     workoutExercise: WorkoutExerciseReadDTO;
     dragHandleProps?: DragHandleProps;
     indicatorCss?: DragItemProvided['indicatorCss'];

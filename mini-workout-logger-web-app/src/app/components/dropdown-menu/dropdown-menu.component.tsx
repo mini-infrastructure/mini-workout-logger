@@ -1,5 +1,5 @@
-import type { JSX } from "@emotion/react/jsx-runtime";
 import { useRef, useState } from "react";
+import type { JSX } from "react";
 import type { Interpolation, Theme } from "@emotion/react";
 import OnlyIconButton from "../button/only-icon-button.component.tsx";
 import Button from "../button/button.component.tsx";

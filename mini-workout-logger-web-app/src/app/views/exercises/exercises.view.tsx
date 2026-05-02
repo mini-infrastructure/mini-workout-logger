@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { css } from '@emotion/react';
 import { IoMdClose } from 'react-icons/io';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
@@ -161,6 +162,7 @@ const ExercisesView = () => {
                                 page={page}
                                 totalPages={pagination.total_pages}
                                 onPageChange={setPage}
+                                customCss={css({ marginTop: 'var(--stack-gap-condensed)' })}
                             />
                         )}
                     </div>

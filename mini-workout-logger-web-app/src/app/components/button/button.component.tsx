@@ -6,7 +6,6 @@ import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
 
 export type ButtonProps = {
-    key?: any;
     onClick?: () => void;
     path?: string;
     disabled?: boolean;

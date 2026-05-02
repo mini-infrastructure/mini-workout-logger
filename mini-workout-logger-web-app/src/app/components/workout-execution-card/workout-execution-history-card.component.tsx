@@ -5,7 +5,6 @@ import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.
 import styles from './workout-execution-history-card.component.style.tsx';
 
 export type WorkoutExecutionHistoryCardProps = {
-    key?: any;
     execution: WorkoutExecutionReadDTO;
     onClick?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];

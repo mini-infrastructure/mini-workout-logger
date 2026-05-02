@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { css } from '@emotion/react';
 import type { KeyboardEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoPlay } from 'react-icons/io5';
@@ -519,6 +520,7 @@ const WorkoutView = () => {
                                                         page={searchPage}
                                                         totalPages={searchPagination.total_pages}
                                                         onPageChange={setSearchPage}
+                                                        customCss={css({ marginTop: 'var(--stack-gap-condensed)' })}
                                                     />
                                                 )}
                                             </>
