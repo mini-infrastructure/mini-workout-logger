@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
+import Button from '../button/button.component.tsx';
 import { MdErrorOutline, MdInfoOutline, MdCheckCircleOutline, MdWarningAmber } from 'react-icons/md';
 import type { ReactNode } from 'react';
 import styles from './alert.component.style.tsx';
@@ -54,9 +55,7 @@ const AlertEntry = ({ item, onRemove }: AlertEntryProps) => {
         >
             <span css={styles.icon}>{VARIANT_ICONS[item.variant]}</span>
             <span css={styles.title}>{item.message}</span>
-            <button css={styles.closeButton} onClick={dismiss}>
-                <IoClose />
-            </button>
+            <Button icon={<IoClose />} onClick={dismiss} customCss={styles.closeButton} />
         </div>
     );
 };

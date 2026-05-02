@@ -1,4 +1,6 @@
 import type {ExerciseReadDTO} from "../dtos/exercise-read.dto.tsx";
+import type {ExerciseExecutionHistoryReadDTO} from "../dtos/exercise-execution-history-read.dto.tsx";
+import type {MediaReadDTO} from "../dtos/media-read.dto.tsx";
 import type {ApiResponseDTO} from "../dtos/api-response.dto.tsx";
 import axios from "axios";
 import type {ExerciseWriteDTO} from "../dtos/exercise-write.dto.tsx";
@@ -99,6 +101,32 @@ class ExerciseService {
             return response.data.data;
         } catch (error) {
             console.error('Error fetching favorited exercises:', error);
+            return [];
+        }
+    }
+
+    async uploadMedia(id: number, file: File): Promise<MediaReadDTO> {
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axios.post<ApiResponseDTO<MediaReadDTO[]>>(
+            `${apiUrl}/exercises/${id}/media?lang=${lang}`,
+            formData
+        );
+        return response.data.data[0];
+    }
+
+    async deleteMedia(exerciseId: number, mediaId: number): Promise<void> {
+        await axios.delete(`${apiUrl}/exercises/${exerciseId}/media/${mediaId}?lang=${lang}`);
+    }
+
+    async getHistory(id: number): Promise<ExerciseExecutionHistoryReadDTO[]> {
+        try {
+            const response = await axios.get<ApiResponseDTO<ExerciseExecutionHistoryReadDTO[]>>(
+                `${apiUrl}/exercises/${id}/history?lang=${lang}`
+            );
+            return response.data.data ?? [];
+        } catch (error) {
+            console.error(`Error fetching history for exercise ${id}:`, error);
             return [];
         }
     }

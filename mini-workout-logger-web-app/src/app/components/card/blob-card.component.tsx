@@ -1,24 +1,14 @@
-import {PropsWithChildren, useMemo} from "react";
-import Card, {CardProps} from "./card.component";
-import styles from "./card.component.style";
+import type { PropsWithChildren } from 'react';
+import Card, { type CardProps } from './card.component';
+import BlobGlassBackground from '../background/blob-glass/blob-glass.component.tsx';
+import { floatAnimation } from '../background/blob-glass/blob-glass.component.style.tsx';
+import styles from './blob-card.component.style.tsx';
 
-const BlobCard = ({
-                      children,
-                  }: PropsWithChildren<CardProps>) => {
-    const randomValues = useMemo(() => {
-        return {
-            top: Math.random() * 100,
-            left: Math.random() * 100,
-            size1: 120 + Math.random() * 120,
-            size2: 80 + Math.random() * 100,
-        };
-    }, []);
-
-    return (
-        <Card customCss={[styles.blobCard(randomValues)]}>
-            {children}
-        </Card>
-    );
-};
+const BlobCard = ({ children }: PropsWithChildren<CardProps>) => (
+    <Card customCss={styles.blobCard}>
+        <BlobGlassBackground color="var(--color-blue)" animation={floatAnimation} />
+        {children}
+    </Card>
+);
 
 export default BlobCard;

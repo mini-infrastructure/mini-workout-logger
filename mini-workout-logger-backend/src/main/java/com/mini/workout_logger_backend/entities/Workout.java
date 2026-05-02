@@ -11,7 +11,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 @Table(name = "workouts",
@@ -38,6 +44,31 @@ public class Workout extends AbstractEntity {
             cascade = {CascadeType.ALL},
             orphanRemoval = true)
     private List<WorkoutExecution> workoutExecutions = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "workout_tags",
+            joinColumns = @JoinColumn(name = "workout_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
+        tag.getWorkouts().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        this.tags.remove(tag);
+        tag.getWorkouts().remove(this);
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags.clear();
+        if (tags != null) {
+            tags.forEach(this::addTag);
+        }
+    }
 
     public void addWorkoutExercise(WorkoutExercise workoutExercise) {
         this.workoutExercises.add(workoutExercise);

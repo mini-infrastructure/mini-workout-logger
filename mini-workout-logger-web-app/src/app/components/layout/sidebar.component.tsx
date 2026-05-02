@@ -1,3 +1,4 @@
+import type { JSX } from '@emotion/react/jsx-runtime';
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import { FiDatabase, FiHome, FiSettings } from "react-icons/fi";
@@ -8,12 +9,9 @@ import SidebarCollapseButton from "../button/button-collapse.sidebar.component.t
 import Divider from "../divider/divider.component.tsx";
 import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
 import { routes, type RouteSection } from "../../routes.tsx";
-import type { ReactNode } from "react";
 import { PiSneakerMoveLight, PiSneakerMoveFill } from "react-icons/pi";
 
-type RouteIconEntry = { icon: ReactNode; clickedIcon?: ReactNode };
-
-const routeIcons: Record<string, RouteIconEntry> = {
+const routeIcons: Record<string, { icon: JSX.Element; clickedIcon?: JSX.Element }> = {
     '/':          { icon: <FiHome /> },
     '/exercises': { icon: <PiSneakerMoveLight />, clickedIcon: <PiSneakerMoveFill /> },
     '/workouts':  { icon: <FiDatabase /> },
@@ -29,7 +27,7 @@ const Sidebar = () => {
     return (
         <aside css={styles.sidebar}>
             <div css={styles.sidebarTopDivider}>
-                <p>Fitracker</p>
+                <p>Movit</p>
                 <NavigationButtons />
             </div>
 

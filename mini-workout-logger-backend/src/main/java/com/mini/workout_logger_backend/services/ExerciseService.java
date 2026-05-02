@@ -3,19 +3,26 @@ package com.mini.workout_logger_backend.services;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
-import com.mini.java_core.service.AbstractService;
+import com.mini.java_core.service.AbstractMediaService;
 import com.mini.java_core.specification.SpecificationBuilder;
+import com.mini.workout_logger_backend.dtos.ExerciseExecutionHistoryReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseReadDTO;
 import com.mini.workout_logger_backend.dtos.ExerciseWriteDTO;
 import com.mini.workout_logger_backend.dtos.MuscleReadDTO;
+import com.mini.workout_logger_backend.dtos.SetExecutionReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
 import com.mini.workout_logger_backend.entities.ExerciseGroup;
 import com.mini.workout_logger_backend.entities.ExerciseMuscle;
+import com.mini.workout_logger_backend.entities.ExerciseMedia;
 import com.mini.workout_logger_backend.entities.Muscle;
+import com.mini.workout_logger_backend.entities.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
+import com.mini.workout_logger_backend.mappers.SetExecutionMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
+import com.mini.workout_logger_backend.repositories.ExerciseMediaRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
+import com.mini.workout_logger_backend.repositories.WorkoutExerciseExecutionRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +42,20 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toCollection;
 
 @Service
-public class ExerciseService extends AbstractService<Exercise,
+public class ExerciseService extends AbstractMediaService<Exercise,
+        ExerciseMedia,
         ExerciseReadDTO,
         ExerciseWriteDTO,
         ExerciseMapper,
-        ExerciseRepository> {
+        ExerciseRepository,
+        ExerciseMediaRepository> {
+
+    @Override
+    protected ExerciseMedia createMediaEntity(Exercise owner) {
+        ExerciseMedia media = new ExerciseMedia();
+        media.setOwner(owner);
+        return media;
+    }
 
     @Autowired
     MuscleService muscleService;
@@ -47,13 +63,21 @@ public class ExerciseService extends AbstractService<Exercise,
     @Autowired
     ExerciseGroupRepository exerciseGroupRepository;
 
+    @Autowired
+    WorkoutExerciseExecutionRepository workoutExerciseExecutionRepository;
+
+    @Autowired
+    SetExecutionMapper setExecutionMapper;
+
     @Override
     @SuppressWarnings("unchecked")
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> getAll(Map<String, String> params) {
         Map<String, String> filteredParams = new HashMap<>(params);
-        String groupName = filteredParams.remove("groupName");
-        String muscle    = filteredParams.remove("muscle");
-        String muscles   = filteredParams.remove("muscles");
+        String groupName   = filteredParams.remove("groupName");
+        String muscle      = filteredParams.remove("muscle");
+        String muscles     = filteredParams.remove("muscles");
+        String excludeIds  = filteredParams.remove("excludeIds");
+        String hiddenParam = filteredParams.remove("hidden");
 
         int page = parseIntParam(filteredParams.get("page"), 0);
         int size = parseIntParam(filteredParams.get("size"), 20);
@@ -136,6 +160,24 @@ public class ExerciseService extends AbstractService<Exercise,
             }
         }
 
+        if (hiddenParam != null) {
+            boolean hiddenValue = Boolean.parseBoolean(hiddenParam);
+            Specification<Exercise> hiddenSpec = (root, query, cb) -> cb.equal(root.get("hidden"), hiddenValue);
+            spec = spec == null ? hiddenSpec : spec.and(hiddenSpec);
+        }
+
+        if (StringUtils.hasText(excludeIds)) {
+            List<Long> ids = Arrays.stream(excludeIds.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Long::parseLong)
+                    .toList();
+            if (!ids.isEmpty()) {
+                Specification<Exercise> excludeSpec = (root, query, cb) -> root.get("id").in(ids).not();
+                spec = spec == null ? excludeSpec : spec.and(excludeSpec);
+            }
+        }
+
         Page<ExerciseReadDTO> result = repository.findAll(spec, pageable)
                 .map(entity -> afterLoad(mapper.toDTO(entity)));
 
@@ -191,45 +233,40 @@ public class ExerciseService extends AbstractService<Exercise,
     @Override
     public Exercise beforeSave(Exercise entity) {
         // Given a muscle described at `exerciseMuscles`, adds all its parent muscles as well, with the same role.
-        for (Muscle muscle : entity.getMuscles()) {
-            for (Muscle parent : muscleService.findParentMusclesRecursive(muscle, new java.util.HashSet<>())) {
-                boolean alreadyExists = entity.getMuscles()
-                        .stream()
-                        .anyMatch(m -> m.equals(parent));
+        Set<Long> existingMuscleIds = entity.getExerciseMuscles()
+                .stream()
+                .map(em -> em.getMuscle().getId())
+                .collect(toCollection(LinkedHashSet::new));
 
-                if (!alreadyExists) {
-                    entity.addMuscle(parent, entity.roleOf(muscle));
+        Set<ExerciseMuscle> toAdd = new LinkedHashSet<>();
+        for (ExerciseMuscle em : new HashSet<>(entity.getExerciseMuscles())) {
+            for (Muscle parent : muscleService.findParentMusclesRecursive(em.getMuscle(), new HashSet<>())) {
+                if (!existingMuscleIds.contains(parent.getId())) {
+                    existingMuscleIds.add(parent.getId());
+                    ExerciseMuscle parentEm = new ExerciseMuscle();
+                    parentEm.setMuscle(parent);
+                    parentEm.setRole(em.getRole());
+                    parentEm.setExercise(entity);
+                    toAdd.add(parentEm);
                 }
             }
         }
+        entity.getExerciseMuscles().addAll(toAdd);
 
         return super.beforeSave(entity);
     }
 
     public ExerciseReadDTO afterLoad(ExerciseReadDTO dto) {
         dto.setRootMuscles(getExerciseRootMusclesOrderedByRelevance(dto.getId()));
+        dto.setMedia(mediaRepository.findAllByOwnerId(dto.getId()).stream()
+                .map(this::toMediaReadDTO)
+                .toList());
         return super.afterLoad(dto);
     }
 
     public Set<String> getExerciseRootMusclesOrderedByRelevance(Long exerciseId) {
         Exercise exercise = this.repository.safeFindById(exerciseId);
-        Set<Muscle> muscles = exercise.getMuscles();
-        Set<Muscle> rootMuscles = muscleService.findRootMuscles(muscles);
-
-        Map<Muscle, Long> scores = new HashMap<>();
-        for (Muscle rootMuscle : rootMuscles) {
-            Set<Muscle> children = muscleService.findChildMusclesRecursive(rootMuscle, new java.util.HashSet<>());
-            long score = children.stream().filter(muscles::contains).count();
-            scores.put(rootMuscle, score);
-        }
-        return scores.entrySet()
-                .stream()
-                .sorted((e1, e2) ->
-                        Long.compare(e2.getValue(), e1.getValue()))
-                .map(entry -> entry.getKey()
-                        .getName()
-                        .getCode())
-                .collect(toCollection(LinkedHashSet::new));
+        return muscleService.findRootMuscleCodesOrderedByRelevance(exercise.getMuscles());
     }
 
     public ResponseEntity<ResponseDTO<String>> getAllExerciseGroupNames() {
@@ -269,6 +306,35 @@ public class ExerciseService extends AbstractService<Exercise,
         return ResponseHelper.success(HttpStatus.OK,
                 ResponseMessage.ENTITY_UPDATED.getMessage(),
                 List.of(mapper.toDTO(exercise)));
+    }
+
+    public ResponseEntity<ResponseDTO<ExerciseExecutionHistoryReadDTO>> getHistory(Long exerciseId) {
+        List<WorkoutExerciseExecution> records =
+                workoutExerciseExecutionRepository.findAllByExerciseIdOrderByDateDesc(exerciseId);
+
+        List<ExerciseExecutionHistoryReadDTO> history = records.stream()
+                .map(wee -> {
+                    List<SetExecutionReadDTO> setDTOs = wee.getSetExecutions().stream()
+                            .map(setExecutionMapper::toDTO)
+                            .toList();
+
+                    ExerciseExecutionHistoryReadDTO dto = new ExerciseExecutionHistoryReadDTO();
+                    dto.setId(wee.getId());
+                    dto.setWorkoutExecutionId(wee.getWorkoutExecution().getId());
+                    dto.setWorkoutName(wee.getWorkoutExecution().getWorkout().getName().getValue());
+                    dto.setExecutionDate(wee.getWorkoutExecution().getInterval().getStart());
+                    dto.setCompleted(wee.getCompleted());
+                    dto.setSetExecutions(setDTOs);
+                    return dto;
+                })
+                .toList();
+
+        return ResponseHelper.success(
+                HttpStatus.OK,
+                history.isEmpty()
+                        ? ResponseMessage.ENTITIES_EMPTY.getMessage()
+                        : ResponseMessage.ENTITIES_FOUND.getMessage(),
+                history);
     }
 
     public ResponseEntity<ResponseDTO<ExerciseReadDTO>> listExercisesByMuscleGroup(String muscleGroupName) {

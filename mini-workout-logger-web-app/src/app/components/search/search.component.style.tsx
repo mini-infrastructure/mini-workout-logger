@@ -10,7 +10,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--stack-gap-condensed)',
-        backgroundColor: 'var(--color-container2)',
+        backgroundColor: 'var(--color-container1)',
         borderRadius: 'var(--borderRadius-medium)',
         padding: 'var(--base-size-12)',
     }),
@@ -21,6 +21,26 @@ const styles = {
         flexShrink: 0,
         display: 'flex',
         alignItems: 'center',
+    }),
+
+    clearButton: css({
+        flexShrink: 0,
+        padding: '2px',
+        borderRadius: 'var(--borderRadius-small)',
+        background: 'transparent',
+        border: 'none',
+        color: 'var(--color-border)',
+        ':hover': {
+            background: 'transparent',
+            color: 'var(--color-text)',
+        },
+    }),
+
+    clearIcon: css({
+        width: '14px',
+        height: '14px',
+        fontSize: '14px',
+        margin: 0,
     }),
 
     input: css({

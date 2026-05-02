@@ -46,14 +46,17 @@ const fontSizes = {
 };
 
 const baseSize = {
-    4:  '0.25rem',
-    8:  '0.5rem',
-    12: '0.75rem',
-    16: '1rem',
-    18: '1.3rem',
-    24: '1.5rem',
-    32: '2rem',
-    64: '4rem',
+    4:   '0.25rem',
+    8:   '0.5rem',
+    12:  '0.75rem',
+    16:  '1rem',
+    18:  '1.3rem',
+    24:  '1.5rem',
+    32:  '2rem',
+    64:  '4rem',
+    48:  '3rem',
+    96:  '6rem',
+    260: '16.25rem',
 };
 
 const borderRadius = {
@@ -65,7 +68,8 @@ const borderRadius = {
 };
 
 const borderWidth = {
-    thin: '0.0625rem',
+    thin:   '0.0625rem',
+    medium: '0.125rem',
 };
 
 const zIndex = {
@@ -102,7 +106,7 @@ const control = {
         paddingInline: '0.5rem',
         gap:           '0.3rem',
         size:          '0.6rem',
-        iconSize:      '0.8rem',
+        iconSize:      '1rem',
     },
     medium: {
         paddingBlock:  '0.5rem',
@@ -116,6 +120,10 @@ const layout = {
     sidebar: {
         minWidth: '16rem',
     },
+};
+
+const transition = {
+    expand: '0.25s ease',
 };
 
 export const theme = {
@@ -133,6 +141,7 @@ export const theme = {
     shadow: {
         normal: '0 4px 6px -1px rgba(1, 4, 9, 0.8)',
     },
+    transition,
 };
 
 export type AppTheme = typeof theme;

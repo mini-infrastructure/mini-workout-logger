@@ -39,6 +39,9 @@ public class Exercise extends AbstractEntity {
     @Column(name = "favorited", nullable = false)
     private boolean favorited = false;
 
+    @Column(name = "hidden", nullable = false)
+    private boolean hidden = false;
+
     @Column(name = "category")
     @Enumerated(EnumType.STRING)
     private ExerciseCategory category;
@@ -82,6 +85,9 @@ public class Exercise extends AbstractEntity {
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private ExerciseType type;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseMedia> media = new ArrayList<>();
 
     public Set<Muscle> getMuscles() {
         return exerciseMuscles

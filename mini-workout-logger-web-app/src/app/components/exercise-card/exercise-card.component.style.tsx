@@ -1,34 +1,107 @@
 import { css } from '@emotion/react';
 
+const COVER_SIZE = 88;
+const COVER_SIZE_MINI = 48;
+
 const styles = {
-    container: css({
+    coverSize: COVER_SIZE,
+    coverSizeMini: COVER_SIZE_MINI,
+
+    outer: css({
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 'var(--stack-gap-condensed)',
+        alignItems: 'stretch',
+        height: 100,
+    }),
+
+    outerMini: css({
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 'var(--stack-gap-condensed)',
+        alignItems: 'center',
+    }),
+
+    coverMediaMini: css({
+        height: 'var(--base-size-48)',
+        width: 'var(--base-size-48)',
+        flexShrink: 0,
+        borderRadius: 'var(--borderRadius-small)',
+    }),
+
+    coverMedia: css({
+        height: '100%',
+        width: 'auto',
+        aspectRatio: '1 / 1',
+        flexShrink: 0,
+    }),
+
+    content: css({
+        flex: 1,
+        minWidth: 0,
         display: 'flex',
         flexDirection: 'column',
+        gap: 'var(--stack-gap-nano)',
+        overflow: 'hidden',
+    }),
+
+    header: css({
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         gap: 'var(--stack-gap-nano)',
     }),
 
     name: css({
         fontSize: 'var(--size-input-text)',
         color: 'var(--color-text)',
-    }),
-
-    header: css({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        flex: 1,
+        minWidth: 0,
     }),
 
     actions: css({
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--stack-gap-nano)',
+        flexShrink: 0,
     }),
 
     favoriteIcon: css({
         color: 'var(--color-yellow)',
     }),
 
+    favoriteWrapper: css({
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 'var(--borderRadius-medium)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        isolation: 'isolate',
+        // Hidden by default — visibility:hidden fully suppresses backdrop-filter rendering,
+        // unlike opacity:0 which can leave a subtle compositing artifact.
+        '& > div': {
+            visibility: 'hidden',
+            opacity: 0,
+            transition: 'opacity 0.25s ease, visibility 0s linear 0.25s',
+        },
+        '&:hover > div': {
+            visibility: 'visible',
+            opacity: 1,
+            transition: 'opacity 0.25s ease, visibility 0s linear 0s',
+        },
+        '&:hover button': {
+            backgroundColor: 'transparent',
+        },
+    }),
+
     favoriteButton: css({
+        backgroundColor: 'var(--color-container2)',
+        position: 'relative',
     }),
 
     divider: css({
@@ -36,36 +109,21 @@ const styles = {
     }),
 
     footer: css({
+        flex: 1,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        gap: 'var(--stack-gap-condensed)',
+        overflow: 'hidden',
     }),
 
-    attributes: css({
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--stack-gap-nano)',
-    }),
-
-    attributeRow: css({
-        display: 'flex',
-        alignItems: 'center',
-        gap: 'var(--stack-gap-tiny)',
-    }),
-
-    attributeLabel: css({
-        fontSize: 'var(--size-label)',
-        color: 'var(--color-text-subtle)',
-        whiteSpace: 'nowrap',
-        '&::after': {
-            content: '":"',
-        },
-    }),
-
-    attributeBadges: css({
+    footerBadges: css({
         display: 'flex',
         flexWrap: 'wrap',
+        alignContent: 'center',
         gap: 'var(--stack-gap-nano)',
+        flex: 1,
+        minWidth: 0,
+        overflow: 'hidden',
     }),
 };
 

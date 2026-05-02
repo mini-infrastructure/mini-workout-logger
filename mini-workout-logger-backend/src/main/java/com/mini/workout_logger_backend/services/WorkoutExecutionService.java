@@ -5,6 +5,7 @@ import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
 import com.mini.java_core.service.MessageService;
+import com.mini.workout_logger_backend.dtos.FinishWorkoutExecutionWriteDTO;
 import com.mini.workout_logger_backend.dtos.SetExecutionWriteDTO;
 import com.mini.workout_logger_backend.dtos.WorkoutExecutionReadDTO;
 import com.mini.workout_logger_backend.dtos.WorkoutExecutionWriteDTO;
@@ -165,6 +166,7 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         // Convert execution DTO to entity.
         WorkoutExecution workoutExecution = mapper.toEntity(merged);
         workoutExecution.setWorkout(workout);
+        workoutExecution.getInterval().setStart();
 
         // Set bidirectional relationships.
         for (WorkoutExerciseExecution wee : workoutExecution.getWorkoutExerciseExecutions()) {
@@ -179,6 +181,46 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         return ResponseHelper.success(HttpStatus.CREATED,
                 ResponseMessage.ENTITY_CREATED.getMessage(),
                 List.of(mapper.toDTO(savedExecution)));
+    }
+
+    public ResponseEntity<ResponseDTO<WorkoutExecutionReadDTO>> finish(Long workoutId,
+                                                                       Long workoutExecutionId,
+                                                                       FinishWorkoutExecutionWriteDTO dto) {
+        WorkoutExecution execution = repository.safeFindById(workoutExecutionId);
+        if (!execution.getWorkout().getId().equals(workoutId)) {
+            return ResponseHelper.error(HttpStatus.BAD_REQUEST,
+                    messageService.getLocalizedMessage(
+                            "error.workout_execution.execution_does_not_belong_to_workout",
+                            workoutExecutionId,
+                            workoutId),
+                    List.of());
+        }
+
+        // Build a lookup map from set_execution_id → completion data
+        Map<Long, FinishWorkoutExecutionWriteDTO.SetCompletionDTO> completionMap =
+                dto.getSetExecutions() == null ? Map.of() :
+                dto.getSetExecutions().stream()
+                   .collect(Collectors.toMap(
+                           FinishWorkoutExecutionWriteDTO.SetCompletionDTO::getSetExecutionId,
+                           Function.identity()
+                   ));
+
+        for (WorkoutExerciseExecution wee : execution.getWorkoutExerciseExecutions()) {
+            for (SetExecution se : wee.getSetExecutions()) {
+                FinishWorkoutExecutionWriteDTO.SetCompletionDTO completion =
+                        completionMap.get(se.getId());
+                if (completion != null) {
+                    se.setCompleted(completion.isCompleted());
+                    se.setSkipped(completion.isSkipped());
+                }
+            }
+        }
+
+        execution.getInterval().setEnd();
+        WorkoutExecution saved = repository.save(execution);
+        return ResponseHelper.success(HttpStatus.OK,
+                ResponseMessage.ENTITY_UPDATED.getMessage(),
+                List.of(mapper.toDTO(saved)));
     }
 
     public ResponseEntity<ResponseDTO<Void>> delete(Long workoutId, Long workoutExecutionId) {
