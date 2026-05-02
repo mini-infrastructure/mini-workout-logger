@@ -5,6 +5,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--stack-gap-condensed)',
+        minWidth: 0,
     }),
 
     // drag | # | type | field1 | field2 | actions
@@ -156,6 +157,14 @@ const styles = {
         width: '14px',
         height: '14px',
         fontSize: '14px',
+    }),
+
+    collapseWrapper: css({
+        overflow: 'hidden',
+        transition: 'max-height var(--transition-expand)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--stack-gap-condensed)',
     }),
 
     addSet: css({

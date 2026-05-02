@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { DragEvent } from 'react';
 import { css } from '@emotion/react';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -79,6 +79,35 @@ const SetList = ({
     const [skippedIds, setSkippedIds] = useState<Set<number>>(new Set());
     const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
+    const collapseRef = useRef<HTMLDivElement>(null);
+    const isInitialMount = useRef(true);
+
+    useEffect(() => {
+        const el = collapseRef.current;
+        if (!el) return;
+
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            // Set initial state without triggering a transition
+            el.style.transition = 'none';
+            el.style.maxHeight = collapsed ? '0px' : 'none';
+            requestAnimationFrame(() => { el.style.transition = ''; });
+            return;
+        }
+
+        if (collapsed) {
+            // Lock to current height, then animate to 0 in the next frame
+            el.style.maxHeight = `${el.scrollHeight}px`;
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => { el.style.maxHeight = '0px'; });
+            });
+        } else {
+            // Animate to content height, then release constraint so new sets aren't clipped
+            el.style.maxHeight = `${el.scrollHeight}px`;
+            const id = setTimeout(() => { el.style.maxHeight = 'none'; }, 260);
+            return () => clearTimeout(id);
+        }
+    }, [collapsed]);
 
     useEffect(() => {
         if (resetKey === undefined) return;
@@ -228,7 +257,11 @@ const SetList = ({
             {!planMode && (
                 <ProgressBar percentage={cardProgress} customCss={styles.cardProgressBar} />
             )}
-            {!collapsed && sets.map((set, i) => {
+            <div
+                ref={collapseRef}
+                css={styles.collapseWrapper}
+            >
+            {sets.map((set, i) => {
                 const completed = completedIds.has(set.id);
                 const skipped = skippedIds.has(set.id);
                 const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
@@ -334,30 +367,27 @@ const SetList = ({
                 );
             })}
 
-            {!collapsed && (
-                <>
-                    {/* Sentinel drop zone */}
-                    <div
-                        css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
-                        onDragOver={(e: DragEvent<HTMLDivElement>) => {
-                            if (!e.dataTransfer.types.includes('application/set')) return;
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setDragOver(sets.length);
-                        }}
-                        onDrop={(e) => {
-                            if (!e.dataTransfer.types.includes('application/set')) return;
-                            e.stopPropagation();
-                            handleDrop();
-                        }}
-                        style={{ height: '4px' }}
-                    />
+                {/* Sentinel drop zone */}
+                <div
+                    css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
+                    onDragOver={(e: DragEvent<HTMLDivElement>) => {
+                        if (!e.dataTransfer.types.includes('application/set')) return;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setDragOver(sets.length);
+                    }}
+                    onDrop={(e) => {
+                        if (!e.dataTransfer.types.includes('application/set')) return;
+                        e.stopPropagation();
+                        handleDrop();
+                    }}
+                    style={{ height: '4px' }}
+                />
 
-                    <Button onClick={onAdd} customCss={styles.addSet}>
-                        Add set
-                    </Button>
-                </>
-            )}
+                <Button onClick={onAdd} customCss={styles.addSet}>
+                    Add set
+                </Button>
+            </div>
         </div>
     );
 };

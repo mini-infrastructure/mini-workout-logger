@@ -9,8 +9,10 @@ import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { WorkoutReadDTO } from '../../dtos/workout-read.dto.tsx';
 import styles from './workout-card.component.style.tsx';
+import type {Key} from "react";
 
 export type WorkoutCardProps = {
+    key?: Key;
     workout: WorkoutReadDTO;
     onStart?: () => void;
     onOpen?: () => void;
@@ -80,7 +82,7 @@ const WorkoutCard = ({ workout, onStart, onOpen, selectedTagIds = [], onTagClick
                             <Badge
                                 key={tag.id}
                                 variant="primary"
-                                selected={selectedTagIds.includes(tag.id)}
+                                selected={selectedTagIds?.includes(tag.id)}
                                 onClick={() => onTagClick?.(tag.id)}
                             >
                                 {tag.name}
