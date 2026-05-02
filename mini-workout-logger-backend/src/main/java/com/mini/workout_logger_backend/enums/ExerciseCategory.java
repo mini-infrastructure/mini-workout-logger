@@ -19,8 +19,6 @@ public enum ExerciseCategory implements TranslatableEnum<ExerciseCategory> {
     RECOVERY,
     HIT,
     MOBILITY,
-    PILATES,
-    YOGA,
     WARM_UP
     ;
 

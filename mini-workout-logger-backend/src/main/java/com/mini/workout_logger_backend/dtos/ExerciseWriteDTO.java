@@ -25,6 +25,8 @@ public class ExerciseWriteDTO extends WriteDTO {
 
     private Boolean favorited;
 
+    private Boolean hidden;
+
     private ExerciseCategory category;
 
     private ExerciseDifficulty difficulty;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { css } from '@emotion/react';
 import { IoMdClose } from 'react-icons/io';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
@@ -19,14 +20,15 @@ import {
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';
 import styles from './exercises.view.style.tsx';
+import SecondaryButton from "../../components/button/button.secondary.component.tsx";
 
 const FILTER_CONFIG = [
+    { key: 'category',  label: 'Category',  options: exerciseCategoryOptions   },
     { key: 'equipment', label: 'Equipment', options: exerciseEquipmentOptions  },
     { key: 'mechanics', label: 'Mechanics', options: exerciseMechanicsOptions  },
     { key: 'force',     label: 'Force',     options: exerciseForceOptions      },
     { key: 'role',      label: 'Role',      options: exerciseRoleOptions       },
     { key: 'type',      label: 'Type',      options: exerciseTypeOptions       },
-    { key: 'category',  label: 'Category',  options: exerciseCategoryOptions   },
     { key: 'difficulty', label: 'Difficulty', options: exerciseDifficultyOptions },
 ] as const;
 
@@ -35,7 +37,7 @@ const ExercisesView = () => {
     const [page, setPage] = useState(0);
     const [filters, setFilters] = useState<Record<string, string[]>>({});
     const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles);
+    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
 
     useEffect(() => {
@@ -120,6 +122,7 @@ const ExercisesView = () => {
                 <div css={styles.filterBar}>
                     {FILTER_CONFIG.map(({ key, label, options }) => (
                         <DropdownButton
+                            key={key}
                             label={label}
                             options={options}
                             selected={filters[key] ?? []}
@@ -127,13 +130,13 @@ const ExercisesView = () => {
                         />
                     ))}
                     {hasFilters && (
-                        <Button
+                        <SecondaryButton
                             icon={<IoMdClose />}
                             onClick={handleClearAll}
                             customCss={styles.clearFiltersButton}
                         >
                             Clear filters
-                        </Button>
+                        </SecondaryButton>
                     )}
                 </div>
                 <div css={styles.contentRow}>
@@ -159,6 +162,7 @@ const ExercisesView = () => {
                                 page={page}
                                 totalPages={pagination.total_pages}
                                 onPageChange={setPage}
+                                customCss={css({ marginTop: 'var(--stack-gap-condensed)' })}
                             />
                         )}
                     </div>

@@ -57,16 +57,16 @@ const DropdownButton = ({
             css={[styles.container, ...(customCss ? (Array.isArray(customCss) ? customCss : [customCss]) : [])]}
             ref={containerRef}
         >
-            <Button
+            <SecondaryButton
                 icon={<MdKeyboardArrowDown />}
                 clickedIcon={<MdKeyboardArrowUp />}
                 isClicked={open}
                 iconEnd
                 onClick={() => setOpen(prev => !prev)}
-                customCss={[styles.trigger, selected.length > 0 && styles.triggerActive]}
+                customCss={[selected.length > 0 && styles.triggerActive]}
             >
                 {label}
-            </Button>
+            </SecondaryButton>
 
             {open && (
                 <div css={styles.dropdown}>

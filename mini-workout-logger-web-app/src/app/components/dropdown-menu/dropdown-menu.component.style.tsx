@@ -12,13 +12,23 @@ const styles = {
         display: 'inline-block',
     }),
 
+    triggerButton: css({
+        backgroundColor: 'var(--color-container2)',
+        border: 'none',
+        color: 'var(--color-white)',
+        ':hover': {
+            backgroundColor: 'var(--color-border)',
+            color: 'var(--color-white)',
+        },
+    }),
+
     menu: (top, left) => css({
         position: 'fixed',
         top: top,
         left: left,
         transform: "translateX(-100%)",
         zIndex: 'var(--base-zIndex-overlay)' as any,
-        background: "var(--color-container1)",
+        background: "var(--color-container2)",
         borderRadius: 'var(--overlay-borderRadius)',
         boxShadow: "var(--shadow-normal)",
         padding: 'var(--overlay-padding-condensed)',
@@ -50,12 +60,15 @@ const styles = {
         fontFamily: "var(--font-number)",
         borderRadius: 'var(--borderRadius-medium)',
         padding: `0 var(--base-size-8)`,
+        border: 'none',
+        backgroundColor: 'var(--color-container2)',
+        color: 'var(--color-white)',
 
         ':hover': {
-            backgroundColor: "var(--color-border)",
-            color: "var(--color-white)",
+            backgroundColor: 'var(--color-border)',
+            color: 'var(--color-white)',
             '& svg': {
-                color: "var(--color-white)",
+                color: 'var(--color-white)',
             },
         },
     }),

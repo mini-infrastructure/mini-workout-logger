@@ -50,14 +50,17 @@ const globalStyles = (theme: AppTheme) => css({
         '--size-xxxl':       theme.fontSizes.xxx_large,
 
         /* Base sizes */
-        '--base-size-4':  theme.baseSize[4],
-        '--base-size-8':  theme.baseSize[8],
-        '--base-size-12': theme.baseSize[12],
-        '--base-size-16': theme.baseSize[16],
-        '--base-size-18': theme.baseSize[18],
-        '--base-size-24': theme.baseSize[24],
-        '--base-size-32': theme.baseSize[32],
-        '--base-size-64': theme.baseSize[64],
+        '--base-size-4':   theme.baseSize[4],
+        '--base-size-8':   theme.baseSize[8],
+        '--base-size-12':  theme.baseSize[12],
+        '--base-size-16':  theme.baseSize[16],
+        '--base-size-18':  theme.baseSize[18],
+        '--base-size-24':  theme.baseSize[24],
+        '--base-size-32':  theme.baseSize[32],
+        '--base-size-48':  theme.baseSize[48],
+        '--base-size-64':  theme.baseSize[64],
+        '--base-size-96':  theme.baseSize[96],
+        '--base-size-260': theme.baseSize[260],
 
         /* Border radius */
         '--borderRadius-small':  theme.borderRadius.small,
@@ -67,7 +70,8 @@ const globalStyles = (theme: AppTheme) => css({
         '--borderRadius-full':   theme.borderRadius.full,
 
         /* Border width */
-        '--borderWidth-thin': theme.borderWidth.thin,
+        '--borderWidth-thin':   theme.borderWidth.thin,
+        '--borderWidth-medium': theme.borderWidth.medium,
 
         /* Z-index */
         '--base-zIndex-1':       theme.zIndex[1],
@@ -106,6 +110,9 @@ const globalStyles = (theme: AppTheme) => css({
 
         /* Shadows */
         '--shadow-normal': theme.shadow.normal,
+
+        /* Transitions */
+        '--transition-expand': theme.transition.expand,
     } as any,
 
     body: {

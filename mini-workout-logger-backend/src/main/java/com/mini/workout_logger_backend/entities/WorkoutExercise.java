@@ -44,6 +44,9 @@ public class WorkoutExercise extends AbstractEntity {
     @Column(name = "rest_time_seconds")
     private Integer restTimeSeconds;
 
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
     @JsonBackReference
     @OneToMany(mappedBy = "workoutExercise")
     private List<WorkoutExerciseExecution> executions = new ArrayList<>();

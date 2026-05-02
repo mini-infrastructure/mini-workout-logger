@@ -77,27 +77,89 @@ const styles = {
         gap: 'var(--stack-gap-tiny)',
     }),
 
-    legendItem: (active: boolean) => css({
+    mediaArea: css({
+        position: 'relative',
+        width: '100%',
+        height: 420,
         display: 'flex',
         alignItems: 'center',
-        gap: '0.3rem',
-        cursor: 'pointer',
-        opacity: active ? 1 : 0.5,
-        transition: 'opacity 0.15s ease',
-        '&:hover': { opacity: 1 },
+        justifyContent: 'center',
+        borderRadius: 'var(--borderRadius-medium)',
+        overflow: 'hidden',
+        backgroundColor: 'var(--color-container2)',
     }),
 
-    legendDot: css({
-        width: 8,
-        height: 8,
+    carousel: css({
+        width: '100%',
+        height: '100%',
+    }),
+
+    mediaSlide: css({
+        position: 'relative',
+        width: '100%',
+        height: 420,
+    }),
+
+    mediaImg: css({
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        display: 'block',
+    }),
+
+    mediaPlaceholder: css({
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '3rem',
+        color: 'var(--color-border)',
+    }),
+
+    mediaRemoveBtn: css({
+        position: 'absolute',
+        top: 8,
+        right: 8,
+        backgroundColor: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
         borderRadius: '50%',
-        flexShrink: 0,
+        color: 'var(--color-red)',
+        padding: 'var(--stack-gap-nano)',
+        minWidth: 'unset',
+        ':hover': {
+            backgroundColor: 'color-mix(in srgb, var(--color-bg) 90%, transparent)',
+        },
     }),
 
-    legendLabel: css({
-        fontSize: 'var(--size-small)',
-        color: 'var(--color-gray)',
-        whiteSpace: 'nowrap',
+    mediaRemoveBtnIcon: css({
+        fontSize: '0.8rem',
+        width: '0.8rem',
+        height: '0.8rem',
+    }),
+
+    mediaAddBtn: css({
+        position: 'absolute',
+        bottom: 8,
+        right: 8,
+        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
+        border: '1px solid var(--color-border)',
+        borderRadius: '50%',
+        width: 28,
+        height: 28,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+        color: 'var(--color-text)',
+        padding: 0,
+        '&:hover': {
+            borderColor: 'var(--color-blue)',
+            color: 'var(--color-blue)',
+        },
+        '&:disabled': {
+            opacity: 0.5,
+            cursor: 'default',
+        },
     }),
 };
 

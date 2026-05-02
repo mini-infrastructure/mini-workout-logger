@@ -17,4 +17,5 @@ export interface ExerciseWriteDTO {
     type?: ExerciseType;
     group_name?: string;
     exercise_muscles?: ExerciseMuscleWriteDTO[];
+    hidden?: boolean;
 }

@@ -168,3 +168,55 @@ Omitting `onSelectionChange` renders the component in read-only mode (no cursor 
 2. Add translations to `messages_en_US.properties` and `messages_pt_BR.properties`.
 3. In the SVG, add a group with `id="Muscle.NewName"` containing the relevant paths.
 4. No frontend code changes are needed — the component discovers muscles from the SVG and the API dynamically.
+
+---
+
+## UI component catalogue
+
+**Never use raw HTML `<button>`, `<input>`, `<form>`, `<select>`, or `<a>` tags directly in views or feature components.** Always use one of the components below. Raw tags are only permitted inside the implementation of these design-system components themselves.
+
+### Buttons — `src/app/components/button/`
+
+| Component | File | When to use |
+|---|---|---|
+| `Button` | `button.component.tsx` | Base building block. Used internally by all other button variants. Use directly only when no higher-level variant fits. Accepts `icon`, `clickedIcon`, `isClicked`, `path` (renders as `<Link>`), `customCss`, `customIconCss`. |
+| `PrimaryButton` | `button.primary.component.tsx` | Primary call-to-action. Blue filled background, white text. Use for the single most important action on a page (e.g. "Add workout", "Submit"). |
+| `SecondaryButton` | `button.secondary.component.tsx` | Neutral bordered button. Use for secondary actions (e.g. "Clear", "Cancel", "Save" in a header). Accepts a `color` prop to tint the label and icon (e.g. `color="var(--color-green)"` for Save, `color="var(--color-red)"` for destructive). |
+| `OnlyIconButton` | `only-icon-button.component.tsx` | Icon-only toggle button. Transparent background; tints to a soft color on hover/selected. Use for inline icon actions (complete, skip, delete, favorite). Props: `icon`, `selectedIcon`, `iconColor`, `selectedIconColor`, `selectedBg`, `selected`, `onToggle`, `legend`, `selectedLegend`. |
+| `SidebarButton` | `button.sidebar.component.tsx` | Left-nav item. Full-width, left-aligned, highlights the active route. Use only inside the sidebar. |
+| `SidebarCollapseButton` | `button-collapse.sidebar.component.tsx` | Expandable sidebar nav item. Use for routes that have child pages (e.g. Exercises → Database / Favorites). |
+
+### Inputs — `src/app/components/input/`
+
+| Component | File | When to use |
+|---|---|---|
+| `FormBuilder` | `input/form/form.input.component.tsx` | Renders a full form grid from a `FormItem[]` config array. Supports `text`, `email`, `password`, `number`, `textarea`, `select`, `multiselect`, `buttonselect`, `buttonmultiselect` field types. Use for any structured edit form (e.g. the exercise drawer). |
+| `Select` | `input/form/select.input.component.tsx` | Styled dropdown selector. Used internally by `FormBuilder` but can be used standalone. |
+| `MultiSelect` | `input/form/multiselect.form.input.component.tsx` | Multi-value tag picker. Used for muscles, tags, etc. |
+| `ButtonSelect` | `input/form/button.select.input.component.tsx` | Single-select via clickable pill buttons. |
+| `ButtonMultiSelect` | `input/form/button.multiselect.form.input.component.tsx` | Multi-select via clickable pill buttons. |
+| `SwitchInput` | `input/switch/switch.input.component.tsx` | Toggle switch with on/off icons. Use for boolean settings. |
+| `ActionSwitch` | `input/action/action.input.component.tsx` | Animated icon toggle (hamburger → ✕, filter, plus). Use for toolbar toggle buttons that change shape. |
+| `Search` | `search/search.component.tsx` | Search bar with leading icon and inline clear (✕) button. Use for any text-filter input. Props: `value`, `onChange`, `placeholder`. |
+
+### Layout & containers — `src/app/components/`
+
+| Component | File | When to use |
+|---|---|---|
+| `Card` | `card/card.component.tsx` | Rounded container with background `container1`, border, and optional hover/click state. All list-item cards must use this as the root. |
+| `Divider` | `divider/divider.component.tsx` | Horizontal rule. Props: `thickness` (`thin` / `medium` / `thick`). Use to separate logical sections within a card or page. |
+| `Modal` | `modal/modal.component.tsx` | Centered overlay dialog. Use for confirmations and focused tasks that block the rest of the UI. |
+| `DrawerModal` | `drawer-modal/drawer-modal.component.tsx` | Slide-in panel from the right. Use for detail/edit views (e.g. exercise drawer). Accepts `headerButton` for a top-right action. |
+| `Layout` | `layout/layout.component.tsx` | Page shell with sidebar + content area. Wrap every view's root with this. |
+
+### Display — `src/app/components/`
+
+| Component | File | When to use |
+|---|---|---|
+| `Badge` | `badge/badge.component.tsx` | Pill label. Supports `variant` (color), `icon`, `selected`, `onClick` (filter toggle), `onRemove`. Use for tags, properties, filter chips. |
+| `Rating` | `rating/rating.component.tsx` | Dot-based level indicator (e.g. difficulty). Props: `levelsInfo`, `selectedLevelLabel`, `variant`. |
+| `ProgressBar` | `progress-bar/progress-bar.component.tsx` | Horizontal progress fill. Use for workout execution progress. |
+| `Pagination` | `pagination/pagination.component.tsx` | Page navigation (prev/next/first/last). Props: `page`, `totalPages`, `onPageChange`. |
+| `Carousel` | `carousel/carousel.component.tsx` | Slide viewer with dot navigation. Props: `children: JSX.Element[]`. Dots overlay the content. |
+| `MediaItem` | `media-item/media-item.component.tsx` | Square image tile. Shows `FaImage` placeholder on `--color-container2` when no `src`. Becomes a file-upload trigger when `onUpload` is provided. Props: `src`, `alt`, `size`, `onUpload`. |
+| `DropdownMenu` | `dropdown-menu/dropdown-menu.component.tsx` | Contextual action menu triggered by a `⋯` button. Props: `items: DropdownMenuItem[]` — each item has `label`, `icon`, `iconColor`, `onClick`. |

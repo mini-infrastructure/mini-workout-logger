@@ -5,7 +5,6 @@ const styles = {
         display: "flex",
         alignItems: "center",
         gap: "var(--stack-gap-condensed)",
-        margin: "var(--base-size-16) 0",
         padding: "0.6rem 0.8rem",
         borderRadius: "var(--borderRadius-small)",
         backgroundColor: "var(--color-container1)",

@@ -26,4 +26,7 @@ public class WorkoutWriteDTO extends WriteDTO {
     @JsonProperty("workout_exercises")
     private List<WorkoutExerciseWriteDTO> workoutExercises;
 
+    @JsonProperty("tag_ids")
+    private List<Long> tagIds;
+
 }

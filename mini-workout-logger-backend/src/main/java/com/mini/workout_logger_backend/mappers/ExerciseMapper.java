@@ -63,6 +63,7 @@ public class ExerciseMapper
                             muscleMapper.toDTO(entity.getMusclesByRole(ExerciseMuscleMovementClassification.SYNERGIST)));
                     dto.setStabilizerMuscles(
                             muscleMapper.toDTO(entity.getMusclesByRole(ExerciseMuscleMovementClassification.STABILIZER)));
+                    dto.setRootMuscles(muscleService.findRootMuscleCodesOrderedByRelevance(entity.getMuscles()));
 
                     if (entity.getGroup() != null) {
                         dto.setGroupName(entity.getGroup().getName().getValue());
@@ -73,6 +74,7 @@ public class ExerciseMapper
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(ExerciseWriteDTO.class, Exercise.class)
+                .addMappings(m -> m.skip(Exercise::setExerciseMuscles))
                 .setPostConverter(ctx -> {
                     ExerciseWriteDTO dto = ctx.getSource();
                     Exercise entity = ctx.getDestination();

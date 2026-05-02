@@ -65,6 +65,20 @@ public class MuscleService extends AbstractService<Muscle,
         return findRootMuscles(new HashSet<>(repository.findAll()));
     }
 
+    public Set<String> findRootMuscleCodesOrderedByRelevance(Set<Muscle> muscles) {
+        Set<Muscle> rootMuscles = findRootMuscles(muscles);
+        Map<Muscle, Long> scores = new HashMap<>();
+        for (Muscle rootMuscle : rootMuscles) {
+            Set<Muscle> children = findChildMusclesRecursive(rootMuscle, new HashSet<>());
+            long score = children.stream().filter(muscles::contains).count();
+            scores.put(rootMuscle, score);
+        }
+        return scores.entrySet().stream()
+                .sorted((e1, e2) -> Long.compare(e2.getValue(), e1.getValue()))
+                .map(e -> e.getKey().getName().getCode())
+                .collect(java.util.stream.Collectors.toCollection(java.util.LinkedHashSet::new));
+    }
+
     public ResponseEntity<ResponseDTO<MuscleReadDTO>> getParentMuscles(Long muscleId) {
         Muscle muscle = repository.safeFindById(muscleId);
         Set<Muscle> parentMuscles = findParentMusclesRecursive(muscle, new java.util.HashSet<>());

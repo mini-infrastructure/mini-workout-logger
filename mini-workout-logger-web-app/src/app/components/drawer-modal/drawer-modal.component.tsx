@@ -1,4 +1,5 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
@@ -10,7 +11,7 @@ export type DrawerModalProps = {
     open: boolean;
     onClose: () => void;
     showCloseButton?: boolean;
-    headerButton?: ReactNode;
+    headerButton?: JSX.Element;
 };
 
 const DrawerModal = ({
@@ -48,6 +49,7 @@ const DrawerModal = ({
                             <Button
                                 icon={<IoClose />}
                                 onClick={handleClose}
+                                noBorder
                                 customCss={styles.closeButton}
                                 customIconCss={styles.closeButtonIcon}
                             />

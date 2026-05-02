@@ -27,4 +27,13 @@ export const KettlebellIcon = makeEquipmentIcon('/Icons/Kettlebell.svg');
 export const MachineIcon    = makeEquipmentIcon('/Icons/Machine.svg');
 export const PlateIcon      = makeEquipmentIcon('/Icons/Plate.svg');
 
-export const BackIcon      = makeEquipmentIcon('/Icons/Back.svg');
+export const BackIcon       = makeEquipmentIcon('/Icons/Back.svg');
+export const BikeIcon       = makeEquipmentIcon('/Icons/Bike.svg');
+export const HitIcon        = makeEquipmentIcon('/Icons/Hit.svg');
+export const PilatesIcon    = makeEquipmentIcon('/Icons/Pilates.svg');
+export const StrechingIcon  = makeEquipmentIcon('/Icons/Streching.svg');
+export const WalkIcon       = makeEquipmentIcon('/Icons/Walk.svg');
+export const YogaIcon       = makeEquipmentIcon('/Icons/Yoga.svg');
+export const PullIcon       = makeEquipmentIcon('/Icons/Pull.svg');
+export const PushIcon       = makeEquipmentIcon('/Icons/Push.svg');
+export const RotateIcon     = makeEquipmentIcon('/Icons/Rotate.svg');
