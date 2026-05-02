@@ -5,6 +5,7 @@ CREATE TABLE workout_exercises (
     position INTEGER,
     exercise_id BIGINT NOT NULL,
     rest_time_seconds INTEGER,
+    notes TEXT,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -24,7 +24,12 @@ public class WorkoutExecutionMapper extends AbstractMapper<WorkoutExecution,
     protected void configure(ModelMapper mapper) {
 
         // Entity -> DTO (GET)
-        mapper.createTypeMap(WorkoutExecution.class, WorkoutExecutionReadDTO.class);
+        mapper.createTypeMap(WorkoutExecution.class, WorkoutExecutionReadDTO.class)
+                .addMappings(m -> {
+                    m.map(src -> src.getInterval().getStart(), WorkoutExecutionReadDTO::setStartTime);
+                    m.map(src -> src.getInterval().getEnd(),   WorkoutExecutionReadDTO::setEndTime);
+                    m.map(WorkoutExecution::getCompleted,      WorkoutExecutionReadDTO::setCompleted);
+                });
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(WorkoutExecutionWriteDTO.class, WorkoutExecution.class)

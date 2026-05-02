@@ -1,5 +1,5 @@
 import {PropsWithChildren, useState} from "react";
-import type { ReactNode } from "react";
+import type { JSX } from "@emotion/react/jsx-runtime";
 import {useLocation} from "react-router-dom";
 import type {ButtonProps} from "./button.component.tsx";
 import Button from "./button.component.tsx";
@@ -9,7 +9,7 @@ import SidebarButton from "./button.sidebar.component.tsx";
 type CollapseMenuItem = {
     label: string;
     path: string;
-    icon?: ReactNode;
+    icon?: JSX.Element;
 };
 
 type SidebarCollapseButtonProps = ButtonProps & {

@@ -1,5 +1,8 @@
-import { useMemo, useState } from 'react';
-import { MdEdit, MdEditOff } from 'react-icons/md';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import type { MediaReadDTO } from '../../dtos/media-read.dto.tsx';
+import { MdEdit, MdEditOff, MdAdd, MdClose } from 'react-icons/md';
+import { FaImages } from 'react-icons/fa';
+import Carousel from '../carousel/carousel.component.tsx';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
 import type { FormItem, FormFieldValue } from '../input/form/form.input.component.tsx';
@@ -24,6 +27,8 @@ import {
     exerciseRoleOptions,
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';
+import Legends from '../legends/legends.component.tsx';
+import type { LegendItem } from '../legends/legends.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
 const classificationColors: Record<ExerciseMuscleMovementClassification, string> = {
@@ -119,26 +124,56 @@ const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
 
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
+    const [media, setMedia] = useState<MediaReadDTO[]>(exercise.media ?? []);
+
+    useEffect(() => {
+        setMedia(exercise.media ?? []);
+    }, [exercise.id]);
+    const [uploading, setUploading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null!);
+    const pushAlert = useAlert();
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
     );
-    const [selectedClassifications, setSelectedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(
-        new Set(Object.keys(classificationColors) as ExerciseMuscleMovementClassification[])
-    );
+    const [focusedClassifications, setFocusedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(new Set());
     const { muscles } = useMuscles();
-    const pushAlert = useAlert();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
 
-    // Build coloredMuscles filtered by selectedClassifications.
+    const handleMediaUpload = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploading(true);
+        try {
+            const uploaded = await ExerciseService.uploadMedia(exercise.id, file);
+            setMedia((prev) => [...prev, uploaded]);
+        } catch {
+            pushAlert('Failed to upload media.', 'error');
+        } finally {
+            setUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
+    };
+
+    const handleMediaRemove = async (mediaId: number) => {
+        try {
+            await ExerciseService.deleteMedia(exercise.id, mediaId);
+            setMedia((prev) => prev.filter((m) => m.id !== mediaId));
+        } catch {
+            pushAlert('Failed to remove media.', 'error');
+        }
+    };
+
+    // Build coloredMuscles: show all when nothing is focused, or only the focused classifications.
     const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
         if (!exercise.exercise_muscles) return [];
         return exercise.exercise_muscles.flatMap((em) => {
             const code = em.muscle_code;
-            if (!code || !selectedClassifications.has(em.role)) return [];
+            if (!code) return [];
+            if (focusedClassifications.size > 0 && !focusedClassifications.has(em.role)) return [];
             return [{ code, color: classificationColors[em.role] }];
         });
-    }, [exercise.exercise_muscles, selectedClassifications]);
+    }, [exercise.exercise_muscles, focusedClassifications]);
 
     // Classifications present in this exercise, for the legend.
     const activeClassifications = useMemo(() => {
@@ -149,14 +184,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             .filter((c) => seen.has(c));
     }, [exercise.exercise_muscles]);
 
-    const handleLegendClick = (classification: ExerciseMuscleMovementClassification) => {
-        setSelectedClassifications((prev) => {
-            const next = new Set(prev);
-            if (next.has(classification)) next.delete(classification);
-            else next.add(classification);
-            return next;
-        });
-    };
+    const legendItems = useMemo<LegendItem[]>(() =>
+        activeClassifications.map((c) => ({
+            key: c,
+            label: classificationLabels[c],
+            color: classificationColors[c],
+            onClick: (_key, selectedKeys) =>
+                setFocusedClassifications(new Set(selectedKeys as ExerciseMuscleMovementClassification[])),
+        })),
+    [activeClassifications]);
 
     const handleClose = () => {
         setEditMode(false);
@@ -198,6 +234,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             clickedIcon={<MdEditOff />}
             isClicked={editMode}
             onClick={() => setEditMode((prev) => !prev)}
+            noBorder
             customCss={styles.editButton}
             customIconCss={styles.editBButtonIcon}
         />
@@ -208,6 +245,55 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             <div css={styles.container}>
                 <div css={styles.header}>
                     <span css={styles.name}>{exercise.name}</span>
+                </div>
+
+                {/* Media carousel */}
+                <div css={styles.mediaArea}>
+                    {media.length > 0 ? (
+                        <Carousel customCss={styles.carousel}>
+                            {media.map((m) => (
+                                <div key={m.id} css={styles.mediaSlide}>
+                                    <img
+                                        css={styles.mediaImg}
+                                        src={`data:${m.content_type};base64,${m.data}`}
+                                        alt={m.filename}
+                                    />
+                                    {editMode && (
+                                        <Button
+                                            icon={<MdClose />}
+                                            onClick={() => handleMediaRemove(m.id)}
+                                            title="Remove"
+                                            noBorder
+                                            customCss={styles.mediaRemoveBtn}
+                                            customIconCss={styles.mediaRemoveBtnIcon}
+                                        />
+                                    )}
+                                </div>
+                            ))}
+                        </Carousel>
+                    ) : (
+                        <div css={styles.mediaPlaceholder}>
+                            <FaImages />
+                        </div>
+                    )}
+
+                    {editMode && (
+                        <Button
+                            icon={<MdAdd />}
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={uploading}
+                            title="Add image"
+                            noBorder
+                            customCss={styles.mediaAddBtn}
+                        />
+                    )}
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleMediaUpload}
+                    />
                 </div>
 
                 <Divider />
@@ -251,30 +337,12 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                             </div>
                         </div>
 
-                        {activeClassifications.length > 0 && (
-                            <div css={styles.legend}>
-                                {activeClassifications.map((c) => {
-                                    const active = selectedClassifications.has(c);
-                                    return (
-                                        <div
-                                            key={c}
-                                            css={styles.legendItem(active)}
-                                            onClick={() => handleLegendClick(c)}
-                                        >
-                                            <span
-                                                css={styles.legendDot}
-                                                style={{ backgroundColor: classificationColors[c] }}
-                                            />
-                                            <span css={styles.legendLabel}>
-                                                {classificationLabels[c]}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                        {legendItems.length > 0 && (
+                            <Legends items={legendItems} customCss={styles.legend} />
                         )}
                     </div>
                 </div>
+
             </div>
         </DrawerModal>
     );

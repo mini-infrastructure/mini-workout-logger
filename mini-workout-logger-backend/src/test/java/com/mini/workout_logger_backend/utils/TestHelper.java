@@ -75,6 +75,7 @@ public class TestHelper {
                 new ExerciseWriteDTO(
                         "Cable Isolateral Lying Fly",
                         null,
+                        null,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.BEGINNER,
                         ExerciseEquipment.CABLE,
@@ -94,6 +95,7 @@ public class TestHelper {
                 new ExerciseWriteDTO(
                         "Barbell Bent-over Row",
                         null,
+                        null,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.INTERMEDIATE,
                         ExerciseEquipment.BARBELL,
@@ -112,6 +114,7 @@ public class TestHelper {
                 ),
                 new ExerciseWriteDTO(
                         "Barbell Squat",
+                        null,
                         null,
                         ExerciseCategory.STRENGTH,
                         ExerciseDifficulty.INTERMEDIATE,
@@ -157,7 +160,8 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 12, null, null)
                                         ),
-                                        30
+                                        30,
+                                        null
                                 ),
                                 new WorkoutExerciseWriteDTO(
                                         exercises.getLast().getId(),
@@ -166,9 +170,11 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 55.0, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS_X_WEIGHT, 10, 60.0, null)
                                         ),
-                                        45
+                                        45,
+                                        null
                                 )
-                        )
+                        ),
+                        null
                 ),
                 new WorkoutWriteDTO(
                         "Leg Day",
@@ -180,9 +186,11 @@ public class TestHelper {
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null),
                                                 new SetWriteDTO(SetCategory.NORMAL, SetType.REPS, 15, null, null)
                                         ),
-                                        60
+                                        60,
+                                        null
                                 )
-                        )
+                        ),
+                        null
                 )
         );
     }

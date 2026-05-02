@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import { FiDatabase } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
 
@@ -7,14 +7,14 @@ export type RouteSection = 'Main' | 'Support';
 export type AppRouteChild = {
     path: string;
     label: string;
-    icon?: ReactNode;
+    icon?: JSX.Element;
 };
 
 export type AppRoute = {
     path: string;
     label: string;
     section: RouteSection;
-    icon?: ReactNode;
+    icon?: JSX.Element;
     children?: AppRouteChild[];
 };
 

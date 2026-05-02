@@ -1,5 +1,6 @@
 import type { Interpolation, Theme } from '@emotion/react';
 import { FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import Button from '../button/button.component.tsx';
 import styles from './pagination.component.style.tsx';
 
 export type PaginationProps = {
@@ -16,31 +17,31 @@ const Pagination = ({ page, totalPages, onPageChange, customCss }: PaginationPro
 
     return (
         <div css={[styles.container, ...customCssArray]}>
-            <button
-                css={styles.button(page === 0)}
+            <Button
+                icon={<FaAngleDoubleLeft />}
+                disabled={page === 0}
                 onClick={() => onPageChange(0)}
-            >
-                <FaAngleDoubleLeft />
-            </button>
-            <button
-                css={styles.button(page === 0)}
+                customCss={styles.button(page === 0)}
+            />
+            <Button
+                icon={<FaChevronLeft />}
+                disabled={page === 0}
                 onClick={() => onPageChange(page - 1)}
-            >
-                <FaChevronLeft />
-            </button>
+                customCss={styles.button(page === 0)}
+            />
             <span css={styles.label}>{page + 1} / {totalPages}</span>
-            <button
-                css={styles.button(page >= totalPages - 1)}
+            <Button
+                icon={<FaChevronRight />}
+                disabled={page >= totalPages - 1}
                 onClick={() => onPageChange(page + 1)}
-            >
-                <FaChevronRight />
-            </button>
-            <button
-                css={styles.button(page >= totalPages - 1)}
+                customCss={styles.button(page >= totalPages - 1)}
+            />
+            <Button
+                icon={<FaAngleDoubleRight />}
+                disabled={page >= totalPages - 1}
                 onClick={() => onPageChange(totalPages - 1)}
-            >
-                <FaAngleDoubleRight />
-            </button>
+                customCss={styles.button(page >= totalPages - 1)}
+            />
         </div>
     );
 };

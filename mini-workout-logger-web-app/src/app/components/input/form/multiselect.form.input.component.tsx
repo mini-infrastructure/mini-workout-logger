@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import styles from "./form.input.component.style.tsx";
-import Badge from "../../badge/badge.component.tsx";
+import EditableBadge from "../../badge/editable-badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import type {FormOption} from "./form.input.component.tsx";
@@ -109,13 +109,13 @@ const MultiSelect = ({
             {/* SELECTED ITEMS */}
             <div css={styles.multiselectSelectedItems(!!selectedOptions.length)}>
                 {selectedOptions.map((opt) => (
-                    <Badge
+                    <EditableBadge
                         key={opt.value}
                         onRemove={disabled ? undefined : () => toggleValue(opt.value)}
                         customCss={styles.badgeCustomCss}
                     >
                         {opt.label}
-                    </Badge>
+                    </EditableBadge>
                 ))}
             </div>
         </div>

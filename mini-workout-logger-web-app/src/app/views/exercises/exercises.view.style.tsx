@@ -58,17 +58,20 @@ const styles = {
         listStyle: 'none',
         padding: 0,
         marginRight: 'var(--stack-gap-tiny)',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignContent: 'flex-start',
         gap: 'var(--stack-gap-tiny)',
 
         '& > li': {
-            display: 'flex',
+            flex: '0 1 calc(50% - 4px)',
             minWidth: 0,
+            display: 'flex',
         },
 
         '& > li > *': {
             flex: 1,
+            minWidth: 0,
         },
     }),
 };

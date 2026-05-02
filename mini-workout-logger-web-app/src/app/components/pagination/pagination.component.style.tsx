@@ -6,7 +6,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 'var(--stack-gap-condensed)',
-        marginTop: 'var(--stack-gap-condensed)',
     }),
 
     button: (disabled: boolean) => css({

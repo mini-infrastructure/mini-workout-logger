@@ -1,45 +1,37 @@
-import {css} from '@emotion/react';
+import { css } from '@emotion/react';
 
 const styles = {
     wrapper: css({
-        position: 'absolute',
-        inset: 0,
         display: 'grid',
-        gridTemplateColumns: '1fr 2fr', // 1/3 | 2/3
+        gridTemplateColumns: '1fr 2fr',
         gap: 'var(--stack-gap-spacious)',
         padding: 'var(--base-size-32)',
-        zIndex: -1,
     }),
 
-    /* LEFT SIDE */
     left: css({
         display: 'grid',
-        gridTemplateRows: '1fr 2fr', // 1/3 | 2/3
+        gridTemplateRows: '1fr 2fr',
         gap: 'var(--stack-gap-spacious)',
     }),
 
-    /* RIGHT SIDE */
     right: css({
         display: 'grid',
-        gridTemplateRows: '2fr 1fr', // 2/3 | 1/3
+        gridTemplateRows: '2fr 1fr',
         gap: 'var(--stack-gap-spacious)',
     }),
 
-    /* RIGHT TOP */
     rightTop: css({
         display: 'grid',
-        gridTemplateColumns: '1fr 2fr 1fr', // 1/4 | 2/4 | 1/4
+        gridTemplateColumns: '1fr 2fr 1fr',
         gap: 'var(--stack-gap-spacious)',
     }),
 
-    /* RIGHT BOTTOM */
     rightBottom: css({
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr 2fr', // 1/4 | 1/4 | 1/2
+        gridTemplateColumns: '1fr 1fr 2fr',
         gap: 'var(--stack-gap-spacious)',
     }),
 
-    /* Modifiers */
     double: css({}),
     half: css({}),
 };
