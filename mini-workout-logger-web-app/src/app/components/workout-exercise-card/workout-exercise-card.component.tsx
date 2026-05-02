@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import type { DragEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { css } from '@emotion/react';
 import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox, MdDelete } from 'react-icons/md';
@@ -13,6 +12,7 @@ import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import MediaItem from '../media-item/media-item.component.tsx';
 import ExerciseCard from '../exercise-card/exercise-card.component.tsx';
 import SetList from './set-list.component.tsx';
+import type { DragHandleProps, DragItemProvided } from '../drag-grid/drag-grid.component.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { ExerciseRecommendationReadDTO } from '../../dtos/exercise-recommendation-read.dto.tsx';
@@ -23,10 +23,8 @@ import styles from './workout-exercise-card.component.style.tsx';
 export type WorkoutExerciseCardProps = {
     key?: any;
     workoutExercise: WorkoutExerciseReadDTO;
-    onDragStart: () => void;
-    onDragOver: (e: DragEvent<HTMLDivElement>) => void;
-    onDrop: () => void;
-    onDragEnd: () => void;
+    dragHandleProps?: DragHandleProps;
+    indicatorCss?: DragItemProvided['indicatorCss'];
     isPlaying?: boolean;
     resetKey?: number;
     onSetChange: (setId: number, field: string, value: number) => void;
@@ -42,7 +40,6 @@ export type WorkoutExerciseCardProps = {
     onNotesSave?: (exerciseId: number, notes: string) => void;
     existingExerciseIds?: number[];
     planMode?: boolean;
-    isDragOver?: boolean;
     highlighted?: boolean;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
@@ -51,10 +48,8 @@ export type WorkoutExerciseCardProps = {
 
 const WorkoutExerciseCard = ({
     workoutExercise,
-    onDragStart,
-    onDragOver,
-    onDrop,
-    onDragEnd,
+    dragHandleProps,
+    indicatorCss,
     onSetChange,
     isPlaying = false,
     resetKey,
@@ -70,7 +65,6 @@ const WorkoutExerciseCard = ({
     onNotesSave,
     existingExerciseIds = [],
     planMode = false,
-    isDragOver = false,
     highlighted = false,
     onMouseEnter,
     onMouseLeave,
@@ -80,7 +74,6 @@ const WorkoutExerciseCard = ({
     const containerRef = useRef<HTMLDivElement>(null);
     const notesRef = useRef<HTMLTextAreaElement>(null);
     const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
-    const [draggable, setDraggable] = useState(false);
     const [localNotes, setLocalNotes] = useState(workoutExercise.notes ?? '');
     const [notesFocused, setNotesFocused] = useState(false);
     const [taHeightPx, setTaHeightPx] = useState<number | null>(null);
@@ -165,27 +158,7 @@ const WorkoutExerciseCard = ({
     const hasPartial = partialMatches.length > 0;
 
     return (
-        <div
-            css={[
-                css({ minWidth: 0, overflow: 'hidden', transition: 'box-shadow 0.15s ease' }),
-                isDragOver && css({ boxShadow: '0 -3px 0 0 var(--color-blue)' }),
-            ]}
-            draggable={draggable}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            onDragStart={(e) => { e.dataTransfer.setData('application/exercise', ''); onDragStart(); }}
-            onDragOver={(e) => {
-                if (!e.dataTransfer.types.includes('application/exercise')) return;
-                e.preventDefault();
-                onDragOver(e);
-            }}
-            onDrop={(e) => {
-                if (!e.dataTransfer.types.includes('application/exercise')) return;
-                e.preventDefault();
-                onDrop();
-            }}
-            onDragEnd={() => { setDraggable(false); onDragEnd(); }}
-        >
+        <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
             <Card
                 customCss={[
                     css({ transition: 'box-shadow 0.2s ease, border-color 0.2s ease' }),
@@ -193,6 +166,7 @@ const WorkoutExerciseCard = ({
                         borderColor: 'var(--color-blue)',
                         boxShadow: `0 0 0 1px var(--color-blue)`,
                     }),
+                    indicatorCss,
                     ...(customCss
                         ? Array.isArray(customCss) ? customCss : [customCss]
                         : []),
@@ -202,8 +176,8 @@ const WorkoutExerciseCard = ({
                     <div css={styles.header}>
                         <Button
                             icon={<MdDragIndicator />}
-                            onMouseDown={() => setDraggable(true)}
-                            onMouseUp={() => setDraggable(false)}
+                            onMouseDown={dragHandleProps?.onMouseDown}
+                            onMouseUp={dragHandleProps?.onMouseUp}
                             customCss={styles.dragHandle}
                             customIconCss={styles.dragHandleIcon}
                         />

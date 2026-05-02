@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { DragEvent, KeyboardEvent } from 'react';
+import type { KeyboardEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoPlay } from 'react-icons/io5';
 import { IoMdSave } from 'react-icons/io';
@@ -14,6 +14,7 @@ import OnlyIconButton from '../../components/button/only-icon-button.component.t
 import Badge from '../../components/badge/badge.component.tsx';
 import EditableBadge from '../../components/badge/editable-badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
+import DragGrid from '../../components/drag-grid/drag-grid.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
@@ -30,6 +31,7 @@ import type { WorkoutWriteDTO } from '../../dtos/workout-write.dto.tsx';
 import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { TagReadDTO } from '../../dtos/tag-read.dto.tsx';
+import type { SetType } from '../../models/set.model.tsx';
 import WorkoutExecutionHistoryCard from '../../components/workout-execution-card/workout-execution-history-card.component.tsx';
 import {
     buildWorkoutExercisesPayload,
@@ -76,9 +78,6 @@ const WorkoutView = () => {
     const existingExerciseIds = useMemo(() => exercises.map((we) => we.exercise.id), [exercises]);
     const { exercises: searchResults, pagination: searchPagination } = useExercises(exerciseQuery, searchPage, {}, [], 12, existingExerciseIds);
 
-    // Exercise drag state
-    const [dragFrom, setDragFrom] = useState<number | null>(null);
-    const [dragOver, setDragOver] = useState<number | null>(null);
 
     // Hovered exercise — drives muscle highlight on the body visualization
     const [hoveredExerciseId, setHoveredExerciseId] = useState<number | null>(null);
@@ -156,22 +155,15 @@ const WorkoutView = () => {
     });
 
     // Drag-to-reorder exercises
-    const handleDragStart = (index: number) => setDragFrom(index);
-    const handleDragOver = (index: number, e: DragEvent<HTMLDivElement>) => { e.preventDefault(); setDragOver(index); };
-    const handleDragEnd = () => { setDragFrom(null); setDragOver(null); };
-
-    const handleDrop = async (dropIndex: number) => {
-        const from = dragFrom;
-        setDragFrom(null);
-        setDragOver(null);
-        if (from === null || from === dropIndex) return;
+    const handleReorder = async (from: number, to: number) => {
         const original = exercises;
         const updated = [...exercises];
         const [moved] = updated.splice(from, 1);
-        updated.splice(dropIndex, 0, moved);
+        updated.splice(to, 0, moved);
         setExercises(updated);
         try {
-            await WorkoutService.reorderExercise(id!, moved.id, dropIndex);
+            await WorkoutService.reorderExercise(id!, moved.id, to);
+            pushAlert('Exercise reordered.', 'success');
         } catch {
             setExercises(original);
             pushAlert('Failed to reorder exercise.', 'error');
@@ -464,16 +456,15 @@ const WorkoutView = () => {
                     <div css={styles.leftColumn}>
 
                         {/* Exercise cards */}
-                        <div css={styles.exerciseList}>
-                            {exercises.map((we, index) => (
+                        <DragGrid
+                            items={exercises}
+                            getItemKey={(we) => we.id}
+                            onReorder={handleReorder}
+                            renderItem={(we, provided) => (
                                 <WorkoutExerciseCard
-                                    key={we.id}
                                     workoutExercise={we}
-                                    isDragOver={dragOver === index}
-                                    onDragStart={() => handleDragStart(index)}
-                                    onDragOver={(e) => handleDragOver(index, e)}
-                                    onDrop={() => handleDrop(index)}
-                                    onDragEnd={handleDragEnd}
+                                    dragHandleProps={provided.dragHandleProps}
+                                    indicatorCss={provided.indicatorCss}
                                     onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
                                     onSetTypeChange={(setId, type) => handleSetTypeChange(we.id, setId, type)}
                                     onSetRemove={(setId) => handleSetRemove(we.id, setId)}
@@ -488,8 +479,8 @@ const WorkoutView = () => {
                                     onMouseLeave={() => setHoveredExerciseId(null)}
                                     planMode
                                 />
-                            ))}
-                        </div>
+                            )}
+                        />
 
                         {/* Add exercise */}
                         <Divider />

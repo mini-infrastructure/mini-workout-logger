@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import type { DragEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaRegClock } from 'react-icons/fa';
 import { IoPlay, IoPause, IoStop } from 'react-icons/io5';
@@ -10,6 +9,7 @@ import Button from '../../components/button/button.component.tsx';
 import SecondaryButton from '../../components/button/button.secondary.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
+import DragGrid from '../../components/drag-grid/drag-grid.component.tsx';
 import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
 import { useWorkout } from '../../hooks/useWorkout.tsx';
 import { useAlert } from '../../context/alert.context.tsx';
@@ -45,9 +45,6 @@ const WorkoutExecutionView = () => {
     // Exercises (local copy for set interaction)
     const [exercises, setExercises] = useState<WorkoutExerciseReadDTO[]>([]);
 
-    // Exercise drag state
-    const [dragFrom, setDragFrom] = useState<number | null>(null);
-    const [dragOver, setDragOver] = useState<number | null>(null);
 
     // Progress — keyed by exerciseId, values are plan set IDs
     const [completedSetIds, setCompletedSetIds] = useState<Record<number, number[]>>({});
@@ -87,25 +84,14 @@ const WorkoutExecutionView = () => {
     };
 
     // Exercise drag-to-reorder
-    const handleExerciseDragStart = (index: number) => setDragFrom(index);
-    const handleExerciseDragOver = (index: number, e: DragEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        setDragOver(index);
-    };
-    const handleExerciseDragEnd = () => { setDragFrom(null); setDragOver(null); };
-
-    const handleExerciseDrop = async (dropIndex: number) => {
-        const from = dragFrom;
-        setDragFrom(null);
-        setDragOver(null);
-        if (from === null || from === dropIndex) return;
+    const handleReorder = async (from: number, to: number) => {
         const original = exercises;
         const updated = [...exercises];
         const [moved] = updated.splice(from, 1);
-        updated.splice(dropIndex, 0, moved);
+        updated.splice(to, 0, moved);
         setExercises(updated);
         try {
-            await WorkoutService.reorderExercise(id!, moved.id, dropIndex);
+            await WorkoutService.reorderExercise(id!, moved.id, to);
             pushAlert('Exercise reordered.', 'success');
         } catch {
             setExercises(original);
@@ -265,16 +251,15 @@ const WorkoutExecutionView = () => {
                 <ProgressBar percentage={progressPct} />
 
                 <div css={styles.content}>
-                    <div css={styles.exerciseList}>
-                        {exercises.map((we, index) => (
+                    <DragGrid
+                        items={exercises}
+                        getItemKey={(we) => we.id}
+                        onReorder={handleReorder}
+                        renderItem={(we, provided) => (
                             <WorkoutExerciseCard
-                                key={we.id}
                                 workoutExercise={we}
-                                isDragOver={dragOver === index}
-                                onDragStart={() => handleExerciseDragStart(index)}
-                                onDragOver={(e) => handleExerciseDragOver(index, e)}
-                                onDrop={() => handleExerciseDrop(index)}
-                                onDragEnd={handleExerciseDragEnd}
+                                dragHandleProps={provided.dragHandleProps}
+                                indicatorCss={provided.indicatorCss}
                                 onSetChange={(setId, field, value) => handleSetChange(we.id, setId, field, value)}
                                 isPlaying={isPlaying}
                                 resetKey={stopKey}
@@ -286,8 +271,8 @@ const WorkoutExecutionView = () => {
                                 onNotesChange={handleNotesChange}
                                 onNotesSave={handleNotesSave}
                             />
-                        ))}
-                    </div>
+                        )}
+                    />
                 </div>
             </div>
         </Layout>
