@@ -187,10 +187,13 @@ const styles = {
         flexShrink: 0,
         width: 'var(--base-size-260)',
         boxSizing: 'border-box',
-        border: `var(--borderWidth-medium) solid ${exactMatch ? 'var(--color-green)' : 'var(--color-yellow)'}`,
+        border: 'var(--borderWidth-medium) solid transparent',
         borderRadius: 'var(--borderRadius-medium)',
         cursor: 'pointer',
         transition: 'border-color 0.15s',
+        ':hover': {
+            borderColor: exactMatch ? 'var(--color-green)' : 'var(--color-yellow)',
+        },
     }),
 
     swapLegend: css({
