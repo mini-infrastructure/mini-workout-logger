@@ -18,6 +18,8 @@ import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { ExerciseRecommendationReadDTO } from '../../dtos/exercise-recommendation-read.dto.tsx';
 import type { SetType } from '../../models/set.model.tsx';
 import ExerciseRecommendationService from '../../services/exercise-recommendation.service.tsx';
+import Legends from '../legends/legends.component.tsx';
+import type { LegendItem } from '../legends/legends.component.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
 
 export type WorkoutExerciseCardProps = {
@@ -87,6 +89,7 @@ const WorkoutExerciseCard = ({
     const [swapAnimating, setSwapAnimating] = useState(false);
     const [recommendations, setRecommendations] = useState<ExerciseRecommendationReadDTO[]>([]);
     const [loadingRecs, setLoadingRecs] = useState(false);
+    const [swapFilter, setSwapFilter] = useState<Set<string>>(new Set()); // empty = all
 
     useEffect(() => {
         const el = containerRef.current;
@@ -156,6 +159,27 @@ const WorkoutExerciseCard = ({
     const partialMatches = recommendations.filter(r => !r.exact_match);
     const hasExact = exactMatches.length > 0;
     const hasPartial = partialMatches.length > 0;
+
+    const visibleRecs = swapFilter.size === 0
+        ? [...exactMatches, ...partialMatches]
+        : recommendations.filter(r => swapFilter.has(r.exact_match ? 'exact' : 'partial'));
+
+    const swapLegendItems: LegendItem[] = [
+        ...(hasExact ? [{
+            key: 'exact',
+            label: 'Exact match',
+            color: 'var(--color-green)',
+            onClick: (_key: string, selectedKeys: string[]) =>
+                setSwapFilter(new Set(selectedKeys)),
+        }] : []),
+        ...(hasPartial ? [{
+            key: 'partial',
+            label: 'Partial match',
+            color: 'var(--color-yellow)',
+            onClick: (_key: string, selectedKeys: string[]) =>
+                setSwapFilter(new Set(selectedKeys)),
+        }] : []),
+    ];
 
     return (
         <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
@@ -321,7 +345,7 @@ const WorkoutExerciseCard = ({
                                 <>
                                     <div css={styles.swapScrollArea} style={containerWidth ? { width: containerWidth } : undefined}>
                                         <div css={styles.swapCardsRow}>
-                                            {[...exactMatches, ...partialMatches].map((rec) => (
+                                            {visibleRecs.map((rec) => (
                                                 <div key={rec.exercise.id} css={styles.swapCardWrapper(rec.exact_match)}>
                                                     <ExerciseCard
                                                         exercise={rec.exercise}
@@ -337,20 +361,9 @@ const WorkoutExerciseCard = ({
                                         </div>
                                     </div>
 
-                                    <div css={styles.swapLegend}>
-                                        {hasExact && (
-                                            <>
-                                                <span css={styles.swapDot('var(--color-green)')} />
-                                                <span>Exact match</span>
-                                            </>
-                                        )}
-                                        {hasPartial && (
-                                            <>
-                                                <span css={styles.swapDot('var(--color-yellow)')} />
-                                                <span>Partial match</span>
-                                            </>
-                                        )}
-                                    </div>
+                                    {swapLegendItems.length > 0 && (
+                                        <Legends items={swapLegendItems} customCss={styles.swapLegend} />
+                                    )}
                                 </>
                             )}
                         </div>

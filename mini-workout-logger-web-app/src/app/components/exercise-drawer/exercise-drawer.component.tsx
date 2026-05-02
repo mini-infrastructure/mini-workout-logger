@@ -27,6 +27,8 @@ import {
     exerciseRoleOptions,
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';
+import Legends from '../legends/legends.component.tsx';
+import type { LegendItem } from '../legends/legends.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
 const classificationColors: Record<ExerciseMuscleMovementClassification, string> = {
@@ -133,9 +135,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
     );
-    const [selectedClassifications, setSelectedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(
-        new Set(Object.keys(classificationColors) as ExerciseMuscleMovementClassification[])
-    );
+    const [focusedClassifications, setFocusedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(new Set());
     const { muscles } = useMuscles();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
@@ -164,15 +164,16 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
         }
     };
 
-    // Build coloredMuscles filtered by selectedClassifications.
+    // Build coloredMuscles: show all when nothing is focused, or only the focused classifications.
     const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
         if (!exercise.exercise_muscles) return [];
         return exercise.exercise_muscles.flatMap((em) => {
             const code = em.muscle_code;
-            if (!code || !selectedClassifications.has(em.role)) return [];
+            if (!code) return [];
+            if (focusedClassifications.size > 0 && !focusedClassifications.has(em.role)) return [];
             return [{ code, color: classificationColors[em.role] }];
         });
-    }, [exercise.exercise_muscles, selectedClassifications]);
+    }, [exercise.exercise_muscles, focusedClassifications]);
 
     // Classifications present in this exercise, for the legend.
     const activeClassifications = useMemo(() => {
@@ -183,14 +184,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             .filter((c) => seen.has(c));
     }, [exercise.exercise_muscles]);
 
-    const handleLegendClick = (classification: ExerciseMuscleMovementClassification) => {
-        setSelectedClassifications((prev) => {
-            const next = new Set(prev);
-            if (next.has(classification)) next.delete(classification);
-            else next.add(classification);
-            return next;
-        });
-    };
+    const legendItems = useMemo<LegendItem[]>(() =>
+        activeClassifications.map((c) => ({
+            key: c,
+            label: classificationLabels[c],
+            color: classificationColors[c],
+            onClick: (_key, selectedKeys) =>
+                setFocusedClassifications(new Set(selectedKeys as ExerciseMuscleMovementClassification[])),
+        })),
+    [activeClassifications]);
 
     const handleClose = () => {
         setEditMode(false);
@@ -335,27 +337,8 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                             </div>
                         </div>
 
-                        {activeClassifications.length > 0 && (
-                            <div css={styles.legend}>
-                                {activeClassifications.map((c) => {
-                                    const active = selectedClassifications.has(c);
-                                    return (
-                                        <div
-                                            key={c}
-                                            css={styles.legendItem(active)}
-                                            onClick={() => handleLegendClick(c)}
-                                        >
-                                            <span
-                                                css={styles.legendDot}
-                                                style={{ backgroundColor: classificationColors[c] }}
-                                            />
-                                            <span css={styles.legendLabel}>
-                                                {classificationLabels[c]}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                        {legendItems.length > 0 && (
+                            <Legends items={legendItems} customCss={styles.legend} />
                         )}
                     </div>
                 </div>

@@ -204,15 +204,6 @@ const styles = {
         color: 'var(--color-gray)',
     }),
 
-    swapDot: (color: string) => css({
-        display: 'inline-block',
-        width: 'var(--control-small-size)',
-        height: 'var(--control-small-size)',
-        borderRadius: '50%',
-        backgroundColor: color,
-        flexShrink: 0,
-    }),
-
     swapEmpty: css({
         fontSize: 'var(--size-small)',
         color: 'var(--color-gray)',

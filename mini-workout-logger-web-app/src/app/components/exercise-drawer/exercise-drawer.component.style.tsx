@@ -77,29 +77,6 @@ const styles = {
         gap: 'var(--stack-gap-tiny)',
     }),
 
-    legendItem: (active: boolean) => css({
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.3rem',
-        cursor: 'pointer',
-        opacity: active ? 1 : 0.5,
-        transition: 'opacity 0.15s ease',
-        '&:hover': { opacity: 1 },
-    }),
-
-    legendDot: css({
-        width: 8,
-        height: 8,
-        borderRadius: '50%',
-        flexShrink: 0,
-    }),
-
-    legendLabel: css({
-        fontSize: 'var(--size-small)',
-        color: 'var(--color-gray)',
-        whiteSpace: 'nowrap',
-    }),
-
     mediaArea: css({
         position: 'relative',
         width: '100%',
