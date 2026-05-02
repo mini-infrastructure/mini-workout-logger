@@ -121,6 +121,7 @@ const ExercisesView = () => {
                 <div css={styles.filterBar}>
                     {FILTER_CONFIG.map(({ key, label, options }) => (
                         <DropdownButton
+                            key={key}
                             label={label}
                             options={options}
                             selected={filters[key] ?? []}

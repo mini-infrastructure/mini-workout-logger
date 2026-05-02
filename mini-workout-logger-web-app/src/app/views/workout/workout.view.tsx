@@ -314,19 +314,22 @@ const WorkoutView = () => {
         }
     };
 
-    // Add tag inline
+    // Add tag inline — reuses an existing tag if the name already exists
     const handleTagCommit = async () => {
         const trimmed = tagInput.trim();
         setTagInput('');
         setAddingTag(false);
         if (!trimmed || !workout) return;
         try {
-            const tag = await TagService.create(trimmed);
+            const allTags = await TagService.getAll();
+            const existing = allTags.find((t) => t.name.toLowerCase() === trimmed.toLowerCase());
+            const tag = existing ?? await TagService.create(trimmed);
+            if (localTags.some((t) => t.id === tag.id)) return;
             const newTags = [...localTags, tag];
             setLocalTags(newTags);
             const payload = buildPayload(editedName || workout.name, newTags);
             await WorkoutService.update(id!, payload);
-            pushAlert(`Tag "${trimmed}" added.`, 'success');
+            pushAlert(`Tag "${tag.name}" added.`, 'success');
         } catch {
             pushAlert('Failed to add tag.', 'error');
         }
