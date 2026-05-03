@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { ReactNode } from 'react';
 import type { Interpolation, Theme, SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
 import { useAlert } from '../../context/alert.context.tsx';
@@ -15,9 +14,9 @@ export type DragItemProvided = {
     indicatorCss: SerializedStyles | undefined;
 };
 
-export type RenderItem<T> = (item: T, provided: DragItemProvided, index: number) => ReactNode;
+export type RenderItem<T> = (item: T, provided: DragItemProvided, index: number) => JSX.Element;
 
-export type DragGridProps<T> = {
+export type DragGridProps<T extends object> = {
     items: T[];
     direction?: 'vertical' | 'horizontal';
     onReorder: (fromIndex: number, toIndex: number) => void;
