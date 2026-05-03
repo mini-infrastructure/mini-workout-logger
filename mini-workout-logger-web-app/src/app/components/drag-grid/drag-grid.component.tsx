@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { Interpolation, Theme, SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
+import { useAlert } from '../../context/alert.context.tsx';
 
 export type DragHandleProps = {
     onMouseDown: () => void;
@@ -22,6 +23,10 @@ export type DragGridProps<T> = {
     onReorder: (fromIndex: number, toIndex: number) => void;
     renderItem: RenderItem<T>;
     getItemKey: (item: T) => string | number;
+    /** Label used in the reorder alert: "<label> reordered." Omit to suppress the alert. */
+    reorderLabel?: string;
+    /** Data-transfer type key. Use distinct values for nested DragGrids. Default: 'application/drag-grid'. */
+    dragType?: string;
     borderColor?: string;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
@@ -34,9 +39,12 @@ function DragGrid<T extends object>({
     onReorder,
     renderItem,
     getItemKey,
+    reorderLabel,
+    dragType = 'application/drag-grid',
     borderColor = 'var(--color-blue)',
     customCss,
 }: DragGridProps<T>): ReactNode {
+    const pushAlert = useAlert();
     const [dragFrom, setDragFrom] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
     const [dropSide, setDropSide] = useState<DropSide>('before');
@@ -83,12 +91,13 @@ function DragGrid<T extends object>({
                         css={css({ minWidth: 0 })}
                         draggable={draggableIndex === index}
                         onDragStart={(e) => {
-                            e.dataTransfer.setData('application/drag-grid', '');
+                            e.dataTransfer.setData(dragType, '');
                             setDragFrom(index);
                         }}
                         onDragOver={(e) => {
-                            if (!e.dataTransfer.types.includes('application/drag-grid')) return;
+                            if (!e.dataTransfer.types.includes(dragType)) return;
                             e.preventDefault();
+                            e.stopPropagation();
                             const rect = e.currentTarget.getBoundingClientRect();
                             const ratio = direction === 'vertical'
                                 ? (e.clientY - rect.top) / rect.height
@@ -97,8 +106,9 @@ function DragGrid<T extends object>({
                             setDragOver(index);
                         }}
                         onDrop={(e) => {
-                            if (!e.dataTransfer.types.includes('application/drag-grid')) return;
+                            if (!e.dataTransfer.types.includes(dragType)) return;
                             e.preventDefault();
+                            e.stopPropagation();
                             const from = dragFrom;
                             const over = dragOver;
                             const side = dropSide;
@@ -110,6 +120,9 @@ function DragGrid<T extends object>({
                             const toIndex = from < rawTarget ? rawTarget - 1 : rawTarget;
                             if (from !== toIndex) {
                                 onReorder(from, toIndex);
+                                if (reorderLabel) {
+                                    pushAlert(`${reorderLabel} reordered.`, 'info');
+                                }
                             }
                         }}
                         onDragEnd={() => {

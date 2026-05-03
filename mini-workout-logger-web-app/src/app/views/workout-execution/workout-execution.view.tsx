@@ -92,7 +92,6 @@ const WorkoutExecutionView = () => {
         setExercises(updated);
         try {
             await WorkoutService.reorderExercise(id!, moved.id, to);
-            pushAlert('Exercise reordered.', 'success');
         } catch {
             setExercises(original);
             pushAlert('Failed to reorder exercise.', 'error');
@@ -275,6 +274,7 @@ const WorkoutExecutionView = () => {
                         getItemKey={(we) => we.id}
                         onReorder={handleReorder}
                         renderItem={renderExerciseCard}
+                        reorderLabel="Exercise"
                     />
                 </div>
             </div>

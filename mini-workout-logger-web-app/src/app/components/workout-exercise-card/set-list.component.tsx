@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import type { DragEvent } from 'react';
 import { css } from '@emotion/react';
 import { FaTrashAlt } from 'react-icons/fa';
 import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
@@ -9,6 +8,8 @@ import type { SetType } from '../../models/set.model.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import ProgressBar from '../progress-bar/progress-bar.component.tsx';
+import DragGrid from '../drag-grid/drag-grid.component.tsx';
+import type { DragItemProvided } from '../drag-grid/drag-grid.component.tsx';
 import styles from './set-list.component.style.tsx';
 
 type SetField = 'planned_repetitions' | 'planned_weight' | 'planned_duration_seconds';
@@ -77,8 +78,6 @@ const SetList = ({
 }: SetListProps) => {
     const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
     const [skippedIds, setSkippedIds] = useState<Set<number>>(new Set());
-    const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
-    const [dragOver, setDragOver] = useState<number | null>(null);
     const collapseRef = useRef<HTMLDivElement>(null);
     const isInitialMount = useRef(true);
 
@@ -163,15 +162,6 @@ const SetList = ({
 
     if (toggleAllRef) toggleAllRef.current = toggleAll;
 
-    // ── Drag helpers ─────────────────────────────────────────────────────────
-
-    const handleDrop = () => {
-        if (draggableIndex === null || dragOver === null || draggableIndex === dragOver) return;
-        onReorder(draggableIndex, dragOver);
-        setDraggableIndex(null);
-        setDragOver(null);
-    };
-
     // ── Field renderers ──────────────────────────────────────────────────────
     //
     // Each renderer produces the same <input> in both modes; plan mode wraps it
@@ -252,138 +242,96 @@ const SetList = ({
     const activeSets = sets.length - skippedIds.size;
     const cardProgress = activeSets > 0 ? (completedIds.size / activeSets) * 100 : 0;
 
+    const renderSetRow = (set: SetReadDTO, provided: DragItemProvided, i: number) => {
+        const completed = completedIds.has(set.id);
+        const skipped = skippedIds.has(set.id);
+        return (
+            <div css={[styles.row, provided.indicatorCss, skipped && styles.rowSkipped]}>
+                <Button
+                    icon={<MdDragIndicator />}
+                    onMouseDown={provided.dragHandleProps.onMouseDown}
+                    onMouseUp={provided.dragHandleProps.onMouseUp}
+                    customCss={styles.dragHandle}
+                    customIconCss={styles.dragHandleIcon}
+                />
+
+                <span css={[styles.setNumber, !planMode && completed && completedBg]}>
+                    {i + 1}
+                </span>
+
+                {planMode && !onlyTimeSets ? (
+                    <Button
+                        onClick={() => onTypeChange?.(set.id, cycleType(set.type))}
+                        title="Click to change set type"
+                        customCss={styles.typeBadge}
+                    >
+                        {TYPE_LABELS[set.type]}
+                    </Button>
+                ) : (
+                    <span css={styles.typeBadgeReadOnly}>
+                        {onlyTimeSets ? 'Time' : TYPE_LABELS[set.type]}
+                    </span>
+                )}
+
+                {renderField1(set, completed)}
+                {renderField2(set, completed)}
+
+                <div css={styles.rowActions}>
+                    {!planMode && (
+                        <OnlyIconButton
+                            icon={<MdCheckBoxOutlineBlank />}
+                            selectedIcon={<MdCheckBox />}
+                            iconColor="--color-green"
+                            selectedIconColor="--color-green"
+                            selected={completed}
+                            onToggle={() => toggleCompleted(set.id)}
+                            legend="Completed"
+                            selectedLegend="Not completed"
+                            customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                            customCss={(!isPlaying || skipped) ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
+                        />
+                    )}
+                    {!planMode && (
+                        <OnlyIconButton
+                            icon={<BiSkipNextCircle />}
+                            selectedIcon={<BiSolidSkipNextCircle />}
+                            iconColor="--color-border"
+                            selectedIconColor="--color-border"
+                            selectedBg="transparent"
+                            selected={skipped}
+                            onToggle={() => toggleSkipped(set.id)}
+                            legend="Skip"
+                            selectedLegend="Unskip"
+                            customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                            customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
+                        />
+                    )}
+                    <OnlyIconButton
+                        icon={<FaTrashAlt />}
+                        iconColor="--color-red"
+                        onToggle={() => onRemove(set.id)}
+                        legend="Remove"
+                    />
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div css={styles.container}>
             {!planMode && (
                 <ProgressBar percentage={cardProgress} customCss={styles.cardProgressBar} />
             )}
-            <div
-                ref={collapseRef}
-                css={styles.collapseWrapper}
-            >
-            {sets.map((set, i) => {
-                const completed = completedIds.has(set.id);
-                const skipped = skippedIds.has(set.id);
-                const isOver = dragOver === i && draggableIndex !== null && draggableIndex !== i;
-                return (
-                    <div
-                        key={set.id}
-                        css={[styles.row, isOver && styles.rowDragOver, skipped && styles.rowSkipped]}
-                        draggable={draggableIndex === i}
-                        onDragStart={(e) => {
-                            e.stopPropagation();
-                            e.dataTransfer.setData('application/set', '');
-                            setDragOver(null);
-                        }}
-                        onDragOver={(e: DragEvent<HTMLDivElement>) => {
-                            if (!e.dataTransfer.types.includes('application/set')) return;
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-                            setDragOver(e.clientY < rect.top + rect.height / 2 ? i : i + 1);
-                        }}
-                        onDrop={(e) => {
-                            if (!e.dataTransfer.types.includes('application/set')) return;
-                            e.stopPropagation();
-                            handleDrop();
-                        }}
-                        onDragEnd={(e) => {
-                            e.stopPropagation();
-                            setDraggableIndex(null);
-                            setDragOver(null);
-                        }}
-                    >
-                        {/* Drag handle */}
-                        <Button
-                            icon={<MdDragIndicator />}
-                            onMouseDown={() => setDraggableIndex(i)}
-                            onMouseUp={() => setDraggableIndex(null)}
-                            customCss={styles.dragHandle}
-                            customIconCss={styles.dragHandleIcon}
-                        />
-
-                        {/* Set number */}
-                        <span css={[styles.setNumber, !planMode && completed && completedBg]}>
-                            {i + 1}
-                        </span>
-
-                        {/* Type: clickable cycle badge (plan) or read-only label (execution/aerobic) */}
-                        {planMode && !onlyTimeSets ? (
-                            <Button
-                                onClick={() => onTypeChange?.(set.id, cycleType(set.type))}
-                                title="Click to change set type"
-                                customCss={styles.typeBadge}
-                            >
-                                {TYPE_LABELS[set.type]}
-                            </Button>
-                        ) : (
-                            <span css={styles.typeBadgeReadOnly}>
-                                {onlyTimeSets ? 'Time' : TYPE_LABELS[set.type]}
-                            </span>
-                        )}
-
-                        {renderField1(set, completed)}
-                        {renderField2(set, completed)}
-
-                        {/* Actions */}
-                        <div css={styles.rowActions}>
-                            {!planMode && (
-                                <OnlyIconButton
-                                    icon={<MdCheckBoxOutlineBlank />}
-                                    selectedIcon={<MdCheckBox />}
-                                    iconColor="--color-green"
-                                    selectedIconColor="--color-green"
-                                    selected={completed}
-                                    onToggle={() => toggleCompleted(set.id)}
-                                    legend="Completed"
-                                    selectedLegend="Not completed"
-                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                                    customCss={(!isPlaying || skipped) ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
-                                />
-                            )}
-                            {!planMode && (
-                                <OnlyIconButton
-                                    icon={<BiSkipNextCircle />}
-                                    selectedIcon={<BiSolidSkipNextCircle />}
-                                    iconColor="--color-border"
-                                    selectedIconColor="--color-border"
-                                    selectedBg="transparent"
-                                    selected={skipped}
-                                    onToggle={() => toggleSkipped(set.id)}
-                                    legend="Skip"
-                                    selectedLegend="Unskip"
-                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
-                                    customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
-                                />
-                            )}
-                            <OnlyIconButton
-                                icon={<FaTrashAlt />}
-                                iconColor="--color-red"
-                                onToggle={() => onRemove(set.id)}
-                                legend="Remove"
-                            />
-                        </div>
-                    </div>
-                );
-            })}
-
-                {/* Sentinel drop zone */}
-                <div
-                    css={dragOver === sets.length && draggableIndex !== null ? styles.rowDragOver : undefined}
-                    onDragOver={(e: DragEvent<HTMLDivElement>) => {
-                        if (!e.dataTransfer.types.includes('application/set')) return;
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setDragOver(sets.length);
-                    }}
-                    onDrop={(e) => {
-                        if (!e.dataTransfer.types.includes('application/set')) return;
-                        e.stopPropagation();
-                        handleDrop();
-                    }}
-                    style={{ height: '4px' }}
+            <div ref={collapseRef} css={styles.collapseWrapper}>
+                <DragGrid
+                    items={sets}
+                    getItemKey={(set) => set.id}
+                    onReorder={onReorder}
+                    renderItem={renderSetRow}
+                    dragType="application/drag-grid-set"
+                    reorderLabel="Set"
+                    customCss={css({ gap: 'var(--stack-gap-condensed)' })}
                 />
-
                 <Button onClick={onAdd} customCss={styles.addSet}>
                     Add set
                 </Button>
