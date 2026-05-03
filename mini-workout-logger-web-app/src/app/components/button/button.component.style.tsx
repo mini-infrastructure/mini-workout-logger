@@ -139,6 +139,7 @@ const styles = {
 
         fontSize: 'var(--size-medium)',
         textAlign: 'left',
+        textDecoration: 'none',
 
         cursor: 'pointer',
         outline: 'none',

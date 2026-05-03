@@ -2,6 +2,7 @@ package com.mini.workout_logger_backend.services;
 
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
+import com.mini.workout_logger_backend.dtos.WorkoutExecutionLogReadDTO;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.java_core.service.AbstractService;
 import com.mini.java_core.service.MessageService;
@@ -25,6 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -242,6 +248,48 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
         return ResponseHelper.success(HttpStatus.OK,
                 ResponseMessage.ENTITY_DELETED.getMessage(),
                 List.of());
+    }
+
+    public ResponseEntity<ResponseDTO<WorkoutExecutionLogReadDTO>> getLog(Map<String, String> params) {
+        int page = params.containsKey("page") ? Integer.parseInt(params.get("page")) : 0;
+        int size = params.containsKey("size") ? Integer.parseInt(params.get("size")) : 10;
+        String search = params.getOrDefault("search", null);
+        if (search != null && search.isBlank()) search = null;
+        final String searchLower = search != null ? search.toLowerCase() : null;
+
+        // Fetch one large page, filter by name in Java (avoids bytea cast on TextConverter column)
+        Pageable allPageable = PageRequest.of(0, 10_000);
+        Page<WorkoutExecution> all = repository.findAllSortedByDate(allPageable);
+
+        List<WorkoutExecutionLogReadDTO> filtered = all.getContent().stream()
+                .filter(we -> searchLower == null ||
+                              we.getWorkout().getName().getCode().toLowerCase().contains(searchLower))
+                .map(we -> {
+                    WorkoutExecutionLogReadDTO dto = new WorkoutExecutionLogReadDTO();
+                    dto.setId(we.getId());
+                    dto.setWorkoutId(we.getWorkout().getId());
+                    dto.setWorkoutName(we.getWorkout().getName().getCode());
+                    dto.setStartTime(we.getInterval().getStart());
+                    Long durationSeconds = we.getInterval().getDuration() != null
+                            ? we.getInterval().getDuration().getSeconds()
+                            : null;
+                    dto.setDurationSeconds(durationSeconds);
+                    dto.setCompleted(we.getInterval().getEnd() != null);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+        int total = filtered.size();
+        int fromIndex = Math.min(page * size, total);
+        int toIndex   = Math.min(fromIndex + size, total);
+        List<WorkoutExecutionLogReadDTO> pageContent = filtered.subList(fromIndex, toIndex);
+
+        Page<WorkoutExecutionLogReadDTO> resultPage = new PageImpl<>(
+                pageContent, PageRequest.of(page, size), total);
+
+        return ResponseHelper.success(HttpStatus.OK,
+                resultPage.isEmpty() ? "No executions found." : "Executions found.",
+                resultPage);
     }
 
     @Override

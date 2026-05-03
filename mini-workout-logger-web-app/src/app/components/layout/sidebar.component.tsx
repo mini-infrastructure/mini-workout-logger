@@ -10,11 +10,13 @@ import Divider from "../divider/divider.component.tsx";
 import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
 import { routes, type RouteSection } from "../../routes.tsx";
 import { PiSneakerMoveLight, PiSneakerMoveFill } from "react-icons/pi";
+import { FaTable } from "react-icons/fa";
 
 const routeIcons: Record<string, { icon: JSX.Element; clickedIcon?: JSX.Element }> = {
     '/':          { icon: <FiHome /> },
     '/exercises': { icon: <PiSneakerMoveLight />, clickedIcon: <PiSneakerMoveFill /> },
     '/workouts':  { icon: <FiDatabase /> },
+    '/log':       { icon: <FaTable /> },
     '/calendar':  { icon: <FaRegCalendarAlt /> },
     '/analysis':  { icon: <IoAnalyticsSharp /> },
     '/settings':  { icon: <FiSettings /> },

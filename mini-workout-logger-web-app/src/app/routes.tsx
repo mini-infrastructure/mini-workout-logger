@@ -25,6 +25,7 @@ export const routes: AppRoute[] = [
         { path: '/exercises/favorites', label: 'Favorites', icon: <FaStar />     },
     ]},
     { path: '/workouts',  label: 'Workouts',  section: 'Main'    },
+    { path: '/log',       label: 'Log',       section: 'Main'    },
     { path: '/calendar',  label: 'Calendar',  section: 'Main'    },
     { path: '/analysis',  label: 'Analysis',  section: 'Main'    },
     { path: '/settings',  label: 'Settings',  section: 'Support' },

@@ -6,6 +6,7 @@ import WorkoutView from "./app/views/workout/workout.view.tsx";
 import WorkoutExecutionView from "./app/views/workout-execution/workout-execution.view.tsx";
 import ExercisesView from "./app/views/exercises/exercises.view.tsx";
 import ExercisesFavoritesView from "./app/views/exercises/exercises-favorites.view.tsx";
+import LogView from "./app/views/log/log.view.tsx";
 import { AlertProvider } from "./app/context/alert.context.tsx";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                         <Route path="/workouts" element={<WorkoutsView />} />
                         <Route path="/workouts/:id" element={<WorkoutView />} />
                         <Route path="/workouts/:id/executions/:executionId" element={<WorkoutExecutionView />} />
+                        <Route path="/log" element={<LogView />} />
                         <Route path="*" element={<NotFoundView />} />
                     </Route>
                 </Routes>
