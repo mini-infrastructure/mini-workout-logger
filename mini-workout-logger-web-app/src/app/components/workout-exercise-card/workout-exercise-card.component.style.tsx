@@ -208,6 +208,22 @@ const styles = {
         fontSize: 'var(--size-small)',
         color: 'var(--color-gray)',
     }),
+
+    executionLayout: css({
+        display: 'grid',
+        gridTemplateColumns: '1fr 3fr',
+        gap: 'var(--stack-gap-normal)',
+        alignItems: 'stretch',
+    }),
+
+    executionMediaPanel: css({
+        // Override MediaItem's fixed pixel size so it fills the grid cell.
+        width: '100% !important',
+        height: '100% !important',
+        alignSelf: 'stretch',
+        minHeight: 120,
+        flexShrink: 0,
+    }),
 };
 
 export default styles;

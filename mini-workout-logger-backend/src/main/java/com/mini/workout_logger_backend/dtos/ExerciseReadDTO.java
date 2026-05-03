@@ -10,9 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 // TODO: Criar parâmetro que indica possíveis substituições para o exercício baseado nos mesmos músculos envolvidos,
@@ -63,7 +61,11 @@ public class ExerciseReadDTO extends ReadDTO {
     @JsonProperty("root_muscles")
     private Set<String> rootMuscles = new HashSet<>();
 
-    private List<MediaReadDTO> media = new ArrayList<>();
+    @JsonProperty("cover_media")
+    private MediaReadDTO coverMedia;
+
+    @JsonProperty("execution_media")
+    private MediaReadDTO executionMedia;
 
     public ExerciseReadDTO(String name) {
         this.name = name;

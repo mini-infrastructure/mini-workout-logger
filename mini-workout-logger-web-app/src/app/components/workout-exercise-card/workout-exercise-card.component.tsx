@@ -42,6 +42,7 @@ export type WorkoutExerciseCardProps = {
     existingExerciseIds?: number[];
     planMode?: boolean;
     highlighted?: boolean;
+    showExecutionMedia?: boolean;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
@@ -67,6 +68,7 @@ const WorkoutExerciseCard = ({
     existingExerciseIds = [],
     planMode = false,
     highlighted = false,
+    showExecutionMedia = false,
     onMouseEnter,
     onMouseLeave,
     customCss,
@@ -131,8 +133,10 @@ const WorkoutExerciseCard = ({
     }, [swapOpen]);
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
-    const cover = workoutExercise.exercise.media?.[0];
+    const cover = workoutExercise.exercise.cover_media;
     const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
+    const executionMedia = workoutExercise.exercise.execution_media;
+    const executionSrc = executionMedia ? `data:${executionMedia.content_type};base64,${executionMedia.data}` : undefined;
 
     const handleToggleSwap = async () => {
         if (swapOpen) {
@@ -195,6 +199,14 @@ const WorkoutExerciseCard = ({
                         : []),
                 ]}
             >
+                <div css={showExecutionMedia ? styles.executionLayout : undefined}>
+                    {showExecutionMedia && (
+                        <MediaItem
+                            src={executionSrc}
+                            alt={executionMedia?.filename}
+                            customCss={styles.executionMediaPanel}
+                        />
+                    )}
                 <div ref={containerRef} css={styles.container}>
                     <div css={styles.header}>
                         <Button
@@ -205,7 +217,9 @@ const WorkoutExerciseCard = ({
                             customIconCss={styles.dragHandleIcon}
                         />
 
-                        <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.cover} />
+                        {!showExecutionMedia && (
+                            <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.cover} />
+                        )}
 
                         <div css={styles.exerciseInfo}>
                             <div css={styles.exerciseInfoTop}>
@@ -369,6 +383,7 @@ const WorkoutExerciseCard = ({
                     </div>
                     )}
 
+                </div>
                 </div>
             </Card>
         </div>

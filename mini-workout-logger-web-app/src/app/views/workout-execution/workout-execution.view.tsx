@@ -215,6 +215,7 @@ const WorkoutExecutionView = () => {
             onSkippedChange={handleSkippedChange}
             onNotesChange={handleNotesChange}
             onNotesSave={handleNotesSave}
+            showExecutionMedia
         />
     );
 

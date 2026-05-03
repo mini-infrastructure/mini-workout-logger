@@ -27,5 +27,6 @@ export interface ExerciseReadDTO {
     root_muscles?: string[];
     favorited?: boolean;
     hidden?: boolean;
-    media?: MediaReadDTO[];
+    cover_media?: MediaReadDTO;
+    execution_media?: MediaReadDTO;
 }

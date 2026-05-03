@@ -83,7 +83,7 @@ const ExerciseCard = ({
         },
     ];
 
-    const cover = exercise.media?.[0];
+    const cover = exercise.cover_media;
     const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
 
     const miniDropdownItems: DropdownMenuItem[] = [

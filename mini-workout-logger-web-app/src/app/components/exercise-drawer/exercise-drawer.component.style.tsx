@@ -89,17 +89,6 @@ const styles = {
         backgroundColor: 'var(--color-container2)',
     }),
 
-    carousel: css({
-        width: '100%',
-        height: '100%',
-    }),
-
-    mediaSlide: css({
-        position: 'relative',
-        width: '100%',
-        height: 420,
-    }),
-
     mediaImg: css({
         width: '100%',
         height: '100%',
@@ -117,50 +106,6 @@ const styles = {
         color: 'var(--color-border)',
     }),
 
-    mediaRemoveBtn: css({
-        position: 'absolute',
-        top: 8,
-        right: 8,
-        backgroundColor: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
-        borderRadius: '50%',
-        color: 'var(--color-red)',
-        padding: 'var(--stack-gap-nano)',
-        minWidth: 'unset',
-        ':hover': {
-            backgroundColor: 'color-mix(in srgb, var(--color-bg) 90%, transparent)',
-        },
-    }),
-
-    mediaRemoveBtnIcon: css({
-        fontSize: '0.8rem',
-        width: '0.8rem',
-        height: '0.8rem',
-    }),
-
-    mediaAddBtn: css({
-        position: 'absolute',
-        bottom: 8,
-        right: 8,
-        background: 'color-mix(in srgb, var(--color-bg) 80%, transparent)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '50%',
-        width: 28,
-        height: 28,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        color: 'var(--color-text)',
-        padding: 0,
-        '&:hover': {
-            borderColor: 'var(--color-blue)',
-            color: 'var(--color-blue)',
-        },
-        '&:disabled': {
-            opacity: 0.5,
-            cursor: 'default',
-        },
-    }),
 };
 
 export default styles;

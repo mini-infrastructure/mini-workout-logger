@@ -1,8 +1,6 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
-import type { MediaReadDTO } from '../../dtos/media-read.dto.tsx';
-import { MdEdit, MdEditOff, MdAdd, MdClose } from 'react-icons/md';
+import { useMemo, useState } from 'react';
+import { MdEdit, MdEditOff } from 'react-icons/md';
 import { FaImages } from 'react-icons/fa';
-import Carousel from '../carousel/carousel.component.tsx';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
 import type { FormItem, FormFieldValue } from '../input/form/form.input.component.tsx';
@@ -124,14 +122,9 @@ const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
 
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
-    const [media, setMedia] = useState<MediaReadDTO[]>(exercise.media ?? []);
-
-    useEffect(() => {
-        setMedia(exercise.media ?? []);
-    }, [exercise.id]);
-    const [uploading, setUploading] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null!);
     const pushAlert = useAlert();
+    const coverMedia = exercise.cover_media;
+    const coverSrc = coverMedia ? `data:${coverMedia.content_type};base64,${coverMedia.data}` : undefined;
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
     );
@@ -139,30 +132,6 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const { muscles } = useMuscles();
 
     const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
-
-    const handleMediaUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-        setUploading(true);
-        try {
-            const uploaded = await ExerciseService.uploadMedia(exercise.id, file);
-            setMedia((prev) => [...prev, uploaded]);
-        } catch {
-            pushAlert('Failed to upload media.', 'error');
-        } finally {
-            setUploading(false);
-            if (fileInputRef.current) fileInputRef.current.value = '';
-        }
-    };
-
-    const handleMediaRemove = async (mediaId: number) => {
-        try {
-            await ExerciseService.deleteMedia(exercise.id, mediaId);
-            setMedia((prev) => prev.filter((m) => m.id !== mediaId));
-        } catch {
-            pushAlert('Failed to remove media.', 'error');
-        }
-    };
 
     // Build coloredMuscles: show all when nothing is focused, or only the focused classifications.
     const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
@@ -247,53 +216,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                     <span css={styles.name}>{exercise.name}</span>
                 </div>
 
-                {/* Media carousel */}
+                {/* Cover media */}
                 <div css={styles.mediaArea}>
-                    {media.length > 0 ? (
-                        <Carousel customCss={styles.carousel}>
-                            {media.map((m) => (
-                                <div key={m.id} css={styles.mediaSlide}>
-                                    <img
-                                        css={styles.mediaImg}
-                                        src={`data:${m.content_type};base64,${m.data}`}
-                                        alt={m.filename}
-                                    />
-                                    {editMode && (
-                                        <Button
-                                            icon={<MdClose />}
-                                            onClick={() => handleMediaRemove(m.id)}
-                                            title="Remove"
-                                            noBorder
-                                            customCss={styles.mediaRemoveBtn}
-                                            customIconCss={styles.mediaRemoveBtnIcon}
-                                        />
-                                    )}
-                                </div>
-                            ))}
-                        </Carousel>
+                    {coverSrc ? (
+                        <img css={styles.mediaImg} src={coverSrc} alt={coverMedia!.filename} />
                     ) : (
                         <div css={styles.mediaPlaceholder}>
                             <FaImages />
                         </div>
                     )}
-
-                    {editMode && (
-                        <Button
-                            icon={<MdAdd />}
-                            onClick={() => fileInputRef.current?.click()}
-                            disabled={uploading}
-                            title="Add image"
-                            noBorder
-                            customCss={styles.mediaAddBtn}
-                        />
-                    )}
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        onChange={handleMediaUpload}
-                    />
                 </div>
 
                 <Divider />

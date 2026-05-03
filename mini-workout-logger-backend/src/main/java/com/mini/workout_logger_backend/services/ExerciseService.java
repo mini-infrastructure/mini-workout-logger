@@ -1,5 +1,6 @@
 package com.mini.workout_logger_backend.services;
 
+import com.mini.java_core.dto.MediaReadDTO;
 import com.mini.java_core.dto.ResponseDTO;
 import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
@@ -17,6 +18,7 @@ import com.mini.workout_logger_backend.entities.ExerciseMedia;
 import com.mini.workout_logger_backend.entities.Muscle;
 import com.mini.workout_logger_backend.entities.WorkoutExerciseExecution;
 import com.mini.workout_logger_backend.enums.ExerciseEquipment;
+import com.mini.workout_logger_backend.enums.ExerciseMediaRole;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.mappers.SetExecutionMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
@@ -258,10 +260,43 @@ public class ExerciseService extends AbstractMediaService<Exercise,
 
     public ExerciseReadDTO afterLoad(ExerciseReadDTO dto) {
         dto.setRootMuscles(getExerciseRootMusclesOrderedByRelevance(dto.getId()));
-        dto.setMedia(mediaRepository.findAllByOwnerId(dto.getId()).stream()
+        mediaRepository.findByOwnerIdAndRole(dto.getId(), ExerciseMediaRole.COVER)
                 .map(this::toMediaReadDTO)
-                .toList());
+                .ifPresent(dto::setCoverMedia);
+        mediaRepository.findByOwnerIdAndRole(dto.getId(), ExerciseMediaRole.EXECUTION)
+                .map(this::toMediaReadDTO)
+                .ifPresent(dto::setExecutionMedia);
         return super.afterLoad(dto);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDTO<MediaReadDTO>> uploadMedia(Long ownerId, org.springframework.web.multipart.MultipartFile file) {
+        return uploadMedia(ownerId, file, ExerciseMediaRole.COVER);
+    }
+
+    public ResponseEntity<ResponseDTO<MediaReadDTO>> uploadMedia(Long ownerId, org.springframework.web.multipart.MultipartFile file, ExerciseMediaRole role) {
+        if (file.isEmpty()) {
+            return ResponseHelper.success(HttpStatus.BAD_REQUEST, "File must not be empty.", java.util.List.of());
+        }
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return ResponseHelper.success(HttpStatus.BAD_REQUEST, "Only image files are accepted.", java.util.List.of());
+        }
+        // Replace any existing media with the same role.
+        mediaRepository.findByOwnerIdAndRole(ownerId, role).ifPresent(mediaRepository::delete);
+        try {
+            Exercise owner = repository.safeFindById(ownerId);
+            ExerciseMedia media = createMediaEntity(owner);
+            media.setFilename(file.getOriginalFilename() != null ? file.getOriginalFilename() : "upload");
+            media.setContentType(contentType);
+            media.setSize(file.getSize());
+            media.setContent(file.getBytes());
+            media.setRole(role);
+            ExerciseMedia saved = mediaRepository.save(media);
+            return ResponseHelper.success(HttpStatus.CREATED, "Media uploaded.", java.util.List.of(toMediaReadDTO(saved)));
+        } catch (java.io.IOException e) {
+            return ResponseHelper.success(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to read file.", java.util.List.of());
+        }
     }
 
     public Set<String> getExerciseRootMusclesOrderedByRelevance(Long exerciseId) {

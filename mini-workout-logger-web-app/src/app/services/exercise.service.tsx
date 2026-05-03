@@ -105,11 +105,11 @@ class ExerciseService {
         }
     }
 
-    async uploadMedia(id: number, file: File): Promise<MediaReadDTO> {
+    async uploadMedia(id: number, file: File, role: 'COVER' | 'EXECUTION' = 'COVER'): Promise<MediaReadDTO> {
         const formData = new FormData();
         formData.append('file', file);
         const response = await axios.post<ApiResponseDTO<MediaReadDTO[]>>(
-            `${apiUrl}/exercises/${id}/media?lang=${lang}`,
+            `${apiUrl}/exercises/${id}/media/${role}?lang=${lang}`,
             formData
         );
         return response.data.data[0];
