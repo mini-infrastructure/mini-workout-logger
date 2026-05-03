@@ -43,7 +43,7 @@ function DragGrid<T extends object>({
     dragType = 'application/drag-grid',
     borderColor = 'var(--color-blue)',
     customCss,
-}: DragGridProps<T>): ReactNode {
+}: DragGridProps<T>) {
     const pushAlert = useAlert();
     const [dragFrom, setDragFrom] = useState<number | null>(null);
     const [dragOver, setDragOver] = useState<number | null>(null);
