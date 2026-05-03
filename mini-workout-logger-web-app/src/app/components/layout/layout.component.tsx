@@ -1,10 +1,11 @@
-import {PropsWithChildren, ReactNode} from 'react';
+import type { PropsWithChildren } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 import styles from "./layout.component.style.tsx";
 import Sidebar from "./sidebar.component.tsx";
 import Navbar from "./navbar.component.tsx";
 
 type LayoutProps = {
-    navbarContent?: ReactNode;
+    navbarContent?: JSX.Element;
 };
 
 const Layout = ({ children, navbarContent }: PropsWithChildren<LayoutProps>) => {

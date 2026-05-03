@@ -15,8 +15,8 @@ import OnlyIconButton from '../../components/button/only-icon-button.component.t
 import Badge from '../../components/badge/badge.component.tsx';
 import EditableBadge from '../../components/badge/editable-badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
-import DragGrid from '../../components/drag-grid/drag-grid.component.tsx';
-import type { RenderItem } from '../../components/drag-grid/drag-grid.component.tsx';
+import DragGrid from '../../components/grid/drag-grid/drag-grid.component.tsx';
+import type { RenderItem } from '../../components/grid/drag-grid/drag-grid.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';

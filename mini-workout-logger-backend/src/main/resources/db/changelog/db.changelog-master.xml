@@ -31,6 +31,10 @@
         <sqlFile path="db/changelog/migrations/013_create_exercise_media_table.sql"/>
     </changeSet>
 
+    <changeSet id="4" author="carolina">
+        <sqlFile path="db/changelog/migrations/014_create_dashboard_and_widget_tables.sql"/>
+    </changeSet>
+
     <changeSet id="2" author="carolina">
         <sqlFile path="db/changelog/seeders/001_seed_muscles_table.sql"
                  endDelimiter="$_$"

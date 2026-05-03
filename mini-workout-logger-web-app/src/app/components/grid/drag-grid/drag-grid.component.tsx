@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import type { ReactElement } from 'react';
 import type { Interpolation, Theme, SerializedStyles } from '@emotion/react';
 import { css } from '@emotion/react';
-import { useAlert } from '../../context/alert.context.tsx';
+import { useAlert } from '../../../context/alert.context.tsx';
+import { getDropSide, computeReorderIndex, type DropSide } from '../../../utils/drag-utils.tsx';
 
 export type DragHandleProps = {
     onMouseDown: () => void;
@@ -14,7 +16,7 @@ export type DragItemProvided = {
     indicatorCss: SerializedStyles | undefined;
 };
 
-export type RenderItem<T> = (item: T, provided: DragItemProvided, index: number) => JSX.Element;
+export type RenderItem<T> = (item: T, provided: DragItemProvided, index: number) => ReactElement;
 
 export type DragGridProps<T extends object> = {
     items: T[];
@@ -26,11 +28,11 @@ export type DragGridProps<T extends object> = {
     reorderLabel?: string;
     /** Data-transfer type key. Use distinct values for nested DragGrids. Default: 'application/drag-grid'. */
     dragType?: string;
+    /** When true, paints a border on the drop target to indicate insertion point. Default: true. */
+    colorBorderOnDrag?: boolean;
     borderColor?: string;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
-
-type DropSide = 'before' | 'after';
 
 function DragGrid<T extends object>({
     items,
@@ -40,6 +42,7 @@ function DragGrid<T extends object>({
     getItemKey,
     reorderLabel,
     dragType = 'application/drag-grid',
+    colorBorderOnDrag = true,
     borderColor = 'var(--color-blue)',
     customCss,
 }: DragGridProps<T>) {
@@ -50,7 +53,7 @@ function DragGrid<T extends object>({
     const [draggableIndex, setDraggableIndex] = useState<number | null>(null);
 
     const getIndicatorCss = (index: number): SerializedStyles | undefined => {
-        if (dragOver !== index) return undefined;
+        if (!colorBorderOnDrag || dragOver !== index) return undefined;
         if (direction === 'vertical') {
             return dropSide === 'before'
                 ? css({ boxShadow: `inset 0 3px 0 0 ${borderColor}` })
@@ -98,10 +101,7 @@ function DragGrid<T extends object>({
                             e.preventDefault();
                             e.stopPropagation();
                             const rect = e.currentTarget.getBoundingClientRect();
-                            const ratio = direction === 'vertical'
-                                ? (e.clientY - rect.top) / rect.height
-                                : (e.clientX - rect.left) / rect.width;
-                            setDropSide(ratio < 0.5 ? 'before' : 'after');
+                            setDropSide(getDropSide(e, rect, direction));
                             setDragOver(index);
                         }}
                         onDrop={(e) => {
@@ -115,8 +115,7 @@ function DragGrid<T extends object>({
                             setDragOver(null);
                             setDraggableIndex(null);
                             if (from === null || over === null) return;
-                            const rawTarget = side === 'before' ? over : over + 1;
-                            const toIndex = from < rawTarget ? rawTarget - 1 : rawTarget;
+                            const toIndex = computeReorderIndex(from, over, side);
                             if (from !== toIndex) {
                                 onReorder(from, toIndex);
                                 if (reorderLabel) {

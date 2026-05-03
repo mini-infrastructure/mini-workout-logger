@@ -12,7 +12,7 @@ import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import MediaItem from '../media-item/media-item.component.tsx';
 import ExerciseCard from '../exercise-card/exercise-card.component.tsx';
 import SetList from './set-list.component.tsx';
-import type { DragHandleProps, DragItemProvided } from '../drag-grid/drag-grid.component.tsx';
+import type { DragHandleProps, DragItemProvided } from '../grid/drag-grid/drag-grid.component.tsx';
 import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import type { ExerciseRecommendationReadDTO } from '../../dtos/exercise-recommendation-read.dto.tsx';

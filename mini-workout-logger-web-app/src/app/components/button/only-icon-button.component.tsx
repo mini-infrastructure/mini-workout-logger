@@ -35,11 +35,10 @@ const OnlyIconButton = ({
 
     // When selected with no explicit selectedBg: soft transparent fill using iconColor.
     // When selectedBg is provided: use it (and use selectedIconColor for the icon).
-    const hasSolidSelectedBg = selectedBg !== undefined;
-    const buttonBg = selected
-        ? (hasSolidSelectedBg ? selectedBg : `color-mix(in srgb, var(${iconColor}) 12%, transparent)`)
+    const buttonBg = (selected || selectedBg)
+        ? `color-mix(in srgb, var(${iconColor}) 12%, transparent)`
         : 'transparent';
-    const buttonColor = selected && hasSolidSelectedBg
+    const buttonColor = selected
         ? `var(${selectedIconColor})`
         : `var(${iconColor})`;
 
@@ -47,7 +46,6 @@ const OnlyIconButton = ({
     const hoverBg = selected
         ? `color-mix(in srgb, var(${iconColor}) 24%, transparent)`
         : `color-mix(in srgb, var(${iconColor}) 16%, transparent)`;
-    const hoverColor = `var(${iconColor})`;
 
     return (
         <Button
@@ -62,7 +60,6 @@ const OnlyIconButton = ({
                     border: 'none',
                     ':hover': {
                         backgroundColor: hoverBg,
-                        color: hoverColor,
                     },
                 }),
                 ...(customCss
