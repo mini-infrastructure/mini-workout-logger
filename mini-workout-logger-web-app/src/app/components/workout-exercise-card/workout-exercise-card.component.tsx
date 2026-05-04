@@ -137,24 +137,32 @@ const WorkoutExerciseCard = ({
 
     const rootMuscles = workoutExercise.exercise.root_muscles ?? [];
     const cover = workoutExercise.exercise.cover_media;
-    const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
+    const initialCoverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
     const executionMedia = workoutExercise.exercise.execution_media;
-    const executionSrc = executionMedia ? `data:${executionMedia.content_type};base64,${executionMedia.data}` : undefined;
+    const initialExecutionSrc = executionMedia ? `data:${executionMedia.content_type};base64,${executionMedia.data}` : undefined;
+    const [coverSrc, setCoverSrc] = useState(initialCoverSrc);
+    const [executionSrc, setExecutionSrc] = useState(initialExecutionSrc);
 
     const handleCoverUpload = async (file: File) => {
+        const preview = URL.createObjectURL(file);
+        setCoverSrc(preview);
         try {
             await ExerciseService.uploadMedia(workoutExercise.exercise.id, file, 'COVER');
             pushAlert('Cover image updated.', 'success');
         } catch {
+            setCoverSrc(initialCoverSrc);
             pushAlert('Failed to upload cover image.', 'error');
         }
     };
 
     const handleExecutionUpload = async (file: File) => {
+        const preview = URL.createObjectURL(file);
+        setExecutionSrc(preview);
         try {
             await ExerciseService.uploadMedia(workoutExercise.exercise.id, file, 'EXECUTION');
             pushAlert('Execution image updated.', 'success');
         } catch {
+            setExecutionSrc(initialExecutionSrc);
             pushAlert('Failed to upload execution image.', 'error');
         }
     };

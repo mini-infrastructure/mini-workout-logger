@@ -124,13 +124,17 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
     const pushAlert = useAlert();
     const coverMedia = exercise.cover_media;
-    const coverSrc = coverMedia ? `data:${coverMedia.content_type};base64,${coverMedia.data}` : undefined;
+    const initialCoverSrc = coverMedia ? `data:${coverMedia.content_type};base64,${coverMedia.data}` : undefined;
+    const [coverSrc, setCoverSrc] = useState(initialCoverSrc);
 
     const handleCoverUpload = async (file: File) => {
+        const preview = URL.createObjectURL(file);
+        setCoverSrc(preview);
         try {
             await ExerciseService.uploadMedia(exercise.id, file, 'COVER');
             pushAlert('Cover image updated.', 'success');
         } catch {
+            setCoverSrc(initialCoverSrc);
             pushAlert('Failed to upload cover image.', 'error');
         }
     };

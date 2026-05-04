@@ -23,7 +23,8 @@ const Image = ({ src, alt = '', size = 64, onUpload, onClick, customCss }: Image
 
     const isClickable = !!(onUpload || onClick);
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
         if (onUpload) {
             inputRef.current?.click();
         } else {
