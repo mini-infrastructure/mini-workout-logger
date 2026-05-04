@@ -54,6 +54,8 @@ const styles = {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
+        minWidth: 0,
     }),
 
     mainContent: css({

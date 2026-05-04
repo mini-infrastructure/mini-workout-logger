@@ -15,7 +15,7 @@ const styles = {
     }),
     clickable: css({
         cursor: 'pointer',
-        '&:hover .media-overlay': {
+        '&:hover .image-overlay': {
             opacity: 1,
         },
     }),

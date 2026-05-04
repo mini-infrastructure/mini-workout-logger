@@ -2,9 +2,9 @@ import { useRef } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { FaImage } from 'react-icons/fa';
 import { MdUpload } from 'react-icons/md';
-import styles from './media-item.component.style.tsx';
+import styles from './image.component.style.tsx';
 
-export type MediaItemProps = {
+export type ImageProps = {
     /** Base64 data URI or a full URL. When undefined, renders the placeholder. */
     src?: string;
     /** Alt text for the image. */
@@ -13,14 +13,22 @@ export type MediaItemProps = {
     size?: number;
     /** When provided the component becomes interactive and opens a file picker on click. */
     onUpload?: (file: File) => void;
+    /** When provided (without onUpload) the component becomes clickable with pointer cursor. */
+    onClick?: () => void;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const MediaItem = ({ src, alt = '', size = 64, onUpload, customCss }: MediaItemProps) => {
+const Image = ({ src, alt = '', size = 64, onUpload, onClick, customCss }: ImageProps) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const isClickable = !!(onUpload || onClick);
+
     const handleClick = () => {
-        if (onUpload) inputRef.current?.click();
+        if (onUpload) {
+            inputRef.current?.click();
+        } else {
+            onClick?.();
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +41,8 @@ const MediaItem = ({ src, alt = '', size = 64, onUpload, customCss }: MediaItemP
 
     return (
         <div
-            css={[styles.root(size), onUpload ? styles.clickable : undefined, customCss]}
-            onClick={handleClick}
+            css={[styles.root(size), isClickable ? styles.clickable : undefined, customCss]}
+            onClick={isClickable ? handleClick : undefined}
         >
             {src ? (
                 <img css={styles.img} src={src} alt={alt} />
@@ -45,7 +53,7 @@ const MediaItem = ({ src, alt = '', size = 64, onUpload, customCss }: MediaItemP
             )}
 
             {onUpload && (
-                <span className="media-overlay" css={styles.overlay}>
+                <span className="image-overlay" css={styles.overlay}>
                     <MdUpload />
                 </span>
             )}
@@ -63,4 +71,4 @@ const MediaItem = ({ src, alt = '', size = 64, onUpload, customCss }: MediaItemP
     );
 };
 
-export default MediaItem;
+export default Image;

@@ -9,7 +9,8 @@ import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
-import MediaItem from '../media-item/media-item.component.tsx';
+import Image from '../image/image.component.tsx';
+import ExerciseService from '../../services/exercise.service.tsx';
 import ExerciseCard from '../exercise-card/exercise-card.component.tsx';
 import SetList from './set-list.component.tsx';
 import type { DragHandleProps, DragItemProvided } from '../grid/drag-grid/drag-grid.component.tsx';
@@ -20,6 +21,7 @@ import type { SetType } from '../../models/set.model.tsx';
 import ExerciseRecommendationService from '../../services/exercise-recommendation.service.tsx';
 import Legends from '../legends/legends.component.tsx';
 import type { LegendItem } from '../legends/legends.component.tsx';
+import { useAlert } from '../../context/alert.context.tsx';
 import styles from './workout-exercise-card.component.style.tsx';
 
 export type WorkoutExerciseCardProps = {
@@ -73,6 +75,7 @@ const WorkoutExerciseCard = ({
     onMouseLeave,
     customCss,
 }: WorkoutExerciseCardProps) => {
+    const pushAlert = useAlert();
     const toggleAllRef = useRef<(() => void) | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const notesRef = useRef<HTMLTextAreaElement>(null);
@@ -138,6 +141,24 @@ const WorkoutExerciseCard = ({
     const executionMedia = workoutExercise.exercise.execution_media;
     const executionSrc = executionMedia ? `data:${executionMedia.content_type};base64,${executionMedia.data}` : undefined;
 
+    const handleCoverUpload = async (file: File) => {
+        try {
+            await ExerciseService.uploadMedia(workoutExercise.exercise.id, file, 'COVER');
+            pushAlert('Cover image updated.', 'success');
+        } catch {
+            pushAlert('Failed to upload cover image.', 'error');
+        }
+    };
+
+    const handleExecutionUpload = async (file: File) => {
+        try {
+            await ExerciseService.uploadMedia(workoutExercise.exercise.id, file, 'EXECUTION');
+            pushAlert('Execution image updated.', 'success');
+        } catch {
+            pushAlert('Failed to upload execution image.', 'error');
+        }
+    };
+
     const handleToggleSwap = async () => {
         if (swapOpen) {
             setSwapAnimating(false);
@@ -201,9 +222,10 @@ const WorkoutExerciseCard = ({
             >
                 <div css={showExecutionMedia ? styles.executionLayout : undefined}>
                     {showExecutionMedia && (
-                        <MediaItem
+                        <Image
                             src={executionSrc}
                             alt={executionMedia?.filename}
+                            onUpload={handleExecutionUpload}
                             customCss={styles.executionMediaPanel}
                         />
                     )}
@@ -218,7 +240,7 @@ const WorkoutExerciseCard = ({
                         />
 
                         {!showExecutionMedia && (
-                            <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.cover} />
+                            <Image src={coverSrc} size={styles.coverSize} onUpload={handleCoverUpload} customCss={styles.cover} />
                         )}
 
                         <div css={styles.exerciseInfo}>

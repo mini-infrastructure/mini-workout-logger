@@ -217,7 +217,7 @@ const styles = {
     }),
 
     executionMediaPanel: css({
-        // Override MediaItem's fixed pixel size so it fills the grid cell.
+        // Override Image's fixed pixel size so it fills the grid cell.
         width: '100% !important',
         height: '100% !important',
         alignSelf: 'stretch',

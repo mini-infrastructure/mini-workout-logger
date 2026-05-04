@@ -49,6 +49,7 @@ const WidgetGrid = ({
 
     // Compute cell size from container width
     useEffect(() => {
+        setCellSize(0);
         if (!containerRef.current) return;
         const observer = new ResizeObserver(([entry]) => {
             const w = entry.contentRect.width;
@@ -72,7 +73,7 @@ const WidgetGrid = ({
     const maxOccupiedRow = localWidgets.length > 0
         ? Math.max(...localWidgets.map((w) => w.y + w.rowSpan))
         : 0;
-    const rows = widgetCount < minCells ? minRows : maxOccupiedRow + 1;
+    const rows = widgetCount < minCells ? minRows + 1 : maxOccupiedRow + 1;
 
     // Build occupied set
     const occupied = new Set<string>();

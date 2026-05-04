@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { MdEdit, MdEditOff } from 'react-icons/md';
-import { FaImages } from 'react-icons/fa';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
 import type { FormItem, FormFieldValue } from '../input/form/form.input.component.tsx';
@@ -27,6 +26,7 @@ import {
 } from '../../models/exercise.model.tsx';
 import Legends from '../legends/legends.component.tsx';
 import type { LegendItem } from '../legends/legends.component.tsx';
+import Image from '../image/image.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
 const classificationColors: Record<ExerciseMuscleMovementClassification, string> = {
@@ -125,6 +125,15 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const pushAlert = useAlert();
     const coverMedia = exercise.cover_media;
     const coverSrc = coverMedia ? `data:${coverMedia.content_type};base64,${coverMedia.data}` : undefined;
+
+    const handleCoverUpload = async (file: File) => {
+        try {
+            await ExerciseService.uploadMedia(exercise.id, file, 'COVER');
+            pushAlert('Cover image updated.', 'success');
+        } catch {
+            pushAlert('Failed to upload cover image.', 'error');
+        }
+    };
     const [selectedMuscleNames, setSelectedMuscleNames] = useState<string[]>(
         exercise.exercise_muscles?.map((m) => m.muscle_name) ?? []
     );
@@ -217,15 +226,13 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                 </div>
 
                 {/* Cover media */}
-                <div css={styles.mediaArea}>
-                    {coverSrc ? (
-                        <img css={styles.mediaImg} src={coverSrc} alt={coverMedia!.filename} />
-                    ) : (
-                        <div css={styles.mediaPlaceholder}>
-                            <FaImages />
-                        </div>
-                    )}
-                </div>
+                <Image
+                    src={coverSrc}
+                    alt={coverMedia?.filename}
+                    size={80}
+                    onUpload={handleCoverUpload}
+                    customCss={styles.mediaArea}
+                />
 
                 <Divider />
 

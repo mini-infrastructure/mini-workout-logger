@@ -11,7 +11,7 @@ import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
 import Button from '../button/button.component.tsx';
 import { capitalize } from '../badge/badge.component.tsx';
-import MediaItem from '../media-item/media-item.component.tsx';
+import Image from '../image/image.component.tsx';
 import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
 import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
 import {
@@ -83,6 +83,15 @@ const ExerciseCard = ({
         },
     ];
 
+    const handleCoverUpload = async (file: File) => {
+        try {
+            await ExerciseService.uploadMedia(exercise.id, file, 'COVER');
+            pushAlert('Cover image updated.', 'success');
+        } catch {
+            pushAlert('Failed to upload cover image.', 'error');
+        }
+    };
+
     const cover = exercise.cover_media;
     const coverSrc = cover ? `data:${cover.content_type};base64,${cover.data}` : undefined;
 
@@ -100,7 +109,7 @@ const ExerciseCard = ({
             <>
                 <Card onClick={onClick} customCss={customCss}>
                     <div css={styles.outerMini}>
-                        <MediaItem src={coverSrc} size={styles.coverSizeMini} customCss={styles.coverMediaMini} />
+                        <Image src={coverSrc} size={styles.coverSizeMini} onUpload={handleCoverUpload} customCss={styles.coverMediaMini} />
                         <span css={[styles.name, css({ flex: 1, minWidth: 0 })]}>{exercise.name}</span>
                         <div css={styles.actions} onClick={(e) => e.stopPropagation()}>
                             <DropdownMenu items={miniDropdownItems} />
@@ -121,7 +130,7 @@ const ExerciseCard = ({
         <>
             <Card onClick={onClick} customCss={customCss}>
                 <div css={styles.outer}>
-                    <MediaItem src={coverSrc} size={styles.coverSize} customCss={styles.coverMedia} />
+                    <Image src={coverSrc} size={styles.coverSize} onUpload={handleCoverUpload} customCss={styles.coverMedia} />
 
                     <div css={styles.content}>
                         <div css={styles.header}>

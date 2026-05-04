@@ -29,6 +29,8 @@ type DropdownProps = {
     items: DropdownMenuItem[];
     title?: string;
     trigger?: DropdownTrigger;
+    triggerIconColor?: string;
+    triggerSelectedBg?: string;
     customTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
     customIconTriggerCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
@@ -37,6 +39,8 @@ const DropdownMenu = ({
     items,
     title,
     trigger = "button",
+    triggerIconColor,
+    triggerSelectedBg,
     customTriggerCss,
     customIconTriggerCss,
 }: DropdownProps) => {
@@ -72,7 +76,9 @@ const DropdownMenu = ({
                 <OnlyIconButton
                     icon={<FiMoreHorizontal />}
                     selectedIcon={<IoClose />}
-                    iconColor="--color-border"
+                    iconColor={triggerIconColor ?? "--color-border"}
+                    selectedIconColor={triggerIconColor ?? "--color-border"}
+                    selectedBg={triggerSelectedBg}
                     selected={open}
                     onToggle={handleToggle}
                     customCss={[styles.triggerButton, ...(customTriggerCss ? (Array.isArray(customTriggerCss) ? customTriggerCss : [customTriggerCss]) : [])]}

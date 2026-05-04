@@ -53,7 +53,9 @@ const Widget = ({
             {editMode && (
                 <div css={styles.editBar}>
                     <DropdownMenu
-                            items={[
+                        triggerIconColor="--color-white"
+                        triggerSelectedBg="color-mix(in srgb, var(--color-gray) 15%, transparent)"
+                        items={[
                             { label: 'Resize', icon: <PiResizeBold />, iconColor: 'info',   onClick: onResize ?? (() => {}) },
                             { label: 'Edit',   icon: <RiEdit2Fill />,  iconColor: 'info',   onClick: () => {} },
                             { label: 'Delete', icon: <FaTrashAlt />,   iconColor: 'danger', onClick: onDelete ?? (() => {}) },

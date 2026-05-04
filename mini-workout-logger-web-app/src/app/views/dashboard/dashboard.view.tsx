@@ -51,9 +51,24 @@ const DashboardView = () => {
                         y: item.y,
                         col_span: item.colSpan,
                         row_span: item.rowSpan,
+                        background: item.background,
+                        background_color: item.backgroundColor,
                     })
                 )
             );
+            // Update dashboard state so localWidgets sync doesn't reset positions
+            setDashboard((prev) => {
+                if (!prev) return prev;
+                const posMap = Object.fromEntries(layout.map((i) => [i.id, i]));
+                return {
+                    ...prev,
+                    widgets: prev.widgets.map((w) => {
+                        const updated = posMap[w.id];
+                        if (!updated) return w;
+                        return { ...w, x: updated.x, y: updated.y, col_span: updated.colSpan, row_span: updated.rowSpan };
+                    }),
+                };
+            });
             pendingLayout.current = null;
             pushAlert('Dashboard saved.', 'success');
         } catch {

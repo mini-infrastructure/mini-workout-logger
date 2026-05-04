@@ -33,10 +33,8 @@ const OnlyIconButton = ({
     const currentIcon = selected && selectedIcon ? selectedIcon : icon;
     const tooltip = selected && selectedLegend ? selectedLegend : legend;
 
-    // When selected with no explicit selectedBg: soft transparent fill using iconColor.
-    // When selectedBg is provided: use it (and use selectedIconColor for the icon).
-    const buttonBg = (selected || selectedBg)
-        ? `color-mix(in srgb, var(${iconColor}) 12%, transparent)`
+    const buttonBg = selected
+        ? (selectedBg ?? `color-mix(in srgb, var(${iconColor}) 12%, transparent)`)
         : 'transparent';
     const buttonColor = selected
         ? `var(${selectedIconColor})`
@@ -44,7 +42,7 @@ const OnlyIconButton = ({
 
     // Hover: always a soft transparent tint; selected → slightly stronger.
     const hoverBg = selected
-        ? `color-mix(in srgb, var(${iconColor}) 24%, transparent)`
+        ? (selectedBg ?? `color-mix(in srgb, var(${iconColor}) 24%, transparent)`)
         : `color-mix(in srgb, var(${iconColor}) 16%, transparent)`;
 
     return (
