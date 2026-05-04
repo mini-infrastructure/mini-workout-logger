@@ -13,12 +13,13 @@ const styles = {
     }),
 
     triggerButton: css({
-        backgroundColor: 'var(--color-container2)',
+        backgroundColor: 'transparent',
         border: 'none',
-        color: 'var(--color-white)',
         ':hover': {
-            backgroundColor: 'var(--color-border)',
-            color: 'var(--color-white)',
+            backgroundColor: 'color-mix(in srgb, var(--color-gray) 15%, transparent)',
+        },
+        ':active': {
+            backgroundColor: 'color-mix(in srgb, var(--color-gray) 25%, transparent)',
         },
     }),
 

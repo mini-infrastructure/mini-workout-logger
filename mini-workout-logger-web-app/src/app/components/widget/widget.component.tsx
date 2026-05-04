@@ -53,11 +53,10 @@ const Widget = ({
             {editMode && (
                 <div css={styles.editBar}>
                     <DropdownMenu
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        items={[
-                            { label: 'Resize', icon: <PiResizeBold /> as any, iconColor: 'info',   onClick: onResize ?? (() => {}) },
-                            { label: 'Edit',   icon: <RiEdit2Fill />  as any, iconColor: 'info',   onClick: () => {} },
-                            { label: 'Delete', icon: <FaTrashAlt />   as any, iconColor: 'danger', onClick: onDelete ?? (() => {}) },
+                            items={[
+                            { label: 'Resize', icon: <PiResizeBold />, iconColor: 'info',   onClick: onResize ?? (() => {}) },
+                            { label: 'Edit',   icon: <RiEdit2Fill />,  iconColor: 'info',   onClick: () => {} },
+                            { label: 'Delete', icon: <FaTrashAlt />,   iconColor: 'danger', onClick: onDelete ?? (() => {}) },
                         ]}
                     />
                 </div>

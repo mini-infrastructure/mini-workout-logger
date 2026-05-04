@@ -74,7 +74,7 @@ const ExerciseCard = ({
         onFavoriteToggle?.(exercise.id, !isFavorited);
     };
 
-    const dropdownItems:  [] = [
+    const dropdownItems: DropdownMenuItem[] = [
         {
             label: 'Open',
             icon: <MdOpenInNew />,

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
 import type { Interpolation, Theme } from '@emotion/react';
 import CellGrid from './cell-grid/cell.grid.component.tsx';
-import styles from './grid.component.style.tsx';
+import styles from './widget-grid.component.style.tsx';
 
 export type WidgetItem = {
     id: number;
@@ -14,7 +14,7 @@ export type WidgetItem = {
     backgroundColor?: string;
 };
 
-export type GridProps = {
+export type WidgetGridProps = {
     columns: number;
     editMode: boolean;
     widgets: WidgetItem[];
@@ -26,7 +26,7 @@ export type GridProps = {
 
 const GAP = 8; // var(--stack-gap-condensed)
 
-const Grid = ({
+const WidgetGrid = ({
     columns,
     editMode,
     widgets,
@@ -34,7 +34,7 @@ const Grid = ({
     onLayoutChange,
     renderWidget,
     customCss,
-}: GridProps) => {
+}: WidgetGridProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [cellSize, setCellSize] = useState(0);
     const [localWidgets, setLocalWidgets] = useState(widgets);
@@ -147,4 +147,4 @@ const Grid = ({
     );
 };
 
-export default Grid;
+export default WidgetGrid;
