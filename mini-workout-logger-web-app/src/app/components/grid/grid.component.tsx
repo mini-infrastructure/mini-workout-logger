@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
 import type { Interpolation, Theme } from '@emotion/react';
-import GridCell from './grid-cell/grid-cell.component.tsx';
-import styles from './widget-grid.component.style.tsx';
+import CellGrid from './cell-grid/cell.grid.component.tsx';
+import styles from './grid.component.style.tsx';
 
 export type WidgetItem = {
     id: number;
@@ -14,7 +14,7 @@ export type WidgetItem = {
     backgroundColor?: string;
 };
 
-export type WidgetGridProps = {
+export type GridProps = {
     columns: number;
     editMode: boolean;
     widgets: WidgetItem[];
@@ -24,7 +24,9 @@ export type WidgetGridProps = {
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
 
-const WidgetGrid = ({
+const GAP = 8; // var(--stack-gap-condensed)
+
+const Grid = ({
     columns,
     editMode,
     widgets,
@@ -32,7 +34,7 @@ const WidgetGrid = ({
     onLayoutChange,
     renderWidget,
     customCss,
-}: WidgetGridProps) => {
+}: GridProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [cellSize, setCellSize] = useState(0);
     const [localWidgets, setLocalWidgets] = useState(widgets);
@@ -48,22 +50,29 @@ const WidgetGrid = ({
     // Compute cell size from container width
     useEffect(() => {
         if (!containerRef.current) return;
-        const gap = 8; // var(--stack-gap-condensed) ≈ 8px
         const observer = new ResizeObserver(([entry]) => {
             const w = entry.contentRect.width;
-            setCellSize(Math.floor((w - gap * (columns - 1)) / columns));
+            setCellSize(Math.floor((w - GAP * (columns - 1)) / columns));
         });
         observer.observe(containerRef.current);
         return () => observer.disconnect();
     }, [columns]);
 
-    // Compute grid dimensions
-    const rows = localWidgets.length === 0
-        ? Math.max(3, columns)
-        : Math.max(
-              columns,
-              Math.max(...localWidgets.map((w) => w.y + w.rowSpan)) + 1,
-          );
+    // Compute how many rows fit in the available height without scrolling
+    const parentHeight = containerRef.current?.parentElement?.clientHeight ?? 0;
+    const minRows = parentHeight > 0 && cellSize > 0
+        ? Math.max(1, Math.floor((parentHeight + GAP) / (cellSize + GAP)))
+        : columns;
+
+    // Rows logic:
+    // - widgets < minRows * columns → fill the screen (minRows)
+    // - widgets >= minRows * columns → one extra row beyond what widgets occupy
+    const widgetCount = localWidgets.length;
+    const minCells = minRows * columns;
+    const maxOccupiedRow = localWidgets.length > 0
+        ? Math.max(...localWidgets.map((w) => w.y + w.rowSpan))
+        : 0;
+    const rows = widgetCount < minCells ? minRows : maxOccupiedRow + 1;
 
     // Build occupied set
     const occupied = new Set<string>();
@@ -107,7 +116,7 @@ const WidgetGrid = ({
                             onDragOver={(e) => { e.preventDefault(); setDropTarget({ x: col, y: row }); }}
                             onDrop={() => handleDrop(col, row)}
                         >
-                            <GridCell
+                            <CellGrid
                                 editMode
                                 occupied={occupied.has(key)}
                                 isDropTarget={isTarget && dragId !== null}
@@ -138,4 +147,4 @@ const WidgetGrid = ({
     );
 };
 
-export default WidgetGrid;
+export default Grid;

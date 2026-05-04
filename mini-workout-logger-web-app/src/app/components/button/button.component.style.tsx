@@ -62,6 +62,10 @@ const styles = {
     onlyIconButton: css({
         padding: 'var(--control-small-size)',
         borderRadius: 'var(--borderRadius-medium)',
+        minWidth: 0,
+        width: 'calc(var(--control-small-iconSize) + 2 * var(--control-small-size))',
+        height: 'calc(var(--control-small-iconSize) + 2 * var(--control-small-size))',
+        flexShrink: 0,
     }),
 
     onlyIcon: css({

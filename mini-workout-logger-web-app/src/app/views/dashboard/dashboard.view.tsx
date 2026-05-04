@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { MdEdit } from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
-import WidgetGrid from '../../components/grid/widget-grid/widget-grid.component.tsx';
-import type { WidgetItem } from '../../components/grid/widget-grid/widget-grid.component.tsx';
+import Grid from '../../components/grid/grid.component.tsx';
+import type { WidgetItem } from '../../components/grid/grid.component.tsx';
 import Widget from '../../components/widget/widget.component.tsx';
 import WorkoutShortcutWidget from '../../components/widget/templates/workout-shortcut.widget.tsx';
 import dashboardService from '../../services/dashboard.service.tsx';
@@ -46,7 +46,7 @@ const DashboardView = () => {
                 onClick={editMode ? () => console.log(`Edit widget ${item.id}`) : undefined}
             >
                 {widgetType === 'WORKOUT_SHORTCUT'
-                    ? <WorkoutShortcutWidget count={workoutCount} />
+                    ? <WorkoutShortcutWidget count={workoutCount} editMode={editMode} />
                     : <div />
                 }
             </Widget>
@@ -66,7 +66,7 @@ const DashboardView = () => {
                 selectedLegend="Exit edit mode"
             />
         }>
-            <WidgetGrid
+            <Grid
                 columns={dashboard?.columns ?? 6}
                 editMode={editMode}
                 widgets={widgets}
