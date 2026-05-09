@@ -1,12 +1,15 @@
 import {useEffect, useState} from 'react';
 import {css} from '@emotion/react';
 import {IoMdClose} from 'react-icons/io';
+import {MdAdd} from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
 import DropdownButton from '../../components/button/dropdown-button/dropdown-button.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
+import PrimaryButton from '../../components/button/button.primary.component.tsx';
+import AddExerciseModal from '../../components/exercise-form/add-exercise-modal.component.tsx';
 import {useExercises} from '../../hooks/useExercises.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import {
@@ -36,8 +39,9 @@ const ExercisesView = () => {
     const [page, setPage] = useState(0);
     const [filters, setFilters] = useState<Record<string, string[]>>({});
     const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
+    const { exercises, pagination, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
+    const [addOpen, setAddOpen] = useState(false);
 
     useEffect(() => {
         ExerciseService.getFavorites().then(favorites => {
@@ -113,11 +117,20 @@ const ExercisesView = () => {
     return (
         <Layout>
             <div css={styles.pageWrapper}>
-                <Search
-                    value={query}
-                    onChange={handleQueryChange}
-                    placeholder="Search exercises..."
-                />
+                <div css={styles.toolbar}>
+                    <Search
+                        value={query}
+                        onChange={handleQueryChange}
+                        placeholder="Search exercises..."
+                        customCss={styles.search}
+                    />
+                    <div css={styles.buttonWrapper}>
+                        <PrimaryButton icon={<MdAdd />} onClick={() => setAddOpen(true)}>
+                            Add exercise
+                        </PrimaryButton>
+                    </div>
+                </div>
+                <AddExerciseModal open={addOpen} onClose={() => setAddOpen(false)} />
                 <div css={styles.filterBar}>
                     {FILTER_CONFIG.map(({ key, label, options }) => (
                         <DropdownButton

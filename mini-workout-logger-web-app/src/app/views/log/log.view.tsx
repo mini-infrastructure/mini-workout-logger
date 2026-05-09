@@ -1,6 +1,7 @@
 import {useState} from 'react';
-import {MdCheckBox, MdCheckBoxOutlineBlank} from 'react-icons/md';
+import {MdAdd, MdCheckBox, MdCheckBoxOutlineBlank} from 'react-icons/md';
 import {TbSelect} from 'react-icons/tb';
+import PrimaryButton from '../../components/button/button.primary.component.tsx';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
@@ -59,6 +60,11 @@ const LogView = () => {
                         placeholder="Search by workout name..."
                         customCss={styles.search}
                     />
+                    <div css={styles.buttonWrapper}>
+                        <PrimaryButton icon={<MdAdd />}>
+                            Log
+                        </PrimaryButton>
+                    </div>
                 </div>
 
                 <div css={styles.tableWrapper}>

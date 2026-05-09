@@ -46,9 +46,11 @@ const WorkoutsView = () => {
                         placeholder="Search workouts..."
                         customCss={styles.search}
                     />
-                    <PrimaryButton icon={<MdAdd />}>
-                        Add workout
-                    </PrimaryButton>
+                    <div css={styles.buttonWrapper}>
+                        <PrimaryButton icon={<MdAdd />}>
+                            Add workout
+                        </PrimaryButton>
+                    </div>
                 </div>
 
                 {allTags.length > 0 && (

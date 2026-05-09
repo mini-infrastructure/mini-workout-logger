@@ -15,18 +15,6 @@ const styles = {
         }
     }),
 
-    rate: css({
-        display: 'inline-block',
-        width: 'var(--control-small-size)',
-        height: 'var(--control-small-size)',
-        backgroundColor: 'var(--color-border)',
-        borderRadius: '50%',
-    }),
-
-    rateFilled: (color: string) => css({
-        backgroundColor: `var(--color-${color})`,
-        color: `var(--color-${color})`,
-    }),
 };
 
 export default styles;

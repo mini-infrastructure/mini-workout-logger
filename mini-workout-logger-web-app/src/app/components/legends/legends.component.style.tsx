@@ -17,13 +17,6 @@ const styles = {
         ...(clickable && { ':hover': { opacity: 1 } }),
     }),
 
-    dot: css({
-        width: 8,
-        height: 8,
-        borderRadius: '50%',
-        flexShrink: 0,
-    }),
-
     label: css({
         fontSize: 'var(--size-small)',
         color: 'var(--color-gray)',

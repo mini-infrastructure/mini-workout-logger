@@ -11,13 +11,19 @@ const styles = {
 
     toolbar: css({
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'stretch',
         flexShrink: 0,
         gap: 'var(--stack-gap-condensed)',
     }),
 
     search: css({
         flex: 1,
+    }),
+
+    buttonWrapper: css({
+        padding: 'var(--base-size-8)',
+        display: 'flex',
+        alignItems: 'stretch',
     }),
 
     tagFilterBar: css({

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import type {Interpolation, Theme} from '@emotion/react';
 import styles from './legends.component.style.tsx';
+import Ball from '../ball/ball.component.tsx';
 
 export type LegendItem = {
     key: string;
@@ -45,7 +46,7 @@ const Legends = ({ items, customCss }: LegendsProps) => {
                         css={styles.item(isClickable, selected)}
                         onClick={() => handleClick(item)}
                     >
-                        <span css={styles.dot} style={{ backgroundColor: item.color }} />
+                        <Ball color={item.color} on={true} />
                         <span css={styles.label}>{item.label}</span>
                     </div>
                 );

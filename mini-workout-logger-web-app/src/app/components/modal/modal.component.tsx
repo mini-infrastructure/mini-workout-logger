@@ -1,5 +1,6 @@
 import type {PropsWithChildren} from "react";
 import {useRef, useState} from "react";
+import type {Interpolation, Theme} from "@emotion/react";
 import {createPortal} from "react-dom";
 import styles from "./modal.component.style.tsx";
 import Button from "../button/button.component.tsx";
@@ -10,12 +11,14 @@ export type ModalProps = {
     open: boolean;
     onClose: () => void;
     showCloseButton?: boolean;
+    customCss?: Interpolation<Theme>;
 };
 
 const Modal = ({
                    open,
                    onClose,
                    showCloseButton = true,
+                   customCss,
                    children,
                }: PropsWithChildren<ModalProps>) => {
 
@@ -41,7 +44,8 @@ const Modal = ({
             <div
                 css={[
                     styles.modalStyle,
-                    isClosing ? styles.modalCloseEffect : styles.modalOpenEffect
+                    isClosing ? styles.modalCloseEffect : styles.modalOpenEffect,
+                    customCss,
                 ]}
                 onMouseDown={(e) => e.stopPropagation()}
             >

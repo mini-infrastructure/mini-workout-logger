@@ -2,6 +2,7 @@ import type {ColorVariant} from "../../utils/colorsVariants.tsx";
 import {convertColorVariantToThemeColor} from "../../utils/colorsVariants.tsx";
 import styles from "./rating.component.style.tsx";
 import {PropsWithChildren} from "react";
+import Ball from "../ball/ball.component.tsx";
 
 export type RatingLevelItem = {
     label: string;
@@ -24,10 +25,11 @@ const Rate = ({
                   variant,
               }: PropsWithChildren<RateProps>) => {
     return (
-        <span css={[
-            styles.rate,
-            isFilled && styles.rateFilled(variant)
-        ]} />
+        <Ball
+            color={`var(--color-${variant})`}
+            on={isFilled}
+            size="var(--control-small-size)"
+        />
     );
 };
 

@@ -9,6 +9,23 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
     }),
 
+    toolbar: css({
+        display: 'flex',
+        alignItems: 'stretch',
+        flexShrink: 0,
+        gap: 'var(--stack-gap-condensed)',
+    }),
+
+    search: css({
+        flex: 1,
+    }),
+
+    buttonWrapper: css({
+        padding: 'var(--base-size-8)',
+        display: 'flex',
+        alignItems: 'stretch',
+    }),
+
     filterBar: css({
         display: 'flex',
         flexWrap: 'wrap',
