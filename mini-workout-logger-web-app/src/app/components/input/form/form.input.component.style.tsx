@@ -11,6 +11,10 @@ const styles = {
         gap: "var(--stack-gap-condensed)",
     }),
 
+    customWrapper: (colSpan: number) => css({
+        gridColumn: `span ${colSpan}`,
+    }),
+
     fieldWrapper: (colSpan: number) => css({
         gridColumn: `span ${colSpan}`,
         display: "flex",

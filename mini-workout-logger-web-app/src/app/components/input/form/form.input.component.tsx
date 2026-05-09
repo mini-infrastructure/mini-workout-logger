@@ -1,5 +1,5 @@
 import type {ReactNode, SyntheticEvent} from "react";
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
@@ -17,6 +17,7 @@ export type FormFieldType =
     | "multiselect"
     | "buttonselect"
     | "buttonmultiselect"
+    | "custom"
     ;
 
 export type FormOption = {
@@ -56,6 +57,7 @@ export type FormItem = {
     initialValue?: FormFieldValue;
     inputEnabled?: boolean;
     required?: boolean;
+    render?: ReactNode;
 };
 
 export type FormBuilderProps = {
@@ -72,18 +74,20 @@ const buildInitialValues = (items: FormItem[]) => {
     const values: Record<string, FormFieldValue> = {};
 
     items.forEach((item) => {
+        if (item.type === 'custom') return;
+
         if (item.initialValue !== undefined) {
             values[item.name] = item.initialValue;
             return;
         }
 
-        if (item.type === "select" &&  Array.isArray(item.options) && item.options.length) {
+        if (item.type === "select" && Array.isArray(item.options) && item.options.length) {
             values[item.name] = item.options[0].value;
             return;
         }
 
         if (item.type === "multiselect") {
-            values[item.name] = item.initialValue ?? [];
+            values[item.name] = [];
             return;
         }
 
@@ -111,6 +115,7 @@ const FormBuilder = ({
                      }: FormBuilderProps) => {
     const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
     const [submitted, setSubmitted] = useState(false);
+    const prevItemsRef = useRef(items);
 
     const handleChange = (name: string, value: FormFieldValue) => {
         setValues((prev) => ({ ...prev, [name]: value }));
@@ -119,7 +124,7 @@ const FormBuilder = ({
     const validationErrors = useMemo(() => {
         const errors: Record<string, boolean> = {};
         items.forEach((item) => {
-            if (item.required) {
+            if (item.required && item.type !== 'custom') {
                 errors[item.name] = isFieldEmpty(item, values[item.name]);
             }
         });
@@ -142,17 +147,37 @@ const FormBuilder = ({
         onSubmit(values);
     };
 
+    // Only sync values whose initialValue actually changed since last render.
+    // This prevents resetting user-typed values when unrelated items (e.g. a
+    // custom/image item) cause the items array reference to change.
     useEffect(() => {
-        setValues(prev => ({
-            ...prev,
-            ...buildInitialValues(items)
-        }));
+        const changed: Record<string, FormFieldValue> = {};
+        items.forEach((item) => {
+            if (item.type === 'custom' || item.initialValue === undefined) return;
+            const prev = prevItemsRef.current.find(p => p.name === item.name);
+            if (!prev || prev.initialValue !== item.initialValue) {
+                changed[item.name] = item.initialValue;
+            }
+        });
+        if (Object.keys(changed).length > 0) {
+            setValues(prev => ({ ...prev, ...changed }));
+        }
+        prevItemsRef.current = items;
     }, [items]);
 
     return (
         <form id={id} css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
                 const colSpan = Math.min(item.colSpan ?? 1, columns);
+
+                if (item.type === 'custom') {
+                    return (
+                        <div key={item.name} css={styles.customWrapper(colSpan)}>
+                            {item.render}
+                        </div>
+                    );
+                }
+
                 const hasError = submitted && !!validationErrors[item.name];
                 return (
                     <div key={item.name} css={styles.fieldWrapper(colSpan)}>
