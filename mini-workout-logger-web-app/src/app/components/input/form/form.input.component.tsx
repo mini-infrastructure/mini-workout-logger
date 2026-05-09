@@ -1,5 +1,5 @@
 import type {ReactNode, SyntheticEvent} from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
@@ -55,6 +55,7 @@ export type FormItem = {
     colSpan?: number;
     initialValue?: FormFieldValue;
     inputEnabled?: boolean;
+    required?: boolean;
 };
 
 export type FormBuilderProps = {
@@ -63,6 +64,8 @@ export type FormBuilderProps = {
     onSubmit: (values: Record<string, FormFieldValue>) => void;
     submitButton?: ReactNode;
     disabled?: boolean;
+    id?: string;
+    onValidationChange?: (canSubmit: boolean) => void;
 };
 
 const buildInitialValues = (items: FormItem[]) => {
@@ -90,21 +93,52 @@ const buildInitialValues = (items: FormItem[]) => {
     return values;
 };
 
+const isFieldEmpty = (item: FormItem, value: FormFieldValue): boolean => {
+    if (item.type === 'multiselect' || item.type === 'buttonmultiselect') {
+        return (value as string[])?.length === 0;
+    }
+    return value === '' || value === undefined || value === null;
+};
+
 const FormBuilder = ({
                          items,
                          columns,
                          onSubmit,
                          submitButton,
                          disabled = false,
+                         id,
+                         onValidationChange,
                      }: FormBuilderProps) => {
     const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
+    const [submitted, setSubmitted] = useState(false);
 
     const handleChange = (name: string, value: FormFieldValue) => {
         setValues((prev) => ({ ...prev, [name]: value }));
     };
 
+    const validationErrors = useMemo(() => {
+        const errors: Record<string, boolean> = {};
+        items.forEach((item) => {
+            if (item.required) {
+                errors[item.name] = isFieldEmpty(item, values[item.name]);
+            }
+        });
+        return errors;
+    }, [items, values]);
+
+    const isValid = !Object.values(validationErrors).some(Boolean);
+    const canSubmit = !submitted || isValid;
+
+    useEffect(() => {
+        onValidationChange?.(canSubmit);
+    }, [canSubmit]);
+
     const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!isValid) {
+            setSubmitted(true);
+            return;
+        }
         onSubmit(values);
     };
 
@@ -116,13 +150,13 @@ const FormBuilder = ({
     }, [items]);
 
     return (
-        <form css={styles.form(columns)} onSubmit={handleSubmit}>
+        <form id={id} css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
                 const colSpan = Math.min(item.colSpan ?? 1, columns);
+                const hasError = submitted && !!validationErrors[item.name];
                 return (
                     <div key={item.name} css={styles.fieldWrapper(colSpan)}>
                         <label>{item.label}</label>
-
                         {item.type === "select" ? (
                             <Select
                                 options={item.options as FormOption[]}
@@ -130,10 +164,11 @@ const FormBuilder = ({
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
+                                error={hasError}
                             />
                         ) : item.type === "textarea" ? (
                             <textarea
-                                css={styles.input}
+                                css={[styles.input, hasError ? styles.inputError : undefined]}
                                 placeholder={item.placeholder}
                                 value={values[item.name] as string ?? ""}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
@@ -146,6 +181,7 @@ const FormBuilder = ({
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
+                                error={hasError}
                             />
                         ) : item.type === "buttonselect" ? (
                             <ButtonSelect
@@ -155,6 +191,7 @@ const FormBuilder = ({
                                 inputEnabled={item.inputEnabled}
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
+                                error={hasError}
                             />
                         ) : item.type === "buttonmultiselect" ? (
                             <ButtonMultiSelect
@@ -165,7 +202,7 @@ const FormBuilder = ({
                             />
                         ) : (
                             <input
-                                css={styles.input}
+                                css={[styles.input, hasError ? styles.inputError : undefined]}
                                 type={item.type}
                                 placeholder={item.placeholder}
                                 value={values[item.name] as string ?? ""}
@@ -179,7 +216,7 @@ const FormBuilder = ({
 
             {!disabled ? (
                 <div css={[styles.fieldWrapper(columns), styles.submitRow]}>
-                    {submitButton ?? <PrimaryButton type="submit">Submit</PrimaryButton>}
+                    {submitButton ?? <PrimaryButton type="submit" disabled={submitted && !isValid}>Submit</PrimaryButton>}
                 </div>
             ) : (
                 <></>

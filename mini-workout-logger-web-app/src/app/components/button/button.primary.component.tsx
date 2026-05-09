@@ -11,6 +11,7 @@ const PrimaryButton = ({
                            icon,
                            customIconCss,
                            type,
+                           form,
                            children
                        }: PropsWithChildren<ButtonProps>) => {
     return (
@@ -19,6 +20,7 @@ const PrimaryButton = ({
             path={path}
             disabled={disabled}
             type={type}
+            form={form}
             customCss={[
                 styles.buttonPrimary,
                 ...(customCss

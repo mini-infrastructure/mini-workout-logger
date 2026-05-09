@@ -41,14 +41,6 @@ const styles = {
         gap: 'var(--stack-gap-normal)',
         alignContent: 'start',
 
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        '&::-webkit-scrollbar-thumb:hover': { backgroundColor: 'var(--color-gray)' },
-        scrollbarWidth: 'auto',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 };
 

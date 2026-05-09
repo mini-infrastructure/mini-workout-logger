@@ -70,13 +70,6 @@ const styles = {
         minHeight: 0,
         overflowY: 'auto',
         paddingRight: 'var(--base-size-4)',
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        scrollbarWidth: 'auto',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 
     exerciseList: css({

@@ -14,6 +14,7 @@ type MultiSelectProps = {
     value: string[];
     disabled?: boolean;
     editMode?: boolean;
+    error?: boolean;
 };
 
 const MultiSelect = ({
@@ -23,6 +24,7 @@ const MultiSelect = ({
                          placeholder,
                          disabled = false,
                          editMode,
+                         error,
                      }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -60,7 +62,7 @@ const MultiSelect = ({
             {(editMode === undefined || editMode) && (
                 <div
                     onClick={() => setOpen(!open)}
-                    css={styles.input}
+                    css={[styles.input, error ? styles.inputError : undefined]}
                 >
                     <span>{selectedOptions.length
                         ? selectedOptions.map((o) => o.label).join(", ")

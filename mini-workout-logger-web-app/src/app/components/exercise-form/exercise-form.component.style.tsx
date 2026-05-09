@@ -7,6 +7,18 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
     }),
 
+    mediaArea: css({
+        position: 'relative',
+        width: '100%',
+        height: 420,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 'var(--borderRadius-medium)',
+        overflow: 'hidden',
+        backgroundColor: 'var(--color-container2)',
+    }),
+
     musclesRow: css({
         display: 'flex',
         flexDirection: 'row',

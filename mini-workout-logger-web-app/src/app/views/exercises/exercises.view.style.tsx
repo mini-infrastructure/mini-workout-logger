@@ -63,19 +63,6 @@ const styles = {
         flex: 1,
         minHeight: 0,
         overflowY: 'auto',
-
-        '&::-webkit-scrollbar-track': {
-            background: 'transparent',
-        },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        '&::-webkit-scrollbar-thumb:hover': {
-            backgroundColor: 'var(--color-gray)',
-        },
-        scrollbarWidth: 'auto',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 
     rightPanel: css({

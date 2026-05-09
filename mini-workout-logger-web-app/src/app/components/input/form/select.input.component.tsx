@@ -12,6 +12,7 @@ export type SelectProps = {
     onChange: (val: string) => void;
     value: string;
     disabled?: boolean;
+    error?: boolean;
 };
 
 const Select = ({
@@ -20,6 +21,7 @@ const Select = ({
                     onChange,
                     placeholder,
                     disabled,
+                    error,
                 }: SelectProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -49,7 +51,7 @@ const Select = ({
                     if (disabled) return;
                     setOpen(!open);
                 }}
-                css={styles.input}
+                css={[styles.input, error ? styles.inputError : undefined]}
             >
                 <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>
 

@@ -16,9 +16,12 @@ const modalCss = css({ minWidth: '50vw', maxWidth: '65vw' });
 const AddExerciseModal = ({ open, onClose, onCreated }: AddExerciseModalProps) => {
     const pushAlert = useAlert();
 
-    const handleSubmit = async (payload: ExerciseWriteDTO) => {
+    const handleSubmit = async (payload: ExerciseWriteDTO, coverFile?: File) => {
         try {
-            await ExerciseService.create(payload);
+            const created = await ExerciseService.create(payload);
+            if (coverFile) {
+                await ExerciseService.uploadMedia(created.id, coverFile, 'COVER');
+            }
             pushAlert('Exercise created successfully.', 'success');
             onClose();
             onCreated?.();

@@ -124,6 +124,24 @@ const globalStyles = (theme: AppTheme) => css({
         fontSize: 'var(--size-medium)',
         transition: 'background-color 0.3s ease, color 0.3s ease',
     },
+
+    '*': {
+        scrollbarColor: 'var(--color-border) transparent',
+        scrollbarWidth: 'thin',
+    } as any,
+
+    '*::-webkit-scrollbar-track': {
+        background: 'transparent',
+    },
+
+    '*::-webkit-scrollbar-thumb': {
+        backgroundColor: 'var(--color-border)',
+        borderRadius: 'var(--borderRadius-full)',
+    },
+
+    '*::-webkit-scrollbar-thumb:hover': {
+        backgroundColor: 'var(--color-gray)',
+    },
 });
 
 export default globalStyles;

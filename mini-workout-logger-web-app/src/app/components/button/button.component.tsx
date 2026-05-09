@@ -16,6 +16,7 @@ export type ButtonProps = {
     isClicked?: boolean;
     iconEnd?: boolean;
     type?: 'button' | 'submit' | 'reset';
+    form?: string;
     title?: string;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
@@ -33,6 +34,7 @@ const Button = ({
     isClicked = false,
     iconEnd = false,
     type = 'button',
+    form,
     title,
     onMouseDown,
     onMouseUp,
@@ -89,6 +91,7 @@ const Button = ({
             onClick={onClick}
             disabled={disabled}
             type={type}
+            form={form}
             title={title}
             onMouseDown={onMouseDown}
             onMouseUp={onMouseUp}

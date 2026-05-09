@@ -2,13 +2,6 @@ import {css} from '@emotion/react';
 
 const scrollable = {
     overflowY: 'auto' as const,
-    '&::-webkit-scrollbar-track': { background: 'transparent' },
-    '&::-webkit-scrollbar-thumb': {
-        backgroundColor: 'var(--color-border)',
-        borderRadius: 'var(--borderRadius-full)',
-    },
-    scrollbarWidth: 'auto' as const,
-    scrollbarColor: 'var(--color-border) transparent',
 };
 
 const styles = {

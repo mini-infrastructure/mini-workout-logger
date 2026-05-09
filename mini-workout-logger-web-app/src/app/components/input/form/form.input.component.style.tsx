@@ -8,7 +8,7 @@ const styles = {
     form: (columns: number) => css({
         display: "grid",
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        gap: "var(--stack-gap-normal)",
+        gap: "var(--stack-gap-condensed)",
     }),
 
     fieldWrapper: (colSpan: number) => css({
@@ -107,6 +107,10 @@ const styles = {
         flexDirection: 'column',
         gap: 'var(--stack-gap-normal)',
         margin: `0 0 var(--stack-gap-normal) 0`,
+    }),
+
+    inputError: css({
+        outline: 'var(--borderWidth-thin) solid var(--color-red)',
     }),
 
     submitRow: css({

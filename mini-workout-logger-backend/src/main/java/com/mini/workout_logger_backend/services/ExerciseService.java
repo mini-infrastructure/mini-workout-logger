@@ -23,8 +23,11 @@ import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.mappers.SetExecutionMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseGroupRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseMediaRepository;
+import com.mini.workout_logger_backend.repositories.ExerciseMuscleRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
 import com.mini.workout_logger_backend.repositories.WorkoutExerciseExecutionRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.JoinType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -61,6 +65,12 @@ public class ExerciseService extends AbstractMediaService<Exercise,
 
     @Autowired
     MuscleService muscleService;
+
+    @Autowired
+    ExerciseMuscleRepository exerciseMuscleRepository;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Autowired
     ExerciseGroupRepository exerciseGroupRepository;
@@ -230,6 +240,17 @@ public class ExerciseService extends AbstractMediaService<Exercise,
         Sort.Direction direction = parts.length == 2 && parts[1].equalsIgnoreCase("desc")
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
         return PageRequest.of(page, size, Sort.by(direction, parts[0]));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ResponseDTO<ExerciseReadDTO>> update(Long id, ExerciseWriteDTO dto) {
+        if (dto.getExerciseMuscles() != null) {
+            exerciseMuscleRepository.deleteAllByExerciseId(id);
+            entityManager.flush();
+            entityManager.clear();
+        }
+        return super.update(id, dto);
     }
 
     @Override

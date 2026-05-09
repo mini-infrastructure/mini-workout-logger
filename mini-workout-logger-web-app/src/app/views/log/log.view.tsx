@@ -130,13 +130,12 @@ const LogView = () => {
                 </div>
 
                 {pagination && pagination.total_pages > 1 && (
-                    <div css={styles.footer}>
-                        <Pagination
-                            page={page}
-                            totalPages={pagination.total_pages}
-                            onPageChange={setPage}
-                        />
-                    </div>
+                    <Pagination
+                        page={page}
+                        totalPages={pagination.total_pages}
+                        onPageChange={setPage}
+                        customCss={styles.pagination}
+                    />
                 )}
             </div>
         </Layout>

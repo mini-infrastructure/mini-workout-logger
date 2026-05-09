@@ -160,13 +160,6 @@ const styles = {
         marginBottom: 'var(--stack-gap-condensed)',
         paddingBottom: 'var(--base-size-4)',
         '&::-webkit-scrollbar': { height: 'var(--base-size-4)' },
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 
     // Inner flex row — width:max-content makes the browser compute the true

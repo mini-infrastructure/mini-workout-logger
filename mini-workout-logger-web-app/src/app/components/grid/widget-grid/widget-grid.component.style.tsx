@@ -8,13 +8,6 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
         overflowY: 'auto',
         alignContent: 'start',
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 
     cellLayer: (columns: number, rows: number) => css({

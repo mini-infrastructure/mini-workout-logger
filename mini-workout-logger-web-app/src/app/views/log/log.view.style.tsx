@@ -29,13 +29,6 @@ const styles = {
     tableWrapper: css({
         flex: 1,
         overflowY: 'auto',
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'var(--color-border)',
-            borderRadius: 'var(--borderRadius-full)',
-        },
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'var(--color-border) transparent',
     }),
 
     table: css({
@@ -98,11 +91,9 @@ const styles = {
         padding: 'var(--base-size-4) var(--base-size-8)',
     }),
 
-    footer: css({
-        flexShrink: 0,
-        display: 'flex',
-        justifyContent: 'center',
+    pagination: css({
         paddingTop: 'var(--stack-gap-condensed)',
+        flexShrink: 0,
     }),
 
     empty: css({

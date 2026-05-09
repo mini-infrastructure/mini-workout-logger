@@ -6,8 +6,6 @@ import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
 import type {ExerciseWriteDTO} from '../../dtos/exercise-write.dto.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import {useAlert} from '../../context/alert.context.tsx';
-import Image from '../image/image.component.tsx';
-import Divider from '../divider/divider.component.tsx';
 import ExerciseForm from '../exercise-form/exercise-form.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
@@ -20,20 +18,10 @@ export type ExerciseDrawerProps = {
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
     const pushAlert = useAlert();
-    const coverMedia = exercise.cover_media;
-    const initialCoverSrc = coverMedia ? `data:${coverMedia.content_type};base64,${coverMedia.data}` : undefined;
-    const [coverSrc, setCoverSrc] = useState(initialCoverSrc);
 
     const handleCoverUpload = async (file: File) => {
-        const preview = URL.createObjectURL(file);
-        setCoverSrc(preview);
-        try {
-            await ExerciseService.uploadMedia(exercise.id, file, 'COVER');
-            pushAlert('Cover image updated.', 'success');
-        } catch {
-            setCoverSrc(initialCoverSrc);
-            pushAlert('Failed to upload cover image.', 'error');
-        }
+        await ExerciseService.uploadMedia(exercise.id, file, 'COVER');
+        pushAlert('Cover image updated.', 'success');
     };
 
     const handleClose = () => {
@@ -41,7 +29,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
         onClose();
     };
 
-    const handleSubmit = async (payload: ExerciseWriteDTO) => {
+    const handleSubmit = async (payload: ExerciseWriteDTO, _coverFile?: File) => {
         try {
             await ExerciseService.update(exercise.id, payload);
             pushAlert('Exercise updated successfully.', 'success');
@@ -66,21 +54,12 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     return (
         <DrawerModal open={open} onClose={handleClose} headerButton={editButton}>
             <div css={styles.container}>
-                <Image
-                    src={coverSrc}
-                    alt={coverMedia?.filename}
-                    size={80}
-                    onUpload={handleCoverUpload}
-                    customCss={styles.mediaArea}
-                />
-
-                <Divider />
-
                 <ExerciseForm
                     key={exercise.id}
                     exercise={exercise}
                     disabled={!editMode}
                     onSubmit={handleSubmit}
+                    onCoverUpload={handleCoverUpload}
                 />
             </div>
         </DrawerModal>

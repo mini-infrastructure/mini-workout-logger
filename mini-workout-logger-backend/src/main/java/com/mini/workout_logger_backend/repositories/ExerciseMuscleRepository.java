@@ -2,9 +2,11 @@ package com.mini.workout_logger_backend.repositories;
 
 import com.mini.java_core.repository.AbstractRepository;
 import com.mini.workout_logger_backend.entities.ExerciseMuscle;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +23,11 @@ public interface ExerciseMuscleRepository extends AbstractRepository<ExerciseMus
      *
      * The reference exercise itself is excluded from the results.
      */
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ExerciseMuscle em WHERE em.exercise.id = :exerciseId")
+    void deleteAllByExerciseId(@Param("exerciseId") Long exerciseId);
+
     @Query("""
             SELECT em.exercise.id, COUNT(em)
             FROM ExerciseMuscle em
