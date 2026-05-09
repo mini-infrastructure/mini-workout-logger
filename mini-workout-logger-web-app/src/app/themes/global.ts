@@ -61,6 +61,7 @@ const globalStyles = (theme: AppTheme) => css({
         '--base-size-64':  theme.baseSize[64],
         '--base-size-96':  theme.baseSize[96],
         '--base-size-260': theme.baseSize[260],
+       '--input-height': '2.2rem',
 
         /* Border radius */
         '--borderRadius-small':  theme.borderRadius.small,
