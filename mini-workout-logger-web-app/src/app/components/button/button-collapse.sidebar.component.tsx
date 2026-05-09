@@ -52,7 +52,7 @@ const SidebarCollapseButton = ({
                 ]}
                 icon={icon}
                 clickedIcon={clickedIcon}
-                isClicked={hasActiveChild}
+                isClicked={isOpen}
                 customIconCss={[
                     styles.iconSidebar,
                     styles.iconSidebarCollapse,
