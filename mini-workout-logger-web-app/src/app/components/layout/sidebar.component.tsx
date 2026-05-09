@@ -1,26 +1,30 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
-import { FiHome, FiSettings } from "react-icons/fi";
-import { IoAnalyticsSharp } from "react-icons/io5";
-import { FaRegCalendarAlt, FaTable } from "react-icons/fa";
-import { GiHelp } from "react-icons/gi";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
 import Divider from "../divider/divider.component.tsx";
 import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
 import { routes, type RouteSection } from "../../routes.tsx";
 import { PiSneakerMoveLight, PiSneakerMoveFill } from "react-icons/pi";
-import { FcPlanner } from "react-icons/fc";
+import {
+    FcAcceptDatabase,
+    FcAreaChart,
+    FcEngineering,
+    FcFolder,
+    FcHome,
+    FcOpenedFolder,
+    FcPlanner,
+    FcSupport
+} from "react-icons/fc";
 
 const routeIcons: Record<string, { icon: JSX.Element; clickedIcon?: JSX.Element }> = {
-    '/':          { icon: <FiHome /> },
-    '/exercises': { icon: <PiSneakerMoveLight />, clickedIcon: <PiSneakerMoveFill /> },
+    '/':          { icon: <FcHome /> },
+    '/exercises': { icon: <FcFolder />, clickedIcon: <FcOpenedFolder /> },
     '/workouts':  { icon: <FcPlanner /> },
-    '/log':       { icon: <FaTable /> },
-    '/calendar':  { icon: <FaRegCalendarAlt /> },
-    '/analysis':  { icon: <IoAnalyticsSharp /> },
-    '/settings':  { icon: <FiSettings /> },
-    '/help':      { icon: <GiHelp /> },
+    '/log':       { icon: <FcAcceptDatabase /> },
+    '/analysis':  { icon: <FcAreaChart /> },
+    '/settings':  { icon: <FcEngineering /> },
+    '/help':      { icon: <FcSupport /> },
 };
 
 const sections: RouteSection[] = ['Main', 'Support'];
