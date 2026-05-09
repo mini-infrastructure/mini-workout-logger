@@ -53,6 +53,7 @@ const Modal = ({
                     <Button
                         icon={<IoClose />}
                         onClick={handleClose}
+                        noBorder
                         customCss={styles.closeButton}
                         customIconCss={styles.closeButtonIcon}
                     ></Button>

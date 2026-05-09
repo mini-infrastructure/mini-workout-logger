@@ -34,6 +34,10 @@ const styles = {
         flexShrink: 0,
     }),
 
+    filterActive: css({
+        border: `var(--borderWidth-thin) solid var(--color-blue)`,
+    }),
+
     clearFiltersButton: css({
         marginLeft: 'auto',
     }),
@@ -50,6 +54,14 @@ const styles = {
     leftColumn: css({
         flex: 1,
         minWidth: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+    }),
+
+    resultListWrapper: css({
+        flex: 1,
+        minHeight: 0,
         overflowY: 'auto',
 
         '&::-webkit-scrollbar-track': {

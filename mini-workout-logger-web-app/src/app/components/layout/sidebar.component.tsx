@@ -11,14 +11,13 @@ import {
     FcEngineering,
     FcFolder,
     FcHome,
-    FcOpenedFolder,
     FcPlanner,
     FcSupport
 } from "react-icons/fc";
 
 const routeIcons: Record<string, { icon: JSX.Element; clickedIcon?: JSX.Element }> = {
     '/':          { icon: <FcHome /> },
-    '/exercises': { icon: <FcFolder />, clickedIcon: <FcOpenedFolder /> },
+    '/exercises': { icon: <FcFolder /> },
     '/workouts':  { icon: <FcPlanner /> },
     '/log':       { icon: <FcAcceptDatabase /> },
     '/analysis':  { icon: <FcAreaChart /> },

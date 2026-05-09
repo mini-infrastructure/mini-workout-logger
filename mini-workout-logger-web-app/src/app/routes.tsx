@@ -1,5 +1,5 @@
 import type {JSX} from '@emotion/react/jsx-runtime';
-import {FcDatabase, FcIdea, FcSportsMode} from "react-icons/fc";
+import {FcSportsMode} from "react-icons/fc";
 
 export type RouteSection = 'Main' | 'Support';
 
@@ -19,10 +19,7 @@ export type AppRoute = {
 
 export const routes: AppRoute[] = [
     { path: '/',          label: 'Dashboard', section: 'Main'    },
-    { path: '/exercises', label: 'Exercises', section: 'Main', children: [
-        { path: '/exercises',           label: 'Database',  icon: <FcDatabase /> },
-        { path: '/exercises/favorites', label: 'Favorites', icon: <FcIdea />     },
-    ]},
+    { path: '/exercises', label: 'Exercises', section: 'Main' },
     { path: '/workouts',  label: 'Plan',      section: 'Main', children: [
         { path: '/workouts', label: 'Workouts', icon: <FcSportsMode /> },
     ]},

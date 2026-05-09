@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react';
 import {css} from '@emotion/react';
 import {IoMdClose} from 'react-icons/io';
 import {MdAdd} from 'react-icons/md';
+import {FaStar, FaRegStar} from 'react-icons/fa';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
@@ -42,6 +43,7 @@ const ExercisesView = () => {
     const { exercises, pagination, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
     const [addOpen, setAddOpen] = useState(false);
+    const [favoritesOnly, setFavoritesOnly] = useState(false);
 
     useEffect(() => {
         ExerciseService.getFavorites().then(favorites => {
@@ -101,7 +103,7 @@ const ExercisesView = () => {
         setPage(0);
     };
 
-    const hasFilters = Object.values(filters).some(v => v.length > 0) || selectedMuscles.length > 0;
+    const hasFilters = Object.values(filters).some(v => v.length > 0) || selectedMuscles.length > 0 || favoritesOnly;
 
     const handleMuscleSelection = (muscles: string[]) => {
         setSelectedMuscles(muscles);
@@ -111,8 +113,13 @@ const ExercisesView = () => {
     const handleClearAll = () => {
         setFilters({});
         setSelectedMuscles([]);
+        setFavoritesOnly(false);
         setPage(0);
     };
+
+    const displayedExercises = favoritesOnly
+        ? exercises.filter(e => favoritedIds.has(e.id))
+        : exercises;
 
     return (
         <Layout>
@@ -141,6 +148,13 @@ const ExercisesView = () => {
                             onChange={(values) => handleFilterSet(key, values)}
                         />
                     ))}
+                    <SecondaryButton
+                        icon={favoritesOnly ? <FaStar /> : <FaRegStar />}
+                        onClick={() => { setFavoritesOnly(prev => !prev); setPage(0); }}
+                        customCss={favoritesOnly ? styles.filterActive : undefined}
+                    >
+                        Favorites
+                    </SecondaryButton>
                     {hasFilters && (
                         <SecondaryButton
                             icon={<IoMdClose />}
@@ -153,28 +167,30 @@ const ExercisesView = () => {
                 </div>
                 <div css={styles.contentRow}>
                     <div css={styles.leftColumn}>
-                        {error && <p>{error}</p>}
-                        <ul css={styles.resultList}>
-                            {exercises.map(e => (
-                                <li key={e.id}>
-                                    <ExerciseCard
-                                        exercise={e}
-                                        isFavorited={favoritedIds.has(e.id)}
-                                        onFavoriteToggle={handleFavoriteToggle}
-                                        activeFilters={selectedMuscles.length > 0
-                                            ? { ...filters, muscle: selectedMuscles }
-                                            : filters}
-                                        onFilterChange={handleFilterChange}
-                                    />
-                                </li>
-                            ))}
-                        </ul>
+                        <div css={styles.resultListWrapper}>
+                            {error && <p>{error}</p>}
+                            <ul css={styles.resultList}>
+                                {displayedExercises.map(e => (
+                                    <li key={e.id}>
+                                        <ExerciseCard
+                                            exercise={e}
+                                            isFavorited={favoritedIds.has(e.id)}
+                                            onFavoriteToggle={handleFavoriteToggle}
+                                            activeFilters={selectedMuscles.length > 0
+                                                ? { ...filters, muscle: selectedMuscles }
+                                                : filters}
+                                            onFilterChange={handleFilterChange}
+                                        />
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                         {pagination && pagination.total_pages > 1 && (
                             <Pagination
                                 page={page}
                                 totalPages={pagination.total_pages}
                                 onPageChange={setPage}
-                                customCss={css({ marginTop: 'var(--stack-gap-condensed)' })}
+                                customCss={css({ paddingTop: 'var(--stack-gap-condensed)', flexShrink: 0 })}
                             />
                         )}
                     </div>
