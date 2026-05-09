@@ -76,9 +76,8 @@ const DropdownMenu = ({
                 <OnlyIconButton
                     icon={<FiMoreHorizontal />}
                     selectedIcon={<IoClose />}
-                    iconColor={triggerIconColor ?? "--color-border"}
-                    selectedIconColor={triggerIconColor ?? "--color-border"}
-                    selectedBg={triggerSelectedBg}
+                    iconColor={triggerIconColor ?? "--color-white"}
+                    selectedIconColor={triggerIconColor ?? "--color-white"}
                     selected={open}
                     onToggle={handleToggle}
                     customCss={[styles.triggerButton, ...(customTriggerCss ? (Array.isArray(customTriggerCss) ? customTriggerCss : [customTriggerCss]) : [])]}

@@ -3,7 +3,7 @@ import {css} from '@emotion/react';
 const styles = {
     divider: css({
         border: 'none',
-        borderBottom: `var(--borderWidth-thin) solid color-mix(in srgb, var(--color-border) 0%, transparent)`,
+        borderBottom: `var(--borderWidth-thin) solid color-mix(in srgb, var(--color-border) 40%, transparent)`,
     }),
 };
 
