@@ -33,4 +33,9 @@ public class DashboardController extends AbstractController<Dashboard,
         return dashboardService.getWorkoutCount();
     }
 
+    @GetMapping("/execution-count")
+    public ResponseEntity<ResponseDTO<Long>> getExecutionCount() {
+        return dashboardService.getExecutionCount();
+    }
+
 }

@@ -22,6 +22,14 @@ class DashboardService {
         );
         return response.data.data[0];
     }
+
+    async getExecutionCount(): Promise<number> {
+        const response = await axios.get<ApiResponseDTO<number[]>>(
+            `${apiUrl}/dashboards/execution-count`,
+            { params: { lang } }
+        );
+        return response.data.data[0];
+    }
 }
 
 const dashboardService = new DashboardService();
