@@ -1,20 +1,25 @@
-import { ExerciseMuscleMovementClassification, Muscle } from './muscle.model';
-import type { WorkoutExercise } from "./workout-exercise.model.tsx";
-import type { IconType } from "react-icons";
-import { FaBolt, FaFire, FaRunning, FaSeedling } from "react-icons/fa";
-import { MdTrendingUp } from "react-icons/md";
-import { GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp } from "react-icons/gi";
-import type { ReactNode } from "react";
-import { TbBallBasketball, TbBandage, TbJumpRope } from "react-icons/tb";
-import type { ColorVariant } from "../utils/colorsVariants.tsx";
-import { BiBody } from "react-icons/bi";
-import { RiWeightFill } from "react-icons/ri";
-import { MdOutlineSportsGymnastics } from "react-icons/md";
-import { GiRopeCoil } from "react-icons/gi";
+import {ExerciseMuscleMovementClassification, Muscle} from './muscle.model';
+import type {WorkoutExercise} from "./workout-exercise.model.tsx";
+import type {IconType} from "react-icons";
+import {FaBolt, FaFire, FaRunning, FaSeedling} from "react-icons/fa";
+import {MdOutlineSportsGymnastics, MdTrendingUp} from "react-icons/md";
+import {GiBodyBalance, GiMuscleUp, GiProgression, GiRopeCoil, GiWeightLiftingUp} from "react-icons/gi";
+import type {ReactNode} from "react";
+import {TbBallBasketball, TbBandage, TbJumpRope} from "react-icons/tb";
+import type {ColorVariant} from "../utils/colorsVariants.tsx";
+import {BiBody} from "react-icons/bi";
+import {RiWeightFill} from "react-icons/ri";
 import {
-    BarbellIcon, DumbbellIcon, KettlebellIcon, MachineIcon, PlateIcon,
-    HitIcon, StrechingIcon,
-    PullIcon, PushIcon, RotateIcon,
+    BarbellIcon,
+    DumbbellIcon,
+    HitIcon,
+    KettlebellIcon,
+    MachineIcon,
+    PlateIcon,
+    PullIcon,
+    PushIcon,
+    RotateIcon,
+    StrechingIcon,
 } from '../components/icons/equipment-icons.tsx';
 
 export interface Exercise {

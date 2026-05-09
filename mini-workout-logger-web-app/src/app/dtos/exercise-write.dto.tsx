@@ -2,7 +2,10 @@ import type {
     ExerciseCategory,
     ExerciseDifficulty,
     ExerciseEquipment,
-    ExerciseForceDirection, ExerciseMechanics, ExerciseRole, ExerciseType
+    ExerciseForceDirection,
+    ExerciseMechanics,
+    ExerciseRole,
+    ExerciseType
 } from "../models/exercise.model.tsx";
 import type {ExerciseMuscleWriteDTO} from "./exercise-muscle-write.dto.tsx";
 

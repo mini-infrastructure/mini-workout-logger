@@ -1,4 +1,4 @@
-import type { ExerciseReadDTO } from './exercise-read.dto.tsx';
+import type {ExerciseReadDTO} from './exercise-read.dto.tsx';
 
 export interface ExerciseRecommendationReadDTO {
     exercise: ExerciseReadDTO;

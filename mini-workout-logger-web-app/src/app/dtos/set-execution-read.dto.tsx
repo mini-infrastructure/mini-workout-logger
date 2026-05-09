@@ -1,4 +1,4 @@
-import type { SetReadDTO } from "./set-read.dto.tsx";
+import type {SetReadDTO} from "./set-read.dto.tsx";
 
 export interface SetExecutionReadDTO {
     id: number;

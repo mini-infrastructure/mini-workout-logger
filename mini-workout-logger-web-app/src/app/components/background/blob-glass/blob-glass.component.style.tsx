@@ -1,5 +1,5 @@
-import { css, keyframes } from '@emotion/react';
-import type { Keyframes } from '@emotion/react';
+import type {Keyframes} from '@emotion/react';
+import {css, keyframes} from '@emotion/react';
 
 export type RandomValues = {
     top: number;

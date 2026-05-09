@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import type { Keyframes } from '@emotion/react';
-import GlassBackground, { type GlassBackgroundProps } from '../glass/glass.component.tsx';
+import {useMemo} from 'react';
+import type {Keyframes} from '@emotion/react';
+import GlassBackground, {type GlassBackgroundProps} from '../glass/glass.component.tsx';
 import styles from './blob-glass.component.style.tsx';
 
 export type BlobGlassBackgroundProps = GlassBackgroundProps & {

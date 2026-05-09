@@ -1,16 +1,16 @@
 import type {ReactNode} from "react";
-
-export function capitalize(value: string): string {
-    if (!value) return value;
-    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-}
+import * as React from "react";
 import type {Interpolation, Theme} from "@emotion/react";
 import styles from "./badge.component.style.tsx";
 import Button from "../button/button.component.tsx";
 import {IoMdClose} from "react-icons/io";
 import type {ColorVariant} from "../../utils/colorsVariants.tsx";
 import {colorVariants} from "../../utils/colorsVariants.tsx";
-import * as React from "react";
+
+export function capitalize(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+}
 
 export type BadgeProps = {
     key?: string | number;

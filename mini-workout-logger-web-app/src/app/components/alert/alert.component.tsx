@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { IoClose } from 'react-icons/io5';
+import type {ReactNode} from 'react';
+import {useEffect, useState} from 'react';
+import {createPortal} from 'react-dom';
+import {IoClose} from 'react-icons/io5';
 import Button from '../button/button.component.tsx';
-import { MdErrorOutline, MdInfoOutline, MdCheckCircleOutline, MdWarningAmber } from 'react-icons/md';
-import type { ReactNode } from 'react';
+import {MdCheckCircleOutline, MdErrorOutline, MdInfoOutline, MdWarningAmber} from 'react-icons/md';
 import styles from './alert.component.style.tsx';
 
 export type AlertVariant = 'error' | 'info' | 'success' | 'warning';

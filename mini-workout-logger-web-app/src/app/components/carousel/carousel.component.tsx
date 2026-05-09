@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
-import type { Interpolation, Theme } from '@emotion/react';
+import {useState} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
+import type {Interpolation, Theme} from '@emotion/react';
 import styles from './carousel.component.style.tsx';
 
 export type CarouselProps = {

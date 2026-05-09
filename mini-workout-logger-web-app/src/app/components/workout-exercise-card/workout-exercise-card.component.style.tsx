@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 
 const COVER_SIZE = 96;
 

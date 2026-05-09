@@ -1,31 +1,31 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { FaRegClock } from 'react-icons/fa';
-import { IoPlay, IoPause, IoStop } from 'react-icons/io5';
-import { MdChecklistRtl, MdClose } from 'react-icons/md';
+import {useEffect, useRef, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {FaRegClock} from 'react-icons/fa';
+import {IoPause, IoPlay, IoStop} from 'react-icons/io5';
+import {MdChecklistRtl, MdClose} from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import Card from '../../components/card/card.component.tsx';
 import Button from '../../components/button/button.component.tsx';
 import SecondaryButton from '../../components/button/button.secondary.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
+import type {RenderItem} from '../../components/grid/drag-grid/drag-grid.component.tsx';
 import DragGrid from '../../components/grid/drag-grid/drag-grid.component.tsx';
-import type { RenderItem } from '../../components/grid/drag-grid/drag-grid.component.tsx';
 import ProgressBar from '../../components/progress-bar/progress-bar.component.tsx';
-import { useWorkout } from '../../hooks/useWorkout.tsx';
-import { useAlert } from '../../context/alert.context.tsx';
+import {useWorkout} from '../../hooks/useWorkout.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
 import WorkoutExecutionService from '../../services/workout-execution.service.tsx';
-import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
-import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
+import type {WorkoutExerciseReadDTO} from '../../dtos/workout-exercise-read.dto.tsx';
+import type {WorkoutExecutionReadDTO} from '../../dtos/workout-execution-read.dto.tsx';
 import {
-    buildWorkoutExercisesPayload,
     applyExerciseReorder,
+    applyNotesChange,
+    applySetAdd,
     applySetChange,
     applySetRemove,
     applySetReorder,
-    applySetAdd,
-    applyNotesChange,
+    buildWorkoutExercisesPayload,
 } from '../../utils/workout-exercise.utils.tsx';
 import styles from './workout-execution.view.style.tsx';
 

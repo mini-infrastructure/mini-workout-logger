@@ -1,8 +1,8 @@
-import type { JSX } from '@emotion/react/jsx-runtime';
-import type { Interpolation, Theme } from '@emotion/react';
-import { FaTrashAlt } from 'react-icons/fa';
-import { PiResizeBold } from 'react-icons/pi';
-import { RiEdit2Fill } from 'react-icons/ri';
+import type {JSX} from '@emotion/react/jsx-runtime';
+import type {Interpolation, Theme} from '@emotion/react';
+import {FaTrashAlt} from 'react-icons/fa';
+import {PiResizeBold} from 'react-icons/pi';
+import {RiEdit2Fill} from 'react-icons/ri';
 import Card from '../card/card.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
 import BlobGlassBackground from '../background/blob-glass/blob-glass.component.tsx';

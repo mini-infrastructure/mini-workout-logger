@@ -1,10 +1,10 @@
-import type { PropsWithChildren } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
-import { useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { IoClose } from 'react-icons/io5';
+import type {PropsWithChildren} from 'react';
+import {useRef, useState} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
+import {createPortal} from 'react-dom';
+import {IoClose} from 'react-icons/io5';
 import Button from '../button/button.component.tsx';
-import { useClickOut } from '../../hooks/useClickOut.tsx';
+import {useClickOut} from '../../hooks/useClickOut.tsx';
 import styles from './drawer-modal.component.style.tsx';
 
 export type DrawerModalProps = {

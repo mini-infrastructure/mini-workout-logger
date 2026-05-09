@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
-import type { Interpolation, Theme } from '@emotion/react';
+import {useEffect, useRef, useState} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
+import type {Interpolation, Theme} from '@emotion/react';
 import CellGrid from './cell-grid/cell.grid.component.tsx';
 import styles from './widget-grid.component.style.tsx';
 

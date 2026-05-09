@@ -1,7 +1,7 @@
-import type { Interpolation, Theme } from '@emotion/react';
+import type {Interpolation, Theme} from '@emotion/react';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
-import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
+import type {WorkoutExecutionReadDTO} from '../../dtos/workout-execution-read.dto.tsx';
 import styles from './workout-execution-history-card.component.style.tsx';
 
 export type WorkoutExecutionHistoryCardProps = {

@@ -1,4 +1,4 @@
-import type { IconBaseProps } from 'react-icons';
+import type {IconBaseProps} from 'react-icons';
 
 const makeEquipmentIcon = (src: string) =>
     ({ size = 14 }: IconBaseProps) => (

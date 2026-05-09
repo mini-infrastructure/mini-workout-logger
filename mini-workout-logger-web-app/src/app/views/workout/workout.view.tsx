@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { css } from '@emotion/react';
-import type { KeyboardEvent } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IoPlay } from 'react-icons/io5';
-import { IoMdSave } from 'react-icons/io';
-import { MdClear, MdAdd, MdExpandLess } from 'react-icons/md';
-import { RiEdit2Fill } from 'react-icons/ri';
-import { FaCheck, FaPlusCircle } from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
+import type {KeyboardEvent} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {css} from '@emotion/react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {IoClose, IoPlay} from 'react-icons/io5';
+import {IoMdSave} from 'react-icons/io';
+import {MdAdd, MdClear, MdExpandLess} from 'react-icons/md';
+import {RiEdit2Fill} from 'react-icons/ri';
+import {FaCheck, FaPlusCircle} from 'react-icons/fa';
 import Layout from '../../components/layout/layout.component.tsx';
 import Button from '../../components/button/button.component.tsx';
 import SecondaryButton from '../../components/button/button.secondary.component.tsx';
@@ -15,37 +14,38 @@ import OnlyIconButton from '../../components/button/only-icon-button.component.t
 import Badge from '../../components/badge/badge.component.tsx';
 import EditableBadge from '../../components/badge/editable-badge.component.tsx';
 import WorkoutExerciseCard from '../../components/workout-exercise-card/workout-exercise-card.component.tsx';
+import type {RenderItem} from '../../components/grid/drag-grid/drag-grid.component.tsx';
 import DragGrid from '../../components/grid/drag-grid/drag-grid.component.tsx';
-import type { RenderItem } from '../../components/grid/drag-grid/drag-grid.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Divider from '../../components/divider/divider.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
-import { useWorkout } from '../../hooks/useWorkout.tsx';
-import { useExercises } from '../../hooks/useExercises.tsx';
-import { useAlert } from '../../context/alert.context.tsx';
+import {useWorkout} from '../../hooks/useWorkout.tsx';
+import {useExercises} from '../../hooks/useExercises.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/workout.service.tsx';
 import WorkoutExecutionService from '../../services/workout-execution.service.tsx';
 import TagService from '../../services/tag.service.tsx';
-import type { WorkoutExerciseReadDTO } from '../../dtos/workout-exercise-read.dto.tsx';
-import type { WorkoutWriteDTO } from '../../dtos/workout-write.dto.tsx';
-import type { WorkoutExecutionReadDTO } from '../../dtos/workout-execution-read.dto.tsx';
-import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
-import type { TagReadDTO } from '../../dtos/tag-read.dto.tsx';
-import type { SetType } from '../../models/set.model.tsx';
-import WorkoutExecutionHistoryCard from '../../components/workout-execution-card/workout-execution-history-card.component.tsx';
+import type {WorkoutExerciseReadDTO} from '../../dtos/workout-exercise-read.dto.tsx';
+import type {WorkoutWriteDTO} from '../../dtos/workout-write.dto.tsx';
+import type {WorkoutExecutionReadDTO} from '../../dtos/workout-execution-read.dto.tsx';
+import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
+import type {TagReadDTO} from '../../dtos/tag-read.dto.tsx';
+import type {SetType} from '../../models/set.model.tsx';
+import WorkoutExecutionHistoryCard
+    from '../../components/workout-execution-card/workout-execution-history-card.component.tsx';
 import {
-    buildWorkoutExercisesPayload,
+    applyExerciseRemove,
+    applyExerciseReorder,
+    applyExerciseSwap,
+    applyNotesChange,
+    applySetAdd,
     applySetChange,
-    applySetTypeChange,
     applySetRemove,
     applySetReorder,
-    applySetAdd,
-    applyNotesChange,
-    applyExerciseReorder,
-    applyExerciseRemove,
-    applyExerciseSwap,
+    applySetTypeChange,
+    buildWorkoutExercisesPayload,
 } from '../../utils/workout-exercise.utils.tsx';
 import styles from './workout.view.style.tsx';
 

@@ -1,4 +1,4 @@
-import type { Interpolation, Theme } from '@emotion/react';
+import type {Interpolation, Theme} from '@emotion/react';
 import styles from './progress-bar.component.style.tsx';
 
 export type ProgressBarProps = {

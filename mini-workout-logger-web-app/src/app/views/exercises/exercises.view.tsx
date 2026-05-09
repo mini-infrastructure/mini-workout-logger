@@ -1,21 +1,20 @@
-import { useState, useEffect } from 'react';
-import { css } from '@emotion/react';
-import { IoMdClose } from 'react-icons/io';
+import {useEffect, useState} from 'react';
+import {css} from '@emotion/react';
+import {IoMdClose} from 'react-icons/io';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import ExerciseCard from '../../components/exercise-card/exercise-card.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
-import Button from '../../components/button/button.component.tsx';
 import DropdownButton from '../../components/button/dropdown-button/dropdown-button.component.tsx';
 import HumanBody from '../../components/human-body/human-body.component.tsx';
-import { useExercises } from '../../hooks/useExercises.tsx';
+import {useExercises} from '../../hooks/useExercises.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
     exerciseEquipmentOptions,
-    exerciseMechanicsOptions,
     exerciseForceOptions,
+    exerciseMechanicsOptions,
     exerciseRoleOptions,
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';

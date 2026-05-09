@@ -1,8 +1,8 @@
 import axios from 'axios';
-import type { ApiResponseDTO } from '../dtos/api-response.dto.tsx';
-import type { WorkoutExecutionReadDTO } from '../dtos/workout-execution-read.dto.tsx';
-import type { WorkoutExecutionLogReadDTO } from '../dtos/workout-execution-log-read.dto.tsx';
-import type { FinishWorkoutExecutionWriteDTO } from '../dtos/finish-workout-execution-write.dto.tsx';
+import type {ApiResponseDTO} from '../dtos/api-response.dto.tsx';
+import type {WorkoutExecutionReadDTO} from '../dtos/workout-execution-read.dto.tsx';
+import type {WorkoutExecutionLogReadDTO} from '../dtos/workout-execution-log-read.dto.tsx';
+import type {FinishWorkoutExecutionWriteDTO} from '../dtos/finish-workout-execution-write.dto.tsx';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';

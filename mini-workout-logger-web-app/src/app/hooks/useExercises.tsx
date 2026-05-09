@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import type { ExerciseReadDTO } from '../dtos/exercise-read.dto.tsx';
-import type { PaginationDTO } from '../dtos/api-response.dto.tsx';
+import {useEffect, useState} from 'react';
+import type {ExerciseReadDTO} from '../dtos/exercise-read.dto.tsx';
+import type {PaginationDTO} from '../dtos/api-response.dto.tsx';
 import ExerciseService from '../services/exercise.service.tsx';
 
 const PAGE_SIZE = 20;

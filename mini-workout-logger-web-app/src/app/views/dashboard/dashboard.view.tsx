@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaCheckSquare } from 'react-icons/fa';
-import { IoBarbell } from 'react-icons/io5';
+import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {FaCheckSquare} from 'react-icons/fa';
+import {IoBarbell} from 'react-icons/io5';
 import Layout from '../../components/layout/layout.component.tsx';
+import type {WidgetItem} from '../../components/grid/widget-grid/widget-grid.component.tsx';
 import WidgetGrid from '../../components/grid/widget-grid/widget-grid.component.tsx';
-import type { WidgetItem } from '../../components/grid/widget-grid/widget-grid.component.tsx';
 import IconWidget from '../../components/widget/templates/icon-widget.component.tsx';
 import dashboardService from '../../services/dashboard.service.tsx';
 

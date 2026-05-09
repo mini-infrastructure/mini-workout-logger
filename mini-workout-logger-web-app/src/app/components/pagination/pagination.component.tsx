@@ -1,5 +1,5 @@
-import type { Interpolation, Theme } from '@emotion/react';
-import { FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
+import type {Interpolation, Theme} from '@emotion/react';
+import {FaAngleDoubleLeft, FaAngleDoubleRight, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 import Button from '../button/button.component.tsx';
 import styles from './pagination.component.style.tsx';
 

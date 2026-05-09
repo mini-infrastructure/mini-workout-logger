@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 
 const scrollable = {
     overflowY: 'auto' as const,

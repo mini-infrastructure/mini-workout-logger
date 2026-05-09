@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import { useNavigate } from 'react-router-dom';
+import {css} from '@emotion/react';
+import {useNavigate} from 'react-router-dom';
 
 type WorkoutShortcutWidgetProps = {
     count: number;

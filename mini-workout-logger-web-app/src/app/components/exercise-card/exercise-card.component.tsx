@@ -1,25 +1,21 @@
-import { useState } from 'react';
-import { css } from '@emotion/react';
-import type { Interpolation, Theme } from '@emotion/react';
-import { MdOpenInNew } from 'react-icons/md';
-import { FaRegStar, FaStar } from 'react-icons/fa';
+import {useState} from 'react';
+import type {Interpolation, Theme} from '@emotion/react';
+import {css} from '@emotion/react';
+import {MdOpenInNew} from 'react-icons/md';
+import {FaRegStar, FaStar} from 'react-icons/fa';
 import Card from '../card/card.component.tsx';
 import Rating from '../rating/rating.component.tsx';
-import Badge from '../badge/badge.component.tsx';
+import Badge, {capitalize} from '../badge/badge.component.tsx';
 import Divider from '../divider/divider.component.tsx';
+import type {DropdownMenuItem} from '../dropdown-menu/dropdown-menu.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
-import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
 import Button from '../button/button.component.tsx';
-import { capitalize } from '../badge/badge.component.tsx';
 import Image from '../image/image.component.tsx';
 import ExerciseDrawer from '../exercise-drawer/exercise-drawer.component.tsx';
-import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
-import {
-    ExerciseDifficultyVariants,
-    getVariantFromMap,
-} from '../../models/exercise.model.tsx';
+import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
+import {ExerciseDifficultyVariants, getVariantFromMap,} from '../../models/exercise.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
-import { useAlert } from '../../context/alert.context.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import BlobGlassBackground from '../background/blob-glass/blob-glass.component.tsx';
 import styles from './exercise-card.component.style.tsx';
 

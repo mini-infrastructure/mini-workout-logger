@@ -1,4 +1,4 @@
-import type { SetExecutionReadDTO } from './set-execution-read.dto.tsx';
+import type {SetExecutionReadDTO} from './set-execution-read.dto.tsx';
 
 export interface ExerciseExecutionHistoryReadDTO {
     id: number;

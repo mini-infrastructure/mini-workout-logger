@@ -1,4 +1,4 @@
-import { css } from '@emotion/react';
+import {css} from '@emotion/react';
 
 const styles = {
     cell: (editMode: boolean, occupied: boolean, isDropTarget = false) => css({

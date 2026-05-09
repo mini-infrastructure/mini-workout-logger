@@ -1,5 +1,5 @@
-import { css } from '@emotion/react';
-import type { IconWidgetBackground } from './icon-widget.component.tsx';
+import {css} from '@emotion/react';
+import type {IconWidgetBackground} from './icon-widget.component.tsx';
 
 const BUTTON_SIZE = 'calc(var(--size-icon-sm) + 2 * var(--base-size-12))';
 const ICON_OFFSET = `calc(var(--base-size-16) + ${BUTTON_SIZE} + var(--stack-gap-condensed))`;

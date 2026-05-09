@@ -1,5 +1,5 @@
-import type { CSSProperties, PropsWithChildren } from 'react';
-import type { Interpolation, Theme } from '@emotion/react';
+import type {CSSProperties, PropsWithChildren} from 'react';
+import type {Interpolation, Theme} from '@emotion/react';
 import styles from './background.component.style.tsx';
 
 export type BackgroundProps = {

@@ -2,7 +2,10 @@ import type {
     ExerciseCategory,
     ExerciseDifficulty,
     ExerciseEquipment,
-    ExerciseForceDirection, ExerciseMechanics, ExerciseRole, ExerciseType
+    ExerciseForceDirection,
+    ExerciseMechanics,
+    ExerciseRole,
+    ExerciseType
 } from "../models/exercise.model.tsx";
 import type {MuscleReadDTO} from "./muscle-read.dto.tsx";
 import type {ExerciseMuscleReadDTO} from "./exercise-muscle-read.dto.tsx";

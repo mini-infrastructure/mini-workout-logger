@@ -7,7 +7,7 @@ import WorkoutExecutionView from "./app/views/workout-execution/workout-executio
 import ExercisesView from "./app/views/exercises/exercises.view.tsx";
 import ExercisesFavoritesView from "./app/views/exercises/exercises-favorites.view.tsx";
 import LogView from "./app/views/log/log.view.tsx";
-import { AlertProvider } from "./app/context/alert.context.tsx";
+import {AlertProvider} from "./app/context/alert.context.tsx";
 
 function App() {
     return (

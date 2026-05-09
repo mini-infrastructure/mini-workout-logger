@@ -1,7 +1,7 @@
 import styles from "./layout.component.style.tsx";
-import { useLocation } from "react-router-dom";
-import { PropsWithChildren } from "react";
-import { routes } from "../../routes.tsx";
+import {useLocation} from "react-router-dom";
+import {PropsWithChildren} from "react";
+import {routes} from "../../routes.tsx";
 
 const Navbar = ({ children }: PropsWithChildren) => {
     const { pathname } = useLocation();

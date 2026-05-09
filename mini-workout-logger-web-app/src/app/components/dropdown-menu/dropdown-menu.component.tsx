@@ -1,15 +1,15 @@
-import { useRef, useState } from "react";
-import type { JSX } from "@emotion/react/jsx-runtime";
-import type { Interpolation, Theme } from "@emotion/react";
+import {useRef, useState} from "react";
+import type {JSX} from "@emotion/react/jsx-runtime";
+import type {Interpolation, Theme} from "@emotion/react";
 import OnlyIconButton from "../button/only-icon-button.component.tsx";
 import Button from "../button/button.component.tsx";
 import ActionSwitch from "../../components/input/action/action.input.component.tsx";
 import styles from "./dropdown-menu.component.style.tsx";
 import Divider from "../divider/divider.component.tsx";
-import { IoClose } from "react-icons/io5";
-import { useClickOut } from "../../hooks/useClickOut.tsx";
-import { FiMoreHorizontal } from "react-icons/fi";
-import { createPortal } from "react-dom";
+import {IoClose} from "react-icons/io5";
+import {useClickOut} from "../../hooks/useClickOut.tsx";
+import {FiMoreHorizontal} from "react-icons/fi";
+import {createPortal} from "react-dom";
 
 export type MenuItemColor = "primary" | "danger" | "info";
 

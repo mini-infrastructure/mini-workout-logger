@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
-import { TbSelect } from 'react-icons/tb';
+import {useState} from 'react';
+import {MdCheckBox, MdCheckBoxOutlineBlank} from 'react-icons/md';
+import {TbSelect} from 'react-icons/tb';
 import Layout from '../../components/layout/layout.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import Pagination from '../../components/pagination/pagination.component.tsx';
 import Badge from '../../components/badge/badge.component.tsx';
 import OnlyIconButton from '../../components/button/only-icon-button.component.tsx';
-import { useWorkoutExecutionLog } from '../../hooks/useWorkoutExecutionLog.tsx';
+import {useWorkoutExecutionLog} from '../../hooks/useWorkoutExecutionLog.tsx';
 import styles from './log.view.style.tsx';
 
 const formatDate = (iso: string): string => {

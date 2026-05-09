@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
-import type { WorkoutExecutionLogReadDTO } from '../dtos/workout-execution-log-read.dto.tsx';
-import type { PaginationDTO } from '../dtos/api-response.dto.tsx';
+import {useEffect, useRef, useState} from 'react';
+import type {WorkoutExecutionLogReadDTO} from '../dtos/workout-execution-log-read.dto.tsx';
+import type {PaginationDTO} from '../dtos/api-response.dto.tsx';
 import WorkoutExecutionService from '../services/workout-execution.service.tsx';
 
 export const useWorkoutExecutionLog = () => {

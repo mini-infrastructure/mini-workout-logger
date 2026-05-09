@@ -1,13 +1,13 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MdAdd } from 'react-icons/md';
+import {useMemo, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {MdAdd} from 'react-icons/md';
 import Layout from '../../components/layout/layout.component.tsx';
 import PrimaryButton from '../../components/button/button.primary.component.tsx';
 import Search from '../../components/search/search.component.tsx';
 import Badge from '../../components/badge/badge.component.tsx';
 import WorkoutCard from '../../components/workout-card/workout-card.component.tsx';
-import { useWorkouts } from '../../hooks/useWorkouts.tsx';
-import type { TagReadDTO } from '../../dtos/tag-read.dto.tsx';
+import {useWorkouts} from '../../hooks/useWorkouts.tsx';
+import type {TagReadDTO} from '../../dtos/tag-read.dto.tsx';
 import styles from './workouts.view.style.tsx';
 
 const WorkoutsView = () => {

@@ -1,13 +1,13 @@
-import type { Interpolation, Theme } from '@emotion/react';
-import { FaPlay } from 'react-icons/fa';
-import { MdDelete, MdOpenInNew } from 'react-icons/md';
-import { IoCopy } from 'react-icons/io5';
-import { IoMdArchive } from 'react-icons/io';
+import type {Interpolation, Theme} from '@emotion/react';
+import {FaPlay} from 'react-icons/fa';
+import {MdDelete, MdOpenInNew} from 'react-icons/md';
+import {IoCopy} from 'react-icons/io5';
+import {IoMdArchive} from 'react-icons/io';
 import Card from '../card/card.component.tsx';
 import Badge from '../badge/badge.component.tsx';
+import type {DropdownMenuItem} from '../dropdown-menu/dropdown-menu.component.tsx';
 import DropdownMenu from '../dropdown-menu/dropdown-menu.component.tsx';
-import type { DropdownMenuItem } from '../dropdown-menu/dropdown-menu.component.tsx';
-import type { WorkoutReadDTO } from '../../dtos/workout-read.dto.tsx';
+import type {WorkoutReadDTO} from '../../dtos/workout-read.dto.tsx';
 import styles from './workout-card.component.style.tsx';
 import type {Key} from "react";
 

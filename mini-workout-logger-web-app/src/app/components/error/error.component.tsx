@@ -1,5 +1,5 @@
-import { type PropsWithChildren } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
+import {type PropsWithChildren} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
 import styles from "./error.component.style.tsx";
 import BlocksBackground from "../background/blocks/blocks.component.tsx";
 import PrimaryButton from "../button/button.primary.component.tsx";

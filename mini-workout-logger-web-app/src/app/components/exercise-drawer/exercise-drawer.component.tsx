@@ -1,20 +1,20 @@
-import { useMemo, useState } from 'react';
-import { MdEdit, MdEditOff } from 'react-icons/md';
+import {useMemo, useState} from 'react';
+import {MdEdit, MdEditOff} from 'react-icons/md';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
+import type {FormFieldValue, FormItem} from '../input/form/form.input.component.tsx';
 import FormBuilder from '../input/form/form.input.component.tsx';
-import type { FormItem, FormFieldValue } from '../input/form/form.input.component.tsx';
 import Divider from '../divider/divider.component.tsx';
 import Button from '../button/button.component.tsx';
 import MultiSelect from '../input/form/multiselect.form.input.component.tsx';
+import type {ColoredMuscle} from '../human-body/human-body.component.tsx';
 import HumanBody from '../human-body/human-body.component.tsx';
-import type { ColoredMuscle } from '../human-body/human-body.component.tsx';
-import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
-import type { ExerciseWriteDTO } from '../../dtos/exercise-write.dto.tsx';
-import type { ExerciseMuscleWriteDTO } from '../../dtos/exercise-muscle-write.dto.tsx';
-import type { ExerciseMuscleMovementClassification } from '../../models/muscle.model.tsx';
+import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
+import type {ExerciseWriteDTO} from '../../dtos/exercise-write.dto.tsx';
+import type {ExerciseMuscleWriteDTO} from '../../dtos/exercise-muscle-write.dto.tsx';
+import type {ExerciseMuscleMovementClassification} from '../../models/muscle.model.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
-import { useMuscles } from '../../hooks/useMuscles.tsx';
-import { useAlert } from '../../context/alert.context.tsx';
+import {useMuscles} from '../../hooks/useMuscles.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
@@ -24,8 +24,8 @@ import {
     exerciseRoleOptions,
     exerciseTypeOptions,
 } from '../../models/exercise.model.tsx';
+import type {LegendItem} from '../legends/legends.component.tsx';
 import Legends from '../legends/legends.component.tsx';
-import type { LegendItem } from '../legends/legends.component.tsx';
 import Image from '../image/image.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 

@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import type { KeyboardEvent } from 'react';
-import type { Interpolation, Theme } from '@emotion/react';
-import { IoMdClose } from 'react-icons/io';
-import OnlyIconButton from '../button/only-icon-button.component.tsx';
-import { badgeVariantStyles } from './badge.component.tsx';
-import badgeStyles from './badge.component.style.tsx';
-import type { ColorVariant } from '../../utils/colorsVariants.tsx';
 import type * as React from 'react';
-import { useClickOut } from '../../hooks/useClickOut.tsx';
+import type {KeyboardEvent} from 'react';
+import {useEffect, useRef, useState} from 'react';
+import type {Interpolation, Theme} from '@emotion/react';
+import {IoMdClose} from 'react-icons/io';
+import OnlyIconButton from '../button/only-icon-button.component.tsx';
+import {badgeVariantStyles} from './badge.component.tsx';
+import badgeStyles from './badge.component.style.tsx';
+import type {ColorVariant} from '../../utils/colorsVariants.tsx';
+import {useClickOut} from '../../hooks/useClickOut.tsx';
 import styles from './editable-badge.component.style.tsx';
 
 export type EditableBadgeProps = {

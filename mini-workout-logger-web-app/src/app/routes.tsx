@@ -1,8 +1,5 @@
-import type { JSX } from '@emotion/react/jsx-runtime';
-import { FiDatabase } from 'react-icons/fi';
-import { FaStar } from 'react-icons/fa';
-import { IoBarbellSharp } from 'react-icons/io5';
-import {FcDatabase, FcIdea} from "react-icons/fc";
+import type {JSX} from '@emotion/react/jsx-runtime';
+import {FcDatabase, FcIdea, FcSportsMode} from "react-icons/fc";
 
 export type RouteSection = 'Main' | 'Support';
 
@@ -27,7 +24,7 @@ export const routes: AppRoute[] = [
         { path: '/exercises/favorites', label: 'Favorites', icon: <FcIdea />     },
     ]},
     { path: '/workouts',  label: 'Plan',      section: 'Main', children: [
-        { path: '/workouts', label: 'Workouts', icon: <IoBarbellSharp /> },
+        { path: '/workouts', label: 'Workouts', icon: <FcSportsMode /> },
     ]},
     { path: '/log',       label: 'Log',       section: 'Main'    },
     { path: '/analysis',  label: 'Analysis',  section: 'Main'    },

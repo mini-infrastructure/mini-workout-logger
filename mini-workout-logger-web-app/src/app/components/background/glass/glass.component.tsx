@@ -1,5 +1,5 @@
-import type { CSSProperties, PropsWithChildren } from 'react';
-import Background, { type BackgroundProps } from '../background.component.tsx';
+import type {CSSProperties, PropsWithChildren} from 'react';
+import Background, {type BackgroundProps} from '../background.component.tsx';
 import styles from './glass.component.style.tsx';
 
 export type GlassBackgroundProps = BackgroundProps & {

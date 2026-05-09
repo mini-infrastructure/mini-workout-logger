@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import type { WorkoutReadDTO } from '../dtos/workout-read.dto.tsx';
+import {useEffect, useState} from 'react';
+import type {WorkoutReadDTO} from '../dtos/workout-read.dto.tsx';
 import WorkoutService from '../services/workout.service.tsx';
 
 export function useWorkouts(tagIds: number[] = []) {

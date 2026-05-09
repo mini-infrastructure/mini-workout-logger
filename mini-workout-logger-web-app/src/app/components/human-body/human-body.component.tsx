@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { Global } from '@emotion/react';
-import { FaArrowsRotate } from 'react-icons/fa6';
-import styles, { globalMuscleStyles } from './human-body.component.style.tsx';
+import {useEffect, useRef, useState} from 'react';
+import {Global} from '@emotion/react';
+import {FaArrowsRotate} from 'react-icons/fa6';
+import styles, {globalMuscleStyles} from './human-body.component.style.tsx';
 import Button from '../button/button.component.tsx';
 import MuscleService from '../../services/muscle.service.tsx';
 

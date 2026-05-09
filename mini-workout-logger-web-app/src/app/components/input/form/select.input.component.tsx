@@ -1,10 +1,10 @@
-import { useRef, useState } from "react";
+import {useRef, useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import Button from "../../button/button.component.tsx";
 import type {FormOption} from "./form.input.component.tsx";
-import { useClickOut } from "../../../hooks/useClickOut.tsx";
-import { useEscapeKey } from "../../../hooks/useEscapeKey.tsx";
+import {useClickOut} from "../../../hooks/useClickOut.tsx";
+import {useEscapeKey} from "../../../hooks/useEscapeKey.tsx";
 
 export type SelectProps = {
     options: FormOption[];

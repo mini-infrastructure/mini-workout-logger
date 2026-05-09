@@ -1,4 +1,4 @@
-import Background, { type BackgroundProps } from '../background.component.tsx';
+import Background, {type BackgroundProps} from '../background.component.tsx';
 import Container from '../../container/container.component.tsx';
 import styles from './blocks.component.style.tsx';
 

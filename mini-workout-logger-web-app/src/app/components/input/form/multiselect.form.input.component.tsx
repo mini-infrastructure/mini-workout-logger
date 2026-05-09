@@ -1,11 +1,11 @@
-import { useRef, useState } from "react";
+import {useRef, useState} from "react";
 import styles from "./form.input.component.style.tsx";
 import EditableBadge from "../../badge/editable-badge.component.tsx";
 import Button from "../../button/button.component.tsx";
 import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import type {FormOption} from "./form.input.component.tsx";
-import { useClickOut } from "../../../hooks/useClickOut.tsx";
-import { useEscapeKey } from "../../../hooks/useEscapeKey.tsx";
+import {useClickOut} from "../../../hooks/useClickOut.tsx";
+import {useEscapeKey} from "../../../hooks/useEscapeKey.tsx";
 
 type MultiSelectProps = {
     options: FormOption[];

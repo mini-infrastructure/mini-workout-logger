@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import Layout from '../../components/layout/layout.component.tsx';
 import Card from '../../components/card/card.component.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
-import type { ExerciseReadDTO } from '../../dtos/exercise-read.dto.tsx';
+import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
 import styles from './exercises.view.style.tsx';
 
 const ExercisesFavoritesView = () => {

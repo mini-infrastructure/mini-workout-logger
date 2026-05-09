@@ -1,6 +1,6 @@
-import { PropsWithChildren } from 'react';
-import { css } from '@emotion/react';
-import type { ButtonProps } from './button.component.tsx';
+import {PropsWithChildren} from 'react';
+import {css} from '@emotion/react';
+import type {ButtonProps} from './button.component.tsx';
 import Button from './button.component.tsx';
 import styles from './button.component.style.tsx';
 

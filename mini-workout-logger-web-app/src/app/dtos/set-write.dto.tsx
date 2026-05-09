@@ -1,4 +1,4 @@
-import type { SetCategory, SetType } from '../models/set.model.tsx';
+import type {SetCategory, SetType} from '../models/set.model.tsx';
 
 export interface SetWriteDTO {
     category: SetCategory;

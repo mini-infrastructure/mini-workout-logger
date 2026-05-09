@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
+import {useState} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
 import OnlyIconButton from '../../button/only-icon-button.component.tsx';
 import BlobGlassBackground from '../../background/blob-glass/blob-glass.component.tsx';
 import styles from './icon-widget.component.style.tsx';

@@ -1,11 +1,10 @@
-import type { JSX } from '@emotion/react/jsx-runtime';
+import type {JSX} from '@emotion/react/jsx-runtime';
 import styles from "./layout.component.style.tsx";
 import SidebarButton from "../button/button.sidebar.component.tsx";
 import SidebarCollapseButton from "../button/button-collapse.sidebar.component.tsx";
 import Divider from "../divider/divider.component.tsx";
 import NavigationButtons from "../button/navigation/navigation.button.component.tsx";
-import { routes, type RouteSection } from "../../routes.tsx";
-import { PiSneakerMoveLight, PiSneakerMoveFill } from "react-icons/pi";
+import {routes, type RouteSection} from "../../routes.tsx";
 import {
     FcAcceptDatabase,
     FcAreaChart,

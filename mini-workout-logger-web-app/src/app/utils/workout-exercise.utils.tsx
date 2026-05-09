@@ -1,8 +1,8 @@
-import type { WorkoutExerciseReadDTO } from '../dtos/workout-exercise-read.dto.tsx';
-import type { WorkoutExerciseWriteDTO } from '../dtos/workout-exercise-write.dto.tsx';
-import type { SetReadDTO } from '../dtos/set-read.dto.tsx';
-import type { ExerciseReadDTO } from '../dtos/exercise-read.dto.tsx';
-import type { SetType } from '../models/set.model.tsx';
+import type {WorkoutExerciseReadDTO} from '../dtos/workout-exercise-read.dto.tsx';
+import type {WorkoutExerciseWriteDTO} from '../dtos/workout-exercise-write.dto.tsx';
+import type {SetReadDTO} from '../dtos/set-read.dto.tsx';
+import type {ExerciseReadDTO} from '../dtos/exercise-read.dto.tsx';
+import type {SetType} from '../models/set.model.tsx';
 
 /**
  * Maps the current exercises state to the WorkoutExerciseWriteDTO[] shape

@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import type { Interpolation, Theme } from '@emotion/react';
-import { FaImage } from 'react-icons/fa';
-import { MdUpload } from 'react-icons/md';
+import {useRef} from 'react';
+import type {Interpolation, Theme} from '@emotion/react';
+import {FaImage} from 'react-icons/fa';
+import {MdUpload} from 'react-icons/md';
 import styles from './image.component.style.tsx';
 
 export type ImageProps = {

@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
-import { MdAdd, MdClose } from 'react-icons/md';
-import type { MediaReadDTO } from '../../dtos/media-read.dto.tsx';
+import {useRef, useState} from 'react';
+import {MdAdd, MdClose} from 'react-icons/md';
+import type {MediaReadDTO} from '../../dtos/media-read.dto.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
-import { useAlert } from '../../context/alert.context.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import styles from './exercise-media-gallery.component.style.tsx';
 
 export type ExerciseMediaGalleryProps = {

@@ -1,7 +1,6 @@
 import type {ReactNode, SyntheticEvent} from "react";
 import {useEffect, useState} from "react";
 import styles from "./form.input.component.style.tsx";
-import Button from "../../button/button.component.tsx";
 import MultiSelect from "./multiselect.form.input.component.tsx";
 import Select from "./select.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";

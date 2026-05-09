@@ -1,4 +1,4 @@
-import { css, keyframes } from '@emotion/react';
+import {css, keyframes} from '@emotion/react';
 
 const slideIn = keyframes`
     from { transform: translateY(100%); opacity: 0; }

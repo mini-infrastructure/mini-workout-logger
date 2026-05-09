@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
-import { css } from '@emotion/react';
-import { FaTrashAlt } from 'react-icons/fa';
-import { MdDragIndicator, MdCheckBoxOutlineBlank, MdCheckBox } from 'react-icons/md';
-import { BiSkipNextCircle, BiSolidSkipNextCircle } from 'react-icons/bi';
-import type { SetReadDTO } from '../../dtos/set-read.dto.tsx';
-import type { SetType } from '../../models/set.model.tsx';
+import {useEffect, useRef, useState} from 'react';
+import {css} from '@emotion/react';
+import {FaTrashAlt} from 'react-icons/fa';
+import {MdCheckBox, MdCheckBoxOutlineBlank, MdDragIndicator} from 'react-icons/md';
+import {BiSkipNextCircle, BiSolidSkipNextCircle} from 'react-icons/bi';
+import type {SetReadDTO} from '../../dtos/set-read.dto.tsx';
+import type {SetType} from '../../models/set.model.tsx';
 import Button from '../button/button.component.tsx';
 import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import ProgressBar from '../progress-bar/progress-bar.component.tsx';
+import type {DragItemProvided} from '../grid/drag-grid/drag-grid.component.tsx';
 import DragGrid from '../grid/drag-grid/drag-grid.component.tsx';
-import type { DragItemProvided } from '../grid/drag-grid/drag-grid.component.tsx';
 import styles from './set-list.component.style.tsx';
 
 type SetField = 'planned_repetitions' | 'planned_weight' | 'planned_duration_seconds';

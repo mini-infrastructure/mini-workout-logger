@@ -1,7 +1,7 @@
-import type { WorkoutReadDTO } from '../dtos/workout-read.dto.tsx';
-import type { WorkoutWriteDTO } from '../dtos/workout-write.dto.tsx';
+import type {WorkoutReadDTO} from '../dtos/workout-read.dto.tsx';
+import type {WorkoutWriteDTO} from '../dtos/workout-write.dto.tsx';
 import axios from 'axios';
-import type { ApiResponseDTO } from '../dtos/api-response.dto.tsx';
+import type {ApiResponseDTO} from '../dtos/api-response.dto.tsx';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';

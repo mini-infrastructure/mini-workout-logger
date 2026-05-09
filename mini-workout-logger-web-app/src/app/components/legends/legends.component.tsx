@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { Interpolation, Theme } from '@emotion/react';
+import {useState} from 'react';
+import type {Interpolation, Theme} from '@emotion/react';
 import styles from './legends.component.style.tsx';
 
 export type LegendItem = {

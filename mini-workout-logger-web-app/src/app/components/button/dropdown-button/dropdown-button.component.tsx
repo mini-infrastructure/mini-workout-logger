@@ -1,11 +1,10 @@
-import { useRef, useState } from 'react';
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
-import type { Interpolation, Theme } from '@emotion/react';
-import { useClickOut } from '../../../hooks/useClickOut.tsx';
-import { useEscapeKey } from '../../../hooks/useEscapeKey.tsx';
+import {useRef, useState} from 'react';
+import {MdKeyboardArrowDown, MdKeyboardArrowUp} from 'react-icons/md';
+import type {Interpolation, Theme} from '@emotion/react';
+import {useClickOut} from '../../../hooks/useClickOut.tsx';
+import {useEscapeKey} from '../../../hooks/useEscapeKey.tsx';
 import styles from './dropdown-button.component.style.tsx';
 import SecondaryButton from "../button.secondary.component.tsx";
-import Button from "../button.component.tsx";
 
 export type DropdownOption = {
     label: string;

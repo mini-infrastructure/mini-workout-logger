@@ -1,9 +1,9 @@
-import { type PropsWithChildren } from 'react';
-import type { JSX } from '@emotion/react/jsx-runtime';
-import { Link } from 'react-router-dom';
+import {type PropsWithChildren} from 'react';
+import type {JSX} from '@emotion/react/jsx-runtime';
+import {Link} from 'react-router-dom';
 import styles from './button.component.style';
-import type { Interpolation, Theme } from '@emotion/react';
-import { css } from '@emotion/react';
+import type {Interpolation, Theme} from '@emotion/react';
+import {css} from '@emotion/react';
 
 export type ButtonProps = {
     onClick?: () => void;
