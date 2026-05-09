@@ -23,7 +23,7 @@ const styles = {
         top: 0,
         right: 0,
         bottom: 0,
-        width: '40vw',
+        width: '48vw',
         minWidth: '320px',
         backgroundColor: 'var(--color-container1)',
         boxShadow: 'var(--shadow-normal)',

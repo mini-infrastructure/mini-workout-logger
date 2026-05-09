@@ -1,6 +1,7 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { FiDatabase } from 'react-icons/fi';
 import { FaStar } from 'react-icons/fa';
+import { IoBarbellSharp } from 'react-icons/io5';
 
 export type RouteSection = 'Main' | 'Support';
 
@@ -24,7 +25,9 @@ export const routes: AppRoute[] = [
         { path: '/exercises',           label: 'Database',  icon: <FiDatabase /> },
         { path: '/exercises/favorites', label: 'Favorites', icon: <FaStar />     },
     ]},
-    { path: '/workouts',  label: 'Workouts',  section: 'Main'    },
+    { path: '/workouts',  label: 'Plan',      section: 'Main', children: [
+        { path: '/workouts', label: 'Workouts', icon: <IoBarbellSharp /> },
+    ]},
     { path: '/log',       label: 'Log',       section: 'Main'    },
     { path: '/calendar',  label: 'Calendar',  section: 'Main'    },
     { path: '/analysis',  label: 'Analysis',  section: 'Main'    },
