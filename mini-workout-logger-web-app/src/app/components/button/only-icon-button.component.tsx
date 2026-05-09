@@ -10,13 +10,27 @@ export type OnlyIconButtonProps = {
     selectedIconColor?: string;
     selected?: boolean;
     selectedBg?: string;
-    size?: 'small' | 'large';
+    size?: 'mini' | 'small' | 'large';
     onToggle?: (selected: boolean) => void;
     legend?: string;
     selectedLegend?: string;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
     customIconCss?: Interpolation<Theme> | Interpolation<Theme>[];
 };
+
+const miniCss = css({
+    padding: '2px',
+    minWidth: 0,
+    width: 'calc(0.7rem + 4px)',
+    height: 'calc(0.7rem + 4px)',
+    flexShrink: 0,
+});
+
+const miniIconCss = css({
+    width: '0.7rem',
+    height: '0.7rem',
+    fontSize: '0.7rem',
+});
 
 const largeCss = css({
     padding: 'var(--base-size-12)',
@@ -65,6 +79,7 @@ const OnlyIconButton = ({
             icon={currentIcon}
             title={tooltip}
             customIconCss={[
+                ...(size === 'mini' ? [miniIconCss] : []),
                 ...(size === 'large' ? [largeIconCss] : []),
                 ...(customIconCss
                     ? Array.isArray(customIconCss) ? customIconCss : [customIconCss]
@@ -79,6 +94,7 @@ const OnlyIconButton = ({
                         backgroundColor: hoverBg,
                     },
                 }),
+                ...(size === 'mini' ? [miniCss] : []),
                 ...(size === 'large' ? [largeCss] : []),
                 ...(customCss
                     ? Array.isArray(customCss) ? customCss : [customCss]

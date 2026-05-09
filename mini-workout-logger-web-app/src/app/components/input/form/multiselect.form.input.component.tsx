@@ -13,6 +13,7 @@ type MultiSelectProps = {
     onChange: (values: string[]) => void;
     value: string[];
     disabled?: boolean;
+    editMode?: boolean;
 };
 
 const MultiSelect = ({
@@ -21,6 +22,7 @@ const MultiSelect = ({
                          onChange,
                          placeholder,
                          disabled = false,
+                         editMode,
                      }: MultiSelectProps) => {
     const [open, setOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -55,24 +57,26 @@ const MultiSelect = ({
         <div css={styles.wrapper} ref={containerRef}>
 
             {/* SELECT BOX */}
-            <div
-                onClick={() => setOpen(!open)}
-                css={styles.input}
-            >
-                <span>{selectedOptions.length
-                    ? selectedOptions.map((o) => o.label).join(", ")
-                    : placeholder ?? "Select..."}
-                </span>
+            {(editMode === undefined || editMode) && (
+                <div
+                    onClick={() => setOpen(!open)}
+                    css={styles.input}
+                >
+                    <span>{selectedOptions.length
+                        ? selectedOptions.map((o) => o.label).join(", ")
+                        : placeholder ?? "Select..."}
+                    </span>
 
-                <Button
-                    icon={<MdKeyboardArrowDown />}
-                    clickedIcon={<MdKeyboardArrowUp />}
-                    isClicked={open}
-                    onClick={toggleDropdown}
-                    customCss={styles.inputButton}
-                    customIconCss={styles.inputButtonIcon}
-                />
-            </div>
+                    <Button
+                        icon={<MdKeyboardArrowDown />}
+                        clickedIcon={<MdKeyboardArrowUp />}
+                        isClicked={open}
+                        onClick={toggleDropdown}
+                        customCss={styles.inputButton}
+                        customIconCss={styles.inputButtonIcon}
+                    />
+                </div>
+            )}
 
             {/* DROPDOWN */}
             {open && (
@@ -112,6 +116,7 @@ const MultiSelect = ({
                     <EditableBadge
                         key={opt.value}
                         onRemove={disabled ? undefined : () => toggleValue(opt.value)}
+                        forceSelected={editMode === true}
                         customCss={styles.badgeCustomCss}
                     >
                         {opt.label}

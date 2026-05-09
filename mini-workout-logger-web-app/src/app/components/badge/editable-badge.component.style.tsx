@@ -20,19 +20,6 @@ const styles = {
         width: '8ch',
     }),
 
-    removeButton: css({
-        backgroundColor: 'transparent',
-        padding: 'var(--stack-gap-nano)',
-        ':hover': {
-            backgroundColor: 'transparent',
-        },
-    }),
-
-    removeButtonIcon: css({
-        fontSize: '0.7rem',
-        width: '0.7rem',
-        height: '0.7rem',
-    }),
 };
 
 export default styles;

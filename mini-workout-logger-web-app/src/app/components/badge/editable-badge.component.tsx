@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import type { Interpolation, Theme } from '@emotion/react';
 import { IoMdClose } from 'react-icons/io';
-import Button from '../button/button.component.tsx';
+import OnlyIconButton from '../button/only-icon-button.component.tsx';
 import { badgeVariantStyles } from './badge.component.tsx';
 import badgeStyles from './badge.component.style.tsx';
 import type { ColorVariant } from '../../utils/colorsVariants.tsx';
@@ -15,6 +15,7 @@ export type EditableBadgeProps = {
     children: string;
     onRemove?: () => void;
     onEdit?: (newValue: string) => void;
+    forceSelected?: boolean;
     variant?: ColorVariant;
     ghost?: boolean;
     customCss?: Interpolation<Theme> | Interpolation<Theme>[];
@@ -24,6 +25,7 @@ const EditableBadge = ({
     children,
     onRemove,
     onEdit,
+    forceSelected = false,
     variant = 'gray',
     ghost = true,
     customCss,
@@ -91,14 +93,13 @@ const EditableBadge = ({
                     <span>{children}</span>
                 )}
 
-                {editMode && onRemove && (
+                {(editMode || forceSelected) && onRemove && (
                     <span onClick={(e) => e.stopPropagation()}>
-                        <Button
+                        <OnlyIconButton
                             icon={<IoMdClose />}
-                            onClick={onRemove}
-                            noBorder
-                            customCss={styles.removeButton}
-                            customIconCss={styles.removeButtonIcon}
+                            onToggle={onRemove}
+                            size="mini"
+                            iconColor="--color-text"
                         />
                     </span>
                 )}

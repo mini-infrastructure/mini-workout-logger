@@ -225,9 +225,9 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     return (
         <DrawerModal open={open} onClose={handleClose} headerButton={editButton}>
             <div css={styles.container}>
-                <div css={styles.header}>
-                    <span css={styles.name}>{exercise.name}</span>
-                </div>
+                {/*<div css={styles.header}>*/}
+                {/*    <span css={styles.name}>{exercise.name}</span>*/}
+                {/*</div>*/}
 
                 {/* Cover media */}
                 <Image
@@ -258,6 +258,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                             value={selectedMuscleNames}
                             onChange={setSelectedMuscleNames}
                             disabled={!editMode}
+                            editMode={editMode}
                         />
                     </div>
 
