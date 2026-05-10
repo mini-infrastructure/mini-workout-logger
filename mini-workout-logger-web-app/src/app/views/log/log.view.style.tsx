@@ -34,6 +34,7 @@ const styles = {
     table: css({
         width: '100%',
         borderCollapse: 'collapse',
+        tableLayout: 'fixed' as const,
     }),
 
     thead: css({
@@ -76,6 +77,8 @@ const styles = {
         fontSize: 'var(--size-medium)',
         color: 'var(--color-white)',
         whiteSpace: 'nowrap' as const,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
     }),
 
     tdMuted: css({
@@ -86,6 +89,12 @@ const styles = {
         width: '40px',
         padding: 'var(--base-size-4) var(--base-size-8)',
     }),
+
+    thDate: css({ width: '160px' }),
+    thActivity: css({ width: '25%' }),
+    thType: css({ width: '110px' }),
+    thDuration: css({ width: '100px' }),
+    thState: css({ width: '120px' }),
 
     tdIcon: css({
         padding: 'var(--base-size-4) var(--base-size-8)',

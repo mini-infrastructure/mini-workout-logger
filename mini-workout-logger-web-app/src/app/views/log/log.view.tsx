@@ -23,7 +23,7 @@ type LogEntry = {
     completed: boolean;
 };
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 15;
 
 const toEntry = {
     workout: (w: WorkoutExecutionLogReadDTO): LogEntry => ({
@@ -166,11 +166,11 @@ const LogView = () => {
                                         selectedLegend="Deselect all"
                                     />
                                 </th>
-                                <th css={styles.th}>Date</th>
-                                <th css={styles.th}>Activity</th>
-                                <th css={styles.th}>Type</th>
-                                <th css={styles.th}>Duration</th>
-                                <th css={styles.th}>State</th>
+                                <th css={[styles.th, styles.thDate]}>Date</th>
+                                <th css={[styles.th, styles.thActivity]}>Activity</th>
+                                <th css={[styles.th, styles.thType]}>Type</th>
+                                <th css={[styles.th, styles.thDuration]}>Duration</th>
+                                <th css={[styles.th, styles.thState]}>State</th>
                             </tr>
                         </thead>
                         <tbody>
