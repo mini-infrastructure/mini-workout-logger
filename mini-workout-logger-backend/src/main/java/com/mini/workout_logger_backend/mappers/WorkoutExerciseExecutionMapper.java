@@ -20,7 +20,11 @@ public class WorkoutExerciseExecutionMapper extends AbstractMapper<WorkoutExerci
     @Override
     protected void configure(ModelMapper mapper) {
         // Entity -> DTO (GET)
-        mapper.createTypeMap(WorkoutExerciseExecution.class, WorkoutExerciseExecutionReadDTO.class);
+        mapper.createTypeMap(WorkoutExerciseExecution.class, WorkoutExerciseExecutionReadDTO.class)
+                .addMappings(m -> m.map(
+                        src -> src.getWorkoutExercise().getId(),
+                        WorkoutExerciseExecutionReadDTO::setWorkoutExerciseId
+                ));
 
         // DTO -> Entity (POST/PUT)
         mapper.createTypeMap(WorkoutExerciseExecutionWriteDTO.class, WorkoutExerciseExecution.class)

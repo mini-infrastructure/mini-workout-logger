@@ -274,7 +274,7 @@ public class WorkoutExecutionService  extends AbstractService<WorkoutExecution,
                             ? we.getInterval().getDuration().getSeconds()
                             : null;
                     dto.setDurationSeconds(durationSeconds);
-                    dto.setCompleted(we.getInterval().getEnd() != null);
+                    dto.setCompleted(we.getCompleted());
                     return dto;
                 })
                 .collect(Collectors.toList());

@@ -20,11 +20,6 @@ const SERIES_COLORS = [
     'var(--color-purple)',
 ];
 
-const formatDate = (iso: string): string => {
-    const d = new Date(iso);
-    return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-};
-
 export type ExerciseStatisticsChartProps = {
     exerciseId: number;
     workoutId?: number;
@@ -76,7 +71,7 @@ const ExerciseStatisticsChart = ({ exerciseId, workoutId, exerciseName }: Exerci
                                     <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
                                     <XAxis
                                         dataKey="date"
-                                        tickFormatter={formatDate}
+                                        tickFormatter={(v: string) => v}
                                         tick={{ fontSize: 10, fill: 'var(--color-gray)' }}
                                         tickLine={false}
                                         axisLine={false}
@@ -95,7 +90,7 @@ const ExerciseStatisticsChart = ({ exerciseId, workoutId, exerciseName }: Exerci
                                             fontSize: '12px',
                                             color: 'var(--color-text)',
                                         }}
-                                        labelFormatter={(label) => formatDate(label as string)}
+                                        labelFormatter={(label) => label as string}
                                         formatter={(val) => [val, series.label]}
                                     />
                                     <Line

@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class WorkoutExerciseExecutionReadDTO extends ReadDTO {
 
-//    @JsonProperty("workout_exercise")
-//    private WorkoutExerciseReadDTO workoutExercise;
+    @JsonProperty("workout_exercise_id")
+    private Long workoutExerciseId;
 
     @JsonProperty("set_executions")
     private List<SetExecutionReadDTO> setExecutions;

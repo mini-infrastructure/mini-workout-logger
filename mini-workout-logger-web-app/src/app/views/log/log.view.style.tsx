@@ -74,12 +74,12 @@ const styles = {
     td: css({
         padding: 'var(--base-size-8) var(--base-size-12)',
         fontSize: 'var(--size-medium)',
-        color: 'var(--color-text)',
+        color: 'var(--color-white)',
         whiteSpace: 'nowrap' as const,
     }),
 
     tdMuted: css({
-        color: 'var(--color-gray)',
+        color: 'var(--color-white)',
     }),
 
     thIcon: css({

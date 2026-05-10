@@ -65,7 +65,13 @@ const useLog = (search: string, refreshKey: number) => {
                 ].sort((a, b) => {
                     if (!a.start_time) return 1;
                     if (!b.start_time) return -1;
-                    return new Date(b.start_time).getTime() - new Date(a.start_time).getTime();
+                    // Format from backend: dd/MM/yyyy HH:mm
+                    const parseDate = (s: string) => {
+                        const [datePart, timePart] = s.split(' ');
+                        const [dd, mm, yyyy] = datePart.split('/');
+                        return new Date(`${yyyy}-${mm}-${dd}T${timePart ?? '00:00'}:00`).getTime();
+                    };
+                    return parseDate(b.start_time) - parseDate(a.start_time);
                 });
                 setAllEntries(merged);
             } finally {
@@ -76,15 +82,6 @@ const useLog = (search: string, refreshKey: number) => {
     }, [search, refreshKey]);
 
     return { allEntries, loading };
-};
-
-const formatDate = (iso: string | null): string => {
-    if (!iso) return '—';
-    const d = new Date(iso);
-    const dd   = String(d.getDate()).padStart(2, '0');
-    const mm   = String(d.getMonth() + 1).padStart(2, '0');
-    const yyyy = d.getFullYear();
-    return `${dd}/${mm}/${yyyy}`;
 };
 
 const formatDuration = (seconds: number | null): string => {
@@ -106,8 +103,9 @@ const LogView = () => {
 
     const { allEntries, loading } = useLog(search, refreshKey);
 
-    // Reset to page 0 when search changes
+    // Reset to page 0 when search changes or log is refreshed
     useEffect(() => { setPage(0); }, [search]);
+    useEffect(() => { setPage(0); setSelectedIds(new Set()); }, [refreshKey]);
 
     const totalPages = Math.max(1, Math.ceil(allEntries.length / PAGE_SIZE));
     const entries    = allEntries.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -198,7 +196,7 @@ const LogView = () => {
                                                     selectedLegend="Deselect"
                                                 />
                                             </td>
-                                            <td css={[styles.td, styles.tdMuted]}>{formatDate(entry.start_time)}</td>
+                                            <td css={[styles.td, styles.tdMuted]}>{entry.start_time ?? '—'}</td>
                                             <td css={styles.td}>{entry.activity_name}</td>
                                             <td css={styles.td}>
                                                 <Badge variant={entry.type === 'workout' ? 'primary' : 'warning'}>

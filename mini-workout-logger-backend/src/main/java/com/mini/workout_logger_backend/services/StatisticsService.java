@@ -50,7 +50,7 @@ public class StatisticsService {
             if (date == null) continue;
 
             for (SetExecution se : wee.getSetExecutions()) {
-                if (Boolean.FALSE.equals(se.getCompleted()) && !se.isSkipped()) continue;
+                if (se.isSkipped()) continue;
                 SetType type = se.getPlannedType();
                 if (type == null) continue;
 

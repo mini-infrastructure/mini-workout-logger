@@ -23,12 +23,7 @@ const WorkoutExecutionHistoryCard = ({ execution, workoutId, workoutExercises, o
     const [animating, setAnimating] = useState(false);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const formattedDate = execution.start_time
-        ? new Date(execution.start_time).toLocaleString(undefined, {
-              dateStyle: 'medium',
-              timeStyle: 'short',
-          })
-        : '—';
+    const formattedDate = execution.start_time ?? '—';
 
     const handleToggle = (expanded: boolean) => {
         if (timerRef.current) clearTimeout(timerRef.current);

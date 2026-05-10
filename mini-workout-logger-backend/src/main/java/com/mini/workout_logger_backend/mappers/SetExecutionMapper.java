@@ -29,7 +29,13 @@ public class SetExecutionMapper extends AbstractMapper<SetExecution,
                     SetExecution entity = ctx.getDestination();
 
                     if (dto.getSetId() != null) {
-                        entity.setSet(setRepository.safeFindById(dto.getSetId()));
+                        var set = setRepository.safeFindById(dto.getSetId());
+                        entity.setSet(set);
+                        entity.setPlannedType(set.getType());
+                        entity.setPlannedRepetitions(set.getPlannedRepetitions());
+                        entity.setPlannedWeight(set.getPlannedWeight());
+                        entity.setPlannedDurationSeconds(set.getPlannedDurationSeconds());
+                        entity.setPlannedCategory(set.getCategory());
                     }
 
                     return entity;
