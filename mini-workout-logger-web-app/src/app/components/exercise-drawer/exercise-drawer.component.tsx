@@ -2,11 +2,13 @@ import {useState} from 'react';
 import {MdEdit, MdEditOff} from 'react-icons/md';
 import DrawerModal from '../drawer-modal/drawer-modal.component.tsx';
 import Button from '../button/button.component.tsx';
+import Divider from '../divider/divider.component.tsx';
 import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
 import type {ExerciseWriteDTO} from '../../dtos/exercise-write.dto.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
 import {useAlert} from '../../context/alert.context.tsx';
 import ExerciseForm from '../exercise-form/exercise-form.component.tsx';
+import ExerciseStatisticsChart from '../statistics/exercise-statistics-chart.component.tsx';
 import styles from './exercise-drawer.component.style.tsx';
 
 export type ExerciseDrawerProps = {
@@ -67,6 +69,8 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                     onSubmit={handleSubmit}
                     onCoverUpload={handleCoverUpload}
                 />
+                <Divider thickness="thin" />
+                <ExerciseStatisticsChart exerciseId={exercise.id} />
             </div>
         </DrawerModal>
     );
