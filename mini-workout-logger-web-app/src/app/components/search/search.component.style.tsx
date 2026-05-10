@@ -4,6 +4,9 @@ const styles = {
     wrapper: css({
         borderRadius: 'var(--borderRadius-large)',
         padding: 'var(--base-size-8)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
     }),
 
     container: css({
@@ -12,7 +15,8 @@ const styles = {
         gap: 'var(--stack-gap-condensed)',
         backgroundColor: 'var(--color-container1)',
         borderRadius: 'var(--borderRadius-medium)',
-        padding: 'var(--base-size-12)',
+        padding: '0 var(--base-size-12)',
+        height: '40px',
     }),
 
     icon: css({

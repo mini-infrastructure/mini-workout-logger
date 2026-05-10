@@ -13,6 +13,7 @@ import PrimaryButton from '../../components/button/button.primary.component.tsx'
 import AddExerciseModal from '../../components/exercise-form/add-exercise-modal.component.tsx';
 import {useExercises} from '../../hooks/useExercises.tsx';
 import ExerciseService from '../../services/exercise.service.tsx';
+import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
@@ -42,14 +43,18 @@ const ExercisesView = () => {
     const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
     const { exercises, pagination, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
+    const [allFavorites, setAllFavorites] = useState<ExerciseReadDTO[]>([]);
     const [addOpen, setAddOpen] = useState(false);
     const [favoritesOnly, setFavoritesOnly] = useState(false);
 
-    useEffect(() => {
+    const reloadFavorites = () => {
         ExerciseService.getFavorites().then(favorites => {
             setFavoritedIds(new Set(favorites.map(e => e.id)));
+            setAllFavorites(favorites);
         });
-    }, []);
+    };
+
+    useEffect(() => { reloadFavorites(); }, []);
 
     const handleFavoriteToggle = (id: number, favorited: boolean) => {
         setFavoritedIds(prev => {
@@ -57,6 +62,7 @@ const ExercisesView = () => {
             favorited ? next.add(id) : next.delete(id);
             return next;
         });
+        reloadFavorites();
     };
 
     const handleQueryChange = (value: string) => {
@@ -117,9 +123,15 @@ const ExercisesView = () => {
         setPage(0);
     };
 
-    const displayedExercises = favoritesOnly
-        ? exercises.filter(e => favoritedIds.has(e.id))
-        : exercises;
+    const FAV_PAGE_SIZE = 20;
+    const favPage = favoritesOnly ? page : 0;
+    const pagedFavorites = allFavorites.slice(favPage * FAV_PAGE_SIZE, (favPage + 1) * FAV_PAGE_SIZE);
+    const favTotalPages = Math.max(1, Math.ceil(allFavorites.length / FAV_PAGE_SIZE));
+
+    const displayedExercises = favoritesOnly ? pagedFavorites : exercises;
+    const displayedPagination = favoritesOnly
+        ? { total_pages: favTotalPages }
+        : pagination;
 
     return (
         <Layout>
@@ -185,10 +197,10 @@ const ExercisesView = () => {
                                 ))}
                             </ul>
                         </div>
-                        {pagination && (
+                        {displayedPagination && (
                             <Pagination
                                 page={page}
-                                totalPages={pagination.total_pages}
+                                totalPages={displayedPagination.total_pages}
                                 onPageChange={setPage}
                                 customCss={css({ paddingTop: 'var(--stack-gap-condensed)', flexShrink: 0 })}
                             />
