@@ -7,14 +7,16 @@ import type {FormFieldValue, FormItem, FormOption} from '../../components/input/
 import exerciseService from '../../services/exercise.service.tsx';
 import activityLogService from '../../services/activity-log.service.tsx';
 import type {ExerciseReadDTO} from '../../dtos/exercise-read.dto.tsx';
+import {useAlert} from '../../context/alert.context.tsx';
 import styles from './add-log.modal.component.style.tsx';
 
-const ACTIVITY_CATEGORIES = ['CARDIO', 'STRETCHING', 'MOBILITY', 'RECOVERY', 'WARM_UP'] as const;
+const ACTIVITY_CATEGORY_FILTER = 'CARDIO,STRETCHING,MOBILITY,RECOVERY,WARM_UP';
 
 const toLocalDatetimeValue = (date: Date): string => {
     const pad = (n: number) => String(n).padStart(2, '0');
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
+
 
 type Props = {
     open: boolean;
@@ -23,32 +25,35 @@ type Props = {
 };
 
 const AddLogModal = ({ open, onClose, onCreated }: Props) => {
-    const [selectedExercise, setSelectedExercise] = useState<ExerciseReadDTO | null>(null);
-    const [startTime, setStartTime] = useState(() => toLocalDatetimeValue(new Date()));
+    const pushAlert = useAlert();
     const [submitting, setSubmitting] = useState(false);
     const [resetKey, setResetKey] = useState(0);
 
     const [nameSuggestions, setNameSuggestions] = useState<FormOption[]>([]);
+    // selectedExerciseRef holds the exercise picked via suggestion; cleared on search
+    const selectedExerciseRef = useRef<ExerciseReadDTO | null>(null);
     const resultsRef = useRef<ExerciseReadDTO[]>([]);
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleNameSearch = useCallback((value: string) => {
-        setSelectedExercise(null);
+        selectedExerciseRef.current = null;
         if (debounceRef.current) clearTimeout(debounceRef.current);
         if (!value.trim()) { setNameSuggestions([]); return; }
         debounceRef.current = setTimeout(async () => {
-            const result = await exerciseService.getAll({ name: value, size: 20 });
-            const eligible = (result.data ?? []).filter(
-                (e) => e.category && (ACTIVITY_CATEGORIES as readonly string[]).includes(e.category)
-            );
-            resultsRef.current = eligible;
-            setNameSuggestions(eligible.map((e) => ({ label: e.name, value: e.name })));
+            const result = await exerciseService.getAll({
+                name: value,
+                category: ACTIVITY_CATEGORY_FILTER,
+                size: 50,
+            });
+            const exercises = result.data ?? [];
+            resultsRef.current = exercises;
+            setNameSuggestions(exercises.map((e) => ({ label: e.name, value: e.name })));
         }, 250);
     }, []);
 
     const handleSuggestionSelect = useCallback((value: string) => {
         const found = resultsRef.current.find((e) => e.name === value);
-        if (found) setSelectedExercise(found);
+        if (found) selectedExerciseRef.current = found;
     }, []);
 
     const formItems = useMemo<FormItem[]>(() => [
@@ -65,16 +70,9 @@ const AddLogModal = ({ open, onClose, onCreated }: Props) => {
         {
             name: 'start_time',
             label: 'Date & Time',
-            type: 'custom',
+            type: 'datetime',
             colSpan: 1,
-            render: (
-                <input
-                    css={styles.dateInput}
-                    type="datetime-local"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                />
-            ),
+            initialValue: toLocalDatetimeValue(new Date()),
         },
         {
             name: 'duration_minutes',
@@ -83,15 +81,26 @@ const AddLogModal = ({ open, onClose, onCreated }: Props) => {
             colSpan: 1,
             placeholder: 'e.g. 30',
         },
-    ], [handleNameSearch, handleSuggestionSelect, startTime]);
+    ], [handleNameSearch, handleSuggestionSelect]);
 
     const handleSubmit = async (values: Record<string, FormFieldValue>) => {
-        if (!selectedExercise) return;
+        const typedName = (values.exercise_name as string ?? '').trim();
+        const exercise =
+            selectedExerciseRef.current ??
+            resultsRef.current.find((e) => e.name === typedName) ??
+            null;
+
+        if (!exercise) {
+            pushAlert('Please select an exercise from the suggestions.', 'error');
+            return;
+        }
+
         setSubmitting(true);
         try {
+            const startTime = values.start_time as string | undefined;
             const mins = values.duration_minutes ? parseFloat(values.duration_minutes as string) : undefined;
             await activityLogService.create({
-                exercise_id:      selectedExercise.id,
+                exercise_id:      exercise.id,
                 start_time:       startTime ? new Date(startTime).toISOString() : undefined,
                 duration_seconds: mins !== undefined && !isNaN(mins) ? Math.round(mins * 60) : undefined,
                 completed:        true,
@@ -104,8 +113,7 @@ const AddLogModal = ({ open, onClose, onCreated }: Props) => {
     };
 
     const handleClose = () => {
-        setSelectedExercise(null);
-        setStartTime(toLocalDatetimeValue(new Date()));
+        selectedExerciseRef.current = null;
         setNameSuggestions([]);
         resultsRef.current = [];
         setResetKey((k) => k + 1);
@@ -113,7 +121,7 @@ const AddLogModal = ({ open, onClose, onCreated }: Props) => {
     };
 
     return (
-        <Modal open={open} onClose={handleClose} title="Log Activity">
+        <Modal open={open} onClose={handleClose}>
             <div css={styles.body}>
                 <FormBuilder
                     id="add-log-form"
@@ -130,7 +138,7 @@ const AddLogModal = ({ open, onClose, onCreated }: Props) => {
                     <PrimaryButton
                         type="submit"
                         form="add-log-form"
-                        disabled={!selectedExercise || submitting}
+                        disabled={submitting}
                     >
                         Save
                     </PrimaryButton>

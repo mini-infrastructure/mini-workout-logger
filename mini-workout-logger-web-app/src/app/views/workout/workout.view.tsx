@@ -542,7 +542,12 @@ const WorkoutView = () => {
                         ) : (
                             <div css={styles.historyList}>
                                 {executions.map((ex) => (
-                                    <WorkoutExecutionHistoryCard key={ex.id} execution={ex} />
+                                    <WorkoutExecutionHistoryCard
+                                        key={ex.id}
+                                        execution={ex}
+                                        workoutId={workout?.id}
+                                        workoutExercises={workout?.workout_exercises}
+                                    />
                                 ))}
                             </div>
                         )}

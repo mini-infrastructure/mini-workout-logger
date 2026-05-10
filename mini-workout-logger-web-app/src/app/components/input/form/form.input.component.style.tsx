@@ -96,6 +96,18 @@ const styles = {
         margin: `0 0 var(--stack-gap-normal) 0`,
     }),
 
+    datetimeInput: css({
+        width: '100%',
+        boxSizing: 'border-box' as const,
+        '&::-webkit-calendar-picker-indicator': {
+            filter: 'invert(0.5)',
+            cursor: 'pointer',
+        },
+        '&:focus': {
+            outline: 'none',
+        },
+    }),
+
     inputError: css({
         outline: 'var(--borderWidth-thin) solid var(--color-red)',
     }),

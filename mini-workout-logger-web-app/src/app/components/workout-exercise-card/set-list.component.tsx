@@ -55,6 +55,7 @@ export type SetListProps = {
     resetKey?: number;
     onCompletedChange?: (completedIds: number[]) => void;
     onAllCompletedChange?: (allCompleted: boolean) => void;
+    onAllSkippedChange?: (allSkipped: boolean) => void;
     toggleAllRef?: React.MutableRefObject<(() => void) | null>;
     onSkippedChange?: (skippedIds: number[]) => void;
 };
@@ -73,6 +74,7 @@ const SetList = ({
     resetKey,
     onCompletedChange,
     onAllCompletedChange,
+    onAllSkippedChange,
     toggleAllRef,
     onSkippedChange,
 }: SetListProps) => {
@@ -80,6 +82,7 @@ const SetList = ({
     const [skippedIds, setSkippedIds] = useState<Set<number>>(new Set());
     const collapseRef = useRef<HTMLDivElement>(null);
     const isInitialMount = useRef(true);
+    const prevSetsLengthRef = useRef(sets?.length ?? 0);
 
     useEffect(() => {
         const el = collapseRef.current;
@@ -114,8 +117,20 @@ const SetList = ({
         setSkippedIds(new Set());
         onCompletedChange?.([]);
         onAllCompletedChange?.(false);
+        onAllSkippedChange?.(false);
         onSkippedChange?.([]);
     }, [resetKey]);
+
+    // Re-evaluate skipped/completed state when sets are added or removed
+    useEffect(() => {
+        const currentLength = sets?.length ?? 0;
+        if (currentLength === prevSetsLengthRef.current) return;
+        prevSetsLengthRef.current = currentLength;
+        const activeIds = (sets ?? []).filter((s) => !skippedIds.has(s.id)).map((s) => s.id);
+        onAllSkippedChange?.(currentLength > 0 && skippedIds.size >= currentLength);
+        onAllCompletedChange?.(activeIds.length > 0 && activeIds.every((id) => completedIds.has(id)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sets?.length]);
 
     if (!sets || sets.length === 0) return null;
 
@@ -143,6 +158,7 @@ const SetList = ({
         setCompletedIds(nextCompleted);
         onSkippedChange?.([...nextSkipped]);
         onCompletedChange?.([...nextCompleted]);
+        onAllSkippedChange?.(nextSkipped.size === sets.length);
         const newActiveIds = sets.filter((s) => !nextSkipped.has(s.id)).map((s) => s.id);
         onAllCompletedChange?.(newActiveIds.length > 0 && newActiveIds.every((aid) => nextCompleted.has(aid)));
     };

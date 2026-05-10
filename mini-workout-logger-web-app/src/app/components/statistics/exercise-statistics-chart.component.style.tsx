@@ -54,6 +54,13 @@ const styles = {
         paddingBottom: 'var(--base-size-8)',
     }),
 
+    exerciseLabel: css({
+        fontSize: 'var(--size-small)',
+        fontWeight: 600,
+        color: 'var(--color-text)',
+        marginBottom: 'var(--base-size-4)',
+    }),
+
     seriesLabel: css({
         fontSize: 'var(--size-small)',
         color: 'var(--color-gray)',

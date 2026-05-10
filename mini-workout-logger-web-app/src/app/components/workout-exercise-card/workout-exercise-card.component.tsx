@@ -87,6 +87,7 @@ const WorkoutExerciseCard = ({
     const taHeightRef = useRef<number | null>(null);
     taHeightRef.current = taHeightPx;
     const [allCompleted, setAllCompleted] = useState(false);
+    const [allSkipped, setAllSkipped] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [swapOpen, setSwapOpen] = useState(false);
     const [swapAnimating, setSwapAnimating] = useState(false);
@@ -308,7 +309,7 @@ const WorkoutExerciseCard = ({
                                                 legend="Mark all as completed"
                                                 selectedLegend="Deselect all"
                                                 customIconCss={css({ width: 'var(--size-icon-sm)', height: 'var(--size-icon-sm)', fontSize: 'var(--size-icon-sm)' })}
-                                                customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
+                                                customCss={(!isPlaying || allSkipped) ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                                             />
                                             <OnlyIconButton
                                                 icon={<IoIosArrowDown />}
@@ -373,6 +374,7 @@ const WorkoutExerciseCard = ({
                         onCompletedChange={(ids) => onCompletedChange?.(workoutExercise.id, ids)}
                         onSkippedChange={(ids) => onSkippedChange?.(workoutExercise.id, ids)}
                         onAllCompletedChange={setAllCompleted}
+                        onAllSkippedChange={setAllSkipped}
                         toggleAllRef={toggleAllRef}
                     />
 

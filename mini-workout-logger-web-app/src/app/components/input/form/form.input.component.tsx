@@ -16,6 +16,7 @@ export type FormFieldType =
     | "password"
     | "number"
     | "textarea"
+    | "datetime"
     | "select"
     | "multiselect"
     | "buttonselect"
@@ -188,6 +189,8 @@ const FormBuilder = ({
     const isTextType = (type: FormFieldType) =>
         type === 'text' || type === 'email' || type === 'password' || type === 'number';
 
+    const isDatetimeType = (type: FormFieldType) => type === 'datetime';
+
     return (
         <form id={id} css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
@@ -254,6 +257,14 @@ const FormBuilder = ({
                                 options={item.options as ButtonMultiSelectFieldOptions}
                                 value={values[item.name] as ButtonMultiSelectValue[] ?? []}
                                 onChange={(val) => handleChange(item.name, val)}
+                                disabled={disabled}
+                            />
+                        ) : isDatetimeType(item.type) ? (
+                            <input
+                                css={[styles.input, styles.datetimeInput, hasError ? styles.inputError : undefined]}
+                                type="datetime-local"
+                                value={fieldValue}
+                                onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
                         ) : isTextType(item.type) ? (

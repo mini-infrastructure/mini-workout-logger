@@ -75,7 +75,10 @@ const DropdownListOptions = ({
                     <div
                         key={opt.value}
                         css={styles.item(checked)}
-                        onClick={() => onSelect(opt.value)}
+                        onMouseDown={(e) => {
+                            e.preventDefault(); // keep input focused; fires before blur
+                            onSelect(opt.value);
+                        }}
                     >
                         {multiSelect && <input type="checkbox" checked={checked} readOnly />}
                         <span>{opt.label}</span>
