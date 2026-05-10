@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import type {Interpolation, Theme} from '@emotion/react';
 import {FaAngleDoubleLeft, FaAngleDoubleRight, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
 import Button from '../button/button.component.tsx';
@@ -11,36 +12,49 @@ export type PaginationProps = {
 };
 
 const Pagination = ({ page, totalPages, onPageChange, customCss }: PaginationProps) => {
+    const safeTotalPages = Math.max(1, totalPages);
+    const safePage = Math.min(page, safeTotalPages - 1);
+
+    // Reset page to last valid page when totalPages shrinks (e.g. after filtering).
+    useEffect(() => {
+        if (totalPages > 0 && page >= totalPages) {
+            onPageChange(totalPages - 1);
+        }
+    }, [totalPages, page, onPageChange]);
+
     const customCssArray = customCss
         ? Array.isArray(customCss) ? customCss : [customCss]
         : [];
+
+    const atStart = safePage === 0;
+    const atEnd   = safePage >= safeTotalPages - 1;
 
     return (
         <div css={[styles.container, ...customCssArray]}>
             <Button
                 icon={<FaAngleDoubleLeft />}
-                disabled={page === 0}
+                disabled={atStart}
                 onClick={() => onPageChange(0)}
-                customCss={styles.button(page === 0)}
+                customCss={styles.button(atStart)}
             />
             <Button
                 icon={<FaChevronLeft />}
-                disabled={page === 0}
-                onClick={() => onPageChange(page - 1)}
-                customCss={styles.button(page === 0)}
+                disabled={atStart}
+                onClick={() => onPageChange(safePage - 1)}
+                customCss={styles.button(atStart)}
             />
-            <span css={styles.label}>{page + 1} / {totalPages}</span>
+            <span css={styles.label}>{safePage + 1} / {safeTotalPages}</span>
             <Button
                 icon={<FaChevronRight />}
-                disabled={page >= totalPages - 1}
-                onClick={() => onPageChange(page + 1)}
-                customCss={styles.button(page >= totalPages - 1)}
+                disabled={atEnd}
+                onClick={() => onPageChange(safePage + 1)}
+                customCss={styles.button(atEnd)}
             />
             <Button
                 icon={<FaAngleDoubleRight />}
-                disabled={page >= totalPages - 1}
-                onClick={() => onPageChange(totalPages - 1)}
-                customCss={styles.button(page >= totalPages - 1)}
+                disabled={atEnd}
+                onClick={() => onPageChange(safeTotalPages - 1)}
+                customCss={styles.button(atEnd)}
             />
         </div>
     );

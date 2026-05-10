@@ -6,6 +6,9 @@ import Select from "./select.input.component.tsx";
 import ButtonSelect from "./button.select.input.component.tsx";
 import ButtonMultiSelect from "./button.multiselect.form.input.component.tsx";
 import PrimaryButton from "../../button/button.primary.component.tsx";
+import Button from "../../button/button.component.tsx";
+import {MdClose} from "react-icons/md";
+import DropdownListOptions from "../../dropdown-list-options/dropdown-list-options.component.tsx";
 
 export type FormFieldType =
     | "text"
@@ -58,6 +61,10 @@ export type FormItem = {
     inputEnabled?: boolean;
     required?: boolean;
     render?: ReactNode;
+    // autocomplete / suggestions
+    onSearch?: (value: string) => void;
+    suggestions?: FormOption[];
+    onSuggestionSelect?: (value: string) => void;
 };
 
 export type FormBuilderProps = {
@@ -68,6 +75,9 @@ export type FormBuilderProps = {
     disabled?: boolean;
     id?: string;
     onValidationChange?: (canSubmit: boolean) => void;
+    resetKey?: number;
+    // per-field suggestions injected from outside, keyed by field name
+    suggestions?: Record<string, FormOption[]>;
 };
 
 const buildInitialValues = (items: FormItem[]) => {
@@ -112,10 +122,23 @@ const FormBuilder = ({
                          disabled = false,
                          id,
                          onValidationChange,
+                         resetKey,
+                         suggestions: externalSuggestions,
                      }: FormBuilderProps) => {
     const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
     const [submitted, setSubmitted] = useState(false);
+    const [openSuggestionsField, setOpenSuggestionsField] = useState<string | null>(null);
     const prevItemsRef = useRef(items);
+
+    useEffect(() => {
+        if (resetKey === undefined) return;
+        setValues(buildInitialValues(items));
+        setSubmitted(false);
+        setOpenSuggestionsField(null);
+        prevItemsRef.current = items;
+    // resetKey is the trigger; items is read at reset time but not a trigger itself
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [resetKey]);
 
     const handleChange = (name: string, value: FormFieldValue) => {
         setValues((prev) => ({ ...prev, [name]: value }));
@@ -147,9 +170,6 @@ const FormBuilder = ({
         onSubmit(values);
     };
 
-    // Only sync values whose initialValue actually changed since last render.
-    // This prevents resetting user-typed values when unrelated items (e.g. a
-    // custom/image item) cause the items array reference to change.
     useEffect(() => {
         const changed: Record<string, FormFieldValue> = {};
         items.forEach((item) => {
@@ -165,6 +185,9 @@ const FormBuilder = ({
         prevItemsRef.current = items;
     }, [items]);
 
+    const isTextType = (type: FormFieldType) =>
+        type === 'text' || type === 'email' || type === 'password' || type === 'number';
+
     return (
         <form id={id} css={styles.form(columns)} onSubmit={handleSubmit}>
             {items.map((item) => {
@@ -179,13 +202,20 @@ const FormBuilder = ({
                 }
 
                 const hasError = submitted && !!validationErrors[item.name];
+                const fieldValue = values[item.name] as string ?? "";
+                const showClear = !disabled && fieldValue !== '';
+                const itemSuggestions = externalSuggestions?.[item.name] ?? item.suggestions;
+                const showSuggestions =
+                    openSuggestionsField === item.name &&
+                    !!itemSuggestions?.length;
+
                 return (
                     <div key={item.name} css={styles.fieldWrapper(colSpan)}>
                         <label>{item.label}</label>
                         {item.type === "select" ? (
                             <Select
                                 options={item.options as FormOption[]}
-                                value={values[item.name] as string ?? ""}
+                                value={fieldValue}
                                 onChange={(val) => handleChange(item.name, val)}
                                 placeholder={item.placeholder}
                                 disabled={disabled}
@@ -195,7 +225,7 @@ const FormBuilder = ({
                             <textarea
                                 css={[styles.input, hasError ? styles.inputError : undefined]}
                                 placeholder={item.placeholder}
-                                value={values[item.name] as string ?? ""}
+                                value={fieldValue}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />
@@ -212,9 +242,10 @@ const FormBuilder = ({
                             <ButtonSelect
                                 options={item.options as FormOption[]}
                                 placeholder={item.placeholder}
-                                value={values[item.name] as string ?? ""}
+                                value={fieldValue}
                                 inputEnabled={item.inputEnabled}
                                 onChange={(val) => handleChange(item.name, val)}
+                                onClear={!disabled ? () => handleChange(item.name, '') : undefined}
                                 disabled={disabled}
                                 error={hasError}
                             />
@@ -225,12 +256,59 @@ const FormBuilder = ({
                                 onChange={(val) => handleChange(item.name, val)}
                                 disabled={disabled}
                             />
+                        ) : isTextType(item.type) ? (
+                            <div css={styles.textInputContainer}>
+                                <div css={[styles.input, hasError ? styles.inputError : undefined]}>
+                                    <input
+                                        css={styles.inputRaw}
+                                        type={item.type}
+                                        placeholder={item.placeholder}
+                                        value={fieldValue}
+                                        disabled={disabled}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            handleChange(item.name, val);
+                                            item.onSearch?.(val);
+                                            if (item.onSearch) setOpenSuggestionsField(item.name);
+                                        }}
+                                        onFocus={() => {
+                                            if (itemSuggestions) setOpenSuggestionsField(item.name);
+                                        }}
+                                        onBlur={() => {
+                                            // delay so mousedown on a suggestion fires first
+                                            setTimeout(() => setOpenSuggestionsField(null), 150);
+                                        }}
+                                    />
+                                    {showClear && (
+                                        <Button
+                                            icon={<MdClose />}
+                                            onClick={() => {
+                                                handleChange(item.name, '');
+                                                item.onSearch?.('');
+                                            }}
+                                            customCss={styles.inputButton}
+                                            customIconCss={styles.inputButtonIcon}
+                                        />
+                                    )}
+                                </div>
+                                {showSuggestions && (
+                                    <DropdownListOptions
+                                        options={itemSuggestions!}
+                                        selected={fieldValue ? [fieldValue] : []}
+                                        onSelect={(val) => {
+                                            handleChange(item.name, val);
+                                            setOpenSuggestionsField(null);
+                                            item.onSuggestionSelect?.(val);
+                                        }}
+                                    />
+                                )}
+                            </div>
                         ) : (
                             <input
                                 css={[styles.input, hasError ? styles.inputError : undefined]}
                                 type={item.type}
                                 placeholder={item.placeholder}
-                                value={values[item.name] as string ?? ""}
+                                value={fieldValue}
                                 onChange={(e) => handleChange(item.name, e.target.value)}
                                 disabled={disabled}
                             />

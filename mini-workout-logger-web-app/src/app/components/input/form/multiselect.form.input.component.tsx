@@ -6,6 +6,7 @@ import {MdKeyboardArrowDown, MdKeyboardArrowUp} from "react-icons/md";
 import type {FormOption} from "./form.input.component.tsx";
 import {useClickOut} from "../../../hooks/useClickOut.tsx";
 import {useEscapeKey} from "../../../hooks/useEscapeKey.tsx";
+import DropdownListOptions from "../../dropdown-list-options/dropdown-list-options.component.tsx";
 
 type MultiSelectProps = {
     options: FormOption[];
@@ -35,21 +36,11 @@ const MultiSelect = ({
 
     const toggleDropdown = () => setOpen((prev) => !prev);
 
-    const allSelected = options.length > 0 && options.every((opt) => value.includes(opt.value));
-
     const toggleValue = (val: string) => {
         if (value.includes(val)) {
             onChange(value.filter((v) => v !== val));
         } else {
             onChange([...value, val]);
-        }
-    };
-
-    const toggleAll = () => {
-        if (allSelected) {
-            onChange([]);
-        } else {
-            onChange(options.map((opt) => opt.value));
         }
     };
 
@@ -82,34 +73,15 @@ const MultiSelect = ({
 
             {/* DROPDOWN */}
             {open && (
-                <div css={[styles.dropdown, styles.dropdownContainer]}>
-                    <div
-                        css={styles.dropdownItem(allSelected)}
-                        onClick={toggleAll}
-                    >
-                        <input type="checkbox" checked={allSelected} readOnly />
-                        <span>Select all</span>
-                    </div>
-                    {options.map((opt) => {
-                        const checked = value.includes(opt.value);
-
-                        return (
-                            <div
-                                css={styles.dropdownItem(checked)}
-                                key={opt.value}
-                                onClick={() => toggleValue(opt.value)}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={checked}
-                                    readOnly
-                                />
-
-                                <span>{opt.label}</span>
-                            </div>
-                        );
-                    })}
-                </div>
+                <DropdownListOptions
+                    options={options}
+                    selected={value}
+                    onSelect={toggleValue}
+                    onSelectAll={(allCurrentlySelected) => onChange(allCurrentlySelected ? [] : options.map((o) => o.value))}
+                    multiSelect
+                    showSelectAll
+                    searchable
+                />
             )}
 
             {/* SELECTED ITEMS */}

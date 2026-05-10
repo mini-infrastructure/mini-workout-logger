@@ -86,13 +86,10 @@ const HumanBody = ({
         });
     }, [svgContent, selectedMuscles, highlightedMuscles]);
 
-    // Apply per-muscle colors (coloredMuscles prop). Uses inline fill so each
-    // muscle can have its own color. Cleared on every sync to avoid stale colors.
     useEffect(() => {
         const container = containerRef.current;
         if (!container || !svgContent) return;
 
-        // Clear all inline fills first.
         container.querySelectorAll('[id^="Muscle."]').forEach(el => {
             (el as HTMLElement).style.removeProperty('fill');
             el.querySelectorAll('path').forEach(p => p.style.removeProperty('fill'));

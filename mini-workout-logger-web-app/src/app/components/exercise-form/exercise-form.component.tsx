@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import PrimaryButton from '../button/button.primary.component.tsx';
 import Image from '../image/image.component.tsx';
 import Divider from '../divider/divider.component.tsx';
@@ -26,6 +26,7 @@ import Legends from '../legends/legends.component.tsx';
 import Ball from '../ball/ball.component.tsx';
 import styles from './exercise-form.component.style.tsx';
 import {css} from '@emotion/react';
+import exerciseService from '../../services/exercise.service.tsx';
 
 export const classificationColors: Record<ExerciseMuscleMovementClassification, string> = {
     TARGET:                 'var(--color-red)',
@@ -51,14 +52,17 @@ const ALL_CLASSIFICATIONS = Object.keys(classificationColors) as ExerciseMuscleM
 
 type MuscleSelection = Record<ExerciseMuscleMovementClassification, string[]>;
 
+// MuscleSelection stores muscle CODES (e.g. "Muscle.Chest"), not translated names.
+// This makes coloredMuscles independent of the muscles array, preventing SVG color
+// resets whenever the muscles fetch state changes.
 const buildInitialSelection = (exercise?: ExerciseReadDTO): MuscleSelection => {
     const selection = Object.fromEntries(
         ALL_CLASSIFICATIONS.map((c) => [c, [] as string[]])
     ) as MuscleSelection;
 
     exercise?.exercise_muscles?.forEach((em) => {
-        if (selection[em.role]) {
-            selection[em.role].push(em.muscle_name);
+        if (selection[em.role] && em.muscle_code) {
+            selection[em.role].push(em.muscle_code);
         }
     });
 
@@ -70,9 +74,10 @@ export type ExerciseFormProps = {
     disabled?: boolean;
     onSubmit: (payload: ExerciseWriteDTO, coverFile?: File) => Promise<void>;
     onCoverUpload?: (file: File) => Promise<void>;
+    resetKey?: number;
 };
 
-const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: ExerciseFormProps) => {
+const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload, resetKey }: ExerciseFormProps) => {
     const { muscles } = useMuscles();
     const { exerciseGroupNames } = useExerciseGroupNames();
 
@@ -105,7 +110,8 @@ const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: E
     );
     const [focusedClassifications, setFocusedClassifications] = useState<Set<ExerciseMuscleMovementClassification>>(new Set());
 
-    const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.name }));
+    // value = code so selection stays code-based; label = translated name for display
+    const muscleOptions = muscles.map((m) => ({ label: m.name, value: m.code ?? m.name }));
 
     const setClassificationMuscles = (classification: ExerciseMuscleMovementClassification, names: string[]) => {
         setMuscleSelection((prev) => ({ ...prev, [classification]: names }));
@@ -113,15 +119,70 @@ const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: E
 
     const handleValidationChange = useCallback((valid: boolean) => setCanSubmit(valid), []);
 
+    const [nameSuggestions, setNameSuggestions] = useState<FormOption[]>([]);
+    const nameSuggestionsRef = useRef<FormOption[]>([]);
+    const searchResultsRef = useRef<ExerciseReadDTO[]>([]);
+    const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleNameSearch = useCallback((value: string) => {
+        if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+        if (!value.trim()) {
+            nameSuggestionsRef.current = [];
+            searchResultsRef.current = [];
+            setNameSuggestions([]);
+            return;
+        }
+        searchDebounceRef.current = setTimeout(async () => {
+            const result = await exerciseService.getAll({ name: value, size: 10 });
+            const exercises = result.data ?? [];
+            const suggestions = exercises.map((e) => ({ label: e.name, value: e.name }));
+            searchResultsRef.current = exercises;
+            nameSuggestionsRef.current = suggestions;
+            setNameSuggestions(suggestions);
+        }, 250);
+    }, []);
+
+    const [templateExercise, setTemplateExercise] = useState<ExerciseReadDTO | undefined>();
+    const [internalResetCount, setInternalResetCount] = useState(0);
+    const displayExercise = templateExercise ?? exercise;
+
+    const handleNameSuggestionSelect = useCallback(async (value: string) => {
+        const found = searchResultsRef.current.find((e) => e.name === value);
+        if (!found) return;
+        // Fetch the full exercise so exercise_muscles (and cover) are available
+        const full = await exerciseService.getById(found.id.toString());
+        const templateCoverSrc = full.cover_media
+            ? `data:${full.cover_media.content_type};base64,${full.cover_media.data}`
+            : undefined;
+        setCoverSrc(templateCoverSrc);
+        setTemplateExercise(full);
+        setMuscleSelection(buildInitialSelection(full));
+        setInternalResetCount((c) => c + 1);
+    }, []);
+
+    // Reset form values, muscle selection, cover image, and suggestions when resetKey changes.
+    useEffect(() => {
+        if (resetKey === undefined) return;
+        setTemplateExercise(undefined);
+        setMuscleSelection(buildInitialSelection(exercise));
+        setCoverSrc(initialCoverSrc);
+        setPendingCoverFile(undefined);
+        setNameSuggestions([]);
+        nameSuggestionsRef.current = [];
+        searchResultsRef.current = [];
+    }, [resetKey]);
+
+    // muscleSelection stores codes directly — no muscles lookup needed here.
+    // This keeps coloredMuscles stable across any render that doesn't change muscleSelection.
     const coloredMuscles = useMemo<ColoredMuscle[]>(() => {
         return ALL_CLASSIFICATIONS.flatMap((classification) => {
             if (focusedClassifications.size > 0 && !focusedClassifications.has(classification)) return [];
-            return muscleSelection[classification].flatMap((name) => {
-                const muscle = muscles.find((m) => m.name === name);
-                return muscle?.code ? [{ code: muscle.code, color: classificationColors[classification] }] : [];
-            });
+            return muscleSelection[classification].map((code) => ({
+                code,
+                color: classificationColors[classification],
+            }));
         });
-    }, [muscleSelection, focusedClassifications, muscles]);
+    }, [muscleSelection, focusedClassifications]);
 
     const legendItems = useMemo<LegendItem[]>(() =>
         ALL_CLASSIFICATIONS
@@ -141,7 +202,10 @@ const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: E
     // coverSrc / handleCoverUpload are captured via the render ReactNode; formItems
     // itself only rebuilds when exercise or groupOptions change.
     const formItems = useMemo<FormItem[]>(() => [
-        { name: 'name',      label: 'Name',       type: 'text',         colSpan: 2, initialValue: exercise?.name       ?? '', required: true },
+        { name: 'name',      label: 'Name',       type: 'text',         colSpan: 2, initialValue: displayExercise?.name       ?? '', required: true,
+          onSearch: disabled ? undefined : handleNameSearch,
+          onSuggestionSelect: disabled ? undefined : handleNameSuggestionSelect,
+        },
         { name: '_image',    label: '',            type: 'custom',       colSpan: 2,
           render: (
               <Image
@@ -153,20 +217,22 @@ const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: E
               />
           ),
         },
-        { name: 'category',  label: 'Category',   type: 'select',       options: exerciseCategoryOptions,   initialValue: exercise?.category   ?? '' },
-        { name: 'difficulty',label: 'Difficulty',  type: 'select',       options: exerciseDifficultyOptions, initialValue: exercise?.difficulty ?? '' },
-        { name: 'equipment', label: 'Equipment',   type: 'select',       options: exerciseEquipmentOptions,  initialValue: exercise?.equipment  ?? '', required: true },
-        { name: 'force',     label: 'Force',       type: 'select',       options: exerciseForceOptions,      initialValue: exercise?.force      ?? '' },
-        { name: 'mechanics', label: 'Mechanics',   type: 'select',       options: exerciseMechanicsOptions,  initialValue: exercise?.mechanics  ?? '' },
-        { name: 'type',      label: 'Type',        type: 'select',       options: exerciseTypeOptions,       initialValue: exercise?.type       ?? '' },
-        { name: 'role',      label: 'Role',        type: 'select',       options: exerciseRoleOptions,       initialValue: exercise?.role       ?? '' },
-        { name: 'group_name',label: 'Group',       type: 'buttonselect', options: groupOptions,              initialValue: exercise?.group_name ?? '', required: true, inputEnabled: true },
-    ], [exercise, groupOptions, coverSrc, disabled, handleCoverUpload, coverMedia?.filename]);
+        { name: 'category',  label: 'Category',   type: 'select',       options: exerciseCategoryOptions,   initialValue: displayExercise?.category   ?? '' },
+        { name: 'difficulty',label: 'Difficulty',  type: 'select',       options: exerciseDifficultyOptions, initialValue: displayExercise?.difficulty ?? '' },
+        { name: 'equipment', label: 'Equipment',   type: 'select',       options: exerciseEquipmentOptions,  initialValue: displayExercise?.equipment  ?? '', required: true },
+        { name: 'force',     label: 'Force',       type: 'select',       options: exerciseForceOptions,      initialValue: displayExercise?.force      ?? '' },
+        { name: 'mechanics', label: 'Mechanics',   type: 'select',       options: exerciseMechanicsOptions,  initialValue: displayExercise?.mechanics  ?? '' },
+        { name: 'type',      label: 'Type',        type: 'select',       options: exerciseTypeOptions,       initialValue: displayExercise?.type       ?? '' },
+        { name: 'role',      label: 'Role',        type: 'select',       options: exerciseRoleOptions,       initialValue: displayExercise?.role       ?? '' },
+        { name: 'group_name',label: 'Group',       type: 'buttonselect', options: groupOptions,              initialValue: displayExercise?.group_name ?? '', required: true, inputEnabled: true },
+    // nameSuggestions are read via ref — state changes don't rebuild formItems
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ], [displayExercise, groupOptions, coverSrc, disabled, handleCoverUpload, coverMedia?.filename, handleNameSearch, handleNameSuggestionSelect]);
 
     const handleSubmit = async (values: Record<string, FormFieldValue>) => {
         const exercise_muscles = ALL_CLASSIFICATIONS.flatMap((classification) =>
-            muscleSelection[classification].flatMap((name) => {
-                const muscle = muscles.find((m) => m.name === name);
+            muscleSelection[classification].flatMap((code) => {
+                const muscle = muscles.find((m) => m.code === code);
                 return muscle ? [{ muscle_id: muscle.id, role: classification }] : [];
             })
         );
@@ -201,9 +267,9 @@ const ExerciseForm = ({ exercise, disabled = false, onSubmit, onCoverUpload }: E
                 onSubmit={handleSubmit}
                 submitButton={<></>}
                 onValidationChange={handleValidationChange}
+                resetKey={(resetKey ?? 0) + internalResetCount}
+                suggestions={disabled ? undefined : { name: nameSuggestions }}
             />
-
-            <Divider />
 
             <div css={styles.musclesRow}>
                 <div css={styles.musclesLeft}>

@@ -41,6 +41,22 @@ const styles = {
         color: "var(--color-text)",
     }),
 
+    // raw <input> inside a styled wrapper div
+    inputRaw: css({
+        flex: 1,
+        minWidth: 0,
+        background: 'transparent',
+        border: 'none',
+        outline: 'none',
+        color: 'var(--color-text)',
+        fontSize: 'var(--size-input-text)',
+        cursor: 'text',
+    }),
+
+    textInputContainer: css({
+        position: 'relative',
+    }),
+
     inputButton: css({
         border: "none",
         background: "transparent",
@@ -54,34 +70,6 @@ const styles = {
         fontSize: 'var(--size-icon-sm)',
     }),
 
-    dropdown: css({
-        position: "absolute",
-        width: "100%",
-        borderRadius: "var(--borderRadius-small)",
-        marginTop: "var(--base-size-4)",
-        zIndex: 'var(--base-zIndex-10)' as any,
-        maxHeight: "var(--overlay-maxHeight)",
-        overflowY: "auto",
-    }),
-
-    dropdownContainer: css({
-        border: `var(--borderWidth-thin) solid var(--color-container1)`,
-        background: `var(--color-bg)`,
-    }),
-
-    dropdownItem: (checked?: boolean) => css({
-        display: "flex",
-        alignItems: "center",
-        padding: "var(--base-size-8)",
-        cursor: "pointer",
-        gap: "var(--stack-gap-condensed)",
-        background: checked ? `var(--color-container1)` : "transparent",
-
-        ":hover": {
-            background: "var(--color-container2)",
-        }
-    }),
-
     multiselectSelectedItems: (visible?: boolean) => css({
         padding: visible ? `var(--base-size-16) 0 0 0` : 0,
     }),
@@ -92,18 +80,13 @@ const styles = {
 
     multiassociativeSelectBox: (disabled: boolean) => css({
         display: 'flex',
-        justifyContent: 'stretch',
+        alignItems: 'center',
+        gap: disabled ? 0 : 'var(--stack-gap-condensed)',
+    }),
 
-        '& button': {
-            width: '20%',
-            display: 'flex',
-            justifyContent: 'center',
-        },
-
-        '& input': {
-            width: disabled ? '100%' : '80%',
-            margin: disabled ? '0' : `0 var(--base-size-16) 0 0`,
-        }
+    multiassociativeInputWrapper: css({
+        flex: 1,
+        minWidth: 0,
     }),
 
     buttonMultiSelectContainer: css({

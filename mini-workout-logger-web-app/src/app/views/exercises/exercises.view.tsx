@@ -185,7 +185,7 @@ const ExercisesView = () => {
                                 ))}
                             </ul>
                         </div>
-                        {pagination && pagination.total_pages > 1 && (
+                        {pagination && (
                             <Pagination
                                 page={page}
                                 totalPages={pagination.total_pages}

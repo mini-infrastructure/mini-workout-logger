@@ -5,6 +5,7 @@ import {useClickOut} from '../../../hooks/useClickOut.tsx';
 import {useEscapeKey} from '../../../hooks/useEscapeKey.tsx';
 import styles from './dropdown-button.component.style.tsx';
 import SecondaryButton from "../button.secondary.component.tsx";
+import DropdownListOptions from "../../dropdown-list-options/dropdown-list-options.component.tsx";
 
 export type DropdownOption = {
     label: string;
@@ -33,21 +34,11 @@ const DropdownButton = ({
     useClickOut(containerRef, close);
     useEscapeKey(close);
 
-    const allSelected = options.length > 0 && options.every(opt => selected.includes(opt.value));
-
     const toggleValue = (value: string) => {
         if (selected.includes(value)) {
             onChange(selected.filter(v => v !== value));
         } else {
             onChange([...selected, value]);
-        }
-    };
-
-    const toggleAll = () => {
-        if (allSelected) {
-            onChange([]);
-        } else {
-            onChange(options.map(opt => opt.value));
         }
     };
 
@@ -68,28 +59,15 @@ const DropdownButton = ({
             </SecondaryButton>
 
             {open && (
-                <div css={styles.dropdown}>
-                    <div
-                        css={styles.dropdownItem(allSelected)}
-                        onClick={toggleAll}
-                    >
-                        <input type="checkbox" checked={allSelected} readOnly />
-                        <span>Select all</span>
-                    </div>
-                    {options.map(opt => {
-                        const checked = selected.includes(opt.value);
-                        return (
-                            <div
-                                key={opt.value}
-                                css={styles.dropdownItem(checked)}
-                                onClick={() => toggleValue(opt.value)}
-                            >
-                                <input type="checkbox" checked={checked} readOnly />
-                                <span>{opt.label}</span>
-                            </div>
-                        );
-                    })}
-                </div>
+                <DropdownListOptions
+                    options={options}
+                    selected={selected}
+                    onSelect={toggleValue}
+                    onSelectAll={(allCurrentlySelected) => onChange(allCurrentlySelected ? [] : options.map((o) => o.value))}
+                    multiSelect
+                    showSelectAll
+                    wide
+                />
             )}
         </div>
     );

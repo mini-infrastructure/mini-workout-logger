@@ -515,7 +515,7 @@ const WorkoutView = () => {
                                                         </div>
                                                     )}
                                                 </div>
-                                                {searchResults.length > 0 && searchPagination && searchPagination.total_pages > 1 && (
+                                                {searchResults.length > 0 && searchPagination && (
                                                     <Pagination
                                                         page={searchPage}
                                                         totalPages={searchPagination.total_pages}

@@ -17,6 +17,7 @@ export type ExerciseDrawerProps = {
 
 const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
     const [editMode, setEditMode] = useState(false);
+    const [discardCount, setDiscardCount] = useState(0);
     const pushAlert = useAlert();
 
     const handleCoverUpload = async (file: File) => {
@@ -44,7 +45,11 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             icon={<MdEdit />}
             clickedIcon={<MdEditOff />}
             isClicked={editMode}
-            onClick={() => setEditMode((prev) => !prev)}
+            onClick={() => {
+                const next = !editMode;
+                setEditMode(next);
+                if (!next) setDiscardCount((c) => c + 1);
+            }}
             noBorder
             customCss={styles.editButton}
             customIconCss={styles.editBButtonIcon}
@@ -58,6 +63,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
                     key={exercise.id}
                     exercise={exercise}
                     disabled={!editMode}
+                    resetKey={discardCount}
                     onSubmit={handleSubmit}
                     onCoverUpload={handleCoverUpload}
                 />

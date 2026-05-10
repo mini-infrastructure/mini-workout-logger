@@ -5,6 +5,7 @@ import Button from "../../button/button.component.tsx";
 import type {FormOption} from "./form.input.component.tsx";
 import {useClickOut} from "../../../hooks/useClickOut.tsx";
 import {useEscapeKey} from "../../../hooks/useEscapeKey.tsx";
+import DropdownListOptions from "../../dropdown-list-options/dropdown-list-options.component.tsx";
 
 export type SelectProps = {
     options: FormOption[];
@@ -33,12 +34,11 @@ const Select = ({
     const toggleDropdown = () => {
         if (disabled) return;
         setOpen((prev) => !prev);
-    }
+    };
 
     const handleSelect = (val: string) => {
         onChange(val);
-        if (disabled) return;
-        setOpen(false);
+        if (!disabled) setOpen(false);
     };
 
     const selectedOption = options.find((opt) => opt.value === value);
@@ -47,10 +47,7 @@ const Select = ({
         <div css={styles.wrapper} ref={containerRef}>
             {/* SELECT BOX */}
             <div
-                onClick={() => {
-                    if (disabled) return;
-                    setOpen(!open);
-                }}
+                onClick={() => { if (!disabled) setOpen(!open); }}
                 css={[styles.input, error ? styles.inputError : undefined]}
             >
                 <span>{selectedOption ? selectedOption.label : placeholder ?? "Select..."}</span>
@@ -68,21 +65,11 @@ const Select = ({
             </div>
 
             {open && (
-                <div css={[styles.dropdown, styles.dropdownContainer]}>
-                    {options.map((opt) => {
-                        const checked = value === opt.value;
-
-                        return (
-                            <div
-                                key={opt.value}
-                                css={styles.dropdownItem(checked)}
-                                onClick={() => handleSelect(opt.value)}
-                            >
-                                {opt.label}
-                            </div>
-                        );
-                    })}
-                </div>
+                <DropdownListOptions
+                    options={options}
+                    selected={value ? [value] : []}
+                    onSelect={handleSelect}
+                />
             )}
         </div>
     );
