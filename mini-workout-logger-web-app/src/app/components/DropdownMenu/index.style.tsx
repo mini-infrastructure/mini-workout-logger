@@ -1,4 +1,5 @@
 import {css} from "@emotion/react";
+import {cssVar} from "../../utils/cssVar";
 
 const iconColorMap: Record<string, string> = {
     primary: 'var(--color-blue)',
@@ -27,7 +28,7 @@ const styles = {
         top: top,
         left: left,
         transform: "translateX(-100%)",
-        zIndex: 'var(--base-zIndex-overlay)' as any,
+        zIndex: cssVar<number>('--base-zIndex-overlay'),
         background: "var(--color-container2)",
         borderRadius: 'var(--overlay-borderRadius)',
         boxShadow: "var(--shadow-normal)",

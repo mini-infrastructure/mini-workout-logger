@@ -1,4 +1,5 @@
 import {css, keyframes} from "@emotion/react";
+import {cssVar} from "../../utils/cssVar";
 
 const styles = {
     overlayStyle: css({
@@ -9,7 +10,7 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         justifySelf: 'center',
-        zIndex: 'var(--base-zIndex-overlay)' as any,
+        zIndex: cssVar<number>('--base-zIndex-overlay'),
         width: '100%',
     }),
 

@@ -1,4 +1,5 @@
 import {css} from "@emotion/react";
+import {cssVar} from "../../utils/cssVar";
 
 const styles = {
     wrapper: {
@@ -54,7 +55,7 @@ const styles = {
         width: "100%",
         borderRadius: "var(--borderRadius-small)",
         marginTop: "var(--base-size-4)",
-        zIndex: 'var(--base-zIndex-10)' as any,
+        zIndex: cssVar<number>('--base-zIndex-10'),
         maxHeight: "var(--overlay-maxHeight)",
         overflowY: "auto",
     }),

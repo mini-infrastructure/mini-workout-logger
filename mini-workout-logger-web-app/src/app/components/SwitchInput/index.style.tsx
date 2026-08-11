@@ -1,5 +1,6 @@
 import {css} from "@emotion/react";
 import {lighten, rgba} from "polished";
+import {cssVar} from "../../utils/cssVar";
 
 const styles = {
     switch: css({
@@ -61,7 +62,7 @@ const styles = {
         right: "var(--icon-offset)",
 
         fontSize: "var(--icon-size)",
-        zIndex: 'var(--base-zIndex-1)' as any,
+        zIndex: cssVar<number>('--base-zIndex-1'),
         pointerEvents: "none",
         color: "var(--color-text)",
     }),
@@ -79,7 +80,7 @@ const styles = {
         backgroundColor: "var(--color-white)",
 
         transition: "transform 0.3s ease",
-        zIndex: 'var(--base-zIndex-2)' as any,
+        zIndex: cssVar<number>('--base-zIndex-2'),
     }),
 
     /**

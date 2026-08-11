@@ -1,4 +1,5 @@
 import { css, keyframes } from '@emotion/react';
+import { cssVar } from '../../utils/cssVar';
 
 const slideIn = keyframes`
     from { transform: translateY(100%); opacity: 0; }
@@ -25,7 +26,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column-reverse',
         gap: 'var(--stack-gap-condensed)',
-        zIndex: 'var(--base-zIndex-overlay)' as any,
+        zIndex: cssVar<number>('--base-zIndex-overlay'),
         pointerEvents: 'none',
     }),
 

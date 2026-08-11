@@ -113,7 +113,7 @@ const globalStyles = (theme: AppTheme) => css({
 
         /* Transitions */
         '--transition-expand': theme.transition.expand,
-    } as any,
+    } as Record<string, string | number>,
 
     body: {
         margin: 0,

@@ -1,4 +1,5 @@
 import { css, keyframes } from '@emotion/react';
+import { cssVar } from '../../utils/cssVar';
 
 const slideIn = keyframes`
     from { transform: translateX(100%); opacity: 0; }
@@ -15,7 +16,7 @@ const styles = {
         position: 'fixed',
         inset: 0,
         backgroundColor: 'color-mix(in srgb, var(--color-black) 60%, transparent)',
-        zIndex: 'var(--base-zIndex-overlay)' as any,
+        zIndex: cssVar<number>('--base-zIndex-overlay'),
     }),
 
     drawer: css({

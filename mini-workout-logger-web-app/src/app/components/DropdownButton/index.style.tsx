@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { cssVar } from '../../utils/cssVar';
 
 const styles = {
     container: css({
@@ -18,7 +19,7 @@ const styles = {
         position: 'absolute',
         top: 'calc(100% + var(--base-size-4))',
         left: 0,
-        zIndex: 'var(--base-zIndex-10)' as any,
+        zIndex: cssVar<number>('--base-zIndex-10'),
         minWidth: '100%',
         width: 'max-content',
         borderRadius: 'var(--borderRadius-small)',
