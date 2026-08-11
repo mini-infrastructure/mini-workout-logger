@@ -192,6 +192,18 @@ Muscle seeder: `seeders/001_seed_muscles_table.sql`. Uses the `add_muscle(muscle
 
 ---
 
+## Frontend coding standards
+
+The React app follows a set of coding standards defined in `mini-workout-logger-web-app/.claude/standards/`. Every rule there is authoritative — this file only carries project-specific context (entities, muscle codes, HumanBody contract, i18n).
+
+- `.claude/standards/general.md` — ESLint hygiene
+- `.claude/standards/clean-code.md` — colocation, comments, functions, safe access, no boilerplate
+- `.claude/standards/naming-conventions.md` — casing, no generic tokens, no appearance-based names
+- `.claude/standards/react-components.md` — component structure, props, hooks, strict TypeScript
+- `.claude/standards/styles.md` — Emotion `css` prop, CSS variables, responsive, composition
+
+---
+
 ## Frontend
 
 ### Data flow
@@ -205,54 +217,10 @@ View → custom hook (useXxx) → Service (axios) → Spring Boot backend
 - **DTOs** (`src/app/dtos/`) are plain TypeScript interfaces. Read and Write DTOs are always separate files.
 - **Models** (`src/app/models/`) hold enum types, icon maps, color variant maps, and label maps used in UI.
 
-### Styling — Emotion CSS-in-JS
-
-All styles use `@emotion/react` with the `css` prop (enabled via `jsxImportSource` in `vite.config.ts`). **Always use CSS variables** — never raw colors, sizes, or spacing values.
+### Theme tokens
 
 Available color variables (defined in `src/app/themes/global.ts`):
 `--color-bg`, `--color-container1`, `--color-container2`, `--color-text`, `--color-white`, `--color-black`, `--color-border`, `--color-gray`, `--color-blue`, `--color-red`, `--color-yellow`, `--color-green`, `--color-pink`, `--color-purple`, `--color-orange` (plus `-border` variants for each color).
-
-### Component conventions
-
-Every component lives in:
-```
-src/app/components/<name>/
-    <name>.component.tsx        ← component logic
-    <name>.component.style.tsx  ← all styles, exported as default `styles` object
-```
-
-No barrel `index.ts` files. Import directly from the `.tsx` file.
-
-**Props type:**
-```tsx
-export type MyComponentProps = {
-    value: string;
-    onChange?: (value: string) => void;
-    customCss?: Interpolation<Theme> | Interpolation<Theme>[];
-};
-```
-
-**Component signature:**
-```tsx
-const MyComponent = ({ value, onChange, customCss }: MyComponentProps) => { ... };
-export default MyComponent;
-```
-
-Rules:
-- Function components only. No class components.
-- No prop spreading.
-- Custom hooks for any stateful or async logic.
-- **Never put margin or spacing on a component's root element.** The `Card` component owns its own padding (`var(--base-size-16)`) — inner containers must not add their own padding.
-- `customCss` is applied at the root element and accepts a single value or an array.
-
-**Style file pattern:**
-```tsx
-import { css } from '@emotion/react';
-const styles = {
-    container: css({ ... }),
-};
-export default styles;
-```
 
 ### Custom SVG icons
 
