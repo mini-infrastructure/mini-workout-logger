@@ -1,0 +1,192 @@
+import type {ReactNode, SyntheticEvent} from "react";
+import {useEffect, useState} from "react";
+import styles from "./index.style.tsx";
+import Button from "../Button/index.tsx";
+import MultiSelect from "../MultiSelect/index.tsx";
+import Select from "../Select/index.tsx";
+import ButtonSelect from "../ButtonSelect/index.tsx";
+import ButtonMultiSelect from "../ButtonMultiSelect/index.tsx";
+import PrimaryButton from "../PrimaryButton/index.tsx";
+
+export type FormFieldType =
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "textarea"
+    | "select"
+    | "multiselect"
+    | "buttonselect"
+    | "buttonmultiselect"
+    ;
+
+export type FormOption = {
+    label: string;
+    value: string;
+};
+
+export type ButtonMultiSelectValue = {
+    first: string;
+    second: string;
+};
+
+export type FormFieldValue = string | string[] | ButtonMultiSelectValue[];
+
+export type ButtonMultiSelectFieldOptions = {
+    first: {
+        label?: string;
+        options: FormOption[];
+        inputEnabled?: boolean;
+        initialValue?: string;
+    };
+    second: {
+        label?: string;
+        options: FormOption[];
+        inputEnabled?: boolean;
+        initialValue?: string;
+    };
+};
+
+export type FormItem = {
+    name: string;
+    label: string;
+    type: FormFieldType;
+    placeholder?: string;
+    options?: FormOption[] | ButtonMultiSelectFieldOptions;
+    colSpan?: number;
+    initialValue?: FormFieldValue;
+    inputEnabled?: boolean;
+};
+
+export type FormBuilderProps = {
+    items: FormItem[];
+    columns: number;
+    onSubmit: (values: Record<string, FormFieldValue>) => void;
+    submitButton?: ReactNode;
+    disabled?: boolean;
+};
+
+const buildInitialValues = (items: FormItem[]) => {
+    const values: Record<string, FormFieldValue> = {};
+
+    items.forEach((item) => {
+        if (item.initialValue !== undefined) {
+            values[item.name] = item.initialValue;
+            return;
+        }
+
+        if (item.type === "select" &&  Array.isArray(item.options) && item.options.length) {
+            values[item.name] = item.options[0].value;
+            return;
+        }
+
+        if (item.type === "multiselect") {
+            values[item.name] = item.initialValue ?? [];
+            return;
+        }
+
+        values[item.name] = "";
+    });
+
+    return values;
+};
+
+const FormBuilder = ({
+                         items,
+                         columns,
+                         onSubmit,
+                         submitButton,
+                         disabled = false,
+                     }: FormBuilderProps) => {
+    const [values, setValues] = useState<Record<string, FormFieldValue>>(() => buildInitialValues(items));
+
+    const handleChange = (name: string, value: FormFieldValue) => {
+        setValues((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit(values);
+    };
+
+    useEffect(() => {
+        setValues(prev => ({
+            ...prev,
+            ...buildInitialValues(items)
+        }));
+    }, [items]);
+
+    return (
+        <form css={styles.form(columns)} onSubmit={handleSubmit}>
+            {items.map((item) => {
+                const colSpan = Math.min(item.colSpan ?? 1, columns);
+                return (
+                    <div key={item.name} css={styles.fieldWrapper(colSpan)}>
+                        <label>{item.label}</label>
+
+                        {item.type === "select" ? (
+                            <Select
+                                options={item.options as FormOption[]}
+                                value={values[item.name] as string ?? ""}
+                                onChange={(val) => handleChange(item.name, val)}
+                                placeholder={item.placeholder}
+                                disabled={disabled}
+                            />
+                        ) : item.type === "textarea" ? (
+                            <textarea
+                                css={styles.input}
+                                placeholder={item.placeholder}
+                                value={values[item.name] as string ?? ""}
+                                onChange={(e) => handleChange(item.name, e.target.value)}
+                                disabled={disabled}
+                            />
+                        ) : item.type === "multiselect" ? (
+                            <MultiSelect
+                                options={item.options as FormOption[]}
+                                value={values[item.name] as string[] ?? []}
+                                onChange={(val) => handleChange(item.name, val)}
+                                placeholder={item.placeholder}
+                                disabled={disabled}
+                            />
+                        ) : item.type === "buttonselect" ? (
+                            <ButtonSelect
+                                options={item.options as FormOption[]}
+                                placeholder={item.placeholder}
+                                value={values[item.name] as string ?? ""}
+                                inputEnabled={item.inputEnabled}
+                                onChange={(val) => handleChange(item.name, val)}
+                                disabled={disabled}
+                            />
+                        ) : item.type === "buttonmultiselect" ? (
+                            <ButtonMultiSelect
+                                options={item.options as ButtonMultiSelectFieldOptions}
+                                value={values[item.name] as ButtonMultiSelectValue[] ?? []}
+                                onChange={(val) => handleChange(item.name, val)}
+                                disabled={disabled}
+                            />
+                        ) : (
+                            <input
+                                css={styles.input}
+                                type={item.type}
+                                placeholder={item.placeholder}
+                                value={values[item.name] as string ?? ""}
+                                onChange={(e) => handleChange(item.name, e.target.value)}
+                                disabled={disabled}
+                            />
+                        )}
+                    </div>
+                );
+            })}
+
+            {!disabled ? (
+                <div css={[styles.fieldWrapper(columns), styles.submitRow]}>
+                    {submitButton ?? <PrimaryButton type="submit">Submit</PrimaryButton>}
+                </div>
+            ) : (
+                <></>
+            )}
+        </form>
+    );
+};
+
+export default FormBuilder;

@@ -1,0 +1,63 @@
+import type {PropsWithChildren} from "react";
+import {useRef, useState} from "react";
+import {createPortal} from "react-dom";
+import styles from "./index.style.tsx";
+import Button from "../Button/index.tsx";
+import {IoClose} from "react-icons/io5";
+import {useClickOut} from "../../hooks/useClickOut/index.tsx";
+
+export type ModalProps = {
+    open: boolean;
+    onClose: () => void;
+    showCloseButton?: boolean;
+};
+
+const Modal = ({
+                   open,
+                   onClose,
+                   showCloseButton = true,
+                   children,
+               }: PropsWithChildren<ModalProps>) => {
+
+    // Close effect.
+    const [isClosing, setIsClosing] = useState(false);
+    const handleClose = () => {
+        setIsClosing(true);
+
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 250);
+    };
+
+    // Focus the modal when it opens; Close the modal when Escape is pressed.
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    useClickOut(containerRef, handleClose);
+
+    if (!open) return null;
+
+    return createPortal(
+        <div css={styles.overlayStyle} onMouseDown={handleClose}>
+            <div
+                css={[
+                    styles.modalStyle,
+                    isClosing ? styles.modalCloseEffect : styles.modalOpenEffect
+                ]}
+                onMouseDown={(e) => e.stopPropagation()}
+            >
+                {showCloseButton && (
+                    <Button
+                        icon={<IoClose />}
+                        onClick={handleClose}
+                        customCss={styles.closeButton}
+                        customIconCss={styles.closeButtonIcon}
+                    ></Button>
+                )}
+                {children}
+            </div>
+        </div>,
+        document.body
+    );
+};
+
+export default Modal;

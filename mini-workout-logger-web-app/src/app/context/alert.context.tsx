@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import AlertContainer from '../components/alert/alert.component.tsx';
-import type { AlertItem, AlertVariant } from '../components/alert/alert.component.tsx';
+import AlertContainer from '../components/Alert/index.tsx';
+import type { AlertItem, AlertVariant } from '../components/Alert/index.tsx';
 
 type PushAlert = (message: string, variant?: AlertVariant, duration?: number) => void;
 
