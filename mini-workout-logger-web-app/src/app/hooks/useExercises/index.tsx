@@ -11,6 +11,12 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // JSON-stringified snapshots let useEffect deps compare arrays/objects by
+    // value; the eslint rule expects them extracted to plain variables.
+    const filtersKey = JSON.stringify(filters);
+    const musclesKey = JSON.stringify(muscles);
+    const excludeIdsKey = JSON.stringify(excludeIds);
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             setLoading(true);
@@ -38,7 +44,9 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [query, page, pageSize, JSON.stringify(filters), JSON.stringify(muscles), JSON.stringify(excludeIds), hidden]);
+        // eslint's exhaustive-deps can't see through the JSON.stringify keys,
+        // but they capture every mutation of filters/muscles/excludeIds.
+    }, [query, page, pageSize, filtersKey, musclesKey, excludeIdsKey, hidden]);
 
     return { exercises, pagination, loading, error };
 }

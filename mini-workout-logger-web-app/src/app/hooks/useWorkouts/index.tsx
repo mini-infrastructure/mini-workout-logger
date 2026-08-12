@@ -7,6 +7,8 @@ export function useWorkouts(tagIds: number[] = []) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const tagIdsKey = JSON.stringify(tagIds);
+
     useEffect(() => {
         setLoading(true);
         WorkoutService.getAll(tagIds)
@@ -16,7 +18,8 @@ export function useWorkouts(tagIds: number[] = []) {
                 setWorkouts([]);
             })
             .finally(() => setLoading(false));
-    }, [JSON.stringify(tagIds)]);
+        // tagIdsKey captures every change in tagIds by value.
+    }, [tagIdsKey]);
 
     return { workouts, setWorkouts, loading, error };
 }
