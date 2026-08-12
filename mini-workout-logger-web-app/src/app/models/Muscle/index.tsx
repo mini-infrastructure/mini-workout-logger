@@ -1,5 +1,5 @@
 import type {Exercise} from '../Exercise/index';
-import type {IconType} from "react-icons";
+import type {ReactNode} from "react";
 import {
     FcAlarmClock,
     FcBiohazard,
@@ -28,7 +28,7 @@ export type ExerciseMuscleMovementClassification =
     | 'ANTAGONIST_STABILIZER'
     ;
 
-export const RootMuscleIcons: Record<String, IconType> = {
+export const RootMuscleIcons: Record<string, ReactNode> = {
     "Chest": <FcLike />,
     "Core": <FcLandscape />,
     "Shoulders": <FcAlarmClock />,

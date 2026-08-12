@@ -1,10 +1,10 @@
 import type {PropsWithChildren} from "react";
 import styles from "./index.style.tsx";
-import type {Interpolation, Theme} from '@emotion/react';
+import type {Interpolation, SerializedStyles, Theme} from '@emotion/react';
 
 export type ActionSwitchType = "hamburger" | "filter" | "plus";
 
-export const themeMap: Record<ActionSwitchType, (theme: Theme) => Interpolation<Theme>> = {
+export const themeMap: Record<ActionSwitchType, SerializedStyles> = {
     hamburger: styles.hamburger_x_theme,
     filter: styles.filter_x_theme,
     plus: styles.plus_x_theme,

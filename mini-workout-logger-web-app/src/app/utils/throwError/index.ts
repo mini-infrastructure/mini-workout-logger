@@ -27,9 +27,9 @@ export function handleApiError(error: unknown, pushAlert?: (message: string, var
 }
 
 export function validateApiResponse<T>(response: ApiResponseDTO<T>): T {
-    if (response.status !== 200 || response.status !== 201) {
+    if (response.status !== 200 && response.status !== 201) {
         throw new Error(response.message || "API error");
     }
 
-    return response.data.data;
+    return response.data;
 }

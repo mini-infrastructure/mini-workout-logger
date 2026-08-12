@@ -23,7 +23,7 @@ const styles = {
         },
     }),
 
-    menu: (top, left) => css({
+    menu: (top: number, left: number) => css({
         position: 'fixed',
         top: top,
         left: left,

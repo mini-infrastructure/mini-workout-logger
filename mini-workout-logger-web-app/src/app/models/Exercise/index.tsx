@@ -195,7 +195,7 @@ export function getIconFromMap<T extends string>(
     size = 14
 ): ReactNode {
     if (!key) return undefined;
-    const Icon = map[key];
+    const Icon: IconType | undefined = map[key];
     return Icon ? <Icon size={size} /> : undefined;
 }
 

@@ -2,9 +2,9 @@ import {css} from "@emotion/react";
 import {cssVar} from "../../utils/cssVar";
 
 const styles = {
-    wrapper: {
+    wrapper: css({
         position: "relative",
-    },
+    }),
 
     form: (columns: number) => css({
         display: "grid",

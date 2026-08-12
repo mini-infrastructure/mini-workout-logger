@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { PropsWithChildren } from 'react';
 import type { Keyframes } from '@emotion/react';
 import GlassBackground, { type GlassBackgroundProps } from '../GlassBackground/index.tsx';
 import styles from './index.style.tsx';
@@ -22,7 +23,7 @@ const BlobGlassBackground = ({
     style,
     childrenInFront,
     children,
-}: BlobGlassBackgroundProps) => {
+}: PropsWithChildren<BlobGlassBackgroundProps>) => {
     const randomValues = useMemo(() => ({
         top: Math.random() * 100,
         left: Math.random() * 100,
