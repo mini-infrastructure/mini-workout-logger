@@ -53,13 +53,13 @@ const styles = {
         transform: 'translateY(-1px)',
         display: 'flex',
         alignItems: 'center',
-        '& svg': { color: '#fff', fontSize: '20px' },
+        '& svg': { color: 'var(--color-white)', fontSize: '20px' },
     }),
 
     title: css({
         fontWeight: 500,
         fontSize: '14px',
-        color: '#fff',
+        color: 'var(--color-white)',
         flex: 1,
         overflow: 'hidden',
         display: '-webkit-box',
@@ -79,7 +79,7 @@ const styles = {
         background: 'transparent',
         border: 'none',
         padding: 0,
-        color: '#fff',
+        color: 'var(--color-white)',
         '& svg': { fontSize: '16px' },
     }),
 };

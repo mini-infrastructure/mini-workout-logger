@@ -1,6 +1,7 @@
 import {css} from "@emotion/react";
-import {lighten, rgba} from "polished";
+import {lighten} from "polished";
 import {cssVar} from "../../utils/cssVar";
+import {theme} from "../../themes/theme";
 
 const styles = {
     switch: css({
@@ -89,11 +90,11 @@ const styles = {
 
     iconOnCustom: css({
         color: "var(--color-border)",
-        filter: `drop-shadow(0 0 4px ${rgba('#FFFFFF', 0.3)})`,
+        filter: 'drop-shadow(0 0 4px color-mix(in srgb, var(--color-white) 30%, transparent))',
     }),
 
     offIconCustomCss: css({
-        color: lighten(0.2, '#FFCD50'),
+        color: lighten(0.2, theme.colors.yellow),
     }),
 
     sliderOffCustom: css({
