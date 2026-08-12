@@ -1,4 +1,4 @@
-import { ExerciseMuscleMovementClassification, Muscle } from '../Muscle/index';
+import type { ExerciseMuscleMovementClassification, Muscle } from '../Muscle/index';
 import type { WorkoutExercise } from "../WorkoutExercise/index.tsx";
 import type { IconType } from "react-icons";
 import { FaBolt, FaFire, FaRunning, FaSeedling } from "react-icons/fa";

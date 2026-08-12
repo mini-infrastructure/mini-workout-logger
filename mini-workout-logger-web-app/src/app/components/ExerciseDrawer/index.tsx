@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { MediaReadDTO } from '../../dtos/MediaReadDTO/index.ts';
 import { MdEdit, MdEditOff, MdAdd, MdClose } from 'react-icons/md';
 import { FaImages } from 'react-icons/fa';

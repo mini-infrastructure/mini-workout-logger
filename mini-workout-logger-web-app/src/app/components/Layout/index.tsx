@@ -1,4 +1,4 @@
-import {PropsWithChildren, ReactNode} from 'react';
+import type {PropsWithChildren, ReactNode} from 'react';
 import styles from "./index.style.tsx";
 import Sidebar from "../Sidebar/index.tsx";
 import Navbar from "../Navbar/index.tsx";

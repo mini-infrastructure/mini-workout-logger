@@ -1,6 +1,6 @@
 import styles from "../Layout/index.style.tsx";
 import { useLocation } from "react-router-dom";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { routes } from "../../routes.tsx";
 
 const Navbar = ({ children }: PropsWithChildren) => {

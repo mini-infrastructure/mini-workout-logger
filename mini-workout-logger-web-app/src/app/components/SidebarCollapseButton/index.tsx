@@ -1,4 +1,5 @@
-import {PropsWithChildren, useState} from "react";
+import type {PropsWithChildren} from "react";
+import {useState} from "react";
 import type { JSX } from "@emotion/react/jsx-runtime";
 import {useLocation} from "react-router-dom";
 import type {ButtonProps} from "../Button/index.tsx";

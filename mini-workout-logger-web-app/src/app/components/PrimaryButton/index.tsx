@@ -1,4 +1,4 @@
-import {PropsWithChildren} from "react";
+import type {PropsWithChildren} from "react";
 import type {ButtonProps} from "../Button/index.tsx";
 import Button from "../Button/index.tsx";
 import styles from "../Button/index.style.tsx";

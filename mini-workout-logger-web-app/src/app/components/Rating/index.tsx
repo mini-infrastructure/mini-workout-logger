@@ -1,7 +1,7 @@
 import type {ColorVariant} from "../../utils/colorsVariants/index.ts";
 import {convertColorVariantToThemeColor} from "../../utils/colorsVariants/index.ts";
 import styles from "./index.style.tsx";
-import {PropsWithChildren} from "react";
+import type {PropsWithChildren} from "react";
 
 export type RatingLevelItem = {
     label: string;

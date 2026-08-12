@@ -1,4 +1,4 @@
-import {Exercise} from '../Exercise/index';
+import type {Exercise} from '../Exercise/index';
 import type {IconType} from "react-icons";
 import {
     FcAlarmClock,
