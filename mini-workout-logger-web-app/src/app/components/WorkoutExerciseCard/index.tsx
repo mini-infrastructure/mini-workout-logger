@@ -334,7 +334,7 @@ const WorkoutExerciseCard = ({
                     />
 
                     {planMode && swapOpen && (
-                    <div css={styles.swapPanelWrapper} style={{ maxHeight: swapAnimating ? '600px' : '0' }}>
+                    <div css={styles.swapPanelWrapper} style={{ maxHeight: swapAnimating ? 'var(--animation-maxHeight-lg)' : '0' }}>
                         <div css={styles.swapPanel}>
                             {loadingRecs ? (
                                 <span css={styles.swapEmpty}>Loading recommendations…</span>

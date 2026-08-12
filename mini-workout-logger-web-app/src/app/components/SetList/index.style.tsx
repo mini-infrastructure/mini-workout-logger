@@ -109,13 +109,13 @@ const styles = {
     timeInput: css({
         display: 'flex',
         alignItems: 'center',
-        gap: '2px',
+        gap: 'var(--base-size-2)',
         minWidth: 0,
     }),
 
     timeSegment: css({
-        width: '56px',
-        minWidth: '56px',
+        width: 'var(--base-size-56)',
+        minWidth: 'var(--base-size-56)',
         flexShrink: 0,
     }),
 
@@ -141,7 +141,7 @@ const styles = {
     dragHandle: css({
         background: 'transparent',
         border: 'none',
-        padding: '2px',
+        padding: 'var(--base-size-2)',
         color: 'var(--color-border)',
         cursor: 'grab',
         ':hover': {
@@ -154,9 +154,9 @@ const styles = {
     }),
 
     dragHandleIcon: css({
-        width: '14px',
-        height: '14px',
-        fontSize: '14px',
+        width: 'var(--base-size-14)',
+        height: 'var(--base-size-14)',
+        fontSize: 'var(--base-size-14)',
     }),
 
     collapseWrapper: css({

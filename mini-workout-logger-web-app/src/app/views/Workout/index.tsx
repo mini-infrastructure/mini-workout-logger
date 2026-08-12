@@ -402,7 +402,7 @@ const WorkoutView = () => {
                                         iconColor="--color-red"
                                         onToggle={handleCancelNameEdit}
                                         legend="Cancel"
-                                        customIconCss={{ fontSize: '20px', width: '20px', height: '20px' }}
+                                        customIconCss={{ fontSize: 'var(--base-size-20)', width: 'var(--base-size-20)', height: 'var(--base-size-20)' }}
                                     />
                                 </>
                             ) : (
@@ -488,7 +488,7 @@ const WorkoutView = () => {
                             </Button>
 
                             {addOpen && (
-                            <div css={styles.addSectionWrapper} style={{ maxHeight: addAnimating ? '500px' : '0' }}>
+                            <div css={styles.addSectionWrapper} style={{ maxHeight: addAnimating ? 'var(--animation-maxHeight-md)' : '0' }}>
                                 <div css={styles.addSection}>
                                     <Search
                                         value={exerciseQuery}

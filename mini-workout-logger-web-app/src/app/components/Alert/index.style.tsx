@@ -7,8 +7,8 @@ const slideIn = keyframes`
 `;
 
 const slideOut = keyframes`
-    from { transform: translateY(0);    opacity: 1; max-height: 200px; margin-bottom: var(--stack-gap-condensed); }
-    to   { transform: translateY(100%); opacity: 0; max-height: 0;     margin-bottom: 0; }
+    from { transform: translateY(0);    opacity: 1; max-height: var(--animation-maxHeight-sm); margin-bottom: var(--stack-gap-condensed); }
+    to   { transform: translateY(100%); opacity: 0; max-height: 0;                             margin-bottom: 0; }
 `;
 
 const variantColors: Record<string, string> = {
@@ -31,34 +31,34 @@ const styles = {
     }),
 
     alert: (variant: string, closing: boolean) => css({
-        width: variant === 'warning' ? '420px' : '320px',
-        padding: '12px',
+        width: variant === 'warning' ? 'var(--base-size-420)' : 'var(--base-size-320)',
+        padding: 'var(--base-size-12)',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'start',
         backgroundColor: variantColors[variant] ?? variantColors.info,
         borderRadius: 'var(--borderRadius-medium)',
-        boxShadow: '0px 0px 5px -3px #111',
+        boxShadow: 'var(--shadow-alert)',
         pointerEvents: 'auto',
         animation: `${closing ? slideOut : slideIn} 0.3s ease forwards`,
         overflow: 'hidden',
     }),
 
     icon: css({
-        width: '20px',
-        height: '20px',
+        width: 'var(--base-size-20)',
+        height: 'var(--base-size-20)',
         flexShrink: 0,
-        marginRight: '8px',
+        marginRight: 'var(--base-size-8)',
         transform: 'translateY(-1px)',
         display: 'flex',
         alignItems: 'center',
-        '& svg': { color: 'var(--color-white)', fontSize: '20px' },
+        '& svg': { color: 'var(--color-white)', fontSize: 'var(--base-size-20)' },
     }),
 
     title: css({
         fontWeight: 500,
-        fontSize: '14px',
+        fontSize: 'var(--base-size-14)',
         color: 'var(--color-white)',
         flex: 1,
         overflow: 'hidden',
@@ -68,8 +68,8 @@ const styles = {
     }),
 
     closeButton: css({
-        width: '20px',
-        height: '20px',
+        width: 'var(--base-size-20)',
+        height: 'var(--base-size-20)',
         flexShrink: 0,
         marginLeft: 'auto',
         cursor: 'pointer',
@@ -80,7 +80,7 @@ const styles = {
         border: 'none',
         padding: 0,
         color: 'var(--color-white)',
-        '& svg': { fontSize: '16px' },
+        '& svg': { fontSize: 'var(--base-size-16)' },
     }),
 };
 

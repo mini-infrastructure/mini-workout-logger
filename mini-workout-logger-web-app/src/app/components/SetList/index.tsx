@@ -90,7 +90,7 @@ const SetList = ({
             isInitialMount.current = false;
             // Set initial state without triggering a transition
             el.style.transition = 'none';
-            el.style.maxHeight = collapsed ? '0px' : 'none';
+            el.style.maxHeight = collapsed ? '0' : 'none';
             requestAnimationFrame(() => { el.style.transition = ''; });
             return;
         }
@@ -99,7 +99,7 @@ const SetList = ({
             // Lock to current height, then animate to 0 in the next frame
             el.style.maxHeight = `${el.scrollHeight}px`;
             requestAnimationFrame(() => {
-                requestAnimationFrame(() => { el.style.maxHeight = '0px'; });
+                requestAnimationFrame(() => { el.style.maxHeight = '0'; });
             });
         } else {
             // Animate to content height, then release constraint so new sets aren't clipped
@@ -337,7 +337,7 @@ const SetList = ({
                                     onToggle={() => toggleCompleted(set.id)}
                                     legend="Completed"
                                     selectedLegend="Not completed"
-                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                    customIconCss={css({ width: 'var(--base-size-20)', height: 'var(--base-size-20)', fontSize: 'var(--base-size-20)' })}
                                     customCss={(!isPlaying || skipped) ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                                 />
                             )}
@@ -352,7 +352,7 @@ const SetList = ({
                                     onToggle={() => toggleSkipped(set.id)}
                                     legend="Skip"
                                     selectedLegend="Unskip"
-                                    customIconCss={css({ width: '20px', height: '20px', fontSize: '20px' })}
+                                    customIconCss={css({ width: 'var(--base-size-20)', height: 'var(--base-size-20)', fontSize: 'var(--base-size-20)' })}
                                     customCss={!isPlaying ? css({ opacity: 0.3, pointerEvents: 'none' }) : undefined}
                                 />
                             )}
@@ -381,7 +381,7 @@ const SetList = ({
                         e.stopPropagation();
                         handleDrop();
                     }}
-                    style={{ height: '4px' }}
+                    style={{ height: 'var(--base-size-4)' }}
                 />
 
                 <Button onClick={onAdd} customCss={styles.addSet}>

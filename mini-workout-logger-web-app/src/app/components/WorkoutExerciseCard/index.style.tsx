@@ -51,9 +51,9 @@ const styles = {
     }),
 
     dragHandleIcon: css({
-        width: '22px',
-        height: '22px',
-        fontSize: '22px',
+        width: 'var(--base-size-22)',
+        height: 'var(--base-size-22)',
+        fontSize: 'var(--base-size-22)',
     }),
 
     exerciseInfo: css({

@@ -25,7 +25,7 @@ const styles = {
 
     clearButton: css({
         flexShrink: 0,
-        padding: '2px',
+        padding: 'var(--base-size-2)',
         borderRadius: 'var(--borderRadius-small)',
         background: 'transparent',
         border: 'none',
@@ -37,9 +37,9 @@ const styles = {
     }),
 
     clearIcon: css({
-        width: '14px',
-        height: '14px',
-        fontSize: '14px',
+        width: 'var(--base-size-14)',
+        height: 'var(--base-size-14)',
+        fontSize: 'var(--base-size-14)',
         margin: 0,
     }),
 

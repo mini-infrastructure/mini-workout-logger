@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 const styles = {
     track: css({
         width: '100%',
-        height: '8px',
+        height: 'var(--base-size-8)',
         borderRadius: 'var(--borderRadius-full)',
         backgroundColor: 'var(--color-container2)',
         overflow: 'hidden',

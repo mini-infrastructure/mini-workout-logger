@@ -25,7 +25,7 @@ const styles = {
         right: 0,
         bottom: 0,
         width: '40vw',
-        minWidth: '320px',
+        minWidth: 'var(--base-size-320)',
         backgroundColor: 'var(--color-container1)',
         boxShadow: 'var(--shadow-normal)',
         display: 'flex',
