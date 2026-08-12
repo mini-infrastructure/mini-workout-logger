@@ -1,7 +1,6 @@
 import type {ReactNode, SyntheticEvent} from "react";
 import {useEffect, useState} from "react";
 import styles from "./index.style.tsx";
-import Button from "../Button/index.tsx";
 import MultiSelect from "../MultiSelect/index.tsx";
 import Select from "../Select/index.tsx";
 import ButtonSelect from "../ButtonSelect/index.tsx";

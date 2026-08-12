@@ -5,7 +5,6 @@ import Layout from '../../components/Layout/index.tsx';
 import Search from '../../components/Search/index.tsx';
 import ExerciseCard from '../../components/ExerciseCard/index.tsx';
 import Pagination from '../../components/Pagination/index.tsx';
-import Button from '../../components/Button/index.tsx';
 import DropdownButton from '../../components/DropdownButton/index.tsx';
 import HumanBody from '../../components/HumanBody/index.tsx';
 import { useExercises } from '../../hooks/useExercises/index.tsx';
@@ -37,7 +36,7 @@ const ExercisesView = () => {
     const [page, setPage] = useState(0);
     const [filters, setFilters] = useState<Record<string, string[]>>({});
     const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-    const { exercises, pagination, loading, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
+    const { exercises, pagination, error } = useExercises(query, page, filters, selectedMuscles, 20, [], false);
     const [favoritedIds, setFavoritedIds] = useState<Set<number>>(new Set());
 
     useEffect(() => {

@@ -56,9 +56,15 @@ class MuscleService {
         }
     }
 
-    async create(muscle: MuscleWriteDTO): Promise<MuscleReadDTO> {}
-    async update(id: string, muscle: MuscleWriteDTO): Promise<MuscleReadDTO> {}
-    async delete(id: string): Promise<void> {}
+    async create(_muscle: MuscleWriteDTO): Promise<MuscleReadDTO> {
+        throw new Error('MuscleService.create not implemented');
+    }
+    async update(_id: string, _muscle: MuscleWriteDTO): Promise<MuscleReadDTO> {
+        throw new Error('MuscleService.update not implemented');
+    }
+    async delete(_id: string): Promise<void> {
+        throw new Error('MuscleService.delete not implemented');
+    }
 
 }
 

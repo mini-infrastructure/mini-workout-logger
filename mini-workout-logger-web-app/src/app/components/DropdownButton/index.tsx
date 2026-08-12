@@ -5,7 +5,6 @@ import { useClickOut } from '../../hooks/useClickOut/index.tsx';
 import { useEscapeKey } from '../../hooks/useEscapeKey/index.tsx';
 import styles from './index.style.tsx';
 import SecondaryButton from "../SecondaryButton/index.tsx";
-import Button from "../Button/index.tsx";
 
 export type DropdownOption = {
     label: string;

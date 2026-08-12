@@ -10,8 +10,6 @@ import Button from "../Button/index.tsx";
 import {IoMdClose} from "react-icons/io";
 import type {ColorVariant} from "../../utils/colorsVariants/index.ts";
 import {colorVariants} from "../../utils/colorsVariants/index.ts";
-import * as React from "react";
-
 export type BadgeProps = {
     key?: string | number;
     children: ReactNode;

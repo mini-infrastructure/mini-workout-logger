@@ -1,15 +1,22 @@
 import type {SetReadDTO} from "../../dtos/SetReadDTO/index.ts";
 
-const apiUrl = import.meta.env.VITE_API_URL;
-const lang = import.meta.env.VITE_API_LANGUAGE || 'en_US';
-
 class SetService {
 
-    async getAll(): Promise<SetReadDTO[]> {}
-    async getById(id: string): Promise<SetReadDTO> {}
-    async create(set: SetReadDTO): Promise<SetReadDTO> {}
-    async update(id: string, set: SetReadDTO): Promise<SetReadDTO> {}
-    async delete(id: string): Promise<void> {}
+    async getAll(): Promise<SetReadDTO[]> {
+        throw new Error('SetService.getAll not implemented');
+    }
+    async getById(_id: string): Promise<SetReadDTO> {
+        throw new Error('SetService.getById not implemented');
+    }
+    async create(_set: SetReadDTO): Promise<SetReadDTO> {
+        throw new Error('SetService.create not implemented');
+    }
+    async update(_id: string, _set: SetReadDTO): Promise<SetReadDTO> {
+        throw new Error('SetService.update not implemented');
+    }
+    async delete(_id: string): Promise<void> {
+        throw new Error('SetService.delete not implemented');
+    }
 
 }
 
