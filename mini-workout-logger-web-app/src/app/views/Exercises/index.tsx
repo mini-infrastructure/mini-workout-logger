@@ -48,7 +48,11 @@ const ExercisesView = () => {
     const handleFavoriteToggle = (id: number, favorited: boolean) => {
         setFavoritedIds(prev => {
             const next = new Set(prev);
-            favorited ? next.add(id) : next.delete(id);
+            if (favorited) {
+                next.add(id);
+            } else {
+                next.delete(id);
+            }
             return next;
         });
     };

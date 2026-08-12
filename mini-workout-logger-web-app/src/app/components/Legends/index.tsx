@@ -30,7 +30,11 @@ const Legends = ({ items, customCss }: LegendsProps) => {
     const handleClick = (item: LegendItem) => {
         if (!item.onClick) return;
         const next = new Set(selectedKeys);
-        next.has(item.key) ? next.delete(item.key) : next.add(item.key);
+        if (next.has(item.key)) {
+            next.delete(item.key);
+        } else {
+            next.add(item.key);
+        }
         setSelectedKeys(next);
         item.onClick(item.key, [...next]);
     };

@@ -118,8 +118,6 @@ const SetList = ({
         onSkippedChange?.([]);
     }, [resetKey]);
 
-    if (!sets || sets.length === 0) return null;
-
     // ── Completion helpers (execution mode) ──────────────────────────────────
 
     const activeSetIds = sets.filter((s) => !skippedIds.has(s.id)).map((s) => s.id);
@@ -128,7 +126,11 @@ const SetList = ({
     const toggleCompleted = (id: number) => {
         if (skippedIds.has(id)) return;
         const next = new Set(completedIds);
-        next.has(id) ? next.delete(id) : next.add(id);
+        if (next.has(id)) {
+            next.delete(id);
+        } else {
+            next.add(id);
+        }
         setCompletedIds(next);
         onCompletedChange?.([...next]);
         onAllCompletedChange?.(activeSetIds.every((aid) => next.has(aid)));
@@ -136,7 +138,11 @@ const SetList = ({
 
     const toggleSkipped = (id: number) => {
         const nextSkipped = new Set(skippedIds);
-        nextSkipped.has(id) ? nextSkipped.delete(id) : nextSkipped.add(id);
+        if (nextSkipped.has(id)) {
+            nextSkipped.delete(id);
+        } else {
+            nextSkipped.add(id);
+        }
         // Remove from completed if being skipped
         const nextCompleted = new Set(completedIds);
         if (nextSkipped.has(id)) nextCompleted.delete(id);
@@ -161,7 +167,13 @@ const SetList = ({
         }
     };
 
-    if (toggleAllRef) toggleAllRef.current = toggleAll;
+    // Sync toggleAll into the external ref so parents can trigger it. Kept in an
+    // effect (rather than assigning during render) to satisfy the React compiler.
+    useEffect(() => {
+        if (toggleAllRef) toggleAllRef.current = toggleAll;
+    });
+
+    if (!sets || sets.length === 0) return null;
 
     // ── Drag helpers ─────────────────────────────────────────────────────────
 
