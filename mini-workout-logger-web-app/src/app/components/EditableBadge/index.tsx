@@ -37,12 +37,6 @@ const EditableBadge = ({
         if (editMode && onEdit) inputRef.current?.focus();
     }, [editMode, onEdit]);
 
-    useClickOut(wrapperRef as React.RefObject<HTMLDivElement | null>, () => {
-        if (!editMode) return;
-        if (onEdit) commitEdit();
-        else setEditMode(false);
-    });
-
     const commitEdit = () => {
         const trimmed = inputValue.trim();
         setEditMode(false);
@@ -52,6 +46,12 @@ const EditableBadge = ({
             setInputValue(children);
         }
     };
+
+    useClickOut(wrapperRef as React.RefObject<HTMLDivElement | null>, () => {
+        if (!editMode) return;
+        if (onEdit) commitEdit();
+        else setEditMode(false);
+    });
 
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') commitEdit();

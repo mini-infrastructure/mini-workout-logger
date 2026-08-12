@@ -81,7 +81,9 @@ const WorkoutExerciseCard = ({
     // Ref keeps the current height value accessible inside effects without
     // adding taHeightPx to their dependency arrays (which would cause loops).
     const taHeightRef = useRef<number | null>(null);
-    taHeightRef.current = taHeightPx;
+    useEffect(() => {
+        taHeightRef.current = taHeightPx;
+    }, [taHeightPx]);
     const [allCompleted, setAllCompleted] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const [swapOpen, setSwapOpen] = useState(false);

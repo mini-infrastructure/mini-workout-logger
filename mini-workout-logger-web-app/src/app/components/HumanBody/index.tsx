@@ -49,7 +49,9 @@ const HumanBody = ({
     const svgContent   = view === 'front' ? frontSvg : backSvg;
 
     const selectedMusclesRef = useRef(selectedMuscles);
-    selectedMusclesRef.current = selectedMuscles;
+    useEffect(() => {
+        selectedMusclesRef.current = selectedMuscles;
+    }, [selectedMuscles]);
 
     // Fetch both SVGs once on mount. Storing as state so React knows to
     // update dangerouslySetInnerHTML when they arrive.
