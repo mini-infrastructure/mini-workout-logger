@@ -15,7 +15,7 @@ class MuscleService {
             );
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching muscles:', error);
+            console.error('Error getting muscles:', error);
             return [];
         }
     }
@@ -27,7 +27,7 @@ class MuscleService {
             );
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching root muscles:', error);
+            console.error('Error getting root muscles:', error);
             return [];
         }
     }
@@ -39,7 +39,7 @@ class MuscleService {
             );
             return response.data.data;
         } catch (error) {
-            console.error(`Error fetching muscle with id ${id}:`, error);
+            console.error(`Error getting muscle with id ${id}:`, error);
             throw error;
         }
     }
@@ -51,7 +51,7 @@ class MuscleService {
             );
             return response.data.data;
         } catch (error) {
-            console.error(`Error fetching parent muscles for muscle with id ${muscleId}:`, error);
+            console.error(`Error getting parent muscles for muscle with id ${muscleId}:`, error);
             return [];
         }
     }

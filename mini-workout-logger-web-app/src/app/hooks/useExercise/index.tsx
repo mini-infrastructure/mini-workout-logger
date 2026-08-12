@@ -13,7 +13,7 @@ export function useExercise(id: string) {
                 setExercise(Array.isArray(data) ? data[0] : data);
             })
             .catch(() => {
-                setError('Error fetching exercises');
+                setError('Error getting exercises');
                 setExercise(null);
             })
             .finally(() => setLoading(false));

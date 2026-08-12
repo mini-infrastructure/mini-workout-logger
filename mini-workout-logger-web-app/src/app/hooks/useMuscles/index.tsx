@@ -10,7 +10,7 @@ export function useMuscles() {
     useEffect(() => {
         MuscleService.getAll()
             .then(setMuscles)
-            .catch(() => setError('Error fetching muscles'))
+            .catch(() => setError('Error getting muscles'))
             .finally(() => setLoading(false));
     }, []);
 

@@ -9,7 +9,7 @@ export function useExerciseGroupNames() {
     useEffect(() => {
         ExerciseService.getAllExerciseGroupNames()
             .then(setExerciseGroupNames)
-            .catch(() => setError('Error fetching exercise groups'))
+            .catch(() => setError('Error getting exercise groups'))
             .finally(() => setLoading(false));
     }, []);
 

@@ -12,7 +12,7 @@ export function useWorkout(id: string | undefined) {
         setLoading(true);
         WorkoutService.getById(id)
             .then((data) => setWorkout(data))
-            .catch(() => setError('Error fetching workout'))
+            .catch(() => setError('Error getting workout'))
             .finally(() => setLoading(false));
     }, [id]);
 

@@ -19,7 +19,7 @@ class ExerciseService {
             );
             return response.data;
         } catch (error) {
-            console.error('Error fetching exercises:', error);
+            console.error('Error getting exercises:', error);
             return { status: 500, message: '', data: [], pagination: null, errors: null };
         }
     }
@@ -31,7 +31,7 @@ class ExerciseService {
             );
             return response.data.data;
         } catch (error) {
-            console.error(`Error fetching exercise with id ${id}:`, error);
+            console.error(`Error getting exercise with id ${id}:`, error);
             throw error;
         }
     }
@@ -100,7 +100,7 @@ class ExerciseService {
             );
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching favorited exercises:', error);
+            console.error('Error getting favorited exercises:', error);
             return [];
         }
     }
@@ -126,7 +126,7 @@ class ExerciseService {
             );
             return response.data.data ?? [];
         } catch (error) {
-            console.error(`Error fetching history for exercise ${id}:`, error);
+            console.error(`Error getting history for exercise ${id}:`, error);
             return [];
         }
     }
@@ -138,7 +138,7 @@ class ExerciseService {
             );
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching exercise group names:', error);
+            console.error('Error getting exercise group names:', error);
             return [];
         }
     }

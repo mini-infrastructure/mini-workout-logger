@@ -17,7 +17,7 @@ class ExerciseRecommendationService {
             );
             return response.data.data ?? [];
         } catch (error) {
-            console.error('Error fetching exercise recommendations:', error);
+            console.error('Error getting exercise recommendations:', error);
             return [];
         }
     }

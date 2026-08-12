@@ -30,7 +30,7 @@ export function useExercises(query?: string, page: number = 0, filters: Record<s
                     setPagination(response.pagination);
                 })
                 .catch(() => {
-                    setError('Error fetching exercises');
+                    setError('Error getting exercises');
                     setExercises([]);
                     setPagination(null);
                 })

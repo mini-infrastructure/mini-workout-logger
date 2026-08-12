@@ -12,7 +12,7 @@ export function useWorkouts(tagIds: number[] = []) {
         WorkoutService.getAll(tagIds)
             .then((data) => setWorkouts(data ?? []))
             .catch(() => {
-                setError('Error fetching workouts');
+                setError('Error getting workouts');
                 setWorkouts([]);
             })
             .finally(() => setLoading(false));

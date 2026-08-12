@@ -18,7 +18,7 @@ class WorkoutService {
             );
             return response.data.data;
         } catch (error) {
-            console.error('Error fetching workouts:', error);
+            console.error('Error getting workouts:', error);
             return [];
         }
     }
