@@ -28,6 +28,11 @@ import { useAlert } from '../../context/alert.context.tsx';
 import WorkoutService from '../../services/WorkoutService/index.ts';
 import WorkoutExecutionService from '../../services/WorkoutExecutionService/index.ts';
 import TagService from '../../services/TagService/index.ts';
+
+// Negative ids mark locally-added, not-yet-persisted rows. Kept outside the
+// component so Date.now (impure) is never called from the render body.
+const generateTempId = () => -Date.now();
+const generateTempSetId = () => -Date.now() - 1;
 import type { WorkoutExerciseReadDTO } from '../../dtos/WorkoutExerciseReadDTO/index.ts';
 import type { WorkoutWriteDTO } from '../../dtos/WorkoutWriteDTO/index.ts';
 import type { WorkoutExecutionReadDTO } from '../../dtos/WorkoutExecutionReadDTO/index.ts';
@@ -229,11 +234,11 @@ const WorkoutView = () => {
     // Add exercise from search
     const handleAddExercise = (exercise: ExerciseReadDTO) => {
         const newEntry: WorkoutExerciseReadDTO = {
-            id: -Date.now(),
+            id: generateTempId(),
             position: exercises.length,
             exercise,
             sets: [{
-                id: -Date.now() - 1,
+                id: generateTempSetId(),
                 position: 0,
                 category: 'NORMAL',
                 type: 'REPS',

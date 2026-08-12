@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import type { Keyframes } from '@emotion/react';
 import GlassBackground, { type GlassBackgroundProps } from '../GlassBackground/index.tsx';
@@ -24,12 +24,14 @@ const BlobGlassBackground = ({
     childrenInFront,
     children,
 }: PropsWithChildren<BlobGlassBackgroundProps>) => {
-    const randomValues = useMemo(() => ({
+    // Impure randomness is confined to a lazy state initializer so React sees a
+    // stable value across renders (the compiler flags Math.random in render body).
+    const [randomValues] = useState(() => ({
         top: Math.random() * 100,
         left: Math.random() * 100,
         size1: 120 + Math.random() * 120,
         size2: 80 + Math.random() * 100,
-    }), []);
+    }));
 
     const blobCss = single
         ? styles.single(color, animation)
