@@ -20,9 +20,9 @@ class MuscleService {
         }
     }
 
-    async getRootMuscles(): Promise<String[]> {
+    async getRootMuscles(): Promise<string[]> {
         try {
-            const response = await axios.get<ApiResponseDTO<String[]>>(
+            const response = await axios.get<ApiResponseDTO<string[]>>(
                 `${apiUrl}/muscles/roots?lang=${lang}`
             );
             return response.data.data;

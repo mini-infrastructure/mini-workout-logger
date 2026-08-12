@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import MuscleService from "../../services/MuscleService/index.ts";
 
 export function useRootMuscles() {
-    const [rootMuscles, setRootMuscles] = useState<String[]>([]);
+    const [rootMuscles, setRootMuscles] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 

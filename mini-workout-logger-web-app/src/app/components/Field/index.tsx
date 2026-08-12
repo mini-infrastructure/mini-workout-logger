@@ -17,7 +17,7 @@ const Field = ({
     const handleCopy = async () => {
         try {
             await navigator.clipboard.writeText(content);
-        } catch (error) {
+        } catch {
             // todo
         }
     };
