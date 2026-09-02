@@ -1,0 +1,88 @@
+[
+  {
+    "name": "Treino Superiores",
+    "exercises": [
+      {
+        "exercise": "Exercise.Cable_Isolateral_Bench_Press",
+        "restTimeSeconds": 90,
+        "sets": [
+          { "category": "WARMUP", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 30 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 60 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 70 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 6, "weight": 80 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Cable_Isolateral_Standing_Fly",
+        "restTimeSeconds": 60,
+        "sets": [
+          { "category": "WARMUP", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 20 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 12, "weight": 30 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 35 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Barbell_Military_Press",
+        "restTimeSeconds": 90,
+        "sets": [
+          { "category": "WARMUP", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 20 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 50 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 50 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 6, "weight": 55 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Barbell_Curl",
+        "restTimeSeconds": 60,
+        "sets": [
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 12, "weight": 30 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 35 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 40 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Treino Inferiores",
+    "exercises": [
+      {
+        "exercise": "Exercise.Barbell_Squat",
+        "restTimeSeconds": 120,
+        "sets": [
+          { "category": "WARMUP", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 60 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 100 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 110 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 6, "weight": 120 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Machine_Leg_Press_45_Degree",
+        "restTimeSeconds": 90,
+        "sets": [
+          { "category": "WARMUP", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 80 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 12, "weight": 120 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 140 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 8, "weight": 160 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Dumbbell_Forward_Lunge",
+        "restTimeSeconds": 60,
+        "sets": [
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 12, "weight": 20 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 25 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 10, "weight": 25 }
+        ]
+      },
+      {
+        "exercise": "Exercise.Barbell_Standing_Leg_Calf_Raise",
+        "restTimeSeconds": 60,
+        "sets": [
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 60 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 15, "weight": 60 },
+          { "category": "NORMAL", "type": "REPS_X_WEIGHT", "repetitions": 12, "weight": 70 }
+        ]
+      }
+    ]
+  }
+]

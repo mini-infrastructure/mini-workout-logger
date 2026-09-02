@@ -46,17 +46,24 @@ const fontSizes = {
 };
 
 const baseSize = {
+    2:   '0.125rem',
     4:   '0.25rem',
     8:   '0.5rem',
     12:  '0.75rem',
+    14:  '0.875rem',
     16:  '1rem',
     18:  '1.3rem',
+    20:  '1.25rem',
+    22:  '1.375rem',
     24:  '1.5rem',
     32:  '2rem',
-    64:  '4rem',
     48:  '3rem',
+    56:  '3.5rem',
+    64:  '4rem',
     96:  '6rem',
     260: '16.25rem',
+    320: '20rem',
+    420: '26.25rem',
 };
 
 const borderRadius = {
@@ -126,6 +133,14 @@ const transition = {
     expand: '0.25s ease',
 };
 
+const animation = {
+    maxHeight: {
+        sm: '200px',
+        md: '500px',
+        lg: '600px',
+    },
+};
+
 export const theme = {
     colors,
     fonts,
@@ -140,8 +155,10 @@ export const theme = {
     layout,
     shadow: {
         normal: '0 4px 6px -1px rgba(1, 4, 9, 0.8)',
+        alert:  '0 0 5px -3px rgba(17, 17, 17, 1)',
     },
     transition,
+    animation,
 };
 
 export type AppTheme = typeof theme;

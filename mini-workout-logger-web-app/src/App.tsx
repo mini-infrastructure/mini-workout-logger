@@ -1,11 +1,11 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import NotFoundView from "./app/views/error/not-found.view.tsx";
-import DashboardView from "./app/views/dashboard/dashboard.view.tsx";
-import WorkoutsView from "./app/views/workouts/workouts.view.tsx";
-import WorkoutView from "./app/views/workout/workout.view.tsx";
-import WorkoutExecutionView from "./app/views/workout-execution/workout-execution.view.tsx";
-import ExercisesView from "./app/views/exercises/exercises.view.tsx";
-import ExercisesFavoritesView from "./app/views/exercises/exercises-favorites.view.tsx";
+import NotFoundView from "./app/views/NotFound/index.tsx";
+import DashboardView from "./app/views/Dashboard/index.tsx";
+import WorkoutsView from "./app/views/Workouts/index.tsx";
+import WorkoutView from "./app/views/Workout/index.tsx";
+import WorkoutExecutionView from "./app/views/WorkoutExecution/index.tsx";
+import ExercisesView from "./app/views/Exercises/index.tsx";
+import ExercisesFavoritesView from "./app/views/ExercisesFavorites/index.tsx";
 import { AlertProvider } from "./app/context/alert.context.tsx";
 
 function App() {

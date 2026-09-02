@@ -8,7 +8,7 @@ services:
     ports:
         - "15432:5432"
     volumes:
-      - ../../assets/postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - mini-workout-logger-network
 
@@ -21,7 +21,7 @@ services:
     ports:
       - "180:80"
     volumes:
-        - ../../assets/pgadmin-data:/var/lib/pgadmin
+        - pgadmin-data:/var/lib/pgadmin
         - ./servers.json:/pgadmin4/servers.json:ro
     networks:
       - mini-workout-logger-network
@@ -31,3 +31,7 @@ services:
 networks:
     mini-workout-logger-network:
         driver: bridge
+
+volumes:
+    postgres-data:
+    pgadmin-data:

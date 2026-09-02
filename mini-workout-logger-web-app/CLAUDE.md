@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Coding standards
+
+Every rule about how to write code in this app lives in `.claude/standards/`:
+
+@.claude/standards/general.md
+@.claude/standards/clean-code.md
+@.claude/standards/naming-conventions.md
+@.claude/standards/react-components.md
+@.claude/standards/styles.md
+
+The `@` prefix makes Claude Code auto-load those files when working in this directory. If a rule in this CLAUDE.md contradicts a standards file, the standards file wins.
+
 ## Commands
 
 ```bash
@@ -39,66 +51,9 @@ View → custom hook (useXxx) → Service (axios) → Spring Boot backend
 - **DTOs** (`src/app/dtos/`) are plain TypeScript interfaces. Read DTOs and Write DTOs are separate files.
 - **Models** (`src/app/models/`) hold enum types and option/icon/variant maps used in UI.
 
-### Styling — Emotion CSS-in-JS
-
-All styles use `@emotion/react` with the `css` prop (enabled via `jsxImportSource` in `vite.config.ts`). The theme object (`src/app/themes/theme.ts`) is mapped to CSS custom properties in `src/app/themes/global.ts`. Always use CSS variables (e.g. `var(--color-blue)`, `var(--stack-gap-normal)`) — never raw values.
-
 ### Muscle codes
 
 Muscles in the backend are stored as i18n keys (`Muscle.Chest`, `Muscle.Adductor_Magnus`, etc.). `Text.getCode()` returns the key; `Text.getValue()` returns the translated display name. **Always filter and match by code**, never by translated value. The `root_muscles` field on exercises and the `code` field on muscles both contain raw codes.
-
----
-
-## Component conventions
-
-Every component follows this structure:
-
-```
-src/app/components/<name>/
-    <name>.component.tsx        ← component logic
-    <name>.component.style.tsx  ← all styles, exported as default `styles` object
-```
-
-No barrel `index.ts` files. Import directly from the `.tsx` file.
-
-**Props type:**
-
-```tsx
-export type MyComponentProps = {
-    value: string;
-    onChange?: (value: string) => void;
-    customCss?: Interpolation<Theme> | Interpolation<Theme>[];  // always include for overridability
-};
-```
-
-**Component signature:**
-
-```tsx
-const MyComponent = ({ value, onChange, customCss }: MyComponentProps) => { ... };
-export default MyComponent;
-```
-
-Rules:
-- Function components only. No class components.
-- No prop spreading.
-- Custom hooks for any stateful or async logic.
-- **Never put margin or spacing on a component's root element.** Spacing is always the parent's responsibility, applied via `customCss` from the parent or layout styles.
-- The `customCss` prop is applied at the root element and accepts a single value or an array.
-
-**Style file pattern:**
-
-```tsx
-import { css } from '@emotion/react';
-
-const styles = {
-    container: css({ ... }),
-    header: css({ ... }),
-};
-
-export default styles;
-```
-
-Use only CSS variables from the design system. No hardcoded colors, sizes, or spacing. The available variables are defined in `src/app/themes/global.ts`.
 
 ---
 

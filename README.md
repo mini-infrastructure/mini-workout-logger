@@ -76,6 +76,15 @@ Which can be accessed here:
 - 🌐 [Swagger UI](http://localhost:9090/swagger-ui/index.html)
 - 🗂️ [pgAdmin](http://localhost:180/)
 
+#### Manage the test containers:
+Data is stored in named Docker volumes (`postgres-data`, `pgadmin-data`) and survives across restarts.
+
+| Command | Behavior |
+|---|---|
+| `bash run-dev.sh up` | Start containers. Creates volumes on first run, reuses them afterwards. |
+| `bash run-dev.sh down` | Stop and remove containers. **Preserves volumes** — next `up` resumes with the same DB state. |
+| `bash run-dev.sh reset` | Stop containers **and delete volumes** — wipes the DB. Liquibase re-runs all migrations on the next `up`. |
+
 ### Compile and serve backend
 ```bash
 CD mini-workout-logger-backend/
