@@ -1,0 +1,78 @@
+import {css} from "@emotion/react";
+import {cssVar} from "../../utils/cssVar";
+
+const iconColorMap: Record<string, string> = {
+    primary: 'var(--color-blue)',
+    danger:  'var(--color-red)',
+    info:    'var(--color-gray)',
+};
+
+const styles = {
+    container: css({
+        position: 'relative',
+        display: 'inline-block',
+    }),
+
+    triggerButton: css({
+        backgroundColor: 'var(--color-container2)',
+        border: 'none',
+        color: 'var(--color-white)',
+        ':hover': {
+            backgroundColor: 'var(--color-border)',
+            color: 'var(--color-white)',
+        },
+    }),
+
+    menu: (top: number, left: number) => css({
+        position: 'fixed',
+        top: top,
+        left: left,
+        transform: "translateX(-100%)",
+        zIndex: cssVar<number>('--base-zIndex-overlay'),
+        background: "var(--color-container2)",
+        borderRadius: 'var(--overlay-borderRadius)',
+        boxShadow: "var(--shadow-normal)",
+        padding: 'var(--overlay-padding-condensed)',
+        width: 'max-content',
+        minWidth: 'var(--overlay-minWidth)',
+    }),
+
+    legend: css({
+        textTransform: 'uppercase',
+        fontSize: "var(--size-small)",
+        fontFamily: "var(--font-number)",
+        padding: `0 0 var(--base-size-8) 0`,
+    }),
+
+    ul: css({
+        listStyle: 'none',
+        margin: 0,
+        padding: 0,
+    }),
+
+    iconColor: (color: string = 'info') => css({
+        color: iconColorMap[color] ?? iconColorMap['info'],
+    }),
+
+    menuButton: css({
+        width: '100%',
+        height: 'var(--base-size-24)',
+        justifyContent: 'flex-start',
+        fontFamily: "var(--font-number)",
+        borderRadius: 'var(--borderRadius-medium)',
+        padding: `0 var(--base-size-8)`,
+        border: 'none',
+        backgroundColor: 'var(--color-container2)',
+        color: 'var(--color-white)',
+
+        ':hover': {
+            backgroundColor: 'var(--color-border)',
+            color: 'var(--color-white)',
+            '& svg': {
+                color: 'var(--color-white)',
+            },
+        },
+    }),
+};
+
+export default styles;

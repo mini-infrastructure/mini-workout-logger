@@ -1,5 +1,5 @@
 import {css} from '@emotion/react';
-import {AppTheme} from './theme';
+import type {AppTheme} from './theme';
 
 const globalStyles = (theme: AppTheme) => css({
     ':root': {
@@ -50,17 +50,24 @@ const globalStyles = (theme: AppTheme) => css({
         '--size-xxxl':       theme.fontSizes.xxx_large,
 
         /* Base sizes */
+        '--base-size-2':   theme.baseSize[2],
         '--base-size-4':   theme.baseSize[4],
         '--base-size-8':   theme.baseSize[8],
         '--base-size-12':  theme.baseSize[12],
+        '--base-size-14':  theme.baseSize[14],
         '--base-size-16':  theme.baseSize[16],
         '--base-size-18':  theme.baseSize[18],
+        '--base-size-20':  theme.baseSize[20],
+        '--base-size-22':  theme.baseSize[22],
         '--base-size-24':  theme.baseSize[24],
         '--base-size-32':  theme.baseSize[32],
         '--base-size-48':  theme.baseSize[48],
+        '--base-size-56':  theme.baseSize[56],
         '--base-size-64':  theme.baseSize[64],
         '--base-size-96':  theme.baseSize[96],
         '--base-size-260': theme.baseSize[260],
+        '--base-size-320': theme.baseSize[320],
+        '--base-size-420': theme.baseSize[420],
 
         /* Border radius */
         '--borderRadius-small':  theme.borderRadius.small,
@@ -110,10 +117,16 @@ const globalStyles = (theme: AppTheme) => css({
 
         /* Shadows */
         '--shadow-normal': theme.shadow.normal,
+        '--shadow-alert':  theme.shadow.alert,
 
         /* Transitions */
         '--transition-expand': theme.transition.expand,
-    } as any,
+
+        /* Animation */
+        '--animation-maxHeight-sm': theme.animation.maxHeight.sm,
+        '--animation-maxHeight-md': theme.animation.maxHeight.md,
+        '--animation-maxHeight-lg': theme.animation.maxHeight.lg,
+    } as Record<string, string | number>,
 
     body: {
         margin: 0,

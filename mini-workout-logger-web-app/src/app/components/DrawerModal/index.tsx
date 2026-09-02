@@ -1,0 +1,66 @@
+import type { PropsWithChildren } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
+import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { IoClose } from 'react-icons/io5';
+import Button from '../Button/index.tsx';
+import { useClickOut } from '../../hooks/useClickOut/index.tsx';
+import styles from './index.style.tsx';
+
+export type DrawerModalProps = {
+    open: boolean;
+    onClose: () => void;
+    showCloseButton?: boolean;
+    headerButton?: JSX.Element;
+};
+
+const DrawerModal = ({
+    open,
+    onClose,
+    showCloseButton = true,
+    headerButton,
+    children,
+}: PropsWithChildren<DrawerModalProps>) => {
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            onClose();
+        }, 250);
+    };
+
+    const drawerRef = useRef<HTMLDivElement | null>(null);
+    useClickOut(drawerRef, handleClose);
+
+    if (!open) return null;
+
+    return createPortal(
+        <div css={styles.overlay}>
+            <div
+                ref={drawerRef}
+                css={[styles.drawer, isClosing ? styles.closeEffect : styles.openEffect]}
+            >
+                {(showCloseButton || headerButton) && (
+                    <div css={styles.headerButtons}>
+                        {headerButton}
+                        {showCloseButton && (
+                            <Button
+                                icon={<IoClose />}
+                                onClick={handleClose}
+                                noBorder
+                                customCss={styles.closeButton}
+                                customIconCss={styles.closeButtonIcon}
+                            />
+                        )}
+                    </div>
+                )}
+                {children}
+            </div>
+        </div>,
+        document.body
+    );
+};
+
+export default DrawerModal;
