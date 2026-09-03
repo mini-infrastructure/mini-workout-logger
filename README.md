@@ -8,17 +8,40 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 
 1. [Project architecture](#project-architecture)
-    1. [Entities](#entities)
-    2. [Bootstrap routes](#bootstrap-routes)
+    1. [Repository structure](#repository-structure)
+    2. [Entities](#entities)
+    3. [Bootstrap routes](#bootstrap-routes)
 2. [Run dev](#run-dev)
     1. [Create database and seed data](#create-database-and-seed-data)
-        1. [Start the test containers](#start-the-test-containers)
     2. [Compile and serve backend](#compile-and-serve-backend)
     3. [Install and serve web app frontend](#install-and-serve-web-app-frontend)
 3. [Procedures](#procedures)
     1. [Generate release](#generate-release)
 
 ## Project architecture
+
+### Repository structure
+
+```
+mini-workout-logger/
+├── mini-workout-logger-backend/     # Spring Boot API
+└── mini-workout-logger-web-app/     # Frontend monorepo
+    ├── packages/
+    │   ├── shared/                  # @mini/shared - Shared code (DTOs, models, services, hooks, utils)
+    │   ├── web/                     # @mini/web - React web app
+    │   └── mobile/                  # @mini/mobile - React Native app (future)
+    ├── package.json                 # Workspaces root
+    ├── turbo.json                   # Turborepo config
+    └── tsconfig.base.json           # Shared TypeScript config
+```
+
+**Packages:**
+
+| Package | Description |
+|---------|-------------|
+| `@mini/shared` | DTOs, models, services, data hooks, utils — shared between web and mobile |
+| `@mini/web` | React web app (components, views, themes, context, UI hooks) |
+| `@mini/mobile` | React Native mobile app (not yet implemented) |
 
 ### Entities
 | Entity                     | Description                                                                                         | Example                                                                                                                                                       |
@@ -56,58 +79,75 @@ touch Wiki.md
 npx widdershins openapi.yaml -o Wiki.md
 ```
 Access here:
-- 🌐 [Wiki.md](https://github.com/mini-infrastructure/mini-workout-logger/blob/main/Wiki.md)
+- [Wiki.md](https://github.com/mini-infrastructure/mini-workout-logger/blob/main/Wiki.md)
 
 ## Run dev
 
 ### Create database and seed data
 ```bash
-cd  mini-workout-logger-backend/src/test/resources/db/
-```
-```bash
+cd mini-workout-logger-backend/src/test/resources/db/
 bash run-dev.sh up
 ```
-#### Start the test containers:
-```bash
+
+Containers started:
+```
 ✔ Container mini-workout-logger-db        Started
 ✔ Container mini-workout-logger-pgadmin   Started
 ```
-Which can be accessed here:
-- 🌐 [Swagger UI](http://localhost:9090/swagger-ui/index.html)
-- 🗂️ [pgAdmin](http://localhost:180/)
 
-#### Manage the test containers:
+Access:
+- [Swagger UI](http://localhost:9090/swagger-ui/index.html)
+- [pgAdmin](http://localhost:180/)
+
+#### Manage the test containers
+
 Data is stored in named Docker volumes (`postgres-data`, `pgadmin-data`) and survives across restarts.
 
 | Command | Behavior |
-|---|---|
+|---------|----------|
 | `bash run-dev.sh up` | Start containers. Creates volumes on first run, reuses them afterwards. |
 | `bash run-dev.sh down` | Stop and remove containers. **Preserves volumes** — next `up` resumes with the same DB state. |
 | `bash run-dev.sh reset` | Stop containers **and delete volumes** — wipes the DB. Liquibase re-runs all migrations on the next `up`. |
 
 ### Compile and serve backend
 ```bash
-CD mini-workout-logger-backend/
-```
-```bash
+cd mini-workout-logger-backend/
 mvn clean -U install
-```
-```bash
 mvn spring-boot:run
 ```
 
 ### Install and serve web app frontend
+
 ```bash
-cd mini-workout-logger-frontend/
-```
-```bash
+cd mini-workout-logger-web-app/
 npm install
+npm run build:shared
 ```
+
+#### Run with Turborepo (all packages)
 ```bash
 npm run dev
 ```
-Which can be accessed here:
-- 🖥️ [Web App](http://localhost:5173/)
+
+#### Run only web app
+```bash
+npm run dev:web
+```
+
+Access:
+- [Web App](http://localhost:5173/)
+
+#### Other commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start all packages in dev mode (Turborepo) |
+| `npm run dev:web` | Start only the web app |
+| `npm run dev:mobile` | Start only the mobile app (not yet configured) |
+| `npm run build` | Build all packages |
+| `npm run build:shared` | Build only @mini/shared |
+| `npm run build:web` | Build only @mini/web |
+| `npm run lint` | Lint all packages |
 
 ## Procedures
 
@@ -116,28 +156,23 @@ Which can be accessed here:
 Run tests
 ```bash
 cd mini-workout-logger-backend/
-```
-```bash
 mvn clean verify -DskipTests=false
 ```
+
 Set version at `mini-workout-logger-backend/pom.xml`
-```bash
- <version>1.0.0</version>
+```xml
+<version>1.0.0</version>
 ```
+
 Commit release
 ```bash
 git checkout -b v1.0.0
-```
-```bash
 git add pom.xml
-```
-```bash
 git commit -m "Release version 1.0.0"
 ```
+
 Create tag
 ```bash
 git tag -a v1.0.0 -m "Release version 1.0.0"
-```
-```bash
 git push origin v1.0.0
 ```
