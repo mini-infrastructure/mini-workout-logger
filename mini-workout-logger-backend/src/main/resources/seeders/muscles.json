@@ -55,6 +55,7 @@
   { "name": "Muscle.Clavicular", "parent": "Muscle.Pectoralis_Major" },
   { "name": "Muscle.Pectoralis_Minor", "parent": "Muscle.Pectoralis" },
   { "name": "Muscle.Serratus_Anterior", "parent": "Muscle.Chest" },
+  { "name": "Muscle.Serratus_Anterior_Inferior", "parent": "Muscle.Serratus_Anterior" },
 
   { "name": "Muscle.Core", "parent": null },
   { "name": "Muscle.Abdominal", "parent": "Muscle.Core" },
@@ -64,6 +65,8 @@
   { "name": "Muscle.External_Obliques", "parent": "Muscle.Obliques" },
   { "name": "Muscle.Quadratus_Lumborum", "parent": "Muscle.Core" },
   { "name": "Muscle.Erector_Spinae", "parent": "Muscle.Core" },
+  { "name": "Muscle.Iliocostalis_Lumborum", "parent": "Muscle.Erector_Spinae" },
+  { "name": "Muscle.Iliocostalis_Thoracis", "parent": "Muscle.Erector_Spinae" },
 
   { "name": "Muscle.Legs", "parent": null },
   { "name": "Muscle.Hips", "parent": "Muscle.Legs" },
