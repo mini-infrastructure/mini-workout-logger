@@ -1,0 +1,13 @@
+{
+  "name": "@mini/mobile",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Mobile package not yet configured'",
+    "build": "echo 'Mobile package not yet configured'"
+  },
+  "dependencies": {
+    "@mini/shared": "*"
+  }
+}
