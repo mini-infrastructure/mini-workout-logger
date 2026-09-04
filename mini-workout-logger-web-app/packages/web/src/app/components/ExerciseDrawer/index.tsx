@@ -116,18 +116,17 @@ const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
         initialValue: exercise.role ?? '',
     },
     {
+        name: 'group_name',
+        label: 'Group',
+        type: 'text',
+        initialValue: exercise.group_name ?? '',
+    },
+    {
         name: 'energy_system',
         label: 'Energy System',
         type: 'select',
         options: energySystemOptions,
         initialValue: exercise.energy_system ?? '',
-    },
-    {
-        name: 'group_name',
-        label: 'Group',
-        type: 'text',
-        initialValue: exercise.group_name ?? '',
-        colSpan: 2,
     },
 ];
 

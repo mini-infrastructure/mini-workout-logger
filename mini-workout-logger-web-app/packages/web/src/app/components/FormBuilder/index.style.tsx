@@ -30,11 +30,13 @@ const styles = {
         border: 'none',
         fontSize: "var(--size-input-text)",
         minWidth: 'var(--control-minWidth)',
+        minHeight: '2.5rem',
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         cursor: "pointer",
         color: "var(--color-text)",
+        boxSizing: 'border-box',
     }),
 
     inputButton: css({
