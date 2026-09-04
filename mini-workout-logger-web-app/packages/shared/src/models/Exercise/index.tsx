@@ -1,19 +1,17 @@
 import type { ExerciseMuscleMovementClassification, Muscle } from '../Muscle/index';
 import type { WorkoutExercise } from "../WorkoutExercise";
 import type { IconType } from "react-icons";
-import { FaBolt, FaFire, FaRunning, FaSeedling } from "react-icons/fa";
-import { MdTrendingUp } from "react-icons/md";
-import { GiBodyBalance, GiMuscleUp, GiProgression, GiWeightLiftingUp } from "react-icons/gi";
+import { FaBolt, FaFire, FaRunning, FaSeedling, FaWind } from "react-icons/fa";
+import { MdTrendingUp, MdOutlineSportsGymnastics, MdShuffle } from "react-icons/md";
+import { GiProgression, GiWeightLiftingUp, GiMedicalPack } from "react-icons/gi";
 import type { ReactNode } from "react";
 import { TbBallBasketball, TbBandage, TbJumpRope } from "react-icons/tb";
 import type { ColorVariant } from "../../utils/colorsVariants";
-import { BiBody } from "react-icons/bi";
-import { RiWeightFill } from "react-icons/ri";
-import { MdOutlineSportsGymnastics } from "react-icons/md";
+import { BiBody, BiTargetLock } from "react-icons/bi";
 import { GiRopeCoil } from "react-icons/gi";
 import {
     BarbellIcon, DumbbellIcon, KettlebellIcon, MachineIcon, PlateIcon,
-    HitIcon, StrechingIcon,
+    StrechingIcon,
     PullIcon, PushIcon, RotateIcon,
 } from '../../components/EquipmentIcons';
 
@@ -64,16 +62,18 @@ export type ExerciseEquipment =
 export type ExerciseCategory =
     | 'STRENGTH'
     | 'CARDIO'
-    | 'STRETCHING'
-    | 'POWERLIFTING'
-    | 'OLYMPIC_WEIGHTLIFTING'
-    | 'STRONGMAN'
-    | 'CALISTHENICS'
-    | 'PLYOMETRICS'
-    | 'RECOVERY'
-    | 'HIT'
     | 'MOBILITY'
+    | 'REHABILITATION'
+    | 'POWER'
+    | 'FUNCTIONAL'
     | 'WARM_UP'
+    | 'RECOVERY'
+    ;
+
+export type EnergySystem =
+    | 'AEROBIC'
+    | 'ANAEROBIC'
+    | 'MIXED'
     ;
 
 export type ExerciseDifficulty =
@@ -112,16 +112,18 @@ export type ExerciseType =
 export const ExerciseCategoryIcons: Record<ExerciseCategory, IconType> = {
     STRENGTH: FaFire,
     CARDIO: FaRunning,
-    STRETCHING: StrechingIcon as IconType,
-    POWERLIFTING: GiWeightLiftingUp,
-    OLYMPIC_WEIGHTLIFTING: RiWeightFill,
-    STRONGMAN: GiMuscleUp,
-    CALISTHENICS: GiBodyBalance,
-    PLYOMETRICS: FaBolt,
-    RECOVERY: TbBandage,
-    HIT: HitIcon as IconType,
     MOBILITY: MdOutlineSportsGymnastics,
+    REHABILITATION: GiMedicalPack,
+    POWER: GiWeightLiftingUp,
+    FUNCTIONAL: BiTargetLock,
     WARM_UP: FaRunning,
+    RECOVERY: TbBandage,
+};
+
+export const EnergySystemIcons: Record<EnergySystem, IconType> = {
+    AEROBIC: FaWind,
+    ANAEROBIC: FaBolt,
+    MIXED: MdShuffle,
 };
 
 export const ExerciseDifficultyIcons: Record<ExerciseDifficulty, IconType> = {
@@ -152,16 +154,18 @@ export const ExerciseEquipmentIcons: Record<ExerciseEquipment, IconType> = {
 export const ExerciseCategoryVariants: Record<ExerciseCategory, ColorVariant> = {
     STRENGTH: 'danger',
     CARDIO: 'warning',
-    STRETCHING: 'success',
-    POWERLIFTING: 'orange',
-    OLYMPIC_WEIGHTLIFTING: 'orange',
-    STRONGMAN: 'danger',
-    CALISTHENICS: 'primary',
-    PLYOMETRICS: 'warning',
-    RECOVERY: 'success',
-    HIT: 'danger',
     MOBILITY: 'success',
+    REHABILITATION: 'primary',
+    POWER: 'orange',
+    FUNCTIONAL: 'purple',
     WARM_UP: 'warning',
+    RECOVERY: 'success',
+};
+
+export const EnergySystemVariants: Record<EnergySystem, ColorVariant> = {
+    AEROBIC: 'success',
+    ANAEROBIC: 'danger',
+    MIXED: 'warning',
 };
 
 export const ExerciseDifficultyVariants: Record<ExerciseDifficulty, ColorVariant> = {
@@ -212,16 +216,18 @@ export function getVariantFromMap<T extends string>(
 const ExerciseCategoryLabels: Record<ExerciseCategory, string> = {
     STRENGTH: 'Strength',
     CARDIO: 'Cardio',
-    STRETCHING: 'Stretching',
-    POWERLIFTING: 'Powerlifting',
-    OLYMPIC_WEIGHTLIFTING: 'Olympic Weightlifting',
-    STRONGMAN: 'Strongman',
-    CALISTHENICS: 'Calisthenics',
-    PLYOMETRICS: 'Plyometrics',
-    RECOVERY: 'Recovery',
-    HIT: 'HIT',
     MOBILITY: 'Mobility',
+    REHABILITATION: 'Rehabilitation',
+    POWER: 'Power',
+    FUNCTIONAL: 'Functional',
     WARM_UP: 'Warm Up',
+    RECOVERY: 'Recovery',
+};
+
+const EnergySystemLabels: Record<EnergySystem, string> = {
+    AEROBIC: 'Aerobic',
+    ANAEROBIC: 'Anaerobic',
+    MIXED: 'Mixed',
 };
 
 const ExerciseDifficultyLabels: Record<ExerciseDifficulty, string> = {
@@ -300,3 +306,4 @@ export const exerciseMechanicsOptions = toOptions(ExerciseMechanicsLabels);
 export const exerciseRoleOptions = toOptions(ExerciseRoleLabels);
 export const exerciseTypeOptions = toOptions(ExerciseTypeLabels);
 export const exerciseMuscleMovementClassificationOptions = toOptions(ExerciseMuscleMovementLabels);
+export const energySystemOptions = toOptions(EnergySystemLabels);

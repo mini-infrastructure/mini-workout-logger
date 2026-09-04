@@ -3,7 +3,14 @@ package com.mini.workout_logger_backend.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mini.java_core.dto.WriteDTO;
 import com.mini.java_core.validation.group.RestMethod;
-import com.mini.workout_logger_backend.enums.*;
+import com.mini.workout_logger_backend.enums.EnergySystem;
+import com.mini.workout_logger_backend.enums.ExerciseCategory;
+import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
+import com.mini.workout_logger_backend.enums.ExerciseForceDirection;
+import com.mini.workout_logger_backend.enums.ExerciseMechanics;
+import com.mini.workout_logger_backend.enums.ExerciseRole;
+import com.mini.workout_logger_backend.enums.ExerciseType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,6 +48,9 @@ public class ExerciseWriteDTO extends WriteDTO {
     private ExerciseRole role;
 
     private ExerciseType type;
+
+    @JsonProperty("energy_system")
+    private EnergySystem energySystem;
 
     @JsonProperty("group_name")
     @NotNull(groups = RestMethod.OnCreate.class)

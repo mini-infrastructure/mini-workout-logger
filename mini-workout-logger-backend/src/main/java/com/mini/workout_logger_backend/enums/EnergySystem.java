@@ -6,16 +6,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ExerciseCategory implements TranslatableEnum<ExerciseCategory> {
+public enum EnergySystem implements TranslatableEnum<EnergySystem> {
 
-    STRENGTH,
-    CARDIO,
-    MOBILITY,
-    REHABILITATION,
-    POWER,
-    FUNCTIONAL,
-    WARM_UP,
-    RECOVERY
+    AEROBIC,
+    ANAEROBIC,
+    MIXED
     ;
 
 }

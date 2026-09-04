@@ -4,7 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mini.java_core.dto.MediaReadDTO;
 import com.mini.java_core.dto.ReadDTO;
-import com.mini.workout_logger_backend.enums.*;
+import com.mini.workout_logger_backend.enums.EnergySystem;
+import com.mini.workout_logger_backend.enums.ExerciseCategory;
+import com.mini.workout_logger_backend.enums.ExerciseDifficulty;
+import com.mini.workout_logger_backend.enums.ExerciseEquipment;
+import com.mini.workout_logger_backend.enums.ExerciseForceDirection;
+import com.mini.workout_logger_backend.enums.ExerciseMechanics;
+import com.mini.workout_logger_backend.enums.ExerciseRole;
+import com.mini.workout_logger_backend.enums.ExerciseType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,6 +49,9 @@ public class ExerciseReadDTO extends ReadDTO {
     private ExerciseRole role;
 
     private ExerciseType type;
+
+    @JsonProperty("energy_system")
+    private EnergySystem energySystem;
 
     @JsonProperty("group_name")
     private String groupName;

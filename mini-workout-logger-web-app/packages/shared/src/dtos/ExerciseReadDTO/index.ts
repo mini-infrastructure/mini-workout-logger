@@ -1,4 +1,5 @@
 import type {
+    EnergySystem,
     ExerciseCategory,
     ExerciseDifficulty,
     ExerciseEquipment,
@@ -18,6 +19,7 @@ export interface ExerciseReadDTO {
     mechanics?: ExerciseMechanics;
     role?: ExerciseRole;
     type?: ExerciseType;
+    energy_system?: EnergySystem;
     group_name?: string;
     exercise_muscles?: ExerciseMuscleReadDTO[];
     muscles?: MuscleReadDTO[];

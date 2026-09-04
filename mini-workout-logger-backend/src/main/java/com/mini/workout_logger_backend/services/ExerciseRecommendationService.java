@@ -5,7 +5,7 @@ import com.mini.java_core.entity.ResponseHelper;
 import com.mini.java_core.enums.ResponseMessage;
 import com.mini.workout_logger_backend.dtos.ExerciseRecommendationReadDTO;
 import com.mini.workout_logger_backend.entities.Exercise;
-import com.mini.workout_logger_backend.enums.ExerciseCategory;
+import com.mini.workout_logger_backend.enums.EnergySystem;
 import com.mini.workout_logger_backend.mappers.ExerciseMapper;
 import com.mini.workout_logger_backend.repositories.ExerciseMuscleRepository;
 import com.mini.workout_logger_backend.repositories.ExerciseRepository;
@@ -54,7 +54,7 @@ public class ExerciseRecommendationService {
                     Collections.emptyList());
         }
 
-        boolean referenceIsAerobic = isAerobic(reference.getCategory());
+        boolean referenceIsAerobic = isAerobic(reference.getEnergySystem());
 
         long totalReferencePairs = exerciseMuscleRepository.countByExerciseId(referenceId);
 
@@ -93,7 +93,7 @@ public class ExerciseRecommendationService {
                             exerciseMapper.toDTO(candidate), score, exactMatch);
                 })
                 .filter(r -> r.getScore() >= minScore)
-                .filter(r -> isAerobic(r.getExercise().getCategory()) == referenceIsAerobic)
+                .filter(r -> isAerobic(r.getExercise().getEnergySystem()) == referenceIsAerobic)
                 .sorted(Comparator.comparingDouble(ExerciseRecommendationReadDTO::getScore).reversed())
                 .limit(limit)
                 .collect(Collectors.toList());
@@ -108,11 +108,8 @@ public class ExerciseRecommendationService {
                 results);
     }
 
-    private static final java.util.Set<ExerciseCategory> AEROBIC_CATEGORIES =
-            java.util.Set.of(ExerciseCategory.CARDIO, ExerciseCategory.HIT);
-
-    private boolean isAerobic(ExerciseCategory category) {
-        return category != null && AEROBIC_CATEGORIES.contains(category);
+    private boolean isAerobic(EnergySystem energySystem) {
+        return energySystem == EnergySystem.AEROBIC;
     }
 
 }

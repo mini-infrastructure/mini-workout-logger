@@ -86,6 +86,10 @@ public class Exercise extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private ExerciseType type;
 
+    @Column(name = "energy_system")
+    @Enumerated(EnumType.STRING)
+    private EnergySystem energySystem;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExerciseMedia> media = new ArrayList<>();
 

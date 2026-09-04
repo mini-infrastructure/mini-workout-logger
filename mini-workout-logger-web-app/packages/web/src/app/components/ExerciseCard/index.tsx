@@ -163,6 +163,15 @@ const ExerciseCard = ({
                                     {capitalize(exercise.category)}
                                 </Badge>
                             )}
+                            {exercise.energy_system && (
+                                <Badge
+                                    selected={isFilterActive('energy_system', exercise.energy_system)}
+                                    onClick={handleFilterToggle('energy_system', exercise.energy_system)}
+                                    onRemove={isFilterActive('energy_system', exercise.energy_system) ? handleFilterToggle('energy_system', exercise.energy_system) : undefined}
+                                >
+                                    {capitalize(exercise.energy_system)}
+                                </Badge>
+                            )}
                             {exercise.equipment && (
                                 <Badge
                                     selected={isFilterActive('equipment', exercise.equipment)}

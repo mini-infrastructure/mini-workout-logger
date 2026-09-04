@@ -25,6 +25,7 @@ public class ExerciseSeedDTO {
     private String mechanics;
     private String role;
     private String type;
+    private String energySystem;
     private boolean hidden = false;
 
     private List<String> targetMuscles = new ArrayList<>();
