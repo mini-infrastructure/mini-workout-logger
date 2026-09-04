@@ -17,18 +17,20 @@ import {
     exerciseForceOptions,
     exerciseRoleOptions,
     exerciseTypeOptions,
+    energySystemOptions,
 } from '@mini/shared';
 import styles from './index.style.tsx';
 import SecondaryButton from "../../components/SecondaryButton/index.tsx";
 
 const FILTER_CONFIG = [
-    { key: 'category',  label: 'Category',  options: exerciseCategoryOptions   },
-    { key: 'equipment', label: 'Equipment', options: exerciseEquipmentOptions  },
-    { key: 'mechanics', label: 'Mechanics', options: exerciseMechanicsOptions  },
-    { key: 'force',     label: 'Force',     options: exerciseForceOptions      },
-    { key: 'role',      label: 'Role',      options: exerciseRoleOptions       },
-    { key: 'type',      label: 'Type',      options: exerciseTypeOptions       },
-    { key: 'difficulty', label: 'Difficulty', options: exerciseDifficultyOptions },
+    { key: 'category',      label: 'Category',      options: exerciseCategoryOptions   },
+    { key: 'energy_system', label: 'Energy System', options: energySystemOptions       },
+    { key: 'equipment',     label: 'Equipment',     options: exerciseEquipmentOptions  },
+    { key: 'mechanics',     label: 'Mechanics',     options: exerciseMechanicsOptions  },
+    { key: 'force',         label: 'Force',         options: exerciseForceOptions      },
+    { key: 'role',          label: 'Role',          options: exerciseRoleOptions       },
+    { key: 'type',          label: 'Type',          options: exerciseTypeOptions       },
+    { key: 'difficulty',    label: 'Difficulty',    options: exerciseDifficultyOptions },
 ] as const;
 
 const ExercisesView = () => {

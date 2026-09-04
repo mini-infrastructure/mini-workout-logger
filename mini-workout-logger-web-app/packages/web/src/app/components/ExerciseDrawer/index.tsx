@@ -27,6 +27,7 @@ import {
     exerciseMechanicsOptions,
     exerciseRoleOptions,
     exerciseTypeOptions,
+    energySystemOptions,
 } from '@mini/shared';
 import Legends from '../Legends/index.tsx';
 import type { LegendItem } from '../Legends/index.tsx';
@@ -119,7 +120,13 @@ const buildFormItems = (exercise: ExerciseReadDTO): FormItem[] => [
         label: 'Group',
         type: 'text',
         initialValue: exercise.group_name ?? '',
-        colSpan: 2,
+    },
+    {
+        name: 'energy_system',
+        label: 'Energy System',
+        type: 'select',
+        options: energySystemOptions,
+        initialValue: exercise.energy_system ?? '',
     },
 ];
 
@@ -216,6 +223,7 @@ const ExerciseDrawer = ({ exercise, open, onClose }: ExerciseDrawerProps) => {
             mechanics: (values.mechanics as ExerciseWriteDTO['mechanics']) || undefined,
             role: (values.role as ExerciseWriteDTO['role']) || undefined,
             type: (values.type as ExerciseWriteDTO['type']) || undefined,
+            energy_system: (values.energy_system as ExerciseWriteDTO['energy_system']) || undefined,
             group_name: (values.group_name as string) || undefined,
             exercise_muscles,
         };
