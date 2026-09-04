@@ -184,6 +184,9 @@ public class DataSeeder implements CommandLineRunner {
             if (dto.getType() != null) {
                 exercise.setType(ExerciseType.valueOf(dto.getType()));
             }
+            if (dto.getEnergySystem() != null) {
+                exercise.setEnergySystem(EnergySystem.valueOf(dto.getEnergySystem()));
+            }
 
             exercise = exerciseRepository.save(exercise);
             exerciseCache.put(dto.getName(), exercise);

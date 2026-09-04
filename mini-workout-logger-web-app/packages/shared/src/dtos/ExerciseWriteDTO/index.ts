@@ -1,4 +1,5 @@
 import type {
+    EnergySystem,
     ExerciseCategory,
     ExerciseDifficulty,
     ExerciseEquipment,
@@ -15,6 +16,7 @@ export interface ExerciseWriteDTO {
     mechanics?: ExerciseMechanics;
     role?: ExerciseRole;
     type?: ExerciseType;
+    energy_system?: EnergySystem;
     group_name?: string;
     exercise_muscles?: ExerciseMuscleWriteDTO[];
     hidden?: boolean;
