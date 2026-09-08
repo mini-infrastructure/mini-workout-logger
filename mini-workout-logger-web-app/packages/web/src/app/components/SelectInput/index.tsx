@@ -23,6 +23,10 @@ export type SelectInputProps<T = string> = {
     loading?: boolean;
     emptyMessage?: string;
     customCss?: SerializedStyles;
+    /** When true, the input becomes editable (combobox mode) - allows typing custom values */
+    editable?: boolean;
+    /** Called when the user types in editable mode */
+    onInputChange?: (value: string) => void;
 };
 
 const SelectInput = <T extends string | number = string>({
@@ -42,9 +46,12 @@ const SelectInput = <T extends string | number = string>({
     loading = false,
     emptyMessage,
     customCss,
+    editable = false,
+    onInputChange,
 }: SelectInputProps<T>) => {
     const [open, setOpen] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
+    const [editableInputValue, setEditableInputValue] = useState('');
     const wrapperRef = useRef<HTMLDivElement>(null);
 
     useClickOut(wrapperRef, () => setOpen(false));
@@ -58,6 +65,24 @@ const SelectInput = <T extends string | number = string>({
 
     const selectedOption = allOptions.find(opt => opt.value === value);
 
+    // In editable mode, filter options based on input value
+    const filteredOptions = useMemo(() => {
+        if (!editable || !editableInputValue) return options;
+        return options.filter(opt =>
+            opt.label.toLowerCase().includes(editableInputValue.toLowerCase())
+        );
+    }, [editable, editableInputValue, options]);
+
+    const filteredGroupedOptions = useMemo(() => {
+        if (!editable || !editableInputValue || !groupedOptions) return groupedOptions;
+        return groupedOptions.map(group => ({
+            ...group,
+            options: group.options.filter(opt =>
+                opt.label.toLowerCase().includes(editableInputValue.toLowerCase())
+            ),
+        })).filter(group => group.options.length > 0);
+    }, [editable, editableInputValue, groupedOptions]);
+
     const handleToggle = () => {
         if (!disabled) {
             setOpen(prev => !prev);
@@ -67,7 +92,27 @@ const SelectInput = <T extends string | number = string>({
 
     const handleChange = (newValue: T | null) => {
         onChange(newValue);
+        if (editable) {
+            const selected = allOptions.find(opt => opt.value === newValue);
+            setEditableInputValue(selected?.label ?? '');
+        }
         setOpen(false);
+    };
+
+    const handleInputChange = (inputValue: string) => {
+        setEditableInputValue(inputValue);
+        onInputChange?.(inputValue);
+        if (!open && inputValue.length > 0) {
+            setOpen(true);
+            setHasAnimated(true);
+        }
+    };
+
+    const handleInputFocus = () => {
+        if (editable && !open) {
+            setOpen(true);
+            setHasAnimated(true);
+        }
     };
 
     const getArrowStyle = () => {
@@ -75,16 +120,18 @@ const SelectInput = <T extends string | number = string>({
         return open ? styles.arrowIconOpen : styles.arrowIconClosed;
     };
 
-    const displayValue = selectedOption?.label ?? '';
+    // In editable mode, show the input value; otherwise show selected option label
+    const displayValue = editable ? editableInputValue : (selectedOption?.label ?? '');
 
     return (
         <div ref={wrapperRef} css={[styles.wrapper, customCss]}>
-            <div css={styles.inputContainer} onClick={handleToggle}>
+            <div css={styles.inputContainer} onClick={editable ? undefined : handleToggle}>
                 <TextInput
                     name={name}
                     label={label}
                     value={displayValue}
-                    onChange={() => {}}
+                    onChange={editable ? handleInputChange : () => {}}
+                    onFocus={editable ? handleInputFocus : undefined}
                     placeholder={placeholder}
                     error={error}
                     helperText={helperText}
@@ -92,21 +139,22 @@ const SelectInput = <T extends string | number = string>({
                     required={required}
                     loading={loading}
                     icon={
-                        <FiChevronDown css={getArrowStyle()} />
+                        <FiChevronDown css={getArrowStyle()} onClick={handleToggle} />
                     }
                     iconPosition="right"
-                    customCss={{ pointerEvents: 'none' } as unknown as SerializedStyles}
+                    onIconClick={handleToggle}
+                    customCss={editable ? undefined : { pointerEvents: 'none' } as unknown as SerializedStyles}
                 />
             </div>
 
             <Dropdown
-                options={options}
-                groupedOptions={groupedOptions}
+                options={editable ? filteredOptions : options}
+                groupedOptions={editable ? filteredGroupedOptions : groupedOptions}
                 value={value}
                 onChange={handleChange}
                 open={open}
                 onClose={() => setOpen(false)}
-                searchable={searchable}
+                searchable={editable ? false : searchable}
                 searchPlaceholder={searchPlaceholder}
                 loading={loading}
                 emptyMessage={emptyMessage}

@@ -39,6 +39,8 @@ export type FormField<T = string> = {
     searchable?: boolean;
     selectAll?: boolean;
     selectAllLabel?: string;
+    /** Makes select editable (combobox mode) - allows typing custom values */
+    editable?: boolean;
 
     // For autocomplete
     suggestions?: DropdownOption<T>[];
@@ -135,6 +137,8 @@ const Form = ({
                         disabled={isDisabled}
                         required={field.required}
                         searchable={field.searchable}
+                        editable={field.editable}
+                        onInputChange={field.editable ? (val) => onChange(field.name, val) : undefined}
                     />
                 );
 
