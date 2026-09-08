@@ -83,6 +83,7 @@ public class TestHelper {
                         ExerciseMechanics.ISOLATED,
                         ExerciseRole.AUXILIARY,
                         ExerciseType.ISOLATERAL,
+                        EnergySystem.ANAEROBIC,
                         "Chest Fly",
                         muscles.stream()
                                 .filter(m -> m.getName().getValue().equals("Chest"))
@@ -103,6 +104,7 @@ public class TestHelper {
                         ExerciseMechanics.COMPOUND,
                         ExerciseRole.BASIC,
                         ExerciseType.BILATERAL,
+                        EnergySystem.ANAEROBIC,
                         "Row",
                         muscles.stream()
                                 .filter(m -> m.getName().getValue().equals("Back"))
@@ -123,6 +125,7 @@ public class TestHelper {
                         ExerciseMechanics.COMPOUND,
                         ExerciseRole.BASIC,
                         ExerciseType.BILATERAL,
+                        EnergySystem.ANAEROBIC,
                         "Squat",
                         muscles.stream()
                                 .filter(m -> m.getName().getValue().equals("Legs"))
