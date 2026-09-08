@@ -17,6 +17,7 @@ export type AutocompleteInputProps<T = string> = {
     error?: string;
     helperText?: string;
     disabled?: boolean;
+    required?: boolean;
     loading?: boolean;
     emptyMessage?: string;
     debounceMs?: number;
@@ -36,6 +37,7 @@ const AutocompleteInput = <T extends string | number = string>({
     error,
     helperText,
     disabled = false,
+    required = false,
     loading = false,
     emptyMessage = 'No results found',
     debounceMs = 300,
@@ -100,6 +102,7 @@ const AutocompleteInput = <T extends string | number = string>({
                 error={error}
                 helperText={helperText}
                 disabled={disabled}
+                required={required}
                 loading={loading}
                 icon={showSearchIcon ? <FiSearch /> : undefined}
                 iconPosition="left"

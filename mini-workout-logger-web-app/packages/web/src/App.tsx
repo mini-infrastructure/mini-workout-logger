@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { css } from '@emotion/react';
-import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiMail, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown } from 'react-icons/fi';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -11,10 +11,7 @@ import FolderCard from './app/components/FolderCard';
 import ProgressBar from './app/components/ProgressBar';
 import ProgressCard from './app/components/ProgressCard';
 import ActionCard from './app/components/ActionCard';
-import TextInput from './app/components/TextInput';
-import SelectInput from './app/components/SelectInput';
-import MultiSelectInput from './app/components/MultiSelectInput';
-import AutocompleteInput from './app/components/AutocompleteInput';
+import Form, { type FormValues, type FormField, parseBackendErrors } from './app/components/Form';
 import { useAlert } from './app/context/alert.context';
 
 const styles = {
@@ -60,14 +57,14 @@ const styles = {
     progressBarWrapper: css({
         flex: 1,
     }),
-    inputRow: css({
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        gap: 'var(--space-lg)',
+    formContainer: css({
+        width: '100%',
+        maxWidth: '50rem',
     }),
-    inputContainer: css({
-        width: '18rem',
+    formActions: css({
+        display: 'flex',
+        gap: 'var(--space-md)',
+        marginTop: 'var(--space-lg)',
     }),
 };
 
@@ -89,38 +86,27 @@ const muscleOptions = [
     { value: 'core', label: 'Core' },
 ];
 
-const groupedEquipmentOptions = [
-    {
-        label: 'Free Weights',
-        options: [
-            { value: 'barbell', label: 'Barbell' },
-            { value: 'dumbbell', label: 'Dumbbell' },
-            { value: 'kettlebell', label: 'Kettlebell' },
-        ],
-    },
-    {
-        label: 'Machines',
-        options: [
-            { value: 'cable', label: 'Cable Machine' },
-            { value: 'smith', label: 'Smith Machine' },
-            { value: 'leg_press', label: 'Leg Press' },
-        ],
-    },
-    {
-        label: 'Bodyweight',
-        options: [
-            { value: 'bodyweight', label: 'Bodyweight' },
-            { value: 'pull_up_bar', label: 'Pull-up Bar' },
-        ],
-    },
-];
-
 const exerciseSuggestions = [
     { value: 'bench_press', label: 'Bench Press' },
     { value: 'squat', label: 'Squat' },
     { value: 'deadlift', label: 'Deadlift' },
     { value: 'pull_up', label: 'Pull Up' },
     { value: 'push_up', label: 'Push Up' },
+];
+
+// Form fields configuration
+const formFields: FormField[] = [
+    { name: 'name', label: 'Name', type: 'text', slots: 6, required: true, helperText: 'Your full name' },
+    { name: 'email', label: 'Email', type: 'email', slots: 6, required: true },
+    { name: 'password', label: 'Password', type: 'password', slots: 4, showPasswordToggle: true, validationRules: [
+        { label: 'At least 8 characters', validate: (v) => v.length >= 8 },
+        { label: 'One uppercase letter', validate: (v) => /[A-Z]/.test(v) },
+    ] },
+    { name: 'age', label: 'Age', type: 'number', slots: 4 },
+    { name: 'phone', label: 'Phone', type: 'tel', slots: 4 },
+    { name: 'category', label: 'Category', type: 'select', slots: 6, required: true, options: categoryOptions },
+    { name: 'muscles', label: 'Muscles', type: 'multiselect', slots: 6, options: muscleOptions, searchable: true, selectAll: true, selectAllLabel: 'All muscles' },
+    { name: 'exercise', label: 'Search Exercise', type: 'autocomplete', slots: 12, minChars: 1 },
 ];
 
 function App() {
@@ -130,15 +116,56 @@ function App() {
     const [interactiveProgress, setInteractiveProgress] = useState(20);
     const pushAlert = useAlert();
 
-    // Input states
-    const [textValue, setTextValue] = useState('');
-    const [emailValue, setEmailValue] = useState('');
-    const [passwordValue, setPasswordValue] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [selectedMuscles, setSelectedMuscles] = useState<string[]>([]);
-    const [selectedEquipment, setSelectedEquipment] = useState<string | null>(null);
-    const [searchValue, setSearchValue] = useState('');
+    // Form state
+    const formContainerRef = useRef<HTMLDivElement>(null);
+    const [formValues, setFormValues] = useState<FormValues>({});
+    const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+    const [isFormValid, setIsFormValid] = useState(false);
+    const [exerciseSearchSuggestions, setExerciseSearchSuggestions] = useState(exerciseSuggestions);
+
+    const handleFormChange = (name: string, value: string | string[] | null) => {
+        setFormValues(prev => ({ ...prev, [name]: value }));
+        // Clear error when field changes
+        if (formErrors[name]) {
+            setFormErrors(prev => {
+                const updated = { ...prev };
+                delete updated[name];
+                return updated;
+            });
+        }
+
+        // Filter exercise suggestions based on search
+        if (name === 'exercise' && typeof value === 'string') {
+            const filtered = exerciseSuggestions.filter(s =>
+                s.label.toLowerCase().includes(value.toLowerCase())
+            );
+            setExerciseSearchSuggestions(filtered);
+        }
+    };
+
+    const handleFormSubmit = () => {
+        // Simulate a backend response with errors
+        const simulatedBackendErrors = ['email -> Invalid email format', 'age -> Must be at least 18'];
+        const parsedErrors = parseBackendErrors(simulatedBackendErrors);
+        setFormErrors(parsedErrors);
+        pushAlert('Form submitted (simulated backend errors applied)', 'info');
+    };
+
+    const handleFormClear = () => {
+        setFormValues({});
+        setFormErrors({});
+        pushAlert('Form cleared', 'success');
+    };
+
+    // Get the form fields with dynamic suggestions
+    const getFormFieldsWithSuggestions = (): FormField[] => {
+        return formFields.map(field => {
+            if (field.name === 'exercise') {
+                return { ...field, suggestions: exerciseSearchSuggestions };
+            }
+            return field;
+        });
+    };
 
     const handleIncreaseProgress = () => {
         setInteractiveProgress(prev => Math.min(prev + 10, 100));
@@ -344,167 +371,27 @@ function App() {
                 </div>
             </section>
 
-            {/* TextInput */}
+            {/* Form */}
             <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>TextInput</h2>
-                <div css={styles.inputRow}>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="basic"
-                            label="Name"
-                            value={textValue}
-                            onChange={setTextValue}
-                            helperText="Enter your full name"
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="email"
-                            label="Email"
-                            type="email"
-                            value={emailValue}
-                            onChange={setEmailValue}
-                            icon={<FiMail />}
-                            iconPosition="left"
-                            showClearButton
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="password"
-                            label="Password"
-                            type={showPassword ? 'text' : 'password'}
-                            value={passwordValue}
-                            onChange={setPasswordValue}
-                            icon={showPassword ? <FiEyeOff /> : <FiEye />}
-                            iconPosition="right"
-                            onIconClick={() => setShowPassword(!showPassword)}
-                            validationRules={[
-                                { label: 'At least 8 characters', validate: (v) => v.length >= 8 },
-                                { label: 'One uppercase letter', validate: (v) => /[A-Z]/.test(v) },
-                                { label: 'One number', validate: (v) => /[0-9]/.test(v) },
-                            ]}
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="error"
-                            label="With Error"
-                            value="Invalid input"
-                            onChange={() => {}}
-                            error="This field is required"
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="disabled"
-                            label="Disabled"
-                            value="Cannot edit"
-                            onChange={() => {}}
-                            disabled
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <TextInput
-                            name="loading"
-                            label="Loading"
-                            value=""
-                            onChange={() => {}}
-                            loading
-                        />
-                    </div>
+                <h2 css={styles.sectionTitle}>Form</h2>
+                <div ref={formContainerRef} css={styles.formContainer}>
+                    <Form
+                        containerRef={formContainerRef}
+                        fields={getFormFieldsWithSuggestions()}
+                        totalSlots={12}
+                        values={formValues}
+                        onChange={handleFormChange}
+                        errors={formErrors}
+                        onValidationChange={setIsFormValid}
+                    />
                 </div>
-            </section>
-
-            {/* SelectInput */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>SelectInput</h2>
-                <div css={styles.inputRow}>
-                    <div css={styles.inputContainer}>
-                        <SelectInput
-                            name="category"
-                            label="Category"
-                            options={categoryOptions}
-                            value={selectedCategory}
-                            onChange={setSelectedCategory}
-                            helperText="Choose a category"
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <SelectInput
-                            name="equipment"
-                            label="Equipment"
-                            groupedOptions={groupedEquipmentOptions}
-                            value={selectedEquipment}
-                            onChange={setSelectedEquipment}
-                            searchable
-                            searchPlaceholder="Search equipment..."
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <SelectInput
-                            name="loading"
-                            label="Loading Select"
-                            options={[]}
-                            value={null}
-                            onChange={() => {}}
-                            loading
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* MultiSelectInput */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>MultiSelectInput</h2>
-                <div css={styles.inputRow}>
-                    <div css={styles.inputContainer}>
-                        <MultiSelectInput
-                            name="muscles"
-                            label="Muscles"
-                            options={muscleOptions}
-                            value={selectedMuscles}
-                            onChange={setSelectedMuscles}
-                            selectAll
-                            selectAllLabel="Select all muscles"
-                            searchable
-                        />
-                    </div>
-                    <div css={styles.inputContainer}>
-                        <MultiSelectInput
-                            name="equipment-multi"
-                            label="Equipment (grouped)"
-                            groupedOptions={groupedEquipmentOptions}
-                            value={[]}
-                            onChange={() => {}}
-                            searchable
-                            emptyMessage="No equipment found"
-                        />
-                    </div>
-                </div>
-            </section>
-
-            {/* AutocompleteInput */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>AutocompleteInput</h2>
-                <div css={styles.inputRow}>
-                    <div css={styles.inputContainer}>
-                        <AutocompleteInput
-                            name="exercise-search"
-                            label="Search Exercise"
-                            inputValue={searchValue}
-                            onInputChange={setSearchValue}
-                            suggestions={exerciseSuggestions.filter(s =>
-                                s.label.toLowerCase().includes(searchValue.toLowerCase())
-                            )}
-                            onSelect={(opt) => {
-                                setSearchValue(opt.label);
-                                pushAlert(`Selected: ${opt.label}`, 'info');
-                            }}
-                            minChars={1}
-                            emptyMessage="No exercises found"
-                        />
-                    </div>
+                <div css={styles.formActions}>
+                    <SecondaryButton label="Clear" onClick={handleFormClear} />
+                    <PrimaryButton
+                        label="Submit"
+                        onClick={handleFormSubmit}
+                        disabled={!isFormValid}
+                    />
                 </div>
             </section>
 

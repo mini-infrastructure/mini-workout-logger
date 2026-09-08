@@ -225,6 +225,11 @@ const styles = {
     validationIcon: css({
         fontSize: 'var(--font-size-sm)',
     }),
+
+    requiredMarker: css({
+        color: 'var(--color-red)',
+        fontWeight: 'var(--font-weight-semibold)',
+    }),
 };
 
 export default styles;

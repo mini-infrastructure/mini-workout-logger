@@ -23,6 +23,7 @@ export type TextInputProps = {
     validationRules?: ValidationRule[];
     loading?: boolean;
     disabled?: boolean;
+    required?: boolean;
     showClearButton?: boolean;
     onFocus?: (e: FocusEvent<HTMLInputElement>) => void;
     onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
@@ -44,6 +45,7 @@ const TextInput = ({
     validationRules,
     loading = false,
     disabled = false,
+    required = false,
     showClearButton = false,
     onFocus,
     onBlur,
@@ -170,6 +172,7 @@ const TextInput = ({
                         ]}
                     >
                         {label}
+                        {required && <span css={styles.requiredMarker}> *</span>}
                     </label>
                     <input
                         ref={inputRef}

@@ -17,6 +17,7 @@ export type SelectInputProps<T = string> = {
     error?: string;
     helperText?: string;
     disabled?: boolean;
+    required?: boolean;
     searchable?: boolean;
     searchPlaceholder?: string;
     loading?: boolean;
@@ -35,6 +36,7 @@ const SelectInput = <T extends string | number = string>({
     error,
     helperText,
     disabled = false,
+    required = false,
     searchable = false,
     searchPlaceholder,
     loading = false,
@@ -87,6 +89,7 @@ const SelectInput = <T extends string | number = string>({
                     error={error}
                     helperText={helperText}
                     disabled={disabled}
+                    required={required}
                     loading={loading}
                     icon={
                         <FiChevronDown css={getArrowStyle()} />

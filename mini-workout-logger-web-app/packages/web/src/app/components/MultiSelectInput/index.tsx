@@ -53,6 +53,7 @@ export type MultiSelectInputProps<T = string> = {
     error?: string;
     helperText?: string;
     disabled?: boolean;
+    required?: boolean;
     searchable?: boolean;
     searchPlaceholder?: string;
     selectAll?: boolean;
@@ -75,6 +76,7 @@ const MultiSelectInput = <T extends string | number = string>({
     error,
     helperText,
     disabled = false,
+    required = false,
     searchable = false,
     searchPlaceholder,
     selectAll = false,
@@ -135,6 +137,7 @@ const MultiSelectInput = <T extends string | number = string>({
                     error={error}
                     helperText={helperText}
                     disabled={disabled}
+                    required={required}
                     loading={loading}
                     icon={
                         <FiChevronDown css={getArrowStyle()} />
