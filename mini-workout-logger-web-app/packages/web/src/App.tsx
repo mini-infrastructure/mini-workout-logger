@@ -101,18 +101,18 @@ const styles = {
     }),
 };
 
-// Base exercise form fields (group_name suggestions injected dynamically)
-const baseExerciseFormFields: Omit<FormField, 'suggestions'>[] = [
+// Base exercise form fields (group_name options injected dynamically)
+const baseExerciseFormFields: Omit<FormField, 'options'>[] = [
     { name: 'name', label: 'Name', type: 'text', slots: 6, required: true },
-    { name: 'group_name', label: 'Group', type: 'autocomplete', slots: 6, required: true, minChars: 0 },
-    { name: 'category', label: 'Category', type: 'select', slots: 4, options: exerciseCategoryOptions },
-    { name: 'difficulty', label: 'Difficulty', type: 'select', slots: 4, options: exerciseDifficultyOptions },
-    { name: 'equipment', label: 'Equipment', type: 'select', slots: 4, required: true, options: exerciseEquipmentOptions },
-    { name: 'force', label: 'Force', type: 'select', slots: 4, options: exerciseForceOptions },
-    { name: 'mechanics', label: 'Mechanics', type: 'select', slots: 4, options: exerciseMechanicsOptions },
-    { name: 'type', label: 'Type', type: 'select', slots: 4, options: exerciseTypeOptions },
-    { name: 'role', label: 'Role', type: 'select', slots: 6, options: exerciseRoleOptions },
-    { name: 'energy_system', label: 'Energy System', type: 'select', slots: 6, options: energySystemOptions },
+    { name: 'group_name', label: 'Group', type: 'select', slots: 6, required: true, editable: true },
+    { name: 'category', label: 'Category', type: 'select', slots: 4 },
+    { name: 'difficulty', label: 'Difficulty', type: 'select', slots: 4 },
+    { name: 'equipment', label: 'Equipment', type: 'select', slots: 4, required: true },
+    { name: 'force', label: 'Force', type: 'select', slots: 4 },
+    { name: 'mechanics', label: 'Mechanics', type: 'select', slots: 4 },
+    { name: 'type', label: 'Type', type: 'select', slots: 4 },
+    { name: 'role', label: 'Role', type: 'select', slots: 6 },
+    { name: 'energy_system', label: 'Energy System', type: 'select', slots: 6 },
 ];
 
 function App() {
@@ -134,7 +134,7 @@ function App() {
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
     const [isFormValid, setIsFormValid] = useState(false);
 
-    // Group names for autocomplete
+    // Group names for editable select
     const [allGroupNames, setAllGroupNames] = useState<string[]>([]);
 
     // Fetch group names on mount
@@ -142,26 +142,34 @@ function App() {
         ExerciseService.getAllExerciseGroupNames().then(setAllGroupNames);
     }, []);
 
-    // Filter group suggestions based on current input
-    const groupSuggestions = useMemo(() => {
-        const currentValue = (formValues.group_name as string) ?? '';
-        if (!currentValue) {
-            return allGroupNames.map(name => ({ value: name, label: name }));
-        }
-        return allGroupNames
-            .filter(name => name.toLowerCase().includes(currentValue.toLowerCase()))
-            .map(name => ({ value: name, label: name }));
-    }, [allGroupNames, formValues.group_name]);
+    // Convert group names to options
+    const groupOptions = useMemo(() =>
+        allGroupNames.map(name => ({ value: name, label: name })),
+    [allGroupNames]);
 
-    // Build form fields with dynamic group suggestions
+    // Map of field name to options
+    const fieldOptionsMap: Record<string, DropdownOption[]> = useMemo(() => ({
+        group_name: groupOptions,
+        category: exerciseCategoryOptions,
+        difficulty: exerciseDifficultyOptions,
+        equipment: exerciseEquipmentOptions,
+        force: exerciseForceOptions,
+        mechanics: exerciseMechanicsOptions,
+        type: exerciseTypeOptions,
+        role: exerciseRoleOptions,
+        energy_system: energySystemOptions,
+    }), [groupOptions]);
+
+    // Build form fields with dynamic options
     const exerciseFormFields = useMemo((): FormField[] => {
         return baseExerciseFormFields.map(field => {
-            if (field.name === 'group_name') {
-                return { ...field, suggestions: groupSuggestions } as FormField;
+            const options = fieldOptionsMap[field.name];
+            if (options) {
+                return { ...field, options } as FormField;
             }
             return field as FormField;
         });
-    }, [groupSuggestions]);
+    }, [fieldOptionsMap]);
 
     // Exercise search state (separate from form)
     const [exerciseSearchValue, setExerciseSearchValue] = useState('');
