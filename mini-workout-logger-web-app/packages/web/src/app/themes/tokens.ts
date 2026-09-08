@@ -18,7 +18,8 @@ import { css } from '@emotion/react';
 const palette = {
     black:  '#0F1620',
     white:  '#F3F4F8',
-    gray:   '#CFCFCF',
+    gray:           '#1F1F21',
+    grayContrast:   '#303030',
 
     red:            '#EF4A2A',
     redContrast:    '#A8371F',
@@ -142,11 +143,11 @@ const borderWidth = {
 // TRANSITIONS & ANIMATIONS
 // =============================================================================
 
-// const transition = {
-//     fast:   '150ms ease',
-//     normal: '250ms ease',
-//     slow:   '400ms ease',
-// } as const;
+const transition = {
+    fast:   '150ms ease',
+    normal: '250ms ease',
+    slow:   '400ms ease',
+} as const;
 
 // const animation = {
 //     // Add animation keyframes and durations as needed
@@ -157,24 +158,24 @@ const borderWidth = {
 // SHADOWS
 // =============================================================================
 
-// const shadow = {
-//     sm: '0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1)',
-//     md: '0 0.25rem 0.5rem rgba(0, 0, 0, 0.15)',
-//     lg: '0 0.5rem 1rem rgba(0, 0, 0, 0.2)',
-// } as const;
+const shadow = {
+    sm: '0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1)',
+    md: '0 0.25rem 0.5rem rgba(0, 0, 0, 0.15)',
+    lg: '0 0.5rem 1rem rgba(0, 0, 0, 0.2)',
+} as const;
 
 
 // =============================================================================
 // Z-INDEX SCALE
 // =============================================================================
 
-// const zIndex = {
-//     base:    0,
-//     dropdown: 100,
-//     sticky:  200,
-//     modal:   300,
-//     tooltip: 400,
-// } as const;
+const zIndex = {
+    base:    0,
+    dropdown: 100,
+    sticky:  200,
+    modal:   300,
+    tooltip: 400,
+} as const;
 
 
 // =============================================================================
@@ -187,6 +188,7 @@ export const globalStyles = css({
         '--color-black': palette.black,
         '--color-white': palette.white,
         '--color-gray':  palette.gray,
+        '--color-gray-contrast': palette.grayContrast,
 
         // Colors - Accent (primary)
         '--color-red':    palette.red,
@@ -245,22 +247,47 @@ export const globalStyles = css({
         '--border-medium': borderWidth.medium,
         '--border-thick':  borderWidth.thick,
 
-        // Transitions (uncomment when needed)
-        // '--transition-fast':   transition.fast,
-        // '--transition-normal': transition.normal,
-        // '--transition-slow':   transition.slow,
+        // Transitions
+        '--transition-fast':   transition.fast,
+        '--transition-normal': transition.normal,
+        '--transition-slow':   transition.slow,
 
-        // Shadows (uncomment when needed)
-        // '--shadow-sm': shadow.sm,
-        // '--shadow-md': shadow.md,
-        // '--shadow-lg': shadow.lg,
+        // Shadows
+        '--shadow-sm': shadow.sm,
+        '--shadow-md': shadow.md,
+        '--shadow-lg': shadow.lg,
 
-        // Z-index (uncomment when needed)
-        // '--z-base':     zIndex.base,
-        // '--z-dropdown': zIndex.dropdown,
-        // '--z-sticky':   zIndex.sticky,
-        // '--z-modal':    zIndex.modal,
-        // '--z-tooltip':  zIndex.tooltip,
+        // Z-index
+        '--z-base':     zIndex.base,
+        '--z-dropdown': zIndex.dropdown,
+        '--z-sticky':   zIndex.sticky,
+        '--z-modal':    zIndex.modal,
+        '--z-tooltip':  zIndex.tooltip,
+
+        // Input tokens
+        '--input-height':           '3rem',
+        '--input-padding-x':        spacing.md,
+        '--input-padding-y':        spacing.sm,
+        '--input-bg':               palette.white,
+        '--input-text':             palette.black,
+        '--input-placeholder':      'rgba(15, 22, 32, 0.5)',
+        '--input-border-width':     borderWidth.medium,
+        '--input-border-color':     'transparent',
+        '--input-border-focus':     palette.blueContrast,
+        '--input-border-error':     palette.red,
+        '--input-border-success':   palette.green,
+        '--input-label-color':      palette.black,
+        '--input-label-size':       typography.fontSize.xs,
+        '--input-helper-color':     'rgba(15, 22, 32, 0.6)',
+
+        // Dropdown tokens
+        '--dropdown-bg':                  palette.black,
+        '--dropdown-text':                palette.white,
+        '--dropdown-item-hover-bg':       palette.blueContrast,
+        '--dropdown-item-selected-bg':    palette.blue,
+        '--dropdown-item-selected-text':  palette.white,
+        '--dropdown-separator':           'rgba(243, 244, 248, 0.1)',
+        '--dropdown-max-height':          '18rem',
     },
 
     '*, *::before, *::after': {
