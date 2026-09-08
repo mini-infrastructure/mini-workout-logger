@@ -1,6 +1,20 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { css } from '@emotion/react';
 import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown } from 'react-icons/fi';
+import {
+    useWorkouts,
+    ExerciseService,
+    exerciseCategoryOptions,
+    exerciseDifficultyOptions,
+    exerciseEquipmentOptions,
+    exerciseForceOptions,
+    exerciseMechanicsOptions,
+    exerciseRoleOptions,
+    exerciseTypeOptions,
+    energySystemOptions,
+} from '@mini/shared';
+import AutocompleteInput from './app/components/AutocompleteInput';
+import type { DropdownOption } from './app/components/Dropdown';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -61,52 +75,44 @@ const styles = {
         width: '100%',
         maxWidth: '50rem',
     }),
+    searchContainer: css({
+        width: '100%',
+        maxWidth: '25rem',
+    }),
     formActions: css({
         display: 'flex',
         gap: 'var(--space-md)',
         marginTop: 'var(--space-lg)',
     }),
+    cardsRow: css({
+        display: 'flex',
+        gap: 'var(--space-xl)',
+        alignItems: 'flex-start',
+    }),
+    cardColumn: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-sm)',
+    }),
+    cardColumnTitle: css({
+        fontSize: 'var(--font-size-sm)',
+        fontWeight: 'var(--font-weight-medium)',
+        color: 'var(--color-white)',
+    }),
 };
 
-// Sample data for inputs
-const categoryOptions = [
-    { value: 'strength', label: 'Strength' },
-    { value: 'cardio', label: 'Cardio' },
-    { value: 'mobility', label: 'Mobility' },
-    { value: 'rehabilitation', label: 'Rehabilitation' },
-];
-
-const muscleOptions = [
-    { value: 'chest', label: 'Chest' },
-    { value: 'back', label: 'Back' },
-    { value: 'shoulders', label: 'Shoulders' },
-    { value: 'biceps', label: 'Biceps' },
-    { value: 'triceps', label: 'Triceps' },
-    { value: 'legs', label: 'Legs' },
-    { value: 'core', label: 'Core' },
-];
-
-const exerciseSuggestions = [
-    { value: 'bench_press', label: 'Bench Press' },
-    { value: 'squat', label: 'Squat' },
-    { value: 'deadlift', label: 'Deadlift' },
-    { value: 'pull_up', label: 'Pull Up' },
-    { value: 'push_up', label: 'Push Up' },
-];
-
-// Form fields configuration
-const formFields: FormField[] = [
-    { name: 'name', label: 'Name', type: 'text', slots: 6, required: true, helperText: 'Your full name' },
-    { name: 'email', label: 'Email', type: 'email', slots: 6, required: true },
-    { name: 'password', label: 'Password', type: 'password', slots: 4, showPasswordToggle: true, validationRules: [
-        { label: 'At least 8 characters', validate: (v) => v.length >= 8 },
-        { label: 'One uppercase letter', validate: (v) => /[A-Z]/.test(v) },
-    ] },
-    { name: 'age', label: 'Age', type: 'number', slots: 4 },
-    { name: 'phone', label: 'Phone', type: 'tel', slots: 4 },
-    { name: 'category', label: 'Category', type: 'select', slots: 6, required: true, options: categoryOptions },
-    { name: 'muscles', label: 'Muscles', type: 'multiselect', slots: 6, options: muscleOptions, searchable: true, selectAll: true, selectAllLabel: 'All muscles' },
-    { name: 'exercise', label: 'Search Exercise', type: 'autocomplete', slots: 12, minChars: 1 },
+// Base exercise form fields (group_name suggestions injected dynamically)
+const baseExerciseFormFields: Omit<FormField, 'suggestions'>[] = [
+    { name: 'name', label: 'Name', type: 'text', slots: 6, required: true },
+    { name: 'group_name', label: 'Group', type: 'autocomplete', slots: 6, required: true, minChars: 0 },
+    { name: 'category', label: 'Category', type: 'select', slots: 4, options: exerciseCategoryOptions },
+    { name: 'difficulty', label: 'Difficulty', type: 'select', slots: 4, options: exerciseDifficultyOptions },
+    { name: 'equipment', label: 'Equipment', type: 'select', slots: 4, required: true, options: exerciseEquipmentOptions },
+    { name: 'force', label: 'Force', type: 'select', slots: 4, options: exerciseForceOptions },
+    { name: 'mechanics', label: 'Mechanics', type: 'select', slots: 4, options: exerciseMechanicsOptions },
+    { name: 'type', label: 'Type', type: 'select', slots: 4, options: exerciseTypeOptions },
+    { name: 'role', label: 'Role', type: 'select', slots: 6, options: exerciseRoleOptions },
+    { name: 'energy_system', label: 'Energy System', type: 'select', slots: 6, options: energySystemOptions },
 ];
 
 function App() {
@@ -116,12 +122,52 @@ function App() {
     const [interactiveProgress, setInteractiveProgress] = useState(20);
     const pushAlert = useAlert();
 
+    // Fetch workouts data
+    const { workouts } = useWorkouts();
+    const workoutCount = workouts.length;
+    const firstWorkout = workouts[0];
+    const firstWorkoutExerciseCount = firstWorkout?.workout_exercises?.length ?? 0;
+
     // Form state
     const formContainerRef = useRef<HTMLDivElement>(null);
     const [formValues, setFormValues] = useState<FormValues>({});
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
     const [isFormValid, setIsFormValid] = useState(false);
-    const [exerciseSearchSuggestions, setExerciseSearchSuggestions] = useState(exerciseSuggestions);
+
+    // Group names for autocomplete
+    const [allGroupNames, setAllGroupNames] = useState<string[]>([]);
+
+    // Fetch group names on mount
+    useEffect(() => {
+        ExerciseService.getAllExerciseGroupNames().then(setAllGroupNames);
+    }, []);
+
+    // Filter group suggestions based on current input
+    const groupSuggestions = useMemo(() => {
+        const currentValue = (formValues.group_name as string) ?? '';
+        if (!currentValue) {
+            return allGroupNames.map(name => ({ value: name, label: name }));
+        }
+        return allGroupNames
+            .filter(name => name.toLowerCase().includes(currentValue.toLowerCase()))
+            .map(name => ({ value: name, label: name }));
+    }, [allGroupNames, formValues.group_name]);
+
+    // Build form fields with dynamic group suggestions
+    const exerciseFormFields = useMemo((): FormField[] => {
+        return baseExerciseFormFields.map(field => {
+            if (field.name === 'group_name') {
+                return { ...field, suggestions: groupSuggestions } as FormField;
+            }
+            return field as FormField;
+        });
+    }, [groupSuggestions]);
+
+    // Exercise search state (separate from form)
+    const [exerciseSearchValue, setExerciseSearchValue] = useState('');
+    const [selectedExerciseLabel, setSelectedExerciseLabel] = useState<string | null>(null);
+    const [exerciseSuggestions, setExerciseSuggestions] = useState<DropdownOption[]>([]);
+    const [isSearchingExercises, setIsSearchingExercises] = useState(false);
 
     const handleFormChange = (name: string, value: string | string[] | null) => {
         setFormValues(prev => ({ ...prev, [name]: value }));
@@ -133,38 +179,88 @@ function App() {
                 return updated;
             });
         }
+    };
 
-        // Filter exercise suggestions based on search
-        if (name === 'exercise' && typeof value === 'string') {
-            const filtered = exerciseSuggestions.filter(s =>
-                s.label.toLowerCase().includes(value.toLowerCase())
-            );
-            setExerciseSearchSuggestions(filtered);
+    // Exercise search handler - queries the backend
+    const handleExerciseSearch = async (searchValue: string) => {
+        setExerciseSearchValue(searchValue);
+        // Clear selected label if user is typing something different
+        if (selectedExerciseLabel && searchValue !== selectedExerciseLabel) {
+            setSelectedExerciseLabel(null);
+        }
+        if (searchValue.length < 2) {
+            setExerciseSuggestions([]);
+            return;
+        }
+        setIsSearchingExercises(true);
+        try {
+            const response = await ExerciseService.getAll({ name: searchValue, size: 10 });
+            const options: DropdownOption[] = response.data.map(exercise => ({
+                value: String(exercise.id),
+                label: exercise.name,
+            }));
+            setExerciseSuggestions(options);
+        } catch {
+            setExerciseSuggestions([]);
+        } finally {
+            setIsSearchingExercises(false);
         }
     };
 
-    const handleFormSubmit = () => {
-        // Simulate a backend response with errors
-        const simulatedBackendErrors = ['email -> Invalid email format', 'age -> Must be at least 18'];
-        const parsedErrors = parseBackendErrors(simulatedBackendErrors);
-        setFormErrors(parsedErrors);
-        pushAlert('Form submitted (simulated backend errors applied)', 'info');
+    const handleExerciseSelect = (option: DropdownOption) => {
+        setExerciseSearchValue(option.label);
+        setSelectedExerciseLabel(option.label);
+        setExerciseSuggestions([]);
+        pushAlert(`Selected exercise: ${option.label}`, 'info');
+    };
+
+    const handleExerciseSearchFocus = () => {
+        // Only search on focus if the current value is NOT the selected exercise
+        if (exerciseSearchValue.length >= 2 && exerciseSearchValue !== selectedExerciseLabel) {
+            handleExerciseSearch(exerciseSearchValue);
+        }
+    };
+
+    const handleFormSubmit = async () => {
+        try {
+            const payload = {
+                name: formValues.name as string,
+                group_name: formValues.group_name as string,
+                equipment: formValues.equipment as string,
+                category: formValues.category as string || undefined,
+                difficulty: formValues.difficulty as string || undefined,
+                force: formValues.force as string || undefined,
+                mechanics: formValues.mechanics as string || undefined,
+                type: formValues.type as string || undefined,
+                role: formValues.role as string || undefined,
+                energy_system: formValues.energy_system as string || undefined,
+                exercise_muscles: [],
+            };
+            await ExerciseService.create(payload);
+            pushAlert('Exercise created successfully!', 'success');
+            setFormValues({});
+            setFormErrors({});
+        } catch (error) {
+            if (error instanceof Error && error.message) {
+                // Backend returns errors in format "field -> message"
+                const errorLines = error.message.split('\n').filter(Boolean);
+                const parsedErrors = parseBackendErrors(errorLines);
+                if (Object.keys(parsedErrors).length > 0) {
+                    setFormErrors(parsedErrors);
+                    pushAlert('Validation errors from backend', 'error');
+                } else {
+                    pushAlert(error.message, 'error');
+                }
+            } else {
+                pushAlert('An error occurred while creating exercise', 'error');
+            }
+        }
     };
 
     const handleFormClear = () => {
         setFormValues({});
         setFormErrors({});
         pushAlert('Form cleared', 'success');
-    };
-
-    // Get the form fields with dynamic suggestions
-    const getFormFieldsWithSuggestions = (): FormField[] => {
-        return formFields.map(field => {
-            if (field.name === 'exercise') {
-                return { ...field, suggestions: exerciseSearchSuggestions };
-            }
-            return field;
-        });
     };
 
     const handleIncreaseProgress = () => {
@@ -265,86 +361,58 @@ function App() {
                 </div>
             </section>
 
-            {/* Progress Card */}
+            {/* Cards */}
             <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>ProgressCard</h2>
-                <div css={styles.cardRow}>
-                    <ProgressCard
-                        color="red"
-                        title="Shoes"
-                        value="$55"
-                        progressLabel="$12 saved"
-                        current={12}
-                        total={55}
-                        displayMode="percentage"
-                        onClick={() => alert('Shoes clicked!')}
-                    />
-                    <ProgressCard
-                        color="yellow"
-                        title="Vacation"
-                        value="$1,200"
-                        progressLabel="$340 saved"
-                        current={340}
-                        total={1200}
-                        displayMode="percentage"
-                    />
-                    <ProgressCard
-                        color="blue"
-                        title="Books"
-                        value="10 total"
-                        progressLabel="Read"
-                        current={7}
-                        total={10}
-                        displayMode="fraction"
-                        onClick={() => alert('Books clicked!')}
-                    />
-                </div>
-            </section>
+                <h2 css={styles.sectionTitle}>Cards</h2>
+                <div css={styles.cardsRow}>
+                    {/* ProgressCard */}
+                    <div css={styles.cardColumn}>
+                        <span css={styles.cardColumnTitle}>ProgressCard</span>
+                        <ProgressCard
+                            color="red"
+                            title="Workouts"
+                            value="of the week"
+                            progressLabel="3 concluídos"
+                            current={3}
+                            total={7}
+                            displayMode="percentage"
+                            onClick={() => alert('Workouts clicked!')}
+                        />
+                    </div>
 
-            {/* Stat Card */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>StatCard</h2>
-                <div css={styles.cardRow}>
-                    <StatCard value="$42" label="donated" color="yellow" size="wide" />
-                    <StatCard value={5} label="causes" color="pink" onClick={() => alert('Causes clicked!')} />
-                    <StatCard value={12} label="kind acts" color="blue" />
-                </div>
-            </section>
+                    {/* StatCard */}
+                    <div css={styles.cardColumn}>
+                        <span css={styles.cardColumnTitle}>StatCard</span>
+                        <StatCard value={workoutCount} label="workouts" color="yellow" size="wide" onClick={() => alert('Workouts clicked!')} />
+                        <StatCard value={workoutCount} label="workouts" color="blue" onClick={() => alert('Workouts clicked!')} />
+                    </div>
 
-            {/* Card */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>Card</h2>
-                <div css={styles.cardRow}>
-                    <Card color="red" title="Workout Plan" description="Your weekly routine" />
-                    <Card color="green" size="wide" title="Weekly Summary" description="Keep it up! Your progress is growing fast." />
-                    <Card color="blue" title="Exercises" description="12 total" onClick={() => alert('Clicked!')} />
-                </div>
-            </section>
+                    {/* Card */}
+                    <div css={styles.cardColumn}>
+                        <span css={styles.cardColumnTitle}>Card</span>
+                        <Card
+                            color="green"
+                            title={firstWorkout?.name ?? 'No workouts'}
+                            description={`${firstWorkoutExerciseCount} exercises`}
+                            onClick={() => alert('Workout clicked!')}
+                        />
+                    </div>
 
-            {/* Folder Card */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>FolderCard</h2>
-                <div css={styles.cardRow}>
-                    <FolderCard color="red" title="Workouts" description="12 plans" onClick={() => alert('Workouts clicked!')} />
-                    <FolderCard color="yellow" title="Exercises" description="48 total" onClick={() => alert('Exercises clicked!')} />
-                    <FolderCard color="pink" title="Goals" description="5 active" />
-                </div>
-            </section>
+                    {/* FolderCard */}
+                    <div css={styles.cardColumn}>
+                        <span css={styles.cardColumnTitle}>FolderCard</span>
+                        <FolderCard color="pink" title="Exercises" description="48 total" onClick={() => alert('Exercises clicked!')} />
+                    </div>
 
-            {/* Action Card */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>ActionCard</h2>
-                <div css={styles.cardRow}>
-                    <ActionCard
-                        title="Add New Savings"
-                        icon={<FiPlus />}
-                        onClick={() => alert('Add savings clicked!')}
-                    />
-                    <ActionCard
-                        title="New Workout"
-                        icon={<FiPlus />}
-                        onClick={() => alert('New workout clicked!')}
-                    />
+                    {/* ActionCard */}
+                    <div css={styles.cardColumn}>
+                        <span css={styles.cardColumnTitle}>ActionCard</span>
+                        <ActionCard
+                            title="New Workout"
+                            icon={<FiPlus />}
+                            onClick={() => alert('New workout clicked!')}
+                        />
+                    </div>
                 </div>
             </section>
 
@@ -371,13 +439,33 @@ function App() {
                 </div>
             </section>
 
-            {/* Form */}
+            {/* Search (Autocomplete with backend) */}
             <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>Form</h2>
+                <h2 css={styles.sectionTitle}>Search (Autocomplete)</h2>
+                <div css={styles.searchContainer}>
+                    <AutocompleteInput
+                        name="exercise-search"
+                        label="Search Exercise"
+                        inputValue={exerciseSearchValue}
+                        onInputChange={handleExerciseSearch}
+                        onFocus={handleExerciseSearchFocus}
+                        suggestions={exerciseSuggestions}
+                        onSelect={handleExerciseSelect}
+                        placeholder="Type to search exercises..."
+                        helperText="Searches the backend for exercises matching your input"
+                        loading={isSearchingExercises}
+                        minChars={2}
+                    />
+                </div>
+            </section>
+
+            {/* Form (Exercise) */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>Form (Exercise)</h2>
                 <div ref={formContainerRef} css={styles.formContainer}>
                     <Form
                         containerRef={formContainerRef}
-                        fields={getFormFieldsWithSuggestions()}
+                        fields={exerciseFormFields}
                         totalSlots={12}
                         values={formValues}
                         onChange={handleFormChange}
