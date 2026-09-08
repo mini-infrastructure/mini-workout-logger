@@ -1,5 +1,8 @@
 import { useRef, type ReactNode } from 'react';
+import type { SerializedStyles } from '@emotion/react';
 import styles from './index.style';
+
+type IconButtonSize = 'sm' | 'md' | 'lg';
 
 type IconButtonProps = {
     icon: ReactNode;
@@ -9,6 +12,8 @@ type IconButtonProps = {
     animateIcon?: boolean;
     disabled?: boolean;
     tooltip?: string;
+    size?: IconButtonSize;
+    customCss?: SerializedStyles;
 };
 
 const IconButton = ({
@@ -19,6 +24,8 @@ const IconButton = ({
     animateIcon = false,
     disabled = false,
     tooltip,
+    size = 'md',
+    customCss,
 }: IconButtonProps) => {
     const wasSelectedRef = useRef(isSelected);
     const currentIcon = isSelected && selectedIcon ? selectedIcon : icon;
@@ -36,11 +43,11 @@ const IconButton = ({
         return undefined;
     };
 
-    const iconCss = [styles.icon, getIconAnimationStyle()];
+    const iconCss = [styles.icon, styles.iconSize[size], getIconAnimationStyle()];
 
     return (
         <button
-            css={[styles.button, isSelected && styles.buttonSelected]}
+            css={[styles.button, styles.buttonSize[size], isSelected && styles.buttonSelected, customCss]}
             onClick={onClick}
             disabled={disabled}
             title={tooltip}

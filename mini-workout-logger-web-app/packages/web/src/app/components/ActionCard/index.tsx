@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import IconButton from '../IconButton';
 import styles from './index.style';
 
 type ActionCardProps = {
@@ -15,9 +16,11 @@ const ActionCard = ({
     return (
         <div css={styles.card} onClick={onClick}>
             <h3 css={styles.title}>{title}</h3>
-            <div css={styles.iconButton}>
-                {icon}
-            </div>
+            <IconButton
+                icon={icon}
+                size="lg"
+                customCss={styles.iconButtonOverride}
+            />
         </div>
     );
 };

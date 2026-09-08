@@ -15,9 +15,6 @@ const styles = {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-
-        width: 'var(--space-xl)',
-        height: 'var(--space-xl)',
         padding: 0,
 
         backgroundColor: 'var(--color-white)',
@@ -40,6 +37,21 @@ const styles = {
         },
     }),
 
+    buttonSize: {
+        sm: css({
+            width: 'var(--space-lg)',
+            height: 'var(--space-lg)',
+        }),
+        md: css({
+            width: 'var(--space-xl)',
+            height: 'var(--space-xl)',
+        }),
+        lg: css({
+            width: '3.5rem',
+            height: '3.5rem',
+        }),
+    },
+
     buttonSelected: css({
         backgroundColor: 'var(--color-black)',
         color: 'var(--color-white)',
@@ -56,8 +68,19 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 'var(--font-size-md)',
     }),
+
+    iconSize: {
+        sm: css({
+            fontSize: 'var(--font-size-sm)',
+        }),
+        md: css({
+            fontSize: 'var(--font-size-md)',
+        }),
+        lg: css({
+            fontSize: 'var(--font-size-2xl)',
+        }),
+    },
 
     iconAnimateIn: css({
         animation: `${rotateIn} 0.3s ease forwards`,

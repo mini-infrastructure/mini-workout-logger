@@ -48,19 +48,13 @@ const styles = {
         textAlign: 'center',
     }),
 
-    iconButton: css({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '3.5rem',
-        height: '3.5rem',
-        borderRadius: 'var(--radius-full)',
-        backgroundColor: 'var(--color-white)',
-        color: 'var(--color-black)',
-        fontSize: 'var(--font-size-2xl)',
+    iconButtonOverride: css({
         border: 'none',
-        cursor: 'pointer',
-        transition: 'none',
+        pointerEvents: 'none',
+        '&:hover': {
+            backgroundColor: 'var(--color-white)',
+            color: 'var(--color-black)',
+        },
     }),
 };
 
