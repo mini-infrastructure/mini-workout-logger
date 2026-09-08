@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { css } from '@emotion/react';
-import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown } from 'react-icons/fi';
+import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiFilter } from 'react-icons/fi';
 import {
     useWorkouts,
     ExerciseService,
+    MuscleService,
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
     exerciseEquipmentOptions,
@@ -12,9 +13,10 @@ import {
     exerciseRoleOptions,
     exerciseTypeOptions,
     energySystemOptions,
+    type MuscleReadDTO,
 } from '@mini/shared';
 import AutocompleteInput from './app/components/AutocompleteInput';
-import type { DropdownOption } from './app/components/Dropdown';
+import Dropdown, { type DropdownOption } from './app/components/Dropdown';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -77,7 +79,36 @@ const styles = {
     }),
     searchContainer: css({
         width: '100%',
-        maxWidth: '25rem',
+        maxWidth: '35rem',
+    }),
+    searchWithFilter: css({
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 'var(--space-sm)',
+        width: '100%',
+        maxWidth: '40rem',
+    }),
+    searchInputWrapper: css({
+        flex: 1,
+    }),
+    filterButtonWrapper: css({
+        position: 'relative',
+        marginTop: 'var(--space-lg)',
+    }),
+    filterBadge: css({
+        position: 'absolute',
+        top: '-0.25rem',
+        right: '-0.25rem',
+        width: '1rem',
+        height: '1rem',
+        borderRadius: 'var(--radius-full)',
+        backgroundColor: 'var(--color-red)',
+        color: 'var(--color-white)',
+        fontSize: 'var(--font-size-xs)',
+        fontWeight: 'var(--font-weight-bold)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }),
     formActions: css({
         display: 'flex',
@@ -177,6 +208,35 @@ function App() {
     const [exerciseSuggestions, setExerciseSuggestions] = useState<DropdownOption[]>([]);
     const [isSearchingExercises, setIsSearchingExercises] = useState(false);
 
+    // Filtered search state (search with muscle filter)
+    const [filteredSearchValue, setFilteredSearchValue] = useState('');
+    const [filteredSearchSuggestions, setFilteredSearchSuggestions] = useState<DropdownOption[]>([]);
+    const [isSearchingFiltered, setIsSearchingFiltered] = useState(false);
+    const [selectedMuscleFilters, setSelectedMuscleFilters] = useState<string[]>([]);
+    const [muscleFilterOpen, setMuscleFilterOpen] = useState(false);
+    const [allMuscles, setAllMuscles] = useState<MuscleReadDTO[]>([]);
+    const filterButtonRef = useRef<HTMLDivElement>(null);
+
+    // Fetch muscles on mount
+    useEffect(() => {
+        MuscleService.getAll().then(setAllMuscles);
+    }, []);
+
+    // Filter muscles to show only root and level 1 (direct children of root)
+    const muscleFilterOptions = useMemo(() => {
+        const rootCodes = new Set(
+            allMuscles.filter(m => !m.parent_code).map(m => m.code)
+        );
+        // Root muscles and level 1 (parent is a root muscle)
+        const filteredMuscles = allMuscles.filter(m =>
+            !m.parent_code || rootCodes.has(m.parent_code)
+        );
+        return filteredMuscles.map(m => ({
+            value: m.code ?? '',
+            label: m.name,
+        })).filter(opt => opt.value);
+    }, [allMuscles]);
+
     const handleFormChange = (name: string, value: string | string[] | null) => {
         setFormValues(prev => ({ ...prev, [name]: value }));
         // Clear error when field changes
@@ -226,6 +286,72 @@ function App() {
         // Only search on focus if the current value is NOT the selected exercise
         if (exerciseSearchValue.length >= 2 && exerciseSearchValue !== selectedExerciseLabel) {
             handleExerciseSearch(exerciseSearchValue);
+        }
+    };
+
+    // Filtered search handlers (with muscle filter)
+    const handleFilteredSearch = async (searchValue: string) => {
+        setFilteredSearchValue(searchValue);
+        if (searchValue.length < 2 && selectedMuscleFilters.length === 0) {
+            setFilteredSearchSuggestions([]);
+            return;
+        }
+        setIsSearchingFiltered(true);
+        try {
+            const params: Record<string, string | number> = { size: 10 };
+            if (searchValue.length >= 2) {
+                params.name = searchValue;
+            }
+            if (selectedMuscleFilters.length > 0) {
+                params.muscles = selectedMuscleFilters.join(',');
+            }
+            const response = await ExerciseService.getAll(params);
+            const options: DropdownOption[] = response.data.map(exercise => ({
+                value: String(exercise.id),
+                label: exercise.name,
+            }));
+            setFilteredSearchSuggestions(options);
+        } catch {
+            setFilteredSearchSuggestions([]);
+        } finally {
+            setIsSearchingFiltered(false);
+        }
+    };
+
+    const handleFilteredSearchSelect = (option: DropdownOption) => {
+        setFilteredSearchValue(option.label);
+        setFilteredSearchSuggestions([]);
+        pushAlert(`Selected exercise: ${option.label}`, 'info');
+    };
+
+    const handleMuscleFilterChange = (muscles: string[]) => {
+        setSelectedMuscleFilters(muscles);
+        // Re-trigger search with new filters
+        if (filteredSearchValue.length >= 2 || muscles.length > 0) {
+            handleFilteredSearchWithMuscles(filteredSearchValue, muscles);
+        }
+    };
+
+    const handleFilteredSearchWithMuscles = async (searchValue: string, muscles: string[]) => {
+        setIsSearchingFiltered(true);
+        try {
+            const params: Record<string, string | number> = { size: 10 };
+            if (searchValue.length >= 2) {
+                params.name = searchValue;
+            }
+            if (muscles.length > 0) {
+                params.muscles = muscles.join(',');
+            }
+            const response = await ExerciseService.getAll(params);
+            const options: DropdownOption[] = response.data.map(exercise => ({
+                value: String(exercise.id),
+                label: exercise.name,
+            }));
+            setFilteredSearchSuggestions(options);
+        } catch {
+            setFilteredSearchSuggestions([]);
+        } finally {
+            setIsSearchingFiltered(false);
         }
     };
 
@@ -464,6 +590,51 @@ function App() {
                         loading={isSearchingExercises}
                         minChars={2}
                     />
+                </div>
+            </section>
+
+            {/* Search with Filter */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>Search with Filter</h2>
+                <div css={styles.searchWithFilter}>
+                    <div css={styles.searchInputWrapper}>
+                        <AutocompleteInput
+                            name="filtered-exercise-search"
+                            label="Search Exercise"
+                            inputValue={filteredSearchValue}
+                            onInputChange={handleFilteredSearch}
+                            suggestions={filteredSearchSuggestions}
+                            onSelect={handleFilteredSearchSelect}
+                            placeholder="Type to search exercises..."
+                            helperText={selectedMuscleFilters.length > 0
+                                ? `Filtering by ${selectedMuscleFilters.length} muscle(s)`
+                                : 'Click the filter button to filter by muscles'
+                            }
+                            loading={isSearchingFiltered}
+                            minChars={selectedMuscleFilters.length > 0 ? 0 : 2}
+                        />
+                    </div>
+                    <div ref={filterButtonRef} css={styles.filterButtonWrapper}>
+                        <IconButton
+                            icon={<FiFilter />}
+                            tooltip="Filter by muscles"
+                            onClick={() => setMuscleFilterOpen(prev => !prev)}
+                        />
+                        {selectedMuscleFilters.length > 0 && (
+                            <span css={styles.filterBadge}>{selectedMuscleFilters.length}</span>
+                        )}
+                        <Dropdown
+                            options={muscleFilterOptions}
+                            value={selectedMuscleFilters}
+                            onChange={handleMuscleFilterChange}
+                            multiple
+                            open={muscleFilterOpen}
+                            onClose={() => setMuscleFilterOpen(false)}
+                            selectAll
+                            selectAllLabel="All muscles"
+                            emptyMessage="No muscles found"
+                        />
+                    </div>
                 </div>
             </section>
 
