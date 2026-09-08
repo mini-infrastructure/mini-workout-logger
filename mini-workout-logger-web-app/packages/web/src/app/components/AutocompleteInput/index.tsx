@@ -13,6 +13,7 @@ export type AutocompleteInputProps<T = string> = {
     onInputChange: (value: string) => void;
     suggestions: DropdownOption<T>[];
     onSelect: (option: DropdownOption<T>) => void;
+    onFocus?: () => void;
     placeholder?: string;
     error?: string;
     helperText?: string;
@@ -33,6 +34,7 @@ const AutocompleteInput = <T extends string | number = string>({
     onInputChange,
     suggestions,
     onSelect,
+    onFocus: onFocusProp,
     placeholder,
     error,
     helperText,
@@ -86,6 +88,7 @@ const AutocompleteInput = <T extends string | number = string>({
     };
 
     const handleFocus = () => {
+        onFocusProp?.();
         if (inputValue.length >= minChars && (suggestions.length > 0 || loading)) {
             setOpen(true);
         }
