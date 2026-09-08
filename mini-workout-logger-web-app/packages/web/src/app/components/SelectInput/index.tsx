@@ -1,10 +1,13 @@
 import { useState, useRef, useMemo } from 'react';
 import type { SerializedStyles } from '@emotion/react';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiPlus } from 'react-icons/fi';
 import TextInput from '../TextInput';
 import Dropdown, { type DropdownOption, type DropdownGroup } from '../Dropdown';
 import { useClickOut } from '../../hooks/useClickOut';
 import styles from './index.style';
+
+// Special marker for the "create new" option
+const CREATE_NEW_MARKER = '__CREATE_NEW__';
 
 export type SelectInputProps<T = string> = {
     name: string;
@@ -27,6 +30,8 @@ export type SelectInputProps<T = string> = {
     editable?: boolean;
     /** Called when the user types in editable mode */
     onInputChange?: (value: string) => void;
+    /** Label for creating new option in editable mode. Use {value} as placeholder. Default: "Create '{value}'" */
+    createNewLabel?: string;
 };
 
 const SelectInput = <T extends string | number = string>({
@@ -48,6 +53,7 @@ const SelectInput = <T extends string | number = string>({
     customCss,
     editable = false,
     onInputChange,
+    createNewLabel = "Create '{value}'",
 }: SelectInputProps<T>) => {
     const [open, setOpen] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
@@ -65,13 +71,35 @@ const SelectInput = <T extends string | number = string>({
 
     const selectedOption = allOptions.find(opt => opt.value === value);
 
-    // In editable mode, filter options based on input value
+    // Check if typed value exactly matches an existing option
+    const hasExactMatch = useMemo(() => {
+        if (!editableInputValue) return false;
+        const lowerInput = editableInputValue.toLowerCase();
+        return allOptions.some(opt => opt.label.toLowerCase() === lowerInput);
+    }, [editableInputValue, allOptions]);
+
+    // In editable mode, filter options based on input value and add "create new" option
     const filteredOptions = useMemo(() => {
-        if (!editable || !editableInputValue) return options;
-        return options.filter(opt =>
-            opt.label.toLowerCase().includes(editableInputValue.toLowerCase())
-        );
-    }, [editable, editableInputValue, options]);
+        let filtered = options;
+        if (editable && editableInputValue) {
+            filtered = options.filter(opt =>
+                opt.label.toLowerCase().includes(editableInputValue.toLowerCase())
+            );
+        }
+
+        // Add "create new" option if in editable mode, has input, and no exact match
+        if (editable && editableInputValue && !hasExactMatch) {
+            const createLabel = createNewLabel.replace('{value}', editableInputValue);
+            const createOption: DropdownOption<T> = {
+                value: `${CREATE_NEW_MARKER}${editableInputValue}` as T,
+                label: createLabel,
+                icon: <FiPlus />,
+            };
+            return [...filtered, createOption];
+        }
+
+        return filtered;
+    }, [editable, editableInputValue, options, hasExactMatch, createNewLabel]);
 
     const filteredGroupedOptions = useMemo(() => {
         if (!editable || !editableInputValue || !groupedOptions) return groupedOptions;
@@ -91,10 +119,17 @@ const SelectInput = <T extends string | number = string>({
     };
 
     const handleChange = (newValue: T | null) => {
-        onChange(newValue);
-        if (editable) {
-            const selected = allOptions.find(opt => opt.value === newValue);
-            setEditableInputValue(selected?.label ?? '');
+        if (editable && typeof newValue === 'string' && newValue.startsWith(CREATE_NEW_MARKER)) {
+            // "Create new" option was selected - use the typed value
+            const actualValue = newValue.slice(CREATE_NEW_MARKER.length) as T;
+            onChange(actualValue);
+            setEditableInputValue(actualValue as string);
+        } else {
+            onChange(newValue);
+            if (editable) {
+                const selected = allOptions.find(opt => opt.value === newValue);
+                setEditableInputValue(selected?.label ?? (newValue as string) ?? '');
+            }
         }
         setOpen(false);
     };
