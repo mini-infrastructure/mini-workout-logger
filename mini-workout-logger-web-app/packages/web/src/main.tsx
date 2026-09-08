@@ -4,10 +4,13 @@ import { Global } from '@emotion/react';
 
 import App from './App';
 import { globalStyles } from './app/themes/tokens';
+import { AlertProvider } from './app/context/alert.context';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <Global styles={globalStyles} />
-        <App />
+        <AlertProvider>
+            <App />
+        </AlertProvider>
     </StrictMode>,
 );

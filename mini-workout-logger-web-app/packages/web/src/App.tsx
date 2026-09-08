@@ -11,6 +11,7 @@ import FolderCard from './app/components/FolderCard';
 import ProgressBar from './app/components/ProgressBar';
 import ProgressCard from './app/components/ProgressCard';
 import ActionCard from './app/components/ActionCard';
+import { useAlert } from './app/context/alert.context';
 
 const styles = {
     container: css({
@@ -62,6 +63,7 @@ function App() {
     const [secondarySelected, setSecondarySelected] = useState(false);
     const [iconSelected, setIconSelected] = useState(false);
     const [interactiveProgress, setInteractiveProgress] = useState(20);
+    const pushAlert = useAlert();
 
     const handleIncreaseProgress = () => {
         setInteractiveProgress(prev => Math.min(prev + 10, 100));
@@ -240,6 +242,29 @@ function App() {
                         title="New Workout"
                         icon={<FiPlus />}
                         onClick={() => alert('New workout clicked!')}
+                    />
+                </div>
+            </section>
+
+            {/* Alert */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>Alert</h2>
+                <div css={styles.row}>
+                    <SecondaryButton
+                        label="Success"
+                        onClick={() => pushAlert('Operation completed successfully!', 'success')}
+                    />
+                    <SecondaryButton
+                        label="Error"
+                        onClick={() => pushAlert('Something went wrong. Please try again.', 'error')}
+                    />
+                    <SecondaryButton
+                        label="Warning"
+                        onClick={() => pushAlert('This action cannot be undone.', 'warning')}
+                    />
+                    <SecondaryButton
+                        label="Info"
+                        onClick={() => pushAlert('Your session will expire in 5 minutes.', 'info')}
                     />
                 </div>
             </section>
