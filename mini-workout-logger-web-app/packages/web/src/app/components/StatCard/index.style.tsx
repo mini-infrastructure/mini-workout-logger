@@ -12,14 +12,15 @@ const styles = {
         border: 'var(--border-thick) solid transparent',
         overflow: 'hidden',
         transition: 'transform 0.2s ease, border-color 0.2s ease',
-    }),
 
-    clickable: css({
-        cursor: 'pointer',
         '&:hover': {
             transform: 'translateY(-0.125rem)',
             borderColor: 'var(--color-white)',
         },
+    }),
+
+    clickable: css({
+        cursor: 'pointer',
         '&:active': {
             transform: 'translateY(0)',
             borderColor: 'var(--color-white)',
