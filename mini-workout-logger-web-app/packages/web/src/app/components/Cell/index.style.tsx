@@ -234,7 +234,6 @@ const styles = {
 
     // Hidden rectangle in selected state (fades out and collapses, image takes over)
     coloredRectangleHidden: css({
-        position: 'absolute',
         opacity: 0,
         minHeight: 0,
         marginBottom: 0,
@@ -271,15 +270,15 @@ const styles = {
         position: 'relative',
         display: 'flex',
         justifyContent: 'flex-start',
-        marginTop: '-5rem',
+        marginTop: '-5.5rem',
         marginBottom: 'var(--space-xs)',
         zIndex: 2,
         transition: 'all 0.4s ease',
     }),
 
-    // Image container for selected state (full width, no overlap, reduced margin)
+    // Image container for selected state (full width, compensate for gap after collapsed rectangle)
     imageContainerSelected: css({
-        marginTop: 0,
+        marginTop: 'calc(-1 * var(--space-md))',
         marginBottom: 'var(--space-xs)',
     }),
 
@@ -353,29 +352,44 @@ const styles = {
     // ============================================
 
     // Version 1 (white card) - Unselected state
-    // White bg, gray border, black hollow icon
+    // Transparent bg, no border, black hollow icon
     favoriteButton: css({
         flexShrink: 0,
-        backgroundColor: themeColors.white,
-        border: `1px solid #D1D5DB`,
+        backgroundColor: 'transparent',
+        border: 'none',
         color: themeColors.black,
         borderRadius: 'var(--radius-full)',
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: themeColors.black,
+        },
     }),
 
     // Version 1 (white card) - Selected/favorited state
-    // White bg, gray border, black FILLED icon
+    // Transparent bg, no border, black FILLED icon
     favoriteButtonActive: css({
-        backgroundColor: themeColors.white,
-        border: `1px solid #D1D5DB`,
+        backgroundColor: 'transparent',
+        border: 'none',
         color: themeColors.black,
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: themeColors.black,
+        },
     }),
 
     // Version 2 (colored card) - Unselected state
     // Transparent bg, no border, white hollow icon
     favoriteButtonSelected: css({
         backgroundColor: 'transparent',
-        border: '1px solid transparent',
+        border: 'none',
         color: themeColors.white,
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: themeColors.white,
+        },
     }),
 
     // Version 2 (colored card) - Selected/favorited state
@@ -383,7 +397,11 @@ const styles = {
     // Note: icon color is set dynamically via inline style in the component
     favoriteButtonSelectedActive: css({
         backgroundColor: themeColors.white,
-        border: '1px solid transparent',
+        border: 'none',
+        '&:hover:not(:disabled)': {
+            backgroundColor: themeColors.white,
+            border: 'none',
+        },
     }),
 
     // Fields grid
@@ -472,6 +490,64 @@ const styles = {
             backgroundColor: themeColors.black,
             color: themeColors.white,
             borderColor: themeColors.black,
+        },
+    }),
+
+    // ============================================
+    // NO HOVER OVERRIDE FOR ICON BUTTONS
+    // ============================================
+    noHover: css({
+        cursor: 'pointer',
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent !important',
+            color: 'inherit !important',
+            borderColor: 'transparent !important',
+        },
+    }),
+
+    // ============================================
+    // RATING COMPONENT (Version 1 only)
+    // ============================================
+
+    // Rating container (horizontal, aligned to bottom-right of colored rectangle area)
+    ratingContainer: css({
+        position: 'absolute',
+        right: 0,
+        bottom: 'var(--space-xs)',
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 0,
+    }),
+
+    // Rating button - unselected (transparent bg, hollow black icon, larger icon)
+    ratingButton: css({
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: themeColors.black,
+        width: 'auto',
+        height: 'auto',
+        padding: '0.15rem',
+        fontSize: 'var(--font-size-xl)',
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: themeColors.black,
+        },
+    }),
+
+    // Rating button - selected (transparent bg, solid black icon, larger icon)
+    ratingButtonActive: css({
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: themeColors.black,
+        width: 'auto',
+        height: 'auto',
+        padding: '0.15rem',
+        fontSize: 'var(--font-size-xl)',
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: themeColors.black,
         },
     }),
 

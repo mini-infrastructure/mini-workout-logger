@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { css } from '@emotion/react';
 import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiFilter, FiGrid, FiList } from 'react-icons/fi';
+import { RiFireLine, RiFireFill } from 'react-icons/ri';
 import {
     useWorkouts,
     ExerciseService,
@@ -284,6 +285,13 @@ function App() {
     // Sample cells for showcase (to test component independently)
     const [sampleFavorites, setSampleFavorites] = useState<Set<string>>(new Set());
     const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
+    const [sampleRatings, setSampleRatings] = useState<Record<string, number>>({
+        'sample-1': 2,
+        'sample-2': 3,
+        'sample-3': 1,
+        'sample-4': 1,
+        'sample-5': 3,
+    });
 
     const sampleCells = [
         {
@@ -294,7 +302,6 @@ function App() {
             image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&h=100&fit=crop',
             fields: [
                 { label: 'Category', value: 'Strength' },
-                { label: 'Difficulty', value: 'Intermediate' },
                 { label: 'Equipment', value: 'Barbell' },
                 { label: 'Mechanics', value: 'Compound' },
             ],
@@ -307,7 +314,7 @@ function App() {
             image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=100&h=100&fit=crop',
             fields: [
                 { label: 'Category', value: 'Strength' },
-                { label: 'Difficulty', value: 'Advanced' },
+                { label: 'Type', value: 'Compound' },
             ],
         },
         {
@@ -339,7 +346,6 @@ function App() {
             image: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=100&h=100&fit=crop',
             fields: [
                 { label: 'Category', value: 'Strength' },
-                { label: 'Difficulty', value: 'Advanced' },
                 { label: 'Equipment', value: 'Barbell' },
             ],
         },
@@ -864,40 +870,14 @@ function App() {
                             favoriteIconSelected={<FiHeart fill="currentColor" />}
                             isSelected={selectedSampleId === cell.id}
                             onSelectionChange={isSelected => setSelectedSampleId(isSelected ? cell.id : null)}
+                            ratingValue={sampleRatings[cell.id] ?? 0}
+                            ratingMax={3}
+                            ratingIcon={<RiFireLine />}
+                            ratingIconSelected={<RiFireFill />}
+                            onRatingChange={value => setSampleRatings(prev => ({ ...prev, [cell.id]: value }))}
                         />
                     ))}
                 </div>
-            </section>
-
-            {/* Exercise Cells (from search) */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>Exercise Cells (from search)</h2>
-                {selectedExercises.length === 0 ? (
-                    <div css={styles.cellsEmpty}>
-                        Search and select exercises above to see them as cells
-                    </div>
-                ) : (
-                    <div css={styles.cellsGrid}>
-                        {selectedExercises.map(exercise => (
-                            <Cell
-                                key={exercise.id}
-                                title={exercise.name}
-                                description={exercise.group_name}
-                                image={exercise.media?.[0]?.data ? `data:${exercise.media[0].content_type};base64,${exercise.media[0].data}` : undefined}
-                                color={getCellColor(exercise)}
-                                fields={exerciseToCellFields(exercise)}
-                                actionLabel="View Details"
-                                onAction={() => handleCellAction(exercise)}
-                                isFavorite={favoriteExerciseIds.has(exercise.id)}
-                                onFavoriteToggle={isFavorite => handleCellFavoriteToggle(exercise.id, isFavorite)}
-                                favoriteIcon={<FiHeart />}
-                                favoriteIconSelected={<FiHeart fill="currentColor" />}
-                                isSelected={selectedCellId === exercise.id}
-                                onSelectionChange={isSelected => handleCellSelectionChange(exercise.id, isSelected)}
-                            />
-                        ))}
-                    </div>
-                )}
             </section>
 
             {/* Form (Exercise) */}

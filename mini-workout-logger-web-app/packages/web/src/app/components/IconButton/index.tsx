@@ -14,6 +14,8 @@ type IconButtonProps = {
     tooltip?: string;
     size?: IconButtonSize;
     customCss?: SerializedStyles | (SerializedStyles | false | undefined)[];
+    /** Disable hover effect */
+    noHover?: boolean;
 };
 
 const IconButton = ({
@@ -26,6 +28,7 @@ const IconButton = ({
     tooltip,
     size = 'md',
     customCss,
+    noHover = false,
 }: IconButtonProps) => {
     const wasSelectedRef = useRef(isSelected);
     const currentIcon = isSelected && selectedIcon ? selectedIcon : icon;
@@ -47,7 +50,7 @@ const IconButton = ({
 
     return (
         <button
-            css={[styles.button, styles.buttonSize[size], isSelected && styles.buttonSelected, customCss]}
+            css={[styles.button, styles.buttonSize[size], isSelected && styles.buttonSelected, noHover && styles.noHover, customCss]}
             onClick={onClick}
             disabled={disabled}
             title={tooltip}

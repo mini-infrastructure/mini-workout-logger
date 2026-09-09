@@ -91,6 +91,14 @@ const styles = {
     iconAnimateOut: css({
         animation: `${rotateOut} 0.3s ease forwards`,
     }),
+
+    noHover: css({
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'inherit',
+            color: 'inherit',
+            borderColor: 'inherit',
+        },
+    }),
 };
 
 export default styles;

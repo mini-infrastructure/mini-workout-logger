@@ -47,6 +47,16 @@ type CellProps = {
     isSelected?: boolean;
     /** Callback when cell selection changes */
     onSelectionChange?: (isSelected: boolean) => void;
+    /** Rating value (0 to ratingMax) - only shown in version 1 with image */
+    ratingValue?: number;
+    /** Maximum rating value (default 3) */
+    ratingMax?: number;
+    /** Icon for rating (unselected state - hollow) */
+    ratingIcon?: ReactNode;
+    /** Icon for rating (selected state - filled) */
+    ratingIconSelected?: ReactNode;
+    /** Callback when rating changes */
+    onRatingChange?: (value: number) => void;
 };
 
 const Cell = ({
@@ -63,6 +73,11 @@ const Cell = ({
     favoriteIconSelected,
     isSelected = false,
     onSelectionChange,
+    ratingValue = 0,
+    ratingMax = 3,
+    ratingIcon,
+    ratingIconSelected,
+    onRatingChange,
 }: CellProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
@@ -81,6 +96,16 @@ const Cell = ({
     const handleActionClick = () => {
         onAction?.();
     };
+
+    const handleRatingClick = (index: number) => {
+        // If clicking the same level that's already selected, deselect (set to 0)
+        // Otherwise, set to the clicked level
+        const newValue = ratingValue === index + 1 ? 0 : index + 1;
+        onRatingChange?.(newValue);
+    };
+
+    // Check if rating should be shown (version 1 with image and rating props)
+    const showRating = !isSelected && image && ratingIcon && onRatingChange;
 
     // Determine if waves should animate
     const shouldAnimate = isHovered || isSelected;
@@ -121,6 +146,26 @@ const Cell = ({
                 {image && (
                     <div css={[styles.imageContainer, isSelected && styles.imageContainerSelected]}>
                         <img src={image} alt={title} css={[styles.image, isSelected && styles.imageSelected]} />
+
+                        {/* Rating icons (version 1 only, positioned to the right of image) */}
+                        {showRating && (
+                            <div css={styles.ratingContainer}>
+                                {Array.from({ length: ratingMax }, (_, index) => {
+                                    const isActive = index < ratingValue;
+                                    const icon = isActive && ratingIconSelected ? ratingIconSelected : ratingIcon;
+                                    return (
+                                        <IconButton
+                                            key={index}
+                                            icon={icon}
+                                            onClick={() => handleRatingClick(index)}
+                                            size="sm"
+                                            noHover
+                                            customCss={isActive ? styles.ratingButtonActive : styles.ratingButton}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -143,14 +188,18 @@ const Cell = ({
                             isSelected={isFavorite}
                             onClick={handleFavoriteClick}
                             tooltip={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                            size="sm"
+                            size="md"
+                            noHover
                             customCss={[
                                 isSelected
                                     ? (isFavorite ? styles.favoriteButtonSelectedActive : styles.favoriteButtonSelected)
                                     : (isFavorite ? styles.favoriteButtonActive : styles.favoriteButton),
-                                // Version 2 favorited: use contrast color for better visibility
+                                // Version 2 favorited: use contrast color for better visibility (with hover override)
                                 isSelected && isFavorite && css({
                                     color: accentContrastColors[color],
+                                    '&:hover:not(:disabled)': {
+                                        color: accentContrastColors[color],
+                                    },
                                 }),
                             ]}
                         />
