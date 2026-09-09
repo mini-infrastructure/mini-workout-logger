@@ -1,20 +1,51 @@
-import type { Interpolation, Theme } from '@emotion/react';
-import styles from './index.style.tsx';
+import styles from './index.style';
+import type { AccentColor } from '../../themes/tokens';
 
-export type ProgressBarProps = {
-    percentage: number;
-    customCss?: Interpolation<Theme> | Interpolation<Theme>[];
+type ProgressBarProps = {
+    label: string;
+    current: number;
+    total: number;
+    color?: AccentColor;
+    showPercentage?: boolean;
+    animate?: boolean;
 };
 
-const ProgressBar = ({ percentage, customCss }: ProgressBarProps) => {
-    const clamped = Math.min(100, Math.max(0, percentage));
-    const customCssArray = customCss
-        ? Array.isArray(customCss) ? customCss : [customCss]
-        : [];
+const colorMap: Record<AccentColor, string> = {
+    red: 'var(--color-red-contrast)',
+    yellow: 'var(--color-yellow-contrast)',
+    blue: 'var(--color-blue-contrast)',
+    green: 'var(--color-green-contrast)',
+    pink: 'var(--color-pink-contrast)',
+};
+
+const ProgressBar = ({
+    label,
+    current,
+    total,
+    color = 'blue',
+    showPercentage = true,
+    animate = true,
+}: ProgressBarProps) => {
+    const percentage = total > 0 ? Math.min((current / total) * 100, 100) : 0;
+    const displayValue = showPercentage ? `${Math.round(percentage)}%` : `${current}/${total}`;
 
     return (
-        <div css={[styles.track, ...customCssArray]}>
-            <div css={styles.fill(clamped)} />
+        <div css={styles.container}>
+            <div css={styles.header}>
+                <span css={styles.label}>{label}</span>
+                <span css={styles.value}>{displayValue}</span>
+            </div>
+            <div css={styles.track}>
+                <div
+                    css={[styles.fill, animate && styles.fillAnimated]}
+                    style={{
+                        width: `${percentage}%`,
+                        backgroundColor: colorMap[color],
+                        // CSS variable for animation
+                        '--progress-width': `${percentage}%`,
+                    } as React.CSSProperties}
+                />
+            </div>
         </div>
     );
 };

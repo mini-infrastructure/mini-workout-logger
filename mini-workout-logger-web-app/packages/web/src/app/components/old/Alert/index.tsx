@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IoClose } from 'react-icons/io5';
+import Button from '../Button/index.tsx';
 import { MdErrorOutline, MdInfoOutline, MdCheckCircleOutline, MdWarningAmber } from 'react-icons/md';
 import type { ReactNode } from 'react';
-import IconButton from '../IconButton';
-import styles, { type AlertVariant } from './index.style';
+import styles from './index.style.tsx';
 
-export type { AlertVariant };
+export type AlertVariant = 'error' | 'info' | 'success' | 'warning';
 
 export type AlertItem = {
     id: string;
@@ -25,18 +25,20 @@ const VARIANT_ICONS: Record<AlertVariant, ReactNode> = {
 const DEFAULT_DURATION = 4000;
 
 type AlertEntryProps = {
+    key: string;
     item: AlertItem;
     onRemove: (id: string) => void;
 };
 
 const AlertEntry = ({ item, onRemove }: AlertEntryProps) => {
     const [closing, setClosing] = useState(false);
-    const [paused, setPaused] = useState(false);
 
     const dismiss = () => {
         setClosing(true);
         setTimeout(() => onRemove(item.id), 300);
     };
+
+    const [paused, setPaused] = useState(false);
 
     useEffect(() => {
         if (paused) return;
@@ -51,14 +53,9 @@ const AlertEntry = ({ item, onRemove }: AlertEntryProps) => {
             onMouseLeave={() => setPaused(false)}
             onClick={(e) => e.stopPropagation()}
         >
-            <span css={styles.icon(item.variant)}>{VARIANT_ICONS[item.variant]}</span>
-            <span css={styles.message}>{item.message}</span>
-            <IconButton
-                icon={<IoClose />}
-                onClick={dismiss}
-                size="sm"
-                customCss={styles.closeButtonOverride(item.variant)}
-            />
+            <span css={styles.icon}>{VARIANT_ICONS[item.variant]}</span>
+            <span css={styles.title}>{item.message}</span>
+            <Button icon={<IoClose />} onClick={dismiss} customCss={styles.closeButton} />
         </div>
     );
 };
@@ -73,8 +70,8 @@ const AlertContainer = ({ alerts, onRemove }: AlertContainerProps) => {
 
     return createPortal(
         <div css={styles.container}>
-            {alerts.map((alertItem) => (
-                <AlertEntry key={alertItem.id} item={alertItem} onRemove={onRemove} />
+            {alerts.map((item) => (
+                <AlertEntry key={item.id} item={item} onRemove={onRemove} />
             ))}
         </div>,
         document.body

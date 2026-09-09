@@ -5,19 +5,22 @@ const styles = {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 'var(--space-lg)',
         borderRadius: 'var(--radius-lg)',
         border: 'var(--border-thick) solid transparent',
         overflow: 'hidden',
         transition: 'transform 0.2s ease, border-color 0.2s ease',
-    }),
 
-    clickable: css({
-        cursor: 'pointer',
         '&:hover': {
             transform: 'translateY(-0.125rem)',
             borderColor: 'var(--color-white)',
         },
+    }),
+
+    clickable: css({
+        cursor: 'pointer',
         '&:active': {
             transform: 'translateY(0)',
             borderColor: 'var(--color-white)',
@@ -34,40 +37,18 @@ const styles = {
         height: '12rem',
     }),
 
-    backgroundImage: css({
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.3,
-        pointerEvents: 'none',
-    }),
-
-    content: css({
-        position: 'relative',
-        zIndex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-2xs)',
-        height: '100%',
-    }),
-
-    title: css({
+    value: css({
         margin: 0,
-        fontSize: 'var(--font-size-xl)',
-        fontWeight: 'var(--font-weight-semibold)',
+        fontSize: 'var(--font-size-3xl)',
+        fontWeight: 'var(--font-weight-bold)',
         lineHeight: 'var(--line-height-tight)',
     }),
 
-    description: css({
+    label: css({
         margin: 0,
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-md)',
         fontWeight: 'var(--font-weight-regular)',
         opacity: 0.9,
-        lineHeight: 'var(--line-height-tight)',
     }),
 };
 

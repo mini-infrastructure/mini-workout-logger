@@ -2,31 +2,34 @@ import { useRef, type ReactNode } from 'react';
 import type { SerializedStyles } from '@emotion/react';
 import styles from './index.style';
 
-type PrimaryButtonProps = {
-    label: string;
+type IconButtonSize = 'sm' | 'md' | 'lg';
+
+type IconButtonProps = {
+    icon: ReactNode;
     onClick?: () => void;
-    disabled?: boolean;
-    type?: 'button' | 'submit';
-    icon?: ReactNode;
     selectedIcon?: ReactNode;
-    iconPosition?: 'left' | 'right';
     isSelected?: boolean;
     animateIcon?: boolean;
-    customCss?: SerializedStyles;
+    disabled?: boolean;
+    tooltip?: string;
+    size?: IconButtonSize;
+    customCss?: SerializedStyles | (SerializedStyles | false | undefined)[];
+    /** Disable hover effect */
+    noHover?: boolean;
 };
 
-const PrimaryButton = ({
-    label,
-    onClick,
-    disabled = false,
-    type = 'button',
+const IconButton = ({
     icon,
+    onClick,
     selectedIcon,
-    iconPosition = 'left',
     isSelected = false,
     animateIcon = false,
+    disabled = false,
+    tooltip,
+    size = 'md',
     customCss,
-}: PrimaryButtonProps) => {
+    noHover = false,
+}: IconButtonProps) => {
     const wasSelectedRef = useRef(isSelected);
     const currentIcon = isSelected && selectedIcon ? selectedIcon : icon;
 
@@ -43,24 +46,19 @@ const PrimaryButton = ({
         return undefined;
     };
 
-    const iconCss = [styles.icon, getIconAnimationStyle()];
+    const iconCss = [styles.icon, styles.iconSize[size], getIconAnimationStyle()];
 
     return (
         <button
-            css={[styles.button, isSelected && styles.buttonSelected, customCss]}
+            css={[styles.button, styles.buttonSize[size], isSelected && styles.buttonSelected, noHover && styles.noHover, customCss]}
             onClick={onClick}
             disabled={disabled}
-            type={type}
+            title={tooltip}
+            aria-label={tooltip}
         >
-            {currentIcon && iconPosition === 'left' && (
-                <span css={iconCss}>{currentIcon}</span>
-            )}
-            {label}
-            {currentIcon && iconPosition === 'right' && (
-                <span css={iconCss}>{currentIcon}</span>
-            )}
+            <span css={iconCss}>{currentIcon}</span>
         </button>
     );
 };
 
-export default PrimaryButton;
+export default IconButton;
