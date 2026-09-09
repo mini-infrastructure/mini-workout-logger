@@ -20,6 +20,7 @@ import AutocompleteInput from './app/components/AutocompleteInput';
 import Dropdown, { type DropdownOption } from './app/components/Dropdown';
 import SegmentedControl, { type SegmentedControlOption } from './app/components/SegmentedControl';
 import Cell, { type CellField } from './app/components/Cell';
+import SimpleCell from './app/components/SimpleCell';
 import type { ExerciseReadDTO } from '@mini/shared';
 
 import PrimaryButton from './app/components/PrimaryButton';
@@ -839,6 +840,72 @@ function App() {
                                 />
                             </div>
                         }
+                    />
+                </div>
+            </section>
+
+            {/* SimpleCell Component Showcase */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>SimpleCell Component</h2>
+                <div css={styles.cellsGrid}>
+                    <SimpleCell
+                        title="Bench Press"
+                        description="Chest exercise"
+                        color="red"
+                        image="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=200&h=200&fit=crop"
+                        fields={[
+                            { label: 'Category', value: 'Strength' },
+                            { label: 'Equipment', value: 'Barbell' },
+                            { label: 'Mechanics', value: 'Compound' },
+                        ]}
+                        actionLabel="View Details"
+                        onAction={() => pushAlert('Opening: Bench Press', 'info')}
+                    />
+                    <SimpleCell
+                        title="Squat"
+                        description="Legs exercise"
+                        color="blue"
+                        image="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=200&h=200&fit=crop"
+                        fields={[
+                            { label: 'Category', value: 'Strength' },
+                            { label: 'Type', value: 'Compound' },
+                        ]}
+                        actionLabel="View"
+                        onAction={() => pushAlert('Opening: Squat', 'info')}
+                    />
+                    <SimpleCell
+                        title="Running"
+                        description="Cardio"
+                        color="green"
+                        image="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=200&h=200&fit=crop"
+                        fields={[
+                            { label: 'Category', value: 'Cardio' },
+                            { label: 'Energy', value: 'Aerobic' },
+                        ]}
+                        actionLabel="Start"
+                        onAction={() => pushAlert('Starting: Running', 'info')}
+                    />
+                    <SimpleCell
+                        title="Yoga Flow"
+                        description="Mobility"
+                        color="pink"
+                        image="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=200&h=200&fit=crop"
+                        fields={[
+                            { label: 'Category', value: 'Mobility' },
+                        ]}
+                        onAction={() => pushAlert('Opening: Yoga Flow', 'info')}
+                    />
+                    <SimpleCell
+                        title="Deadlift"
+                        description="Back exercise"
+                        color="yellow"
+                        image="https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=200&h=200&fit=crop"
+                        fields={[
+                            { label: 'Category', value: 'Strength' },
+                            { label: 'Equipment', value: 'Barbell' },
+                        ]}
+                        actionLabel="View"
+                        onAction={() => pushAlert('Opening: Deadlift', 'info')}
                     />
                 </div>
             </section>
