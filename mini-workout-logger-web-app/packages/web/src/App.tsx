@@ -351,9 +351,30 @@ function App() {
     };
 
     // Filtered search handlers (with muscle filter)
-    const handleFilteredSearch = (searchValue: string) => {
-        // Only update input value - filtering happens via useMemo
+    const handleFilteredSearch = async (searchValue: string) => {
         setFilteredSearchValue(searchValue);
+
+        // If no muscle filters, search via API like regular autocomplete
+        if (selectedMuscleFilters.length === 0) {
+            if (searchValue.length < 2) {
+                setFilteredSearchBaseResults([]);
+                return;
+            }
+            setIsSearchingFiltered(true);
+            try {
+                const response = await ExerciseService.getAll({ name: searchValue, size: 10 });
+                const options: DropdownOption[] = response.data.map(exercise => ({
+                    value: String(exercise.id),
+                    label: exercise.name,
+                }));
+                setFilteredSearchBaseResults(options);
+            } catch {
+                setFilteredSearchBaseResults([]);
+            } finally {
+                setIsSearchingFiltered(false);
+            }
+        }
+        // When muscle filters are selected, filtering happens via useMemo
     };
 
     const handleFilteredSearchSelect = (option: DropdownOption) => {
@@ -372,6 +393,10 @@ function App() {
         // If we have muscle filters but no base results loaded, fetch them
         if (selectedMuscleFilters.length > 0 && filteredSearchBaseResults.length === 0 && !isSearchingFiltered) {
             fetchExercisesForMuscleFilters(selectedMuscleFilters);
+        }
+        // If no muscle filters but input has text, search via API
+        else if (selectedMuscleFilters.length === 0 && filteredSearchValue.length >= 2 && filteredSearchBaseResults.length === 0 && !isSearchingFiltered) {
+            handleFilteredSearch(filteredSearchValue);
         }
     };
 
