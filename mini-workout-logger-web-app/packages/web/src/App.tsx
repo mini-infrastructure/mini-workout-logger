@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { css } from '@emotion/react';
-import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiFilter } from 'react-icons/fi';
+import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiFilter, FiGrid, FiList } from 'react-icons/fi';
 import {
     useWorkouts,
     ExerciseService,
@@ -17,6 +17,7 @@ import {
 } from '@mini/shared';
 import AutocompleteInput from './app/components/AutocompleteInput';
 import Dropdown, { type DropdownOption } from './app/components/Dropdown';
+import SegmentedControl, { type SegmentedControlOption } from './app/components/SegmentedControl';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -178,6 +179,28 @@ function App() {
     const [iconSelected, setIconSelected] = useState(false);
     const [interactiveProgress, setInteractiveProgress] = useState(20);
     const pushAlert = useAlert();
+
+    // SegmentedControl state
+    const [segmentedIconValue, setSegmentedIconValue] = useState<string | undefined>('grid');
+    const [segmentedTextValue, setSegmentedTextValue] = useState<string | undefined>('today');
+    const [segmentedLargeValue, setSegmentedLargeValue] = useState<string | undefined>('workouts');
+
+    const segmentedIconOptions: SegmentedControlOption[] = [
+        { value: 'grid', icon: <FiGrid /> },
+        { value: 'list', icon: <FiList /> },
+    ];
+
+    const segmentedTextOptions: SegmentedControlOption[] = [
+        { value: 'today', label: 'Today' },
+        { value: 'week', label: 'Week' },
+        { value: 'month', label: 'Month' },
+    ];
+
+    const segmentedLargeOptions: SegmentedControlOption[] = [
+        { value: 'workouts', label: 'Workouts' },
+        { value: 'exercises', label: 'Exercises' },
+        { value: 'progress', label: 'Progress' },
+    ];
 
     // Fetch workouts data
     const { workouts } = useWorkouts();
@@ -504,6 +527,29 @@ function App() {
                         animateIcon
                         tooltip="Toggle menu"
                         onClick={() => setIconSelected(!iconSelected)}
+                    />
+                </div>
+            </section>
+
+            {/* Segmented Control */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>SegmentedControl</h2>
+                <div css={styles.row}>
+                    <SegmentedControl
+                        options={segmentedIconOptions}
+                        selected={segmentedIconValue}
+                        onSelect={setSegmentedIconValue}
+                    />
+                    <SegmentedControl
+                        options={segmentedTextOptions}
+                        selected={segmentedTextValue}
+                        onSelect={setSegmentedTextValue}
+                    />
+                    <SegmentedControl
+                        options={segmentedLargeOptions}
+                        selected={segmentedLargeValue}
+                        onSelect={setSegmentedLargeValue}
+                        size="lg"
                     />
                 </div>
             </section>
