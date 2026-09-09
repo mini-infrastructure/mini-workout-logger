@@ -13,7 +13,7 @@ type IconButtonProps = {
     disabled?: boolean;
     tooltip?: string;
     size?: IconButtonSize;
-    customCss?: SerializedStyles;
+    customCss?: SerializedStyles | (SerializedStyles | false | undefined)[];
 };
 
 const IconButton = ({

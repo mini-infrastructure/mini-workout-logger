@@ -18,6 +18,8 @@ import {
 import AutocompleteInput from './app/components/AutocompleteInput';
 import Dropdown, { type DropdownOption } from './app/components/Dropdown';
 import SegmentedControl, { type SegmentedControlOption } from './app/components/SegmentedControl';
+import Cell, { type CellField } from './app/components/Cell';
+import type { ExerciseReadDTO } from '@mini/shared';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -157,6 +159,20 @@ const styles = {
         fontWeight: 'var(--font-weight-medium)',
         color: 'var(--color-white)',
     }),
+    cellsGrid: css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 'var(--space-lg)',
+        marginTop: 'var(--space-md)',
+    }),
+    cellsEmpty: css({
+        padding: 'var(--space-xl)',
+        textAlign: 'center',
+        color: 'var(--color-gray)',
+        fontSize: 'var(--font-size-sm)',
+        border: '1px dashed var(--color-border)',
+        borderRadius: 'var(--radius-md)',
+    }),
 };
 
 // Base exercise form fields (group_name options injected dynamically)
@@ -251,12 +267,6 @@ function App() {
         });
     }, [fieldOptionsMap]);
 
-    // Exercise search state (separate from form)
-    const [exerciseSearchValue, setExerciseSearchValue] = useState('');
-    const [selectedExerciseLabel, setSelectedExerciseLabel] = useState<string | null>(null);
-    const [exerciseSuggestions, setExerciseSuggestions] = useState<DropdownOption[]>([]);
-    const [isSearchingExercises, setIsSearchingExercises] = useState(false);
-
     // Filtered search state (search with muscle filter)
     const [filteredSearchValue, setFilteredSearchValue] = useState('');
     const [filteredSearchBaseResults, setFilteredSearchBaseResults] = useState<DropdownOption[]>([]);
@@ -265,6 +275,75 @@ function App() {
     const [muscleFilterOpen, setMuscleFilterOpen] = useState(false);
     const [allMuscles, setAllMuscles] = useState<MuscleReadDTO[]>([]);
     const filterButtonRef = useRef<HTMLDivElement>(null);
+
+    // Cell showcase state
+    const [selectedExercises, setSelectedExercises] = useState<ExerciseReadDTO[]>([]);
+    const [favoriteExerciseIds, setFavoriteExerciseIds] = useState<Set<number>>(new Set());
+    const [selectedCellId, setSelectedCellId] = useState<number | null>(null);
+
+    // Sample cells for showcase (to test component independently)
+    const [sampleFavorites, setSampleFavorites] = useState<Set<string>>(new Set());
+    const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
+
+    const sampleCells = [
+        {
+            id: 'sample-1',
+            title: 'Bench Press',
+            description: 'Chest',
+            color: 'red' as const,
+            image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&h=100&fit=crop',
+            fields: [
+                { label: 'Category', value: 'Strength' },
+                { label: 'Difficulty', value: 'Intermediate' },
+                { label: 'Equipment', value: 'Barbell' },
+                { label: 'Mechanics', value: 'Compound' },
+            ],
+        },
+        {
+            id: 'sample-2',
+            title: 'Squat',
+            description: 'Legs',
+            color: 'blue' as const,
+            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=100&h=100&fit=crop',
+            fields: [
+                { label: 'Category', value: 'Strength' },
+                { label: 'Difficulty', value: 'Advanced' },
+            ],
+        },
+        {
+            id: 'sample-3',
+            title: 'Running',
+            description: 'Cardio',
+            color: 'green' as const,
+            image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=100&h=100&fit=crop',
+            fields: [
+                { label: 'Category', value: 'Cardio' },
+                { label: 'Energy', value: 'Aerobic' },
+            ],
+        },
+        {
+            id: 'sample-4',
+            title: 'Yoga Flow',
+            description: 'Mobility',
+            color: 'pink' as const,
+            image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&h=100&fit=crop',
+            fields: [
+                { label: 'Category', value: 'Mobility' },
+            ],
+        },
+        {
+            id: 'sample-5',
+            title: 'Deadlift',
+            description: 'Back',
+            color: 'yellow' as const,
+            image: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=100&h=100&fit=crop',
+            fields: [
+                { label: 'Category', value: 'Strength' },
+                { label: 'Difficulty', value: 'Advanced' },
+                { label: 'Equipment', value: 'Barbell' },
+            ],
+        },
+    ];
 
     // Filter base results on frontend based on input value
     const filteredSearchSuggestions = useMemo(() => {
@@ -305,46 +384,6 @@ function App() {
                 delete updated[name];
                 return updated;
             });
-        }
-    };
-
-    // Exercise search handler - queries the backend
-    const handleExerciseSearch = async (searchValue: string) => {
-        setExerciseSearchValue(searchValue);
-        // Clear selected label if user is typing something different
-        if (selectedExerciseLabel && searchValue !== selectedExerciseLabel) {
-            setSelectedExerciseLabel(null);
-        }
-        if (searchValue.length < 2) {
-            setExerciseSuggestions([]);
-            return;
-        }
-        setIsSearchingExercises(true);
-        try {
-            const response = await ExerciseService.getAll({ name: searchValue, size: 10 });
-            const options: DropdownOption[] = response.data.map(exercise => ({
-                value: String(exercise.id),
-                label: exercise.name,
-            }));
-            setExerciseSuggestions(options);
-        } catch {
-            setExerciseSuggestions([]);
-        } finally {
-            setIsSearchingExercises(false);
-        }
-    };
-
-    const handleExerciseSelect = (option: DropdownOption) => {
-        setExerciseSearchValue(option.label);
-        setSelectedExerciseLabel(option.label);
-        setExerciseSuggestions([]);
-        pushAlert(`Selected exercise: ${option.label}`, 'info');
-    };
-
-    const handleExerciseSearchFocus = () => {
-        // Only search on focus if the current value is NOT the selected exercise
-        if (exerciseSearchValue.length >= 2 && exerciseSearchValue !== selectedExerciseLabel) {
-            handleExerciseSearch(exerciseSearchValue);
         }
     };
 
@@ -400,10 +439,25 @@ function App() {
         // When muscle filters are selected, filtering happens via useMemo
     };
 
-    const handleFilteredSearchSelect = (option: DropdownOption) => {
+    const handleFilteredSearchSelect = async (option: DropdownOption) => {
         setFilteredSearchValue(option.label);
         setFilteredSearchBaseResults([]);
-        pushAlert(`Selected exercise: ${option.label}`, 'info');
+
+        // Fetch full exercise details and add to selected exercises
+        try {
+            const exercise = await ExerciseService.getById(option.value);
+
+            // Add to selected exercises if not already present
+            setSelectedExercises(prev => {
+                const exists = prev.some(e => e.id === exercise.id);
+                if (exists) return prev;
+                return [...prev, exercise];
+            });
+
+            pushAlert(`Added exercise: ${option.label}`, 'success');
+        } catch {
+            pushAlert('Failed to load exercise details', 'error');
+        }
     };
 
     const handleMuscleFilterChange = (muscles: string[]) => {
@@ -428,16 +482,16 @@ function App() {
             const payload = {
                 name: formValues.name as string,
                 group_name: formValues.group_name as string,
-                equipment: formValues.equipment as string,
-                category: formValues.category as string || undefined,
-                difficulty: formValues.difficulty as string || undefined,
-                force: formValues.force as string || undefined,
-                mechanics: formValues.mechanics as string || undefined,
-                type: formValues.type as string || undefined,
-                role: formValues.role as string || undefined,
-                energy_system: formValues.energy_system as string || undefined,
+                equipment: formValues.equipment,
+                category: formValues.category || undefined,
+                difficulty: formValues.difficulty || undefined,
+                force: formValues.force || undefined,
+                mechanics: formValues.mechanics || undefined,
+                type: formValues.type || undefined,
+                role: formValues.role || undefined,
+                energy_system: formValues.energy_system || undefined,
                 exercise_muscles: [],
-            };
+            } as Parameters<typeof ExerciseService.create>[0];
             await ExerciseService.create(payload);
             pushAlert('Exercise created successfully!', 'success');
             setFormValues({});
@@ -465,6 +519,77 @@ function App() {
         pushAlert('Form cleared', 'success');
     };
 
+    // Helper to convert exercise to Cell fields
+    const exerciseToCellFields = (exercise: ExerciseReadDTO): CellField[] => {
+        const fields: CellField[] = [];
+
+        if (exercise.category) {
+            fields.push({
+                label: 'Category',
+                value: exercise.category.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
+            });
+        }
+
+        if (exercise.difficulty) {
+            fields.push({
+                label: 'Difficulty',
+                value: exercise.difficulty.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
+            });
+        }
+
+        if (exercise.equipment) {
+            fields.push({
+                label: 'Equipment',
+                value: exercise.equipment.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
+            });
+        }
+
+        if (exercise.mechanics) {
+            fields.push({
+                label: 'Mechanics',
+                value: exercise.mechanics.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
+            });
+        }
+
+        return fields;
+    };
+
+    // Helper to get a color based on exercise category
+    const getCellColor = (exercise: ExerciseReadDTO): 'red' | 'yellow' | 'blue' | 'green' | 'pink' => {
+        const categoryColors: Record<string, 'red' | 'yellow' | 'blue' | 'green' | 'pink'> = {
+            STRENGTH: 'red',
+            CARDIO: 'green',
+            MOBILITY: 'blue',
+            REHABILITATION: 'pink',
+            POWER: 'yellow',
+            FUNCTIONAL: 'green',
+            WARM_UP: 'yellow',
+            RECOVERY: 'pink',
+        };
+        return categoryColors[exercise.category ?? ''] ?? 'blue';
+    };
+
+    const handleCellFavoriteToggle = (exerciseId: number, isFavorite: boolean) => {
+        setFavoriteExerciseIds(prev => {
+            const newSet = new Set(prev);
+            if (isFavorite) {
+                newSet.add(exerciseId);
+            } else {
+                newSet.delete(exerciseId);
+            }
+            return newSet;
+        });
+    };
+
+    const handleCellSelectionChange = (exerciseId: number, isSelected: boolean) => {
+        setSelectedCellId(isSelected ? exerciseId : null);
+    };
+
+    const handleCellAction = (exercise: ExerciseReadDTO) => {
+        pushAlert(`Opening exercise: ${exercise.name}`, 'info');
+    };
+
+    
     const handleIncreaseProgress = () => {
         setInteractiveProgress(prev => Math.min(prev + 10, 100));
     };
@@ -710,6 +835,69 @@ function App() {
                         }
                     />
                 </div>
+            </section>
+
+            {/* Cell Component Showcase */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>Cell Component</h2>
+                <div css={styles.cellsGrid}>
+                    {sampleCells.map(cell => (
+                        <Cell
+                            key={cell.id}
+                            title={cell.title}
+                            description={cell.description}
+                            image={cell.image}
+                            color={cell.color}
+                            fields={cell.fields}
+                            actionLabel="View Details"
+                            onAction={() => pushAlert(`Opening: ${cell.title}`, 'info')}
+                            isFavorite={sampleFavorites.has(cell.id)}
+                            onFavoriteToggle={isFavorite => {
+                                setSampleFavorites(prev => {
+                                    const newSet = new Set(prev);
+                                    if (isFavorite) newSet.add(cell.id);
+                                    else newSet.delete(cell.id);
+                                    return newSet;
+                                });
+                            }}
+                            favoriteIcon={<FiHeart />}
+                            favoriteIconSelected={<FiHeart fill="currentColor" />}
+                            isSelected={selectedSampleId === cell.id}
+                            onSelectionChange={isSelected => setSelectedSampleId(isSelected ? cell.id : null)}
+                        />
+                    ))}
+                </div>
+            </section>
+
+            {/* Exercise Cells (from search) */}
+            <section css={styles.section}>
+                <h2 css={styles.sectionTitle}>Exercise Cells (from search)</h2>
+                {selectedExercises.length === 0 ? (
+                    <div css={styles.cellsEmpty}>
+                        Search and select exercises above to see them as cells
+                    </div>
+                ) : (
+                    <div css={styles.cellsGrid}>
+                        {selectedExercises.map(exercise => (
+                            <Cell
+                                key={exercise.id}
+                                title={exercise.name}
+                                description={exercise.group_name}
+                                image={exercise.media?.[0]?.data ? `data:${exercise.media[0].content_type};base64,${exercise.media[0].data}` : undefined}
+                                color={getCellColor(exercise)}
+                                fields={exerciseToCellFields(exercise)}
+                                actionLabel="View Details"
+                                onAction={() => handleCellAction(exercise)}
+                                isFavorite={favoriteExerciseIds.has(exercise.id)}
+                                onFavoriteToggle={isFavorite => handleCellFavoriteToggle(exercise.id, isFavorite)}
+                                favoriteIcon={<FiHeart />}
+                                favoriteIconSelected={<FiHeart fill="currentColor" />}
+                                isSelected={selectedCellId === exercise.id}
+                                onSelectionChange={isSelected => handleCellSelectionChange(exercise.id, isSelected)}
+                            />
+                        ))}
+                    </div>
+                )}
             </section>
 
             {/* Form (Exercise) */}

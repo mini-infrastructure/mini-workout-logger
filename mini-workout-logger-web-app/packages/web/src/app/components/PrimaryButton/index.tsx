@@ -1,4 +1,5 @@
 import { useRef, type ReactNode } from 'react';
+import type { SerializedStyles } from '@emotion/react';
 import styles from './index.style';
 
 type PrimaryButtonProps = {
@@ -11,6 +12,7 @@ type PrimaryButtonProps = {
     iconPosition?: 'left' | 'right';
     isSelected?: boolean;
     animateIcon?: boolean;
+    customCss?: SerializedStyles;
 };
 
 const PrimaryButton = ({
@@ -23,6 +25,7 @@ const PrimaryButton = ({
     iconPosition = 'left',
     isSelected = false,
     animateIcon = false,
+    customCss,
 }: PrimaryButtonProps) => {
     const wasSelectedRef = useRef(isSelected);
     const currentIcon = isSelected && selectedIcon ? selectedIcon : icon;
@@ -44,7 +47,7 @@ const PrimaryButton = ({
 
     return (
         <button
-            css={[styles.button, isSelected && styles.buttonSelected]}
+            css={[styles.button, isSelected && styles.buttonSelected, customCss]}
             onClick={onClick}
             disabled={disabled}
             type={type}
