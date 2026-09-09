@@ -1,15 +1,12 @@
-import type { ReactNode } from 'react';
 import styles from './index.style';
 import type { AccentColor } from '../../themes/tokens';
 
-type CardProps = {
+type StatCardProps = {
+    value: string | number;
+    label: string;
     color: AccentColor;
     size?: 'square' | 'wide';
-    title?: string;
-    description?: string;
     onClick?: () => void;
-    backgroundImage?: string;
-    children?: ReactNode;
 };
 
 const colorMap: Record<AccentColor, string> = {
@@ -28,15 +25,13 @@ const textColorMap: Record<AccentColor, string> = {
     pink: 'var(--color-black)',
 };
 
-const Card = ({
+const StatCard = ({
+    value,
+    label,
     color,
     size = 'square',
-    title,
-    description,
     onClick,
-    backgroundImage,
-    children,
-}: CardProps) => {
+}: StatCardProps) => {
     const sizeStyle = size === 'wide' ? styles.wide : styles.square;
 
     return (
@@ -48,19 +43,10 @@ const Card = ({
             }}
             onClick={onClick}
         >
-            {backgroundImage && (
-                <div
-                    css={styles.backgroundImage}
-                    style={{ backgroundImage: `url(${backgroundImage})` }}
-                />
-            )}
-            <div css={styles.content}>
-                {title && <h3 css={styles.title}>{title}</h3>}
-                {description && <p css={styles.description}>{description}</p>}
-                {children}
-            </div>
+            <span css={styles.value}>{value}</span>
+            <span css={styles.label}>{label}</span>
         </div>
     );
 };
 
-export default Card;
+export default StatCard;

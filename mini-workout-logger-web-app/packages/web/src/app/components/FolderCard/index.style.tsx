@@ -1,27 +1,26 @@
 import { css } from '@emotion/react';
 
 const styles = {
-    card: css({
+    container: css({
         position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 'var(--space-lg)',
-        borderRadius: 'var(--radius-lg)',
-        border: 'var(--border-thick) solid transparent',
-        overflow: 'hidden',
-        transition: 'transform 0.2s ease, border-color 0.2s ease',
+        display: 'inline-block',
     }),
 
-    clickable: css({
-        cursor: 'pointer',
-        '&:hover': {
-            transform: 'translateY(-0.125rem)',
-            borderColor: 'var(--color-white)',
-        },
-        '&:active': {
-            transform: 'translateY(0)',
-            borderColor: 'var(--color-white)',
-        },
+    backCard: css({
+        position: 'absolute',
+        top: '0.7rem',
+        left: '-0.7rem',
+        borderRadius: 'var(--radius-lg)',
+        transform: 'rotate(-3deg)',
+        zIndex: 0,
+        transition: 'top 0.3s ease, left 0.3s ease, transform 0.3s ease, opacity 0.3s ease',
+    }),
+
+    backCardHover: css({
+        top: 0,
+        left: 0,
+        transform: 'rotate(0deg)',
+        opacity: 0,
     }),
 
     square: css({
@@ -29,9 +28,30 @@ const styles = {
         height: '12rem',
     }),
 
-    wide: css({
-        width: '18rem',
-        height: '12rem',
+    frontCard: css({
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 'var(--space-lg)',
+        borderRadius: 'var(--radius-lg)',
+        border: 'var(--border-thick) solid transparent',
+        overflow: 'hidden',
+        zIndex: 1,
+        transition: 'transform 0.2s ease, border-color 0.2s ease',
+    }),
+
+    clickable: css({
+        cursor: 'pointer',
+    }),
+
+    clickableHover: css({
+        transform: 'translateY(-0.125rem)',
+        borderColor: 'var(--color-white)',
+    }),
+
+    clickableActive: css({
+        transform: 'translateY(0)',
+        borderColor: 'var(--color-white)',
     }),
 
     backgroundImage: css({

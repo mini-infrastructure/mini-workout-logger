@@ -199,3 +199,43 @@ type ExerciseCardProps = {
 ```
 
 If `ExerciseReadDTO` is used by more than one component, it lives in `src/app/dtos/ExerciseReadDTO/index.ts`. If it's used by only one, keep it in that component's `index.tsx`.
+
+## Rule 6 — Always reuse existing components in compositions
+
+When building complex components that contain UI elements already available in the design system (buttons, icons, inputs, etc.), **always use the existing component** instead of recreating it with custom styles.
+
+**Bad — recreating a button with custom styles:**
+```tsx
+// AlertEntry creating its own close button
+const AlertEntry = ({ item, onRemove }: AlertEntryProps) => (
+    <div css={styles.alert}>
+        <span>{item.message}</span>
+        <div css={styles.closeButton} onClick={() => onRemove(item.id)}>
+            <IoClose />
+        </div>
+    </div>
+);
+```
+
+**Good — reusing IconButton with custom props:**
+```tsx
+// AlertEntry using IconButton component
+const AlertEntry = ({ item, onRemove }: AlertEntryProps) => (
+    <div css={styles.alert}>
+        <span>{item.message}</span>
+        <IconButton
+            icon={<IoClose />}
+            onClick={() => onRemove(item.id)}
+            customCss={styles.closeButton}
+        />
+    </div>
+);
+```
+
+**Why this matters:**
+1. **Consistency** — all buttons behave the same way across the app
+2. **Maintainability** — changes to the base component propagate everywhere
+3. **Accessibility** — base components include proper ARIA attributes
+4. **Less code** — no need to duplicate hover states, focus styles, etc.
+
+**When customization is needed:** pass props like `customCss`, `disabled`, or variant flags to the existing component. If the component doesn't support the customization you need, extend the component's API — don't create a parallel implementation.
