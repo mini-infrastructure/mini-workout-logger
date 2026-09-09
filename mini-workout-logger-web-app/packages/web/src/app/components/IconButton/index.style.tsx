@@ -32,7 +32,9 @@ const styles = {
         },
 
         '&:disabled': {
-            opacity: 0.5,
+            backgroundColor: 'var(--color-gray-light)',
+            borderColor: 'var(--color-gray-light)',
+            color: 'var(--color-gray)',
             cursor: 'not-allowed',
         },
     }),

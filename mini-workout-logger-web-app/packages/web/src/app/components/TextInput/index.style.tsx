@@ -173,7 +173,7 @@ const styles = {
         transition: 'background-color var(--transition-fast)',
 
         '&:hover': {
-            backgroundColor: 'rgba(15, 22, 32, 0.1)',
+            backgroundColor: 'var(--color-gray-light)',
         },
     }),
 
@@ -229,6 +229,15 @@ const styles = {
     requiredMarker: css({
         color: 'var(--color-red)',
         fontWeight: 'var(--font-weight-semibold)',
+    }),
+
+    rightElementContainer: css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        height: '100%',
+        paddingRight: 'var(--space-xs)',
     }),
 };
 

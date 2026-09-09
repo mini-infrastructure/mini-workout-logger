@@ -82,18 +82,43 @@ const styles = {
         maxWidth: '35rem',
     }),
     searchWithFilter: css({
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: 'var(--space-sm)',
         width: '100%',
         maxWidth: '40rem',
     }),
-    searchInputWrapper: css({
-        flex: 1,
-    }),
-    filterButtonWrapper: css({
+    filterButtonContainer: css({
         position: 'relative',
-        marginTop: 'var(--space-lg)',
+        display: 'flex',
+        alignItems: 'center',
+    }),
+    filterButton: css({
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: 'var(--color-black)',
+
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'var(--color-gray-light)',
+            border: 'none',
+            color: 'var(--color-black)',
+        },
+    }),
+    filterButtonSelected: css({
+        backgroundColor: 'var(--color-gray-light)',
+        border: 'none',
+        color: 'var(--color-black)',
+
+        '&:hover:not(:disabled)': {
+            backgroundColor: 'var(--color-gray-light)',
+            border: 'none',
+            color: 'var(--color-black)',
+        },
+    }),
+    filterDropdown: css({
+        borderRadius: 'var(--radius-sm)',
+        border: 'var(--border-thin) solid var(--dropdown-separator)',
+        top: 'calc(100% + var(--space-xs))',
+        right: 0,
+        left: 'auto',
+        zIndex: 'calc(var(--z-dropdown) + 1)',
     }),
     filterBadge: css({
         position: 'absolute',
@@ -109,6 +134,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        pointerEvents: 'none',
     }),
     formActions: css({
         display: 'flex',
@@ -210,12 +236,22 @@ function App() {
 
     // Filtered search state (search with muscle filter)
     const [filteredSearchValue, setFilteredSearchValue] = useState('');
-    const [filteredSearchSuggestions, setFilteredSearchSuggestions] = useState<DropdownOption[]>([]);
+    const [filteredSearchBaseResults, setFilteredSearchBaseResults] = useState<DropdownOption[]>([]);
     const [isSearchingFiltered, setIsSearchingFiltered] = useState(false);
     const [selectedMuscleFilters, setSelectedMuscleFilters] = useState<string[]>([]);
     const [muscleFilterOpen, setMuscleFilterOpen] = useState(false);
     const [allMuscles, setAllMuscles] = useState<MuscleReadDTO[]>([]);
     const filterButtonRef = useRef<HTMLDivElement>(null);
+
+    // Filter base results on frontend based on input value
+    const filteredSearchSuggestions = useMemo(() => {
+        if (filteredSearchBaseResults.length === 0) return [];
+        if (!filteredSearchValue) return filteredSearchBaseResults;
+        const query = filteredSearchValue.toLowerCase();
+        return filteredSearchBaseResults.filter(opt =>
+            opt.label.toLowerCase().includes(query)
+        );
+    }, [filteredSearchBaseResults, filteredSearchValue]);
 
     // Fetch muscles on mount
     useEffect(() => {
@@ -289,69 +325,53 @@ function App() {
         }
     };
 
-    // Filtered search handlers (with muscle filter)
-    const handleFilteredSearch = async (searchValue: string) => {
-        setFilteredSearchValue(searchValue);
-        if (searchValue.length < 2 && selectedMuscleFilters.length === 0) {
-            setFilteredSearchSuggestions([]);
+    // Fetch exercises when muscle filters change
+    const fetchExercisesForMuscleFilters = async (muscles: string[]) => {
+        if (muscles.length === 0) {
+            setFilteredSearchBaseResults([]);
             return;
         }
         setIsSearchingFiltered(true);
         try {
-            const params: Record<string, string | number> = { size: 10 };
-            if (searchValue.length >= 2) {
-                params.name = searchValue;
-            }
-            if (selectedMuscleFilters.length > 0) {
-                params.muscles = selectedMuscleFilters.join(',');
-            }
+            const params: Record<string, string | number> = {
+                size: 50,
+                muscles: muscles.join(','),
+            };
             const response = await ExerciseService.getAll(params);
             const options: DropdownOption[] = response.data.map(exercise => ({
                 value: String(exercise.id),
                 label: exercise.name,
             }));
-            setFilteredSearchSuggestions(options);
+            setFilteredSearchBaseResults(options);
         } catch {
-            setFilteredSearchSuggestions([]);
+            setFilteredSearchBaseResults([]);
         } finally {
             setIsSearchingFiltered(false);
         }
     };
 
+    // Filtered search handlers (with muscle filter)
+    const handleFilteredSearch = (searchValue: string) => {
+        // Only update input value - filtering happens via useMemo
+        setFilteredSearchValue(searchValue);
+    };
+
     const handleFilteredSearchSelect = (option: DropdownOption) => {
         setFilteredSearchValue(option.label);
-        setFilteredSearchSuggestions([]);
+        setFilteredSearchBaseResults([]);
         pushAlert(`Selected exercise: ${option.label}`, 'info');
     };
 
     const handleMuscleFilterChange = (muscles: string[]) => {
         setSelectedMuscleFilters(muscles);
-        // Re-trigger search with new filters
-        if (filteredSearchValue.length >= 2 || muscles.length > 0) {
-            handleFilteredSearchWithMuscles(filteredSearchValue, muscles);
-        }
+        // Fetch new base results when filters change
+        fetchExercisesForMuscleFilters(muscles);
     };
 
-    const handleFilteredSearchWithMuscles = async (searchValue: string, muscles: string[]) => {
-        setIsSearchingFiltered(true);
-        try {
-            const params: Record<string, string | number> = { size: 10 };
-            if (searchValue.length >= 2) {
-                params.name = searchValue;
-            }
-            if (muscles.length > 0) {
-                params.muscles = muscles.join(',');
-            }
-            const response = await ExerciseService.getAll(params);
-            const options: DropdownOption[] = response.data.map(exercise => ({
-                value: String(exercise.id),
-                label: exercise.name,
-            }));
-            setFilteredSearchSuggestions(options);
-        } catch {
-            setFilteredSearchSuggestions([]);
-        } finally {
-            setIsSearchingFiltered(false);
+    const handleFilteredSearchFocus = () => {
+        // If we have muscle filters but no base results loaded, fetch them
+        if (selectedMuscleFilters.length > 0 && filteredSearchBaseResults.length === 0 && !isSearchingFiltered) {
+            fetchExercisesForMuscleFilters(selectedMuscleFilters);
         }
     };
 
@@ -573,68 +593,51 @@ function App() {
                 </div>
             </section>
 
-            {/* Search (Autocomplete with backend) */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>Search (Autocomplete)</h2>
-                <div css={styles.searchContainer}>
-                    <AutocompleteInput
-                        name="exercise-search"
-                        label="Search Exercise"
-                        inputValue={exerciseSearchValue}
-                        onInputChange={handleExerciseSearch}
-                        onFocus={handleExerciseSearchFocus}
-                        suggestions={exerciseSuggestions}
-                        onSelect={handleExerciseSelect}
-                        placeholder="Type to search exercises..."
-                        helperText="Searches the backend for exercises matching your input"
-                        loading={isSearchingExercises}
-                        minChars={2}
-                    />
-                </div>
-            </section>
-
             {/* Search with Filter */}
             <section css={styles.section}>
                 <h2 css={styles.sectionTitle}>Search with Filter</h2>
                 <div css={styles.searchWithFilter}>
-                    <div css={styles.searchInputWrapper}>
-                        <AutocompleteInput
-                            name="filtered-exercise-search"
-                            label="Search Exercise"
-                            inputValue={filteredSearchValue}
-                            onInputChange={handleFilteredSearch}
-                            suggestions={filteredSearchSuggestions}
-                            onSelect={handleFilteredSearchSelect}
-                            placeholder="Type to search exercises..."
-                            helperText={selectedMuscleFilters.length > 0
-                                ? `Filtering by ${selectedMuscleFilters.length} muscle(s)`
-                                : 'Click the filter button to filter by muscles'
-                            }
-                            loading={isSearchingFiltered}
-                            minChars={selectedMuscleFilters.length > 0 ? 0 : 2}
-                        />
-                    </div>
-                    <div ref={filterButtonRef} css={styles.filterButtonWrapper}>
-                        <IconButton
-                            icon={<FiFilter />}
-                            tooltip="Filter by muscles"
-                            onClick={() => setMuscleFilterOpen(prev => !prev)}
-                        />
-                        {selectedMuscleFilters.length > 0 && (
-                            <span css={styles.filterBadge}>{selectedMuscleFilters.length}</span>
-                        )}
-                        <Dropdown
-                            options={muscleFilterOptions}
-                            value={selectedMuscleFilters}
-                            onChange={handleMuscleFilterChange}
-                            multiple
-                            open={muscleFilterOpen}
-                            onClose={() => setMuscleFilterOpen(false)}
-                            selectAll
-                            selectAllLabel="All muscles"
-                            emptyMessage="No muscles found"
-                        />
-                    </div>
+                    <AutocompleteInput
+                        name="filtered-exercise-search"
+                        label="Search Exercise"
+                        inputValue={filteredSearchValue}
+                        onInputChange={handleFilteredSearch}
+                        onFocus={handleFilteredSearchFocus}
+                        suggestions={filteredSearchSuggestions}
+                        onSelect={handleFilteredSearchSelect}
+                        placeholder="Type to search exercises..."
+                        helperText={selectedMuscleFilters.length > 0
+                            ? `Filtering by ${selectedMuscleFilters.length} muscle(s)`
+                            : 'Click the filter button to filter by muscles'
+                        }
+                        loading={isSearchingFiltered}
+                        minChars={selectedMuscleFilters.length > 0 ? 0 : 2}
+                        rightElement={
+                            <div ref={filterButtonRef} css={styles.filterButtonContainer}>
+                                <IconButton
+                                    icon={<FiFilter />}
+                                    tooltip="Filter by muscles"
+                                    onClick={() => setMuscleFilterOpen(prev => !prev)}
+                                    customCss={muscleFilterOpen ? styles.filterButtonSelected : styles.filterButton}
+                                />
+                                {selectedMuscleFilters.length > 0 && (
+                                    <span css={styles.filterBadge}>{selectedMuscleFilters.length}</span>
+                                )}
+                                <Dropdown
+                                    options={muscleFilterOptions}
+                                    value={selectedMuscleFilters}
+                                    onChange={handleMuscleFilterChange}
+                                    multiple
+                                    open={muscleFilterOpen}
+                                    onClose={() => setMuscleFilterOpen(false)}
+                                    selectAll
+                                    selectAllLabel="All muscles"
+                                    emptyMessage="No muscles found"
+                                    customCss={styles.filterDropdown}
+                                />
+                            </div>
+                        }
+                    />
                 </div>
             </section>
 

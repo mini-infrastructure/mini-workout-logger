@@ -18,6 +18,8 @@ export type TextInputProps = {
     icon?: ReactNode;
     iconPosition?: 'left' | 'right';
     onIconClick?: () => void;
+    /** Element to render on the right side of the input (e.g., filter button) */
+    rightElement?: ReactNode;
     error?: string;
     helperText?: string;
     validationRules?: ValidationRule[];
@@ -40,6 +42,7 @@ const TextInput = ({
     icon,
     iconPosition = 'right',
     onIconClick,
+    rightElement,
     error,
     helperText,
     validationRules,
@@ -205,6 +208,12 @@ const TextInput = ({
                 )}
 
                 {hasIcon && iconPosition === 'right' && renderIcon()}
+
+                {rightElement && (
+                    <div css={styles.rightElementContainer}>
+                        {rightElement}
+                    </div>
+                )}
             </div>
 
             {error && <span css={styles.errorText}>{error}</span>}

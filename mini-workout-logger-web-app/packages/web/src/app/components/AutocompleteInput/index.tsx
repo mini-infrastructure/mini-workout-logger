@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, type ReactNode } from 'react';
 import type { SerializedStyles } from '@emotion/react';
 import { FiSearch } from 'react-icons/fi';
 import TextInput from '../TextInput';
@@ -24,6 +24,8 @@ export type AutocompleteInputProps<T = string> = {
     debounceMs?: number;
     minChars?: number;
     showSearchIcon?: boolean;
+    /** Element to render on the right side of the input (e.g., filter button) */
+    rightElement?: ReactNode;
     customCss?: SerializedStyles;
 };
 
@@ -45,6 +47,7 @@ const AutocompleteInput = <T extends string | number = string>({
     debounceMs = 300,
     minChars = 1,
     showSearchIcon = true,
+    rightElement,
     customCss,
 }: AutocompleteInputProps<T>) => {
     const [open, setOpen] = useState(false);
@@ -111,6 +114,7 @@ const AutocompleteInput = <T extends string | number = string>({
                 iconPosition="left"
                 showClearButton={inputValue.length > 0}
                 onFocus={handleFocus}
+                rightElement={rightElement}
             />
 
             <Dropdown
@@ -121,6 +125,7 @@ const AutocompleteInput = <T extends string | number = string>({
                 onClose={() => setOpen(false)}
                 loading={loading}
                 emptyMessage={emptyMessage}
+                customCss={styles.dropdown}
             />
         </div>
     );

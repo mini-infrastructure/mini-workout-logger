@@ -20,6 +20,7 @@ const palette = {
     white:  '#F3F4F8',
     gray:           '#1F1F21',
     grayContrast:   '#303030',
+    grayLight:      'rgba(15, 22, 32, 0.1)',
 
     red:            '#EF4A2A',
     redContrast:    '#A8371F',
@@ -189,6 +190,7 @@ export const globalStyles = css({
         '--color-white': palette.white,
         '--color-gray':  palette.gray,
         '--color-gray-contrast': palette.grayContrast,
+        '--color-gray-light': palette.grayLight,
 
         // Colors - Accent (primary)
         '--color-red':    palette.red,
