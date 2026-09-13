@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { css } from '@emotion/react';
 import { FiMenu, FiX, FiPlus, FiHeart, FiCheck, FiChevronDown, FiFilter, FiGrid, FiList } from 'react-icons/fi';
-import { RiFireLine, RiFireFill } from 'react-icons/ri';
 import {
     useWorkouts,
     ExerciseService,
@@ -19,9 +18,7 @@ import {
 import AutocompleteInput from './app/components/AutocompleteInput';
 import Dropdown, { type DropdownOption } from './app/components/Dropdown';
 import SegmentedControl, { type SegmentedControlOption } from './app/components/SegmentedControl';
-import Cell, { type CellField } from './app/components/Cell';
-import SimpleCell from './app/components/SimpleCell';
-import type { ExerciseReadDTO } from '@mini/shared';
+import Cell from './app/components/Cell';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -279,78 +276,9 @@ function App() {
     const filterButtonRef = useRef<HTMLDivElement>(null);
 
     // Cell showcase state
-    const [selectedExercises, setSelectedExercises] = useState<ExerciseReadDTO[]>([]);
-    const [favoriteExerciseIds, setFavoriteExerciseIds] = useState<Set<number>>(new Set());
-    const [selectedCellId, setSelectedCellId] = useState<number | null>(null);
+    const [cellFavorites, setCellFavorites] = useState<Set<string>>(new Set());
 
-    // Sample cells for showcase (to test component independently)
-    const [sampleFavorites, setSampleFavorites] = useState<Set<string>>(new Set());
-    const [selectedSampleId, setSelectedSampleId] = useState<string | null>(null);
-    const [sampleRatings, setSampleRatings] = useState<Record<string, number>>({
-        'sample-1': 2,
-        'sample-2': 3,
-        'sample-3': 1,
-        'sample-4': 1,
-        'sample-5': 3,
-    });
 
-    const sampleCells = [
-        {
-            id: 'sample-1',
-            title: 'Bench Press',
-            description: 'Chest',
-            color: 'red' as const,
-            image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=100&h=100&fit=crop',
-            fields: [
-                { label: 'Category', value: 'Strength' },
-                { label: 'Equipment', value: 'Barbell' },
-                { label: 'Mechanics', value: 'Compound' },
-            ],
-        },
-        {
-            id: 'sample-2',
-            title: 'Squat',
-            description: 'Legs',
-            color: 'blue' as const,
-            image: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=100&h=100&fit=crop',
-            fields: [
-                { label: 'Category', value: 'Strength' },
-                { label: 'Type', value: 'Compound' },
-            ],
-        },
-        {
-            id: 'sample-3',
-            title: 'Running',
-            description: 'Cardio',
-            color: 'green' as const,
-            image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=100&h=100&fit=crop',
-            fields: [
-                { label: 'Category', value: 'Cardio' },
-                { label: 'Energy', value: 'Aerobic' },
-            ],
-        },
-        {
-            id: 'sample-4',
-            title: 'Yoga Flow',
-            description: 'Mobility',
-            color: 'pink' as const,
-            image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=100&h=100&fit=crop',
-            fields: [
-                { label: 'Category', value: 'Mobility' },
-            ],
-        },
-        {
-            id: 'sample-5',
-            title: 'Deadlift',
-            description: 'Back',
-            color: 'yellow' as const,
-            image: 'https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=100&h=100&fit=crop',
-            fields: [
-                { label: 'Category', value: 'Strength' },
-                { label: 'Equipment', value: 'Barbell' },
-            ],
-        },
-    ];
 
     // Filter base results on frontend based on input value
     const filteredSearchSuggestions = useMemo(() => {
@@ -446,25 +374,10 @@ function App() {
         // When muscle filters are selected, filtering happens via useMemo
     };
 
-    const handleFilteredSearchSelect = async (option: DropdownOption) => {
+    const handleFilteredSearchSelect = (option: DropdownOption) => {
         setFilteredSearchValue(option.label);
         setFilteredSearchBaseResults([]);
-
-        // Fetch full exercise details and add to selected exercises
-        try {
-            const exercise = await ExerciseService.getById(option.value);
-
-            // Add to selected exercises if not already present
-            setSelectedExercises(prev => {
-                const exists = prev.some(e => e.id === exercise.id);
-                if (exists) return prev;
-                return [...prev, exercise];
-            });
-
-            pushAlert(`Added exercise: ${option.label}`, 'success');
-        } catch {
-            pushAlert('Failed to load exercise details', 'error');
-        }
+        pushAlert(`Selected exercise: ${option.label}`, 'success');
     };
 
     const handleMuscleFilterChange = (muscles: string[]) => {
@@ -526,77 +439,6 @@ function App() {
         pushAlert('Form cleared', 'success');
     };
 
-    // Helper to convert exercise to Cell fields
-    const exerciseToCellFields = (exercise: ExerciseReadDTO): CellField[] => {
-        const fields: CellField[] = [];
-
-        if (exercise.category) {
-            fields.push({
-                label: 'Category',
-                value: exercise.category.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
-            });
-        }
-
-        if (exercise.difficulty) {
-            fields.push({
-                label: 'Difficulty',
-                value: exercise.difficulty.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
-            });
-        }
-
-        if (exercise.equipment) {
-            fields.push({
-                label: 'Equipment',
-                value: exercise.equipment.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
-            });
-        }
-
-        if (exercise.mechanics) {
-            fields.push({
-                label: 'Mechanics',
-                value: exercise.mechanics.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase()),
-            });
-        }
-
-        return fields;
-    };
-
-    // Helper to get a color based on exercise category
-    const getCellColor = (exercise: ExerciseReadDTO): 'red' | 'yellow' | 'blue' | 'green' | 'pink' => {
-        const categoryColors: Record<string, 'red' | 'yellow' | 'blue' | 'green' | 'pink'> = {
-            STRENGTH: 'red',
-            CARDIO: 'green',
-            MOBILITY: 'blue',
-            REHABILITATION: 'pink',
-            POWER: 'yellow',
-            FUNCTIONAL: 'green',
-            WARM_UP: 'yellow',
-            RECOVERY: 'pink',
-        };
-        return categoryColors[exercise.category ?? ''] ?? 'blue';
-    };
-
-    const handleCellFavoriteToggle = (exerciseId: number, isFavorite: boolean) => {
-        setFavoriteExerciseIds(prev => {
-            const newSet = new Set(prev);
-            if (isFavorite) {
-                newSet.add(exerciseId);
-            } else {
-                newSet.delete(exerciseId);
-            }
-            return newSet;
-        });
-    };
-
-    const handleCellSelectionChange = (exerciseId: number, isSelected: boolean) => {
-        setSelectedCellId(isSelected ? exerciseId : null);
-    };
-
-    const handleCellAction = (exercise: ExerciseReadDTO) => {
-        pushAlert(`Opening exercise: ${exercise.name}`, 'info');
-    };
-
-    
     const handleIncreaseProgress = () => {
         setInteractiveProgress(prev => Math.min(prev + 10, 100));
     };
@@ -844,11 +686,11 @@ function App() {
                 </div>
             </section>
 
-            {/* SimpleCell Component Showcase */}
+            {/* Cell Component Showcase */}
             <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>SimpleCell Component</h2>
+                <h2 css={styles.sectionTitle}>Cell Component</h2>
                 <div css={styles.cellsGrid}>
-                    <SimpleCell
+                    <Cell
                         title="Bench Press"
                         description="Chest exercise"
                         color="red"
@@ -858,10 +700,19 @@ function App() {
                             { label: 'Equipment', value: 'Barbell' },
                             { label: 'Mechanics', value: 'Compound' },
                         ]}
-                        actionLabel="View Details"
-                        onAction={() => pushAlert('Opening: Bench Press', 'info')}
+                        isFavorite={cellFavorites.has('bench-press')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('bench-press');
+                                else next.delete('bench-press');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Squat"
                         description="Legs exercise"
                         color="blue"
@@ -870,10 +721,19 @@ function App() {
                             { label: 'Category', value: 'Strength' },
                             { label: 'Type', value: 'Compound' },
                         ]}
-                        actionLabel="View"
-                        onAction={() => pushAlert('Opening: Squat', 'info')}
+                        isFavorite={cellFavorites.has('squat')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('squat');
+                                else next.delete('squat');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Running"
                         description="Cardio"
                         color="green"
@@ -882,10 +742,19 @@ function App() {
                             { label: 'Category', value: 'Cardio' },
                             { label: 'Energy', value: 'Aerobic' },
                         ]}
-                        actionLabel="Start"
-                        onAction={() => pushAlert('Starting: Running', 'info')}
+                        isFavorite={cellFavorites.has('running')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('running');
+                                else next.delete('running');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Yoga Flow"
                         description="Mobility"
                         color="pink"
@@ -893,9 +762,19 @@ function App() {
                         fields={[
                             { label: 'Category', value: 'Mobility' },
                         ]}
-                        onAction={() => pushAlert('Opening: Yoga Flow', 'info')}
+                        isFavorite={cellFavorites.has('yoga')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('yoga');
+                                else next.delete('yoga');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Deadlift"
                         description="Back exercise"
                         color="yellow"
@@ -904,46 +783,18 @@ function App() {
                             { label: 'Category', value: 'Strength' },
                             { label: 'Equipment', value: 'Barbell' },
                         ]}
-                        actionLabel="View"
-                        onAction={() => pushAlert('Opening: Deadlift', 'info')}
+                        isFavorite={cellFavorites.has('deadlift')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('deadlift');
+                                else next.delete('deadlift');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                </div>
-            </section>
-
-            {/* Cell Component Showcase */}
-            <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>Cell Component</h2>
-                <div css={styles.cellsGrid}>
-                    {sampleCells.map(cell => (
-                        <Cell
-                            key={cell.id}
-                            title={cell.title}
-                            description={cell.description}
-                            image={cell.image}
-                            color={cell.color}
-                            fields={cell.fields}
-                            actionLabel="View Details"
-                            onAction={() => pushAlert(`Opening: ${cell.title}`, 'info')}
-                            isFavorite={sampleFavorites.has(cell.id)}
-                            onFavoriteToggle={isFavorite => {
-                                setSampleFavorites(prev => {
-                                    const newSet = new Set(prev);
-                                    if (isFavorite) newSet.add(cell.id);
-                                    else newSet.delete(cell.id);
-                                    return newSet;
-                                });
-                            }}
-                            favoriteIcon={<FiHeart />}
-                            favoriteIconSelected={<FiHeart fill="currentColor" />}
-                            isSelected={selectedSampleId === cell.id}
-                            onSelectionChange={isSelected => setSelectedSampleId(isSelected ? cell.id : null)}
-                            ratingValue={sampleRatings[cell.id] ?? 0}
-                            ratingMax={3}
-                            ratingIcon={<RiFireLine />}
-                            ratingIconSelected={<RiFireFill />}
-                            onRatingChange={value => setSampleRatings(prev => ({ ...prev, [cell.id]: value }))}
-                        />
-                    ))}
                 </div>
             </section>
 
