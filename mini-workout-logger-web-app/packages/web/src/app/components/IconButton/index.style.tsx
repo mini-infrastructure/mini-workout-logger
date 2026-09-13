@@ -74,13 +74,13 @@ const styles = {
 
     iconSize: {
         sm: css({
-            fontSize: 'var(--font-size-sm)',
+            fontSize: 'var(--font-size-small)',
         }),
         md: css({
-            fontSize: 'var(--font-size-md)',
+            fontSize: 'var(--font-size-medium)',
         }),
         lg: css({
-            fontSize: 'var(--font-size-2xl)',
+            fontSize: 'var(--font-size-h2)',
         }),
     },
 

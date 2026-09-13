@@ -21,7 +21,7 @@ const styles = {
         paddingInline: 'var(--space-md)',
 
         fontFamily: 'var(--font-family)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-medium)',
         lineHeight: 'var(--line-height-tight)',
 

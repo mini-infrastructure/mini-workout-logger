@@ -72,7 +72,7 @@ const styles = {
         borderRadius: 'var(--radius-full)',
         backgroundColor: 'var(--color-red)',
         color: 'var(--color-white)',
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         fontWeight: 'var(--font-weight-bold)',
         display: 'flex',
         alignItems: 'center',
@@ -184,7 +184,7 @@ const styles = {
         justifyContent: 'center',
         padding: 'var(--space-lg)',
         color: 'var(--color-white)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
     }),
 
     emptyState: css({
@@ -198,17 +198,17 @@ const styles = {
     }),
 
     emptyIcon: css({
-        fontSize: 'var(--font-size-3xl)',
+        fontSize: 'var(--font-size-h1)',
         opacity: 0.5,
     }),
 
     emptyText: css({
-        fontSize: 'var(--font-size-lg)',
+        fontSize: 'var(--font-size-large)',
         opacity: 0.7,
     }),
 
     resultCount: css({
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         color: 'var(--color-white)',
         opacity: 0.7,
         marginBottom: 'var(--space-sm)',

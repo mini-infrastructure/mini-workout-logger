@@ -4,7 +4,7 @@ const floatUp = keyframes({
     from: {
         top: '50%',
         transform: 'translateY(-50%)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
     },
     to: {
         top: 'var(--space-sm)',
@@ -22,7 +22,7 @@ const floatDown = keyframes({
     to: {
         top: '50%',
         transform: 'translateY(-50%)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
     },
 });
 
@@ -83,7 +83,7 @@ const styles = {
         outline: 'none',
         backgroundColor: 'transparent',
         color: 'var(--input-text)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         fontFamily: 'var(--font-family)',
         lineHeight: 'var(--line-height-normal)',
 
@@ -110,7 +110,7 @@ const styles = {
         top: '50%',
         transform: 'translateY(-50%)',
         color: 'var(--input-label-color)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         fontWeight: 'var(--font-weight-regular)',
         pointerEvents: 'none',
         transition: 'all var(--transition-fast)',
@@ -144,7 +144,7 @@ const styles = {
         width: '2.5rem',
         height: '100%',
         color: 'var(--input-text)',
-        fontSize: 'var(--font-size-lg)',
+        fontSize: 'var(--font-size-large)',
     }),
 
     iconClickable: css({
@@ -168,7 +168,7 @@ const styles = {
         borderRadius: 'var(--radius-full)',
         backgroundColor: 'transparent',
         color: 'var(--input-text)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         cursor: 'pointer',
         transition: 'background-color var(--transition-fast)',
 
@@ -187,13 +187,13 @@ const styles = {
     }),
 
     helperText: css({
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         color: 'var(--input-helper-color)',
         paddingLeft: 'var(--input-padding-x)',
     }),
 
     errorText: css({
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         color: 'var(--color-red)',
         paddingLeft: 'var(--input-padding-x)',
     }),
@@ -211,7 +211,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--space-xs)',
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
     }),
 
     validationItemValid: css({
@@ -223,7 +223,7 @@ const styles = {
     }),
 
     validationIcon: css({
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
     }),
 
     requiredMarker: css({

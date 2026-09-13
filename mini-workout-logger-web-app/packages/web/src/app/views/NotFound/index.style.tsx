@@ -13,14 +13,14 @@ const styles = {
     }),
 
     title: css({
-        fontSize: 'var(--font-size-3xl)',
+        fontSize: 'var(--font-size-h1)',
         fontWeight: 'var(--font-weight-bold)',
         color: 'var(--color-white)',
         marginBottom: 'var(--space-md)',
     }),
 
     message: css({
-        fontSize: 'var(--font-size-lg)',
+        fontSize: 'var(--font-size-large)',
         color: 'var(--color-gray)',
         marginBottom: 'var(--space-xl)',
     }),

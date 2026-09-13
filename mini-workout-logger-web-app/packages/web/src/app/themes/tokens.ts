@@ -91,16 +91,43 @@ const spacing = {
 const typography = {
     fontFamily: '"Mona Sans", sans-serif',
 
-    fontSize: {
-        xs:   '0.75rem',   // 12px
-        sm:   '0.875rem',  // 14px
-        md:   '1rem',      // 16px
-        lg:   '1.25rem',   // 20px
-        xl:   '1.5rem',    // 24px
-        '2xl': '2rem',     // 32px
-        '3xl': '3rem',     // 48px
+    // Heading sizes
+    headingSize: {
+        h1: '3rem',      // 48px
+        h2: '2rem',      // 32px
+        h3: '1.5rem',    // 24px
+        h4: '1.25rem',   // 20px
+        h5: '1rem',      // 16px
+        h6: '0.875rem',  // 14px
     },
 
+    // Body text sizes
+    bodySize: {
+        large:   '1.25rem',   // 20px
+        medium:  '1rem',      // 16px
+        small:   '0.875rem',  // 14px
+        caption: '0.75rem',   // 12px
+    },
+
+    // Heading weights
+    headingWeight: {
+        h1: 700,  // bold
+        h2: 700,  // bold
+        h3: 500,  // medium
+        h4: 400,  // regular
+        h5: 400,  // regular
+        h6: 400,  // regular
+    },
+
+    // Body text weights
+    bodyWeight: {
+        large:   500,  // medium
+        medium:  500,  // medium
+        small:   400,  // regular
+        caption: 400,  // regular
+    },
+
+    // Raw weight values (for custom use)
     fontWeight: {
         regular:  400,
         medium:   500,
@@ -220,16 +247,36 @@ export const globalStyles = css({
         // Typography
         '--font-family': typography.fontFamily,
 
-        '--font-size-xs':  typography.fontSize.xs,
-        '--font-size-sm':  typography.fontSize.sm,
-        '--font-size-md':  typography.fontSize.md,
-        '--font-size-lg':  typography.fontSize.lg,
-        '--font-size-xl':  typography.fontSize.xl,
-        '--font-size-2xl': typography.fontSize['2xl'],
-        '--font-size-3xl': typography.fontSize['3xl'],
+        // Heading sizes
+        '--font-size-h1': typography.headingSize.h1,
+        '--font-size-h2': typography.headingSize.h2,
+        '--font-size-h3': typography.headingSize.h3,
+        '--font-size-h4': typography.headingSize.h4,
+        '--font-size-h5': typography.headingSize.h5,
+        '--font-size-h6': typography.headingSize.h6,
 
+        // Body text sizes
+        '--font-size-large':   typography.bodySize.large,
+        '--font-size-medium':  typography.bodySize.medium,
+        '--font-size-small':   typography.bodySize.small,
+        '--font-size-caption': typography.bodySize.caption,
+
+        // Heading weights
+        '--font-weight-h1': typography.headingWeight.h1,
+        '--font-weight-h2': typography.headingWeight.h2,
+        '--font-weight-h3': typography.headingWeight.h3,
+        '--font-weight-h4': typography.headingWeight.h4,
+        '--font-weight-h5': typography.headingWeight.h5,
+        '--font-weight-h6': typography.headingWeight.h6,
+
+        // Body text weights
+        '--font-weight-large':   typography.bodyWeight.large,
+        '--font-weight-medium':  typography.bodyWeight.medium,
+        '--font-weight-small':   typography.bodyWeight.small,
+        '--font-weight-caption': typography.bodyWeight.caption,
+
+        // Raw weights (for custom use)
         '--font-weight-regular':  typography.fontWeight.regular,
-        '--font-weight-medium':   typography.fontWeight.medium,
         '--font-weight-semibold': typography.fontWeight.semibold,
         '--font-weight-bold':     typography.fontWeight.bold,
 
@@ -279,7 +326,7 @@ export const globalStyles = css({
         '--input-border-error':     palette.red,
         '--input-border-success':   palette.green,
         '--input-label-color':      palette.black,
-        '--input-label-size':       typography.fontSize.xs,
+        '--input-label-size':       typography.bodySize.caption,
         '--input-helper-color':     'rgba(15, 22, 32, 0.6)',
 
         // Dropdown tokens
@@ -302,7 +349,7 @@ export const globalStyles = css({
         backgroundColor: 'var(--color-black)',
         color: 'var(--color-white)',
         fontFamily: 'var(--font-family)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         lineHeight: 'var(--line-height-normal)',
         WebkitFontSmoothing: 'antialiased',
         MozOsxFontSmoothing: 'grayscale',
@@ -316,5 +363,6 @@ export const globalStyles = css({
 
 export type AccentColor = 'red' | 'yellow' | 'blue' | 'green' | 'pink';
 export type SpacingKey = keyof typeof spacing;
-export type FontSizeKey = keyof typeof typography.fontSize;
+export type HeadingSizeKey = keyof typeof typography.headingSize;
+export type BodySizeKey = keyof typeof typography.bodySize;
 export type RadiusKey = keyof typeof radius;

@@ -64,14 +64,14 @@ const styles = {
         justifyContent: 'center',
         '& svg': {
             color: variantTextColors[variant],
-            fontSize: 'var(--font-size-lg)',
+            fontSize: 'var(--font-size-large)',
         },
     }),
 
     message: css({
         flex: 1,
         fontWeight: 'var(--font-weight-medium)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         lineHeight: 'var(--line-height-normal)',
         overflow: 'hidden',
         display: '-webkit-box',

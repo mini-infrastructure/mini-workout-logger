@@ -20,12 +20,12 @@ const styles = {
     }),
 
     label: css({
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-medium)',
     }),
 
     value: css({
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-regular)',
     }),
 

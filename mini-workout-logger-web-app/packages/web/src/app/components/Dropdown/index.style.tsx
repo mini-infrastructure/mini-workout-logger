@@ -45,7 +45,7 @@ const styles = {
         border: 'none',
         borderRadius: 'var(--radius-sm)',
         color: 'var(--dropdown-text)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontFamily: 'var(--font-family)',
         outline: 'none',
 
@@ -68,7 +68,7 @@ const styles = {
         gap: 'var(--space-sm)',
         padding: 'var(--space-sm) var(--space-md)',
         color: 'var(--dropdown-text)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-medium)',
         cursor: 'pointer',
         transition: 'background-color var(--transition-fast)',
@@ -108,7 +108,7 @@ const styles = {
 
     groupLabel: css({
         padding: 'var(--space-sm) var(--space-md)',
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         fontWeight: 'var(--font-weight-semibold)',
         color: 'rgba(243, 244, 248, 0.6)',
         textTransform: 'uppercase',
@@ -121,7 +121,7 @@ const styles = {
         gap: 'var(--space-sm)',
         padding: 'var(--space-sm) var(--space-md)',
         color: 'var(--dropdown-text)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         cursor: 'pointer',
         transition: 'background-color var(--transition-fast)',
 
@@ -156,7 +156,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
     }),
 
     itemImage: css({
@@ -178,7 +178,7 @@ const styles = {
         border: 'var(--border-medium) solid rgba(243, 244, 248, 0.4)',
         backgroundColor: 'transparent',
         color: 'transparent',
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         transition: 'all var(--transition-fast)',
     }),
 
@@ -208,12 +208,12 @@ const styles = {
         justifyContent: 'center',
         padding: 'var(--space-xl) var(--space-md)',
         color: 'rgba(243, 244, 248, 0.6)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         textAlign: 'center',
     }),
 
     emptyIcon: css({
-        fontSize: 'var(--font-size-2xl)',
+        fontSize: 'var(--font-size-h2)',
         marginBottom: 'var(--space-sm)',
         opacity: 0.5,
     }),

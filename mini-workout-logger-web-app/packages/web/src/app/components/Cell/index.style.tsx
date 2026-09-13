@@ -74,7 +74,7 @@ const styles = {
     }),
 
     title: css({
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         fontWeight: 'var(--font-weight-bold)',
         color: themeColors.black,
         margin: 0,
@@ -87,7 +87,7 @@ const styles = {
     }),
 
     description: css({
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         color: '#6B7280',
         margin: 0,
         lineHeight: 'var(--line-height-normal)',
@@ -139,7 +139,7 @@ const styles = {
     }),
 
     fieldLabel: css({
-        fontSize: 'var(--font-size-xs)',
+        fontSize: 'var(--font-size-caption)',
         fontWeight: 'var(--font-weight-medium)',
         color: '#6B7280',
         textTransform: 'uppercase',
@@ -150,13 +150,13 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         gap: 'var(--space-xs)',
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-medium)',
         color: themeColors.black,
     }),
 
     fieldIcon: css({
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         flexShrink: 0,
     }),
 };

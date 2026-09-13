@@ -57,14 +57,14 @@ const styles = {
 
     title: css({
         margin: 0,
-        fontSize: 'var(--font-size-xl)',
+        fontSize: 'var(--font-size-h3)',
         fontWeight: 'var(--font-weight-semibold)',
         lineHeight: 'var(--line-height-tight)',
     }),
 
     description: css({
         margin: 0,
-        fontSize: 'var(--font-size-sm)',
+        fontSize: 'var(--font-size-small)',
         fontWeight: 'var(--font-weight-regular)',
         opacity: 0.9,
         lineHeight: 'var(--line-height-tight)',

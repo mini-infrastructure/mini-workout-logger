@@ -52,7 +52,7 @@ const styles = {
         paddingInline: 'var(--space-lg)',
 
         fontFamily: 'var(--font-family)',
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         fontWeight: 'var(--font-weight-medium)',
         lineHeight: 'var(--line-height-tight)',
 
@@ -77,7 +77,7 @@ const styles = {
     optionLarge: css({
         paddingBlock: 'var(--space-md)',
         paddingInline: 'var(--space-xl)',
-        fontSize: 'var(--font-size-lg)',
+        fontSize: 'var(--font-size-large)',
     }),
 
     optionIcon: css({

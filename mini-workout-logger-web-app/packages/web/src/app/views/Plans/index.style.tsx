@@ -8,7 +8,7 @@ const styles = {
     }),
 
     title: css({
-        fontSize: 'var(--font-size-2xl)',
+        fontSize: 'var(--font-size-h2)',
         fontWeight: 'var(--font-weight-bold)',
         marginBottom: 'var(--space-lg)',
     }),
@@ -19,7 +19,7 @@ const styles = {
         justifyContent: 'center',
         flex: 1,
         color: 'var(--color-gray)',
-        fontSize: 'var(--font-size-lg)',
+        fontSize: 'var(--font-size-large)',
     }),
 };
 

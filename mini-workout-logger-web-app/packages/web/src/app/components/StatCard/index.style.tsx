@@ -39,14 +39,14 @@ const styles = {
 
     value: css({
         margin: 0,
-        fontSize: 'var(--font-size-3xl)',
+        fontSize: 'var(--font-size-h1)',
         fontWeight: 'var(--font-weight-bold)',
         lineHeight: 'var(--line-height-tight)',
     }),
 
     label: css({
         margin: 0,
-        fontSize: 'var(--font-size-md)',
+        fontSize: 'var(--font-size-medium)',
         fontWeight: 'var(--font-weight-regular)',
         opacity: 0.9,
     }),
