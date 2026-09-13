@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { FiPlus, FiFilter, FiChevronDown, FiSearch } from 'react-icons/fi';
-import { FaHeart, FaDumbbell } from 'react-icons/fa';
+import { FaDumbbell } from 'react-icons/fa';
+import { IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
+import { LuDot } from 'react-icons/lu';
 import {
     exerciseCategoryOptions,
     exerciseDifficultyOptions,
@@ -142,6 +144,25 @@ const ExercisesView = () => {
         return colorMap[variant] ?? 'blue';
     };
 
+    // Get exercise description with root muscle and group
+    const getExerciseDescription = (exercise: ExerciseReadDTO) => {
+        const primaryRootCode = exercise.root_muscles?.[0];
+        const primaryRootName = muscles.find(m => m.code === primaryRootCode)?.name;
+        const groupName = exercise.group_name;
+
+        if (primaryRootName && groupName) {
+            return (
+                <>
+                    {primaryRootName}
+                    <LuDot />
+                    {groupName}
+                </>
+            );
+        }
+
+        return primaryRootName ?? groupName ?? null;
+    };
+
     // Handle exercise click
     const handleExerciseClick = (exercise: ExerciseReadDTO) => {
         // TODO: Open exercise drawer
@@ -264,7 +285,7 @@ const ExercisesView = () => {
                                         >
                                             <Cell
                                                 title={exercise.name}
-                                                description={exercise.group_name}
+                                                description={getExerciseDescription(exercise)}
                                                 color={getExerciseColor(exercise)}
                                                 fields={getExerciseFields(exercise)}
                                                 isFavorite={exercise.favorited}
@@ -272,8 +293,8 @@ const ExercisesView = () => {
                                                     // TODO: Toggle favorite
                                                     console.log('Toggle favorite:', exercise.id, isFav);
                                                 }}
-                                                favoriteIcon={<FaHeart />}
-                                                favoriteIconSelected={<FaHeart fill="currentColor" />}
+                                                favoriteIcon={<IoBookmarkOutline />}
+                                                favoriteIconSelected={<IoBookmark />}
                                             />
                                         </div>
                                     ))}

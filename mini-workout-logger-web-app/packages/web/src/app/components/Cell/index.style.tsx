@@ -28,14 +28,16 @@ const styles = {
         padding: 'var(--space-md)',
         overflow: 'hidden',
         minWidth: '18rem',
-        gap: 'var(--space-md)',
+        height: '100%',
     }),
 
     // Header row: image + title/description + favorite button
     header: css({
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 'var(--space-md)',
+        flexShrink: 0,
+        marginBottom: 'var(--space-sm)',
     }),
 
     // Image container with colored background
@@ -126,6 +128,8 @@ const styles = {
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
         gap: 'var(--space-sm)',
+        flex: 1,
+        alignContent: 'start',
 
         '& > *:only-child, & > *:last-child:nth-child(odd)': {
             gridColumn: '1 / -1',

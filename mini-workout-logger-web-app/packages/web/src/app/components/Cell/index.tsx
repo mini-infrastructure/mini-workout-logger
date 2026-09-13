@@ -13,7 +13,7 @@ type CellProps = {
     /** Title of the cell */
     title: string;
     /** Description below the title */
-    description?: string;
+    description?: ReactNode;
     /** Image URL for the cell */
     image?: string;
     /** Accent color for the image background */
