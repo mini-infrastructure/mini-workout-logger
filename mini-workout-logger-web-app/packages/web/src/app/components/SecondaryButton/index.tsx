@@ -1,48 +1,62 @@
-import type { PropsWithChildren } from 'react';
-import { css } from '@emotion/react';
-import type { ButtonProps } from '../Button/index.tsx';
-import Button from '../Button/index.tsx';
-import styles from '../Button/index.style.tsx';
+import { useRef, type ReactNode } from 'react';
+import styles from './index.style';
 
-export type SecondaryButtonProps = ButtonProps & {
-    /** CSS color value for the button text and icon. Defaults to var(--color-text). */
-    color?: string;
+type SecondaryButtonProps = {
+    label: string;
+    onClick?: () => void;
+    disabled?: boolean;
+    type?: 'button' | 'submit';
+    icon?: ReactNode;
+    selectedIcon?: ReactNode;
+    iconPosition?: 'left' | 'right';
+    isSelected?: boolean;
+    animateIcon?: boolean;
 };
 
 const SecondaryButton = ({
+    label,
     onClick,
-    path,
-    disabled,
-    customCss,
+    disabled = false,
+    type = 'button',
     icon,
-    customIconCss,
-    type,
-    color,
-    children,
-}: PropsWithChildren<SecondaryButtonProps>) => {
+    selectedIcon,
+    iconPosition = 'left',
+    isSelected = false,
+    animateIcon = false,
+}: SecondaryButtonProps) => {
+    const wasSelectedRef = useRef(isSelected);
+    const currentIcon = isSelected && selectedIcon ? selectedIcon : icon;
+
+    const getIconAnimationStyle = () => {
+        if (!animateIcon || !selectedIcon) return undefined;
+        if (isSelected && !wasSelectedRef.current) {
+            wasSelectedRef.current = true;
+            return styles.iconAnimateIn;
+        }
+        if (!isSelected && wasSelectedRef.current) {
+            wasSelectedRef.current = false;
+            return styles.iconAnimateOut;
+        }
+        return undefined;
+    };
+
+    const iconCss = [styles.icon, getIconAnimationStyle()];
+
     return (
-        <Button
+        <button
+            css={[styles.button, isSelected && styles.buttonSelected]}
             onClick={onClick}
-            path={path}
             disabled={disabled}
             type={type}
-            customCss={[
-                styles.buttonSecondary,
-                color ? css({ ':hover': { color } }) : undefined,
-                ...(customCss
-                    ? Array.isArray(customCss) ? customCss : [customCss]
-                    : []),
-            ]}
-            icon={icon}
-            customIconCss={[
-                styles.iconSecondary,
-                ...(customIconCss
-                    ? Array.isArray(customIconCss) ? customIconCss : [customIconCss]
-                    : []),
-            ]}
         >
-            {children}
-        </Button>
+            {currentIcon && iconPosition === 'left' && (
+                <span css={iconCss}>{currentIcon}</span>
+            )}
+            {label}
+            {currentIcon && iconPosition === 'right' && (
+                <span css={iconCss}>{currentIcon}</span>
+            )}
+        </button>
     );
 };
 

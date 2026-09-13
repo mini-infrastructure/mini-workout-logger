@@ -5,11 +5,15 @@ const styles = {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'flex-end',
         padding: 'var(--space-lg)',
         borderRadius: 'var(--radius-lg)',
         border: 'var(--border-thick) solid transparent',
-        overflow: 'hidden',
+        boxSizing: 'border-box',
+        width: '12rem',
+        height: '12rem',
         transition: 'transform 0.2s ease, border-color 0.2s ease',
+        willChange: 'transform',
     }),
 
     clickable: css({
@@ -22,16 +26,6 @@ const styles = {
             transform: 'translateY(0)',
             borderColor: 'var(--color-white)',
         },
-    }),
-
-    square: css({
-        width: '12rem',
-        height: '12rem',
-    }),
-
-    wide: css({
-        width: '18rem',
-        height: '12rem',
     }),
 
     backgroundImage: css({
@@ -52,7 +46,6 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--space-2xs)',
-        height: '100%',
     }),
 
     title: css({
@@ -62,12 +55,50 @@ const styles = {
         lineHeight: 'var(--line-height-tight)',
     }),
 
-    description: css({
+    value: css({
         margin: 0,
+        fontSize: 'var(--font-size-lg)',
+        fontWeight: 'var(--font-weight-semibold)',
+        lineHeight: 'var(--line-height-tight)',
+    }),
+
+    progressSection: css({
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 'var(--space-xs)',
+        marginTop: 'var(--space-sm)',
+        isolation: 'isolate',
+    }),
+
+    progressHeader: css({
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    }),
+
+    progressLabel: css({
+        fontSize: 'var(--font-size-sm)',
+        fontWeight: 'var(--font-weight-medium)',
+    }),
+
+    progressValue: css({
         fontSize: 'var(--font-size-sm)',
         fontWeight: 'var(--font-weight-regular)',
-        opacity: 0.9,
-        lineHeight: 'var(--line-height-tight)',
+    }),
+
+    track: css({
+        width: '100%',
+        height: 'var(--space-sm)',
+        backgroundColor: 'var(--color-white)',
+        borderRadius: 'var(--radius-full)',
+        overflow: 'hidden',
+        flexShrink: 0,
+    }),
+
+    fill: css({
+        height: '100%',
+        transition: 'width 0.5s ease-out',
+        willChange: 'width',
     }),
 };
 
