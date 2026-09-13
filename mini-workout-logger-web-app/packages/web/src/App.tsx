@@ -18,7 +18,7 @@ import {
 import AutocompleteInput from './app/components/AutocompleteInput';
 import Dropdown, { type DropdownOption } from './app/components/Dropdown';
 import SegmentedControl, { type SegmentedControlOption } from './app/components/SegmentedControl';
-import SimpleCell from './app/components/SimpleCell';
+import Cell from './app/components/Cell';
 
 import PrimaryButton from './app/components/PrimaryButton';
 import SecondaryButton from './app/components/SecondaryButton';
@@ -274,6 +274,9 @@ function App() {
     const [muscleFilterOpen, setMuscleFilterOpen] = useState(false);
     const [allMuscles, setAllMuscles] = useState<MuscleReadDTO[]>([]);
     const filterButtonRef = useRef<HTMLDivElement>(null);
+
+    // Cell showcase state
+    const [cellFavorites, setCellFavorites] = useState<Set<string>>(new Set());
 
 
 
@@ -683,11 +686,11 @@ function App() {
                 </div>
             </section>
 
-            {/* SimpleCell Component Showcase */}
+            {/* Cell Component Showcase */}
             <section css={styles.section}>
-                <h2 css={styles.sectionTitle}>SimpleCell Component</h2>
+                <h2 css={styles.sectionTitle}>Cell Component</h2>
                 <div css={styles.cellsGrid}>
-                    <SimpleCell
+                    <Cell
                         title="Bench Press"
                         description="Chest exercise"
                         color="red"
@@ -697,10 +700,19 @@ function App() {
                             { label: 'Equipment', value: 'Barbell' },
                             { label: 'Mechanics', value: 'Compound' },
                         ]}
-                        actionLabel="View Details"
-                        onAction={() => pushAlert('Opening: Bench Press', 'info')}
+                        isFavorite={cellFavorites.has('bench-press')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('bench-press');
+                                else next.delete('bench-press');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Squat"
                         description="Legs exercise"
                         color="blue"
@@ -709,10 +721,19 @@ function App() {
                             { label: 'Category', value: 'Strength' },
                             { label: 'Type', value: 'Compound' },
                         ]}
-                        actionLabel="View"
-                        onAction={() => pushAlert('Opening: Squat', 'info')}
+                        isFavorite={cellFavorites.has('squat')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('squat');
+                                else next.delete('squat');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Running"
                         description="Cardio"
                         color="green"
@@ -721,10 +742,19 @@ function App() {
                             { label: 'Category', value: 'Cardio' },
                             { label: 'Energy', value: 'Aerobic' },
                         ]}
-                        actionLabel="Start"
-                        onAction={() => pushAlert('Starting: Running', 'info')}
+                        isFavorite={cellFavorites.has('running')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('running');
+                                else next.delete('running');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Yoga Flow"
                         description="Mobility"
                         color="pink"
@@ -732,9 +762,19 @@ function App() {
                         fields={[
                             { label: 'Category', value: 'Mobility' },
                         ]}
-                        onAction={() => pushAlert('Opening: Yoga Flow', 'info')}
+                        isFavorite={cellFavorites.has('yoga')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('yoga');
+                                else next.delete('yoga');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
-                    <SimpleCell
+                    <Cell
                         title="Deadlift"
                         description="Back exercise"
                         color="yellow"
@@ -743,8 +783,17 @@ function App() {
                             { label: 'Category', value: 'Strength' },
                             { label: 'Equipment', value: 'Barbell' },
                         ]}
-                        actionLabel="View"
-                        onAction={() => pushAlert('Opening: Deadlift', 'info')}
+                        isFavorite={cellFavorites.has('deadlift')}
+                        onFavoriteToggle={isFav => {
+                            setCellFavorites(prev => {
+                                const next = new Set(prev);
+                                if (isFav) next.add('deadlift');
+                                else next.delete('deadlift');
+                                return next;
+                            });
+                        }}
+                        favoriteIcon={<FiHeart />}
+                        favoriteIconSelected={<FiHeart fill="currentColor" />}
                     />
                 </div>
             </section>
