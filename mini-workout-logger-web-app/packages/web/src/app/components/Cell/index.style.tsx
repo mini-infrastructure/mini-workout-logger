@@ -81,7 +81,9 @@ const styles = {
         lineHeight: 'var(--line-height-tight)',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
     }),
 
     description: css({

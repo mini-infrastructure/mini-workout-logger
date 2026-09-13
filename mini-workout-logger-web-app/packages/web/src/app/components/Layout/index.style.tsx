@@ -12,7 +12,9 @@ const styles = {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        padding: 'var(--space-xl)',
+        paddingTop: 'var(--space-md)',
+        paddingInline: 'var(--space-xl)',
+        paddingBottom: 'var(--space-xl)',
         overflow: 'auto',
     }),
 };
